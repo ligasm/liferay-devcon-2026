@@ -1,0 +1,14 @@
+
+┌─ S4-mock / mix ────────────────────────────────────────
+│ requests          394   29.6 req/s
+│ duration      p50      1ms  p95     13ms  p99     31ms
+│ ttfb          p50      0ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit       95.4%   set-cookie on guest   1.6%   cache-control private   4.6%
+│
+│   ap_page                12 req  p95      1ms  edge hit 100.0%
+│   guest_browse          340 req  p95      1ms  edge hit 100.0%
+│   login                  24 req  p95     36ms  edge hit   0.0%
+│   search                 18 req  p95      1ms  edge hit 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

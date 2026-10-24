@@ -1,0 +1,12 @@
+node_modules/
+dist/
+content/raw/
+content/build/
+content/plan.json
+content/build-info.json
+content/build-result.json
+content/ai-log.json
+reports/*.md
+.env
+site/.astro/
+site/node_modules/

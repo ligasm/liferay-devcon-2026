@@ -1,0 +1,1407 @@
+{
+  "lastRun": "2026-09-18T07:12:07.585Z",
+  "runCount": 9,
+  "committedAt": "2026-09-18T07:12:11.125Z",
+  "items": {
+    "blog:121975600": {
+      "kind": "blog",
+      "id": 121975600,
+      "hash": "97a95303343146ef8134319616fb12da8b0baa62f5f465da0917f4eedc7ab136",
+      "path": "/blog/setting-up-glowroot-as-central-collector-liferay/",
+      "title": "Setting up Glowroot as Central Collector - Liferay",
+      "dateModified": "2026-02-26T06:58:52Z"
+    },
+    "blog:123579623": {
+      "kind": "blog",
+      "id": 123579623,
+      "hash": "08bfba228511d7f9a31d1701824ee177c53e6b512f3e9ee97c6e81860b926fdf",
+      "path": "/blog/new-discussion-forums-are-coming-soon/",
+      "title": "New Discussion Forums are coming soon!",
+      "dateModified": "2025-10-30T01:18:42Z"
+    },
+    "blog:124517730": {
+      "kind": "blog",
+      "id": 124517730,
+      "hash": "58123e2c0f989500ce64da66f76a7301bbbe43295e885a01e8271f67dcaf439d",
+      "path": "/blog/lrdevcon25-the-power-of-the-elastic-stack-for-semantic-search-ai-with-liferay-enterprise-search-teaser/",
+      "title": "Harnessing the Power of the Elastic Stack for Semantic Search & AI with Liferay Enterprise Search (Teaser)",
+      "dateModified": "2025-11-05T16:02:52Z"
+    },
+    "blog:124618054": {
+      "kind": "blog",
+      "id": 124618054,
+      "hash": "d88c5d5fabead7a5c7cb8f333033df7d7cd83deabcd20ef909cfec9095e3ffeb",
+      "path": "/blog/tunning-ehcache-3-x/",
+      "title": "Tunning EHCACHE 3.X",
+      "dateModified": "2025-11-06T09:01:58Z"
+    },
+    "blog:124618120": {
+      "kind": "blog",
+      "id": 124618120,
+      "hash": "ffe9fe36b66211d1151b719796b6d1f77a9b61494b33aa813c8fc3c3cb20fa94",
+      "path": "/blog/load-testing-liferay-without-the-password-bottleneck/",
+      "title": "Load Testing Liferay Without the Password Bottleneck",
+      "dateModified": "2025-11-06T08:23:49Z"
+    },
+    "blog:124695528": {
+      "kind": "blog",
+      "id": 124695528,
+      "hash": "d461c279ae7e4836934fb48b7e12ea920141c8de0773231513162ce3a2666179",
+      "path": "/blog/liferay-2025-q4-release-webinar/",
+      "title": "Liferay 2025.Q4 Release Webinar",
+      "dateModified": "2025-11-12T05:59:59Z"
+    },
+    "blog:124699980": {
+      "kind": "blog",
+      "id": 124699980,
+      "hash": "ec72913c4251532e75e90872cf51ff1399ea1a47e092c56968e1a90e66b03cdf",
+      "path": "/blog/responsive-navigation-in-liferay/",
+      "title": "Responsive Navigation in Liferay",
+      "dateModified": "2025-11-13T08:00:31Z"
+    },
+    "blog:124739226": {
+      "kind": "blog",
+      "id": 124739226,
+      "hash": "69a0f5058e4e729112518fe25fc5559b780a7c88c5fbcb8ce6d64881f51e6c9d",
+      "path": "/blog/product-ideas-on-discuss/",
+      "title": "Product Ideas on Discuss",
+      "dateModified": "2025-11-17T15:30:43Z"
+    },
+    "blog:124740235": {
+      "kind": "blog",
+      "id": 124740235,
+      "hash": "3bd2fea764adb889e5171c64e313bd52cb4d73d650675129362d0238b9f29b83",
+      "path": "/blog/fe-client-extensions-improving-developer-experience-with-hmr/",
+      "title": "FE Client Extensions: Improving Developer Experience with HMR",
+      "dateModified": "2025-11-17T16:03:18Z"
+    },
+    "blog:124755153": {
+      "kind": "blog",
+      "id": 124755153,
+      "hash": "a4a9c93c201ba820a37f6f4ff775066db30c5e8ea35fba71a2909c20f4f8549d",
+      "path": "/blog/camunda-first-look/",
+      "title": "DevCon 25: Camunda",
+      "dateModified": "2025-11-18T19:05:57Z"
+    },
+    "blog:124763052": {
+      "kind": "blog",
+      "id": 124763052,
+      "hash": "50deb0a1f20958bd8bfefb5cd45772ed1c54cd2b36d250acf9328c7b26f6f324",
+      "path": "/blog/devcon-where-everyone-learns-new-things/",
+      "title": "DevCon - Where Everyone Learns New Things",
+      "dateModified": "2025-11-19T18:08:32Z"
+    },
+    "blog:124763977": {
+      "kind": "blog",
+      "id": 124763977,
+      "hash": "05ba70516eceb890cbfd88217a49a9a12840b198ce15f8fc6c626fc3d2a38246",
+      "path": "/blog/using-the-liferay-js-global-object/",
+      "title": "Using the Liferay JS Global in Local JS Dev/Testing",
+      "dateModified": "2025-11-20T00:03:04Z"
+    },
+    "blog:124812719": {
+      "kind": "blog",
+      "id": 124812719,
+      "hash": "181c9a909b47193b45bca8df0d6aa2fa311220acc7f0df4ccbcbe552b2f6e110",
+      "path": "/blog/comprehensive-guide-to-configuring-liferay-behind-a-reverse-proxy-nginx-apache/",
+      "title": "Comprehensive Guide to Configuring Liferay Behind a Reverse Proxy (Nginx / Apache)",
+      "dateModified": "2025-11-27T11:13:47Z"
+    },
+    "blog:124858526": {
+      "kind": "blog",
+      "id": 124858526,
+      "hash": "d7a23d96df86491a8a18ade0092456f6d772e8602fe79fd2ac5ed18cfd58bf27",
+      "path": "/blog/data-set-hack-part-1/",
+      "title": "Data Set Hack - Part 1",
+      "dateModified": "2025-12-05T14:01:33Z"
+    },
+    "blog:124883891": {
+      "kind": "blog",
+      "id": 124883891,
+      "hash": "871948a72f231ffb1d243b4f105eda4cb49b8bb8ccdbe552f741a65e482ffadf",
+      "path": "/blog/using-restbuilder-on-liferay-2025-q3/",
+      "title": "Using RESTBuilder on Liferay 2025 Q3+",
+      "dateModified": "2025-12-10T09:49:26Z"
+    },
+    "blog:124890256": {
+      "kind": "blog",
+      "id": 124890256,
+      "hash": "2f45f68ae4496189c7a092948fa88c6ccb6e9229e363640ff50603bb30b401fa",
+      "path": "/blog/liferay-devcon-2025-session-recordings/",
+      "title": "Liferay DevCon 2025 Session Recordings",
+      "dateModified": "2025-12-11T16:13:49Z"
+    },
+    "blog:124905013": {
+      "kind": "blog",
+      "id": 124905013,
+      "hash": "f10294bceea117b28fe7fc43cf6e45671b58c209333a4cc25b4926740029797d",
+      "path": "/blog/horror-museum-items-found-on-websites-a-tour-of-failures-and-lessons-learned-1/",
+      "title": "Horror Museum Items Found on Websites: A Tour of Failures and Lessons Learned",
+      "dateModified": "2025-12-12T12:39:28Z"
+    },
+    "blog:124912219": {
+      "kind": "blog",
+      "id": 124912219,
+      "hash": "65237e0c2a6fad424cefd86c42e099560644c1a604312bba31cfd818cc86f1ac",
+      "path": "/blog/semantic-search-with-the-elastic-stack-and-liferay-enterprise-search-devcon25/",
+      "title": "Semantic Search Powered by the Elastic Stack with Liferay Enterprise Search",
+      "dateModified": "2025-12-15T10:51:48Z"
+    },
+    "blog:124938599": {
+      "kind": "blog",
+      "id": 124938599,
+      "hash": "3fba4337abe90caaacbebde3550a5af528d8588dc8620bf0d3f546cc8d3f08ed",
+      "path": "/blog/liferay-dxp-2025-q4-release-webinar-replay/",
+      "title": "Liferay DXP 2025.Q4 Release Webinar - Replay",
+      "dateModified": "2025-12-18T04:27:35Z"
+    },
+    "blog:125114733": {
+      "kind": "blog",
+      "id": 125114733,
+      "hash": "b2f99d7b0aaf8875050e36c6c10da6d9733041464832dcbba2353c0426fdb2e6",
+      "path": "/blog/connecting-external-database-in-liferay/",
+      "title": "Connecting External Database in Liferay",
+      "dateModified": "2026-01-09T07:30:38Z"
+    },
+    "blog:125123789": {
+      "kind": "blog",
+      "id": 125123789,
+      "hash": "00ec0d0b9ac853760f18db4ac9253250091525e95028bad0237d90b2e8882812",
+      "path": "/blog/new-liferay-learning-video-content/",
+      "title": "New Liferay Learning Video Content",
+      "dateModified": "2026-01-05T13:54:55Z"
+    },
+    "blog:125298002": {
+      "kind": "blog",
+      "id": 125298002,
+      "hash": "8d56277276984dd4b5b944c4240e1bda893e309f990c6224608b27d63cc74f92",
+      "path": "/blog/migrating-from-liferay-ce-to-liferay-dxp/",
+      "title": "How to Migrate from Liferay CE to Liferay DXP",
+      "dateModified": "2026-02-16T15:53:43Z"
+    },
+    "blog:125298656": {
+      "kind": "blog",
+      "id": 125298656,
+      "hash": "912f554039e1e6a5def843b5832a45b1c9797be8ca840e4d6d4328b2b211fb72",
+      "path": "/blog/the-state-of-liferay-learn/",
+      "title": "The State of Liferay Learn",
+      "dateModified": "2026-02-16T18:18:09Z"
+    },
+    "blog:125305007": {
+      "kind": "blog",
+      "id": 125305007,
+      "hash": "3739613931cb8fa0f89764a261e7c58ba759e6fa9f5df43fd751f0b12e88e00c",
+      "path": "/blog/why-liferay-marketplace/",
+      "title": "Why Liferay Marketplace",
+      "dateModified": "2026-02-18T19:03:20Z"
+    },
+    "blog:125308857": {
+      "kind": "blog",
+      "id": 125308857,
+      "hash": "5c1ae891cb29616695373f9cc3bfb584ce3f28b64f91b78437689321adca36a1",
+      "path": "/blog/avoiding-a-broken-build-after-a-workspace-plugin-upgrade/",
+      "title": "Avoiding a Broken Build After a Workspace Plugin Upgrade",
+      "dateModified": "2026-02-20T19:19:25Z"
+    },
+    "blog:125331768": {
+      "kind": "blog",
+      "id": 125331768,
+      "hash": "a18be094cbba43f69acea6ae851ccd0ea48e98640c90a96d9ed5db0f2db9f432",
+      "path": "/blog/stop-struggling-alone/",
+      "title": "Stop Struggling Alone",
+      "dateModified": "2026-02-25T15:48:57Z"
+    },
+    "blog:125332799": {
+      "kind": "blog",
+      "id": 125332799,
+      "hash": "a8510267ee64d97f878065c32f4b980bf1f681771a657c702f420266390df12d",
+      "path": "/blog/fake-rest-real-results/",
+      "title": "Fake REST, Real Results: Internal Headless Calls in Liferay Java Code",
+      "dateModified": "2026-02-26T15:16:43Z"
+    },
+    "blog:125333732": {
+      "kind": "blog",
+      "id": 125333732,
+      "hash": "5dd4425b718745ddd49f4ae32426bb55725261ad7cad9ec0a861974e013e3453",
+      "path": "/blog/liferay-2026-q1-lts-release-webinar/",
+      "title": "Liferay 2026.Q1 LTS Release Webinar",
+      "dateModified": "2026-03-02T04:05:45Z"
+    },
+    "blog:125348573": {
+      "kind": "blog",
+      "id": 125348573,
+      "hash": "8b96def9bef13b0e98bfe423bcd8d8a1ce9c8d19b57139fbb81a89a80cb0b9d8",
+      "path": "/blog/saaspocalypse-sure-but-not-from-ai/",
+      "title": "SaaSpocalypse? Sure, But Not From AI",
+      "dateModified": "2026-03-02T16:38:25Z"
+    },
+    "blog:125349216": {
+      "kind": "blog",
+      "id": 125349216,
+      "hash": "256e2a83506c1b4ab022f71dfa7b28c2bc3b4473f7eaffdd67a1d7826540d15d",
+      "path": "/blog/liferay-faces-compatibility-update-dxp-2025-q1-and-primefaces-15-0-6/",
+      "title": "Liferay Faces Compatibility Update: DXP 2025.Q1 and PrimeFaces 15.0.6",
+      "dateModified": "2026-03-02T19:51:31Z"
+    },
+    "blog:125350732": {
+      "kind": "blog",
+      "id": 125350732,
+      "hash": "6d70b7a1161fdbeffb95ab808a19cc43303515dccc663868bcab68d98c54f985",
+      "path": "/blog/participe-do-1-liferay-marketplace-app-hackathon-em-sao-paulo/",
+      "title": "Participe do 1º Liferay Marketplace App Hackathon em São Paulo! 🇧🇷",
+      "dateModified": "2026-03-03T19:21:14Z"
+    },
+    "blog:125350778": {
+      "kind": "blog",
+      "id": 125350778,
+      "hash": "0921323c9a90aa226416bd79c1283b32797420cba0664081996d9472073337eb",
+      "path": "/blog/liferay-2025-q1-22-lts-is-available-upgrade-immediately/",
+      "title": "Liferay 2025.Q1.22-LTS Is Available, Upgrade Immediately",
+      "dateModified": "2026-03-05T14:18:10Z"
+    },
+    "blog:125365680": {
+      "kind": "blog",
+      "id": 125365680,
+      "hash": "0f944d4e287cb06831067598b9b5f009d79202bd465d2a0a47f2f4a3aa643256",
+      "path": "/blog/liferay-docker-automation-python-scripts/",
+      "title": "Effortless Liferay Orchestration: Advanced Docker Scripts for Local Development",
+      "dateModified": "2026-03-10T16:15:25Z"
+    },
+    "blog:125365738": {
+      "kind": "blog",
+      "id": 125365738,
+      "hash": "36983ae793a61b97bdd6b7815b49f892bc384b720178805c9a0e7405a549ed00",
+      "path": "/blog/accelerating-liferay-fragments-with-ai-automation/",
+      "title": "Scaling Liferay Fragments: How AI and Automation Accelerated My UX Library",
+      "dateModified": "2026-03-10T16:35:08Z"
+    },
+    "blog:125366271": {
+      "kind": "blog",
+      "id": 125366271,
+      "hash": "5e39d1354be9716f3d4038498479c3da167bc9752b3d3808b6c0e2bac95a4f2c",
+      "path": "/blog/one-platform-one-liferay-the-2026-release-model/",
+      "title": "One Platform, One Liferay: The 2026 Release Model",
+      "dateModified": "2026-03-11T12:56:17Z"
+    },
+    "blog:125506461": {
+      "kind": "blog",
+      "id": 125506461,
+      "hash": "34ceabcf1916da622490300e4981fa6c8053dce1a1255e32957e9ed8fdaa0a1b",
+      "path": "/blog/liferay-dxp-free-tier/",
+      "title": "Liferay DXP Free Tier",
+      "dateModified": "2026-03-20T02:20:11Z"
+    },
+    "blog:125507436": {
+      "kind": "blog",
+      "id": 125507436,
+      "hash": "5e19343419d181f8834db966ee881306b81d6eae5a65799c2d72438a1ad4ae81",
+      "path": "/blog/what-maintenance-means-for-the-traditional-liferay-cms/",
+      "title": "What “Maintenance” Means for the Traditional Liferay CMS",
+      "dateModified": "2026-03-20T14:49:07Z"
+    },
+    "blog:125566835": {
+      "kind": "blog",
+      "id": 125566835,
+      "hash": "da0e1ff6dc5f02b5b9718daf1f3f6120cf76de1503e38b23113b56a292e3433c",
+      "path": "/blog/listening-and-adjusting-improving-the-liferay-dxp-free-tier/",
+      "title": "Listening and Adjusting: Improving the Liferay DXP Free Tier",
+      "dateModified": "2026-04-06T22:54:12Z"
+    },
+    "blog:125576209": {
+      "kind": "blog",
+      "id": 125576209,
+      "hash": "c7c689c4652caf265e763b372a45c5c1fbceb86234626c0c1e0d754fb0d89abe",
+      "path": "/blog/join-us-in-london-for-liferay-devcon-2026/",
+      "title": "Join us in London for Liferay DEVCON 2026!",
+      "dateModified": "2026-04-08T09:28:13Z"
+    },
+    "blog:125607492": {
+      "kind": "blog",
+      "id": 125607492,
+      "hash": "736350739999b4522dc084f015a94238ec45e45b54b94dbbd82b3fdb162c662a",
+      "path": "/blog/low-code-no-code-isnt-replacing-liferay-developers-its-changing-the-role/",
+      "title": "Low Code / No Code Isn’t Replacing Liferay Developers - It’s Changing the Role",
+      "dateModified": "2026-04-13T19:08:05Z"
+    },
+    "blog:125630999": {
+      "kind": "blog",
+      "id": 125630999,
+      "hash": "b7997f5ee43a4db89c1b63ab6922c063fd2a22f86a188c823198547a7394fbf4",
+      "path": "/blog/liferay-dxp-2026-q1-lts-release-webinar-replay/",
+      "title": "Liferay DXP 2026.q1-LTS Release Webinar - Replay",
+      "dateModified": "2026-04-15T04:37:25Z"
+    },
+    "blog:125638103": {
+      "kind": "blog",
+      "id": 125638103,
+      "hash": "80a892b9dbe0e8d351d28c11efc0cd51092c9796c97cfac77690a84e8147a8ee",
+      "path": "/blog/create-react-client-extensions-in-liferay-with-one-command/",
+      "title": "Create React Client Extensions in Liferay with One Command",
+      "dateModified": "2026-04-20T00:08:44Z"
+    },
+    "blog:125665847": {
+      "kind": "blog",
+      "id": 125665847,
+      "hash": "a140319d836be95b06d330f7c02639547f51fee1dd735aebd5cc6fdf2f6395b0",
+      "path": "/blog/beyond-vibe-coding-the-discipline-of-building-a-liferay-demo-manager-with-ai/",
+      "title": "Beyond \"Vibe Coding\": The Discipline of Building a Liferay Demo Manager with AI",
+      "dateModified": "2026-04-21T07:53:04Z"
+    },
+    "blog:125687761": {
+      "kind": "blog",
+      "id": 125687761,
+      "hash": "860749eea6bfdf30c007a9dee1ff3c1a8dcb9dd85748a01dc44de406a78ffd11",
+      "path": "/blog/from-jsps-to-react-in-a-single-jar-dummy-factory-2-0-on-dxp-2026/",
+      "title": "From JSPs to React in a Single JAR: Dummy Factory 2.0 on DXP 2026",
+      "dateModified": "2026-04-24T02:01:46Z"
+    },
+    "blog:125703945": {
+      "kind": "blog",
+      "id": 125703945,
+      "hash": "e601c2b21fe238d574322e2c52d9564fba41c5492346a88503f870ee2604457a",
+      "path": "/blog/troubleshooting-liferay-s-preupgrade-verifiers/",
+      "title": "Troubleshooting Liferay's Preupgrade Verifiers",
+      "dateModified": "2026-04-27T23:48:56Z"
+    },
+    "blog:125707018": {
+      "kind": "blog",
+      "id": 125707018,
+      "hash": "2aa69a8abc33787abeca57a062a79e1009bcfab37b0e2abb4ae8f2143fbc689e",
+      "path": "/blog/skip-the-headless-api-manage-liferay-objects-efficiently-with-objectentrymanager/",
+      "title": "Skip the Headless API: Manage Liferay Objects Efficiently with ObjectEntryManager",
+      "dateModified": "2026-05-06T22:41:43Z"
+    },
+    "blog:125727811": {
+      "kind": "blog",
+      "id": 125727811,
+      "hash": "7667e8704a6e1c1273ea54083ad61fa5152f6818a7c88ad11462ebd848b1097b",
+      "path": "/blog/temporary-issue-with-search-pages-on-liferay-dev/",
+      "title": "Temporary issue with Search pages on liferay.dev",
+      "dateModified": "2026-04-29T01:27:56Z"
+    },
+    "blog:125728423": {
+      "kind": "blog",
+      "id": 125728423,
+      "hash": "c6a284e65b323b793e144f0f7c703b31ee1a02ae4af12f9a3f63f73fc42cfdce",
+      "path": "/blog/liferay-dxp-2026-q2-release-webinar/",
+      "title": "Liferay DXP 2026.Q2 Release Webinar",
+      "dateModified": "2026-05-27T03:05:27Z"
+    },
+    "blog:125728450": {
+      "kind": "blog",
+      "id": 125728450,
+      "hash": "b8bc48030624105059b61af0b36c9fb09ef8e1535bd622ce7defc86f316cd6d1",
+      "path": "/blog/liferay-marketplace-fragment-hackathon/",
+      "title": "Liferay Marketplace Fragment Hackathon",
+      "dateModified": "2026-04-29T04:36:43Z"
+    },
+    "blog:125752519": {
+      "kind": "blog",
+      "id": 125752519,
+      "hash": "8d92846e97d56bfd3591a6f2829566b038cd49513e86dbe1b70864ea35ba391d",
+      "path": "/blog/intelligent-content-moderation-with-liferay-gemini-ai/",
+      "title": "Intelligent Content Moderation with Liferay & Gemini AI",
+      "dateModified": "2026-05-07T00:58:54Z"
+    },
+    "blog:125785208": {
+      "kind": "blog",
+      "id": 125785208,
+      "hash": "9a3cc748c9e75aeaf9aa4cb1574da7d719f6867b17aed080cdea3458067612cd",
+      "path": "/blog/is-service-builder-completely-replaceable-by-liferay-objects/",
+      "title": "Is Service Builder Completely Replaceable by Liferay Objects?",
+      "dateModified": "2026-05-14T05:58:04Z"
+    },
+    "blog:125786302": {
+      "kind": "blog",
+      "id": 125786302,
+      "hash": "d697db5b3e524ca697fe3e4b14f43817dbce700e03dea766550a2d7f5025d9a1",
+      "path": "/blog/ai-is-about-to-change-how-we-build-liferay-sites/",
+      "title": "AI Is About to Change How We Build Liferay Sites",
+      "dateModified": "2026-05-11T15:42:30Z"
+    },
+    "blog:125792314": {
+      "kind": "blog",
+      "id": 125792314,
+      "hash": "ec79848d55ce5471645a7578e06538fb5f385370157102f75bd8108581142b16",
+      "path": "/blog/rag-local-llm-liferay-dxp-how-i-built-an-ai-that-knows-my-entire-distributor-network/",
+      "title": "RAG + Local LLM + Liferay DXP: How I Built an AI That Knows My Entire Distributor Network",
+      "dateModified": "2026-05-13T02:57:59Z"
+    },
+    "blog:125794062": {
+      "kind": "blog",
+      "id": 125794062,
+      "hash": "da443779b6de68fcc9168510f106a0adde12ada71ac89de1d2b5012bc09f9573",
+      "path": "/blog/what-is-cloud-native-experience/",
+      "title": "What is Cloud Native Experience?",
+      "dateModified": "2026-05-13T18:14:41Z"
+    },
+    "blog:125799922": {
+      "kind": "blog",
+      "id": 125799922,
+      "hash": "6347cebfec75c51d5d3426c7d7fa76df9ad1ba46240cc36202b93e9092a522d5",
+      "path": "/blog/dxp-free-tier-license-compatibility-across-quarterly-releases/",
+      "title": "DXP Free Tier License Compatibility Across Quarterly Releases",
+      "dateModified": "2026-05-14T14:32:35Z"
+    },
+    "blog:125806570": {
+      "kind": "blog",
+      "id": 125806570,
+      "hash": "7385e76884daa4b3154a702ae762314f62a299de95cfcd633c382a24ddcdfb29",
+      "path": "/blog/liferay-dxp-2026-q2-is-now-available/",
+      "title": "Liferay DXP 2026.Q2 is now available!",
+      "dateModified": "2026-05-15T05:07:41Z"
+    },
+    "blog:125848705": {
+      "kind": "blog",
+      "id": 125848705,
+      "hash": "2c999a5a881b0229fdd8f196553dcd833b13baddc87fb5e9bdf7b2baef4f6b3d",
+      "path": "/blog/liferay-dxp-2026-q2-release-webinar-replay/",
+      "title": "Liferay DXP 2026.Q2 - Release Webinar - Replay",
+      "dateModified": "2026-05-27T03:06:19Z"
+    },
+    "blog:125931448": {
+      "kind": "blog",
+      "id": 125931448,
+      "hash": "3b9288f6a20b88f6ecff7d4c2f9d9bae680dd348d1a5a02103bd9d960b652002",
+      "path": "/blog/the-database-upgrade-tool-just-got-easier/",
+      "title": "The Database Upgrade Tool Just Got Easier",
+      "dateModified": "2026-06-14T23:48:48Z"
+    },
+    "blog:125991919": {
+      "kind": "blog",
+      "id": 125991919,
+      "hash": "d7b6ccac03fa4bb41993133a33cf565d52e7f7c5a1b400b415768336c1dcbce4",
+      "path": "/blog/how-to-set-up-centralized-splunk-logging-for-liferay-dxp/",
+      "title": "How to Set Up Centralized Splunk Logging for Liferay DXP",
+      "dateModified": "2026-06-11T19:48:54Z"
+    },
+    "blog:126015368": {
+      "kind": "blog",
+      "id": 126015368,
+      "hash": "22c1380255c2e0e8c286f1be38278bd84b69a9128fdfdab318cee65df3269a91",
+      "path": "/blog/alternative-tool-for-migrating-liferay-to-postgresql/",
+      "title": "Alternative tool for migrating Liferay to PostgreSQL",
+      "dateModified": "2026-06-14T23:51:27Z"
+    },
+    "blog:126022454": {
+      "kind": "blog",
+      "id": 126022454,
+      "hash": "32ec08eeeb16223ad3a4d81a5c125fdbeecbf9637bbcade3adefe74d9e93e41b",
+      "path": "/blog/call-for-papers-for-devcon-two-weeks-to-go/",
+      "title": "Call for Papers for DevCon - two weeks to go!",
+      "dateModified": "2026-06-15T05:27:38Z"
+    },
+    "blog:126045225": {
+      "kind": "blog",
+      "id": 126045225,
+      "hash": "c4fe873553118ce7804b581ab0f86ccbf39ee5d5e16802eefb579cac0465edf2",
+      "path": "/blog/mission-critical-email-delivery-in-liferay/",
+      "title": "Mission-Critical Email Delivery in Liferay",
+      "dateModified": "2026-06-20T22:25:47Z"
+    },
+    "blog:126120230": {
+      "kind": "blog",
+      "id": 126120230,
+      "hash": "00781a1e3ea442ee528bc6a61b119dc6c13aba682067a456477376edd8ba7bc1",
+      "path": "/blog/free-tier-webinar-for-ce-users/",
+      "title": "CE is sunsetted. What's your next move?",
+      "dateModified": "2026-06-19T06:12:02Z"
+    },
+    "blog:126136896": {
+      "kind": "blog",
+      "id": 126136896,
+      "hash": "082765c62a762677a424b7932c88778a4bed4a1f35fe85728ca6b0a373442150",
+      "path": "/blog/smooth-sailing-migrating-liferay-dxp-from-7-2-to-7-4-2026-q1/",
+      "title": "Smooth Sailing: Migrating Liferay DXP from 7.2 to 7.4 (2026 Q1)",
+      "dateModified": "2026-06-20T22:26:10Z"
+    },
+    "blog:126213193": {
+      "kind": "blog",
+      "id": 126213193,
+      "hash": "d5afcd8ab9bb4312e99813d3ef70099de36c43f3d21e6e592a8e67b7d8486c15",
+      "path": "/blog/beyond-get-could-http-query-rfc-10008-improve-liferay-headless-apis/",
+      "title": "Beyond GET: Could HTTP QUERY (RFC 10008) Improve Liferay Headless APIs?",
+      "dateModified": "2026-07-06T22:16:39Z"
+    },
+    "blog:126295475": {
+      "kind": "blog",
+      "id": 126295475,
+      "hash": "46b517afcea8a65edfb1e37571310eb7ec6151f88bdf9291cbc317f3a84cd776",
+      "path": "/blog/no-more-guesswork-deploy-your-liferay-osgi-modules-in-the-right-order-automatically/",
+      "title": "No More Guesswork: Deploy Your Liferay OSGi Modules in the Right Order, Automatically",
+      "dateModified": "2026-07-06T22:06:22Z"
+    },
+    "blog:126323612": {
+      "kind": "blog",
+      "id": 126323612,
+      "hash": "b621210ed216a39504b4be9968ac49cd0fcfd9d9f35c605f0ffce7159a93b22e",
+      "path": "/blog/kdxp-one-kotlin-codebase-for-liferay-apps-everywhere/",
+      "title": "KDXP: One Kotlin Codebase for Liferay Apps Everywhere",
+      "dateModified": "2026-07-16T01:28:45Z"
+    },
+    "blog:126354004": {
+      "kind": "blog",
+      "id": 126354004,
+      "hash": "dc5bf6391fdf9efcb62c0a38a0780af3c20be84531ffafcefed3b28fd4deb359",
+      "path": "/blog/liferay-ai-hub-practical-recommendations/",
+      "title": "Liferay AI Hub Practical Recommendations: Agents, Instructions, Prompts & Guardrails",
+      "dateModified": "2026-07-22T16:23:41Z"
+    },
+    "blog:126355026": {
+      "kind": "blog",
+      "id": 126355026,
+      "hash": "efdffcfcc18966b367e501f297ca63cb9c1422df2357afb37f184b97e4f67734",
+      "path": "/blog/what-is-new-in-the-liferay-fragments-repo/",
+      "title": "Beyond the Prototype: What’s New in the Liferay Fragments Repository",
+      "dateModified": "2026-07-23T13:49:00Z"
+    },
+    "blog:126381472": {
+      "kind": "blog",
+      "id": 126381472,
+      "hash": "53827c240c0ccc80d4c65dec1f7757d0bd71ae275fe483e91f5a2e3acde91a33",
+      "path": "/blog/installing-liferay-on-jws/",
+      "title": "Installing Liferay DXP 2026.Q1 on Red Hat JBoss Web Server 6.2.3",
+      "dateModified": "2026-07-30T16:59:19Z"
+    },
+    "blog:126385336": {
+      "kind": "blog",
+      "id": 126385336,
+      "hash": "c4b6b690a4739e76d865557161e10a3c455091a284a17928e2717024a5efe640",
+      "path": "/blog/liferay-batch-imports-audit/",
+      "title": "Batch Imports Audit",
+      "dateModified": "2026-07-29T12:05:29Z"
+    },
+    "blog:126389560": {
+      "kind": "blog",
+      "id": 126389560,
+      "hash": "ac3cb642bef0585ecccec610911a056e4a9dd316df00c531e5a0bf3848320eb2",
+      "path": "/blog/service-builder-compatibility-matrix/",
+      "title": "Service Builder Compatibility Matrix",
+      "dateModified": "2026-07-31T18:51:50Z"
+    },
+    "blog:126396924": {
+      "kind": "blog",
+      "id": 126396924,
+      "hash": "fcdb1005229302a70d556967b95de1f02299cda1b37a594c0f72328fed25e94a",
+      "path": "/blog/no-more-rebuild-and-redeploy-instant-hot-reload-for-liferay-react-client-extensions/",
+      "title": "No More Rebuild-and-Redeploy: Instant Hot Reload for Liferay React Client Extensions",
+      "dateModified": "2026-08-02T23:42:05Z"
+    },
+    "blog:126437387": {
+      "kind": "blog",
+      "id": 126437387,
+      "hash": "b4ef14d11442fb9b7235706b95ceda30dbcc3d138bc77a8e5e1eddd94b3ec434",
+      "path": "/blog/bringing-liferay-to-cross-platform-development-1/",
+      "title": "Bringing Liferay to Cross-platform Development",
+      "dateModified": "2026-08-05T14:11:00Z"
+    },
+    "blog:126438487": {
+      "kind": "blog",
+      "id": 126438487,
+      "hash": "b79d3e2a2fa8eaed5c4577141df4729e2447e2234b2a6db6135c8f2f132e6faf",
+      "path": "/blog/oidc-slo-in-liferay-dxp/",
+      "title": "OIDC SLO in Liferay DXP",
+      "dateModified": "2026-08-05T17:04:04Z"
+    },
+    "blog:126531996": {
+      "kind": "blog",
+      "id": 126531996,
+      "hash": "8ce50ff45e3a501200faeb82c090019f8a43902729e6fde96bcef9d7617600b6",
+      "path": "/blog/liferay-dxp-2026-q3-release-webinar/",
+      "title": "Liferay DXP 2026.Q3 Release Webinar",
+      "dateModified": "2026-09-02T00:57:46Z"
+    },
+    "blog:126625355": {
+      "kind": "blog",
+      "id": 126625355,
+      "hash": "43a0323a3b6614d8785f1b361e8e6cfbc359c95fc07d127cc0e9c50f99c92713",
+      "path": "/blog/cve-liferay-vulnerabilities/",
+      "title": "When a CVE Isn't a Liferay Vulnerability",
+      "dateModified": "2026-08-17T16:56:54Z"
+    },
+    "blog:126640680": {
+      "kind": "blog",
+      "id": 126640680,
+      "hash": "e19a21d89182460926af628ef909a8c0a4ccfc698d54f2e002ee9cdca095ddaa",
+      "path": "/blog/enabling-modsecurity-in-liferay-paas/",
+      "title": "Enabling ModSecurity in Liferay PaaS",
+      "dateModified": "2026-08-18T19:21:59Z"
+    },
+    "blog:126723763": {
+      "kind": "blog",
+      "id": 126723763,
+      "hash": "a41a088d12aa07e4b4b5ea6aaeed68c78f9a5ae678da16fd7c0e298b0a09b148",
+      "path": "/blog/liferay-dxp-2026-q3-release-webinar-replay/",
+      "title": "Liferay DXP 2026.Q3 - Release Webinar - Replay",
+      "dateModified": "2026-09-16T03:51:30Z"
+    },
+    "blog:126795832": {
+      "kind": "blog",
+      "id": 126795832,
+      "hash": "6d0cacf75d7797ad2ece3f007ff0313be20c7ea7c14efeca36db5f005489d2c7",
+      "path": "/blog/liferay-workspace-and-claude-code/",
+      "title": "Liferay Workspace and Claude Code",
+      "dateModified": "2026-09-15T17:54:54Z"
+    },
+    "page:110203736": {
+      "kind": "page",
+      "id": 110203736,
+      "hash": "0c543d2f98226973ba3b35eb23e33d563829c3ccd76a1376b3bfe9de53a81dd7",
+      "path": "/",
+      "title": "Home",
+      "dateModified": "2026-09-17T03:12:59Z"
+    },
+    "page:110203748": {
+      "kind": "page",
+      "id": 110203748,
+      "hash": "bd15d893025376ea6f2098a1873b992a0f347bf79b61f2a3c130f2fedc1ba609",
+      "path": "/meet/",
+      "title": "Meet",
+      "dateModified": "2026-07-29T07:59:23Z"
+    },
+    "page:110203754": {
+      "kind": "page",
+      "id": 110203754,
+      "hash": "95072b095651aa94e0c2f2d2ece2716256ace1c5d30564102ff050aba1402524",
+      "path": "/project/",
+      "title": "Project",
+      "dateModified": "2026-05-28T05:35:05Z"
+    },
+    "page:110203802": {
+      "kind": "page",
+      "id": 110203802,
+      "hash": "892ebd6bd2ff360fc3179a0c07f7ad19554a37fe68b6ee2a2c3279c66b6cbb26",
+      "path": "/meet/how-to-start-a-lug/",
+      "title": "How to Start a LUG?",
+      "dateModified": "2026-07-29T07:59:47Z"
+    },
+    "page:110203805": {
+      "kind": "page",
+      "id": 110203805,
+      "hash": "fef8962a0c05890bbcb605748ec678d0b4501ddddb5beb42ceea3db93fb67b1c",
+      "path": "/meet/what-is-a-lug/",
+      "title": "What is a LUG?",
+      "dateModified": "2026-07-29T08:00:08Z"
+    },
+    "page:110544526": {
+      "kind": "page",
+      "id": 110544526,
+      "hash": "b53ea82bf89fd51fbe837a3c579e39d636d56b7d4f9c150b808bd1fb69acc37d",
+      "path": "/open-source/",
+      "title": "Open Source",
+      "dateModified": "2026-07-29T03:46:17Z"
+    },
+    "page:119785938": {
+      "kind": "page",
+      "id": 119785938,
+      "hash": "2d3a10f9cf71a5cff59cf3670b9dc1e49add191979f9c357f0a2443caeda83d9",
+      "path": "/contribute/",
+      "title": "Contribute",
+      "dateModified": "2026-05-28T05:37:01Z"
+    },
+    "nav:121529704": {
+      "kind": "nav",
+      "id": 121529704,
+      "hash": "a121935ae2ff2b136d2b4a6ed0f4deb83f1bdef96ebed05575d01bd0da9187b8",
+      "path": "/",
+      "title": "Meet",
+      "dateModified": "2022-10-06T20:03:16Z"
+    },
+    "nav:123534755": {
+      "kind": "nav",
+      "id": 123534755,
+      "hash": "6a536f9c1772650194b953d02f1f7830ca3fab1ad2b329b93a274b7de9b3628f",
+      "path": "/",
+      "title": "Site Menu",
+      "dateModified": "2026-05-07T06:28:46Z"
+    },
+    "nav:123536320": {
+      "kind": "nav",
+      "id": 123536320,
+      "hash": "d22c3be94247553195ef9eeabf384e52a535f1c73e2d3bce0f17704cae9debf7",
+      "path": "/",
+      "title": "Footer - Community",
+      "dateModified": "2025-08-08T00:57:27Z"
+    },
+    "nav:123536330": {
+      "kind": "nav",
+      "id": 123536330,
+      "hash": "3b278507a0b1655c000965d6fcb3e221bd3862b5a5b0332333dfe0b76a8a620a",
+      "path": "/",
+      "title": "Footer - Company",
+      "dateModified": "2025-08-08T01:03:52Z"
+    },
+    "nav:123536337": {
+      "kind": "nav",
+      "id": 123536337,
+      "hash": "35c239436789f94f14d91b734ecaf79d4e622c4e5e5fdc39794c6acb010aee0b",
+      "path": "/",
+      "title": "Footer - Feedback",
+      "dateModified": "2025-08-08T01:07:57Z"
+    },
+    "nav:124286238": {
+      "kind": "nav",
+      "id": 124286238,
+      "hash": "c66bb2e67f714789c045d7885b17efc435d8dff4d5f55bf1b825e037d14fc0ab",
+      "path": "/",
+      "title": "Feedback",
+      "dateModified": "2025-10-09T02:48:36Z"
+    },
+    "nav:124371703": {
+      "kind": "nav",
+      "id": 124371703,
+      "hash": "2c398c31be069c2259d767d55020151fe72d1643df57da17ac5f2edbba949964",
+      "path": "/",
+      "title": "Blogs",
+      "dateModified": "2025-10-15T23:41:49Z"
+    },
+    "nav:124452400": {
+      "kind": "nav",
+      "id": 124452400,
+      "hash": "227f7fb2900f9ec38d5c2db58adc19d5b860c94a314c32f8a379d9d36b0c91db",
+      "path": "/",
+      "title": "Security",
+      "dateModified": "2025-10-22T05:39:55Z"
+    },
+    "document:121938162": {
+      "kind": "document",
+      "id": 121938162,
+      "hash": "d681ade576bb38c716dcee626650ee469806076ae0f85f56fb336d33fc835667",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-07-21 09-18-28.png",
+      "dateModified": "2023-07-21T13:19:53Z"
+    },
+    "document:121954919": {
+      "kind": "document",
+      "id": 121954919,
+      "hash": "b9e533ff9bdb71030fa60632543c205e4530bb8ef5cf8381bc712456fda77388",
+      "path": "/documents/",
+      "title": "liferay-preferred-language.png",
+      "dateModified": "2023-07-31T13:14:23Z"
+    },
+    "document:121955153": {
+      "kind": "document",
+      "id": 121955153,
+      "hash": "70e20e4dc53d0e9b2bc50ae9a772ad501797f281e3a6dbf7ef743b2942d1a21e",
+      "path": "/documents/",
+      "title": "Cattura.jpg",
+      "dateModified": "2023-07-31T15:51:27Z"
+    },
+    "document:121955166": {
+      "kind": "document",
+      "id": 121955166,
+      "hash": "1089eeeb347f04739b8c9b95edf01363162c955463b9915dc404606709e04b62",
+      "path": "/documents/",
+      "title": "Cattura2.jpg",
+      "dateModified": "2023-07-31T15:53:47Z"
+    },
+    "document:121962628": {
+      "kind": "document",
+      "id": 121962628,
+      "hash": "d3c54736350f7405d23f593d5b136ff84fc3b5b4e1d86d0673f15779d53a302c",
+      "path": "/documents/",
+      "title": "Capture (4).jpg",
+      "dateModified": "2023-08-05T05:27:51Z"
+    },
+    "document:121962653": {
+      "kind": "document",
+      "id": 121962653,
+      "hash": "21f569c10598d7052c3e5789849e29f52bdf6941c54ca8422f893b1002b9ced0",
+      "path": "/documents/",
+      "title": "Capture (5).jpg",
+      "dateModified": "2023-08-05T05:43:33Z"
+    },
+    "document:121964673": {
+      "kind": "document",
+      "id": 121964673,
+      "hash": "2a41bafbd544cd1b10597b1a31c8eb5158225d47f712685253699c339968a69b",
+      "path": "/documents/",
+      "title": "liferay_prob.jpg",
+      "dateModified": "2023-08-07T03:37:45Z"
+    },
+    "document:121967767": {
+      "kind": "document",
+      "id": 121967767,
+      "hash": "ab95e57edd7fe4b9b3e85f58189f3deb8d28499eb4fd5e6b407b5ac99afc6d31",
+      "path": "/documents/",
+      "title": "WhatsApp Image 2023-08-07 at 5.03.23 PM.jpeg",
+      "dateModified": "2023-08-08T08:25:06Z"
+    },
+    "document:121967982": {
+      "kind": "document",
+      "id": 121967982,
+      "hash": "34945821cb49006478739c298164004cbfab6b57e43b5d705e8eddab0e99d287",
+      "path": "/documents/",
+      "title": "WhatsApp Image 2023-08-07 at 5.04.14 PM.jpeg",
+      "dateModified": "2023-08-08T08:27:15Z"
+    },
+    "document:121968160": {
+      "kind": "document",
+      "id": 121968160,
+      "hash": "f6a5a11b9efb185ccc1731342ff1b1687a88a79b1fba71e9b1a4dc32210b982b",
+      "path": "/documents/",
+      "title": "Captura4.png",
+      "dateModified": "2023-08-08T11:00:14Z"
+    },
+    "document:121968210": {
+      "kind": "document",
+      "id": 121968210,
+      "hash": "d658ecc97e5b68f9fbea2cf4f36b8c485d54c9a19c619572acc5ff51b5941418",
+      "path": "/documents/",
+      "title": "Captura3 (1).png",
+      "dateModified": "2023-08-08T11:31:43Z"
+    },
+    "document:121968223": {
+      "kind": "document",
+      "id": 121968223,
+      "hash": "bbf9637b0f00fa8c21b8622948947c71fd27b5b2b43d922f4df84b7c351beade",
+      "path": "/documents/",
+      "title": "Captura2 (1).png",
+      "dateModified": "2023-08-08T11:32:04Z"
+    },
+    "document:121968236": {
+      "kind": "document",
+      "id": 121968236,
+      "hash": "b16eff3086404833873e623b1b143dc3cdc30df476e7b253425aecc90fc095c1",
+      "path": "/documents/",
+      "title": "Captura4 (1).png",
+      "dateModified": "2023-08-08T11:32:16Z"
+    },
+    "document:121968273": {
+      "kind": "document",
+      "id": 121968273,
+      "hash": "b2b25fd50eabac736571bf13fd958831907d3b1af5a1c664bac90cbef027e300",
+      "path": "/documents/",
+      "title": "Captura3.png",
+      "dateModified": "2023-08-08T11:00:49Z"
+    },
+    "document:121968288": {
+      "kind": "document",
+      "id": 121968288,
+      "hash": "332ee54455252e869da973214ca1646020b8ceebc02905e3def3ec60312e1c99",
+      "path": "/documents/",
+      "title": "Captura2.png",
+      "dateModified": "2023-08-08T11:01:34Z"
+    },
+    "document:121971892": {
+      "kind": "document",
+      "id": 121971892,
+      "hash": "109e78dec058a38afa8096d97b637e2beb04f14c31733fd7d1ab7ec75eaafc5d",
+      "path": "/documents/",
+      "title": "front-end.png",
+      "dateModified": "2023-08-09T09:38:02Z"
+    },
+    "document:121971905": {
+      "kind": "document",
+      "id": 121971905,
+      "hash": "b3d6eae5527dde87f3565235800e403f0121deb7b0683a130f7931ba04ad9e4f",
+      "path": "/documents/",
+      "title": "back-end.png",
+      "dateModified": "2023-08-09T09:38:38Z"
+    },
+    "document:121979428": {
+      "kind": "document",
+      "id": 121979428,
+      "hash": "b2b02102be1a162702c04dfacf3042d40959004a4698f75ed47ce827921ffd8d",
+      "path": "/documents/",
+      "title": "screenshot-localhost_8080-2023.08.14-14_34_43.png",
+      "dateModified": "2023-08-14T09:06:06Z"
+    },
+    "document:121985241": {
+      "kind": "document",
+      "id": 121985241,
+      "hash": "ebcbf9070076e02a62c8229e8c373150038af05c5cae2eff9ea31e0e1fa11dc8",
+      "path": "/documents/",
+      "title": "Screenshot_20230817_184748.png",
+      "dateModified": "2023-08-18T08:41:11Z"
+    },
+    "document:121985254": {
+      "kind": "document",
+      "id": 121985254,
+      "hash": "2580e6e80bd509b0154e1b0b4ddaee2db3265eaebfd21ed4f3adefea395894ad",
+      "path": "/documents/",
+      "title": "Screenshot_20230817_184740.png",
+      "dateModified": "2023-08-18T08:41:33Z"
+    },
+    "document:121985267": {
+      "kind": "document",
+      "id": 121985267,
+      "hash": "94a917e0244c85e4f2540851c0f6d4c80e786b624c23095e05219ce61c69661b",
+      "path": "/documents/",
+      "title": "Screenshot_20230817_184748 (1).png",
+      "dateModified": "2023-08-18T08:41:51Z"
+    },
+    "document:121990279": {
+      "kind": "document",
+      "id": 121990279,
+      "hash": "abba77f294e0b18c585ce5f81c4871d7e2a114c5f42c7a5d2da5f27f3fbe2cea",
+      "path": "/documents/",
+      "title": "imagem_2023-08-22_162155297.png",
+      "dateModified": "2023-08-22T19:21:55Z"
+    },
+    "document:121990292": {
+      "kind": "document",
+      "id": 121990292,
+      "hash": "0e106829a3fec42232d413a7835d3dbbe64f0ea82972d0e8bbafc8582e8d7606",
+      "path": "/documents/",
+      "title": "Captura de tela 2023-08-22 151259.png",
+      "dateModified": "2023-08-22T19:22:41Z"
+    },
+    "document:121992963": {
+      "kind": "document",
+      "id": 121992963,
+      "hash": "66b5e50d457f2ec5e280895023afa847469b493cd53d87db3f5fc68f06bc60a8",
+      "path": "/documents/",
+      "title": "screenshot-browser",
+      "dateModified": "2023-08-24T14:49:50Z"
+    },
+    "document:121999988": {
+      "kind": "document",
+      "id": 121999988,
+      "hash": "35cc6ced5e4a0bbab529ad0d8961dc9bf84ba5f4ecaf78debbe8c0b0ff73197a",
+      "path": "/documents/",
+      "title": "2023-08-29 14_21_13-Menu - myPortal.png",
+      "dateModified": "2023-08-29T12:21:50Z"
+    },
+    "document:122000001": {
+      "kind": "document",
+      "id": 122000001,
+      "hash": "575ce31b2ba9291b8ca62f3f6d2059007f27704adb1860143658d098311beca1",
+      "path": "/documents/",
+      "title": "2023-08-29 14_22_04-MyPortal Stories Board - Boards.png",
+      "dateModified": "2023-08-29T12:22:21Z"
+    },
+    "document:122003731": {
+      "kind": "document",
+      "id": 122003731,
+      "hash": "37868defac368ddee93860097f4d10c40e43c8c18871717299207434191d60c3",
+      "path": "/documents/",
+      "title": "bar.png",
+      "dateModified": "2023-08-31T10:44:36Z"
+    },
+    "document:122015170": {
+      "kind": "document",
+      "id": 122015170,
+      "hash": "f6196ca10db9e0ddf95aa7d2264b402d606a5459027c64b80383db10d326ab15",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_1.png",
+      "dateModified": "2023-09-06T14:39:11Z"
+    },
+    "document:122015183": {
+      "kind": "document",
+      "id": 122015183,
+      "hash": "5f3d2e76a00553423e3245d7d90b5dc054c01b38ac1187d7eda84f76406017c2",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_2.png",
+      "dateModified": "2023-09-06T14:39:27Z"
+    },
+    "document:122015196": {
+      "kind": "document",
+      "id": 122015196,
+      "hash": "a975e0c56ffc68696e252e5d862d9443cfa9f4231fc76d20e5090ba4f3088ee5",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_3.png",
+      "dateModified": "2023-09-06T14:39:43Z"
+    },
+    "document:122015209": {
+      "kind": "document",
+      "id": 122015209,
+      "hash": "a131e9c805a4c5e40eac0a8baf0898ab1255427ea5fded94e3880129d80ad2ae",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_4.png",
+      "dateModified": "2023-09-06T14:40:23Z"
+    },
+    "document:122015229": {
+      "kind": "document",
+      "id": 122015229,
+      "hash": "ed17449650f95b9668c474b65929e9f0a75ce7f0677914893dfe4cd06d360f92",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_3 (1).png",
+      "dateModified": "2023-09-06T14:49:38Z"
+    },
+    "document:122015243": {
+      "kind": "document",
+      "id": 122015243,
+      "hash": "3ee2d90f91d53f2b4c87263278dbc100200c344adddab6d87934c0c7e0fa04f9",
+      "path": "/documents/",
+      "title": "ChooseWebcontentSource_4 (1).png",
+      "dateModified": "2023-09-06T14:49:56Z"
+    },
+    "document:122033383": {
+      "kind": "document",
+      "id": 122033383,
+      "hash": "f459c558e2a06125e1570359b70acbcaa8ac0a930788197ef659a891578f4474",
+      "path": "/documents/",
+      "title": "repeat_fieldgroups.png",
+      "dateModified": "2023-09-15T09:10:45Z"
+    },
+    "document:122049028": {
+      "kind": "document",
+      "id": 122049028,
+      "hash": "0760945af703b354b5df8a6d5c6c795515e6bf484c106efe5f01f135039c870d",
+      "path": "/documents/",
+      "title": "source.png",
+      "dateModified": "2023-09-21T14:04:54Z"
+    },
+    "document:122050512": {
+      "kind": "document",
+      "id": 122050512,
+      "hash": "166a1de6e2fbd5a00f3403219b6df489632abbf79f12c258ad31b13d18273247",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-09-22 10-51-19.png",
+      "dateModified": "2023-09-22T11:44:03Z"
+    },
+    "document:122050525": {
+      "kind": "document",
+      "id": 122050525,
+      "hash": "545b4c18bcbda2439af1ac5dc687c0a5bafa32e89115e63c5e3a2661be0a5bcd",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-09-22 10-50-18.png",
+      "dateModified": "2023-09-22T11:44:18Z"
+    },
+    "document:122050538": {
+      "kind": "document",
+      "id": 122050538,
+      "hash": "79e76d80a14a01bc18462630b5c220820a266525111439fa6255633a14e89174",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-09-22 10-50-18 (1).png",
+      "dateModified": "2023-09-22T11:44:25Z"
+    },
+    "document:122050551": {
+      "kind": "document",
+      "id": 122050551,
+      "hash": "2bc49482b8fd793bff37e9d1cc883faa4f66a138febc49422eb04ddef005b3f5",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-09-22 10-50-08.png",
+      "dateModified": "2023-09-22T11:44:31Z"
+    },
+    "document:122050564": {
+      "kind": "document",
+      "id": 122050564,
+      "hash": "d3b7ad612a6523bd7832cdffbd1dcaf7fd60ab10a61e9b15d7f09b330b75923f",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-09-22 10-50-08 (1).png",
+      "dateModified": "2023-09-22T11:45:01Z"
+    },
+    "document:122050623": {
+      "kind": "document",
+      "id": 122050623,
+      "hash": "f9fbb3a7416e218637d51ae8d9553d78e4bfb538e1d8421f355ff41fb6e1ed1a",
+      "path": "/documents/",
+      "title": "Collection Provider Filter.png",
+      "dateModified": "2023-09-22T12:40:58Z"
+    },
+    "document:122050636": {
+      "kind": "document",
+      "id": 122050636,
+      "hash": "7fc84423b019158d57132d22cdb8381cad294f02712977387e6929f2f6491912",
+      "path": "/documents/",
+      "title": "Collection Provider Filter Expected Result.png",
+      "dateModified": "2023-09-22T12:41:28Z"
+    },
+    "document:122060355": {
+      "kind": "document",
+      "id": 122060355,
+      "hash": "31fb7c6855a85a11b96d2c50b3ce59df9ecff5fe5aa73c254e5c71d30f878c6d",
+      "path": "/documents/",
+      "title": "LiferayInfo.png",
+      "dateModified": "2023-09-27T14:34:56Z"
+    },
+    "document:122060386": {
+      "kind": "document",
+      "id": 122060386,
+      "hash": "5b97d9f2353588c18098c838809383353f8ee069af704e7291ddebc90e6b7a2d",
+      "path": "/documents/",
+      "title": "Liferay Info02png.png",
+      "dateModified": "2023-09-27T14:37:31Z"
+    },
+    "document:122078479": {
+      "kind": "document",
+      "id": 122078479,
+      "hash": "64bce6498e2f18cadbe6cd072320c65851faaf631ba4a454fa77cb5e5bc6e6c8",
+      "path": "/documents/",
+      "title": "menu-edit-missing.jpg",
+      "dateModified": "2023-10-06T18:09:36Z"
+    },
+    "document:122084657": {
+      "kind": "document",
+      "id": 122084657,
+      "hash": "a33cbfade4c5fae37054e03e58b578cd95485c6cf883ccaf02d93a2cdafc85f9",
+      "path": "/documents/",
+      "title": "MicrosoftTeams-image (1).png",
+      "dateModified": "2023-10-10T06:35:15Z"
+    },
+    "document:122084670": {
+      "kind": "document",
+      "id": 122084670,
+      "hash": "ef032e1ac9a57a186c5ce822debf19094006189a67295231549e69e3c36aafcf",
+      "path": "/documents/",
+      "title": "MicrosoftTeams-image (2).png",
+      "dateModified": "2023-10-10T06:35:35Z"
+    },
+    "document:122122681": {
+      "kind": "document",
+      "id": 122122681,
+      "hash": "16e1c5a6f9a1884f0890f6dad4fbd10bc4b28bd2d3513b18a8c41af4e43b47f5",
+      "path": "/documents/",
+      "title": "Selection_007.png",
+      "dateModified": "2023-10-16T11:51:37Z"
+    },
+    "document:122124394": {
+      "kind": "document",
+      "id": 122124394,
+      "hash": "850bb4313c0c677ec00bf7274a335dfa882f1928ab66c90151592f6d1ae4d999",
+      "path": "/documents/",
+      "title": "classic-theme.jpg",
+      "dateModified": "2023-10-16T16:42:02Z"
+    },
+    "document:122127469": {
+      "kind": "document",
+      "id": 122127469,
+      "hash": "3a5eca994403ff8ed06f00b4ffc524b646112e7ba78c64e076520a7c5f7796a7",
+      "path": "/documents/",
+      "title": "liferay-portal-7.4-ga98-image9.mp4",
+      "dateModified": "2023-10-18T17:41:31Z"
+    },
+    "document:122127581": {
+      "kind": "document",
+      "id": 122127581,
+      "hash": "ad60e8bab80e808f97f74217a707a14c693cf4ef27d1b022a0c2ca795c4a3307",
+      "path": "/documents/",
+      "title": "liferay-portal-7.4-ga98-image10.mp4",
+      "dateModified": "2023-10-18T17:45:03Z"
+    },
+    "document:122133972": {
+      "kind": "document",
+      "id": 122133972,
+      "hash": "e28a42967466c323baf413bccdccf454af85427d0f2fee8738a000915a4a262d",
+      "path": "/documents/",
+      "title": "widget.menu.png",
+      "dateModified": "2023-10-20T15:29:41Z"
+    },
+    "document:122133984": {
+      "kind": "document",
+      "id": 122133984,
+      "hash": "f3621b1c15368224d59b630ff62687e04ebb642f4a9f665a2b47a155d17bb4ba",
+      "path": "/documents/",
+      "title": "wrongportlet.png",
+      "dateModified": "2023-10-20T15:30:43Z"
+    },
+    "document:122155254": {
+      "kind": "document",
+      "id": 122155254,
+      "hash": "4697d0eb344219dc187428cc6530fe50dceb71692cd3933eb23723528fcfbb37",
+      "path": "/documents/",
+      "title": "openapi-01.jpg",
+      "dateModified": "2023-10-23T14:09:05Z"
+    },
+    "document:122155266": {
+      "kind": "document",
+      "id": 122155266,
+      "hash": "88de0583a61e22e041bc51f10ee678d10654c8b5a2d5a988d98d645292993c60",
+      "path": "/documents/",
+      "title": "openapi-02.jpg",
+      "dateModified": "2023-10-23T14:09:22Z"
+    },
+    "document:122231806": {
+      "kind": "document",
+      "id": 122231806,
+      "hash": "e5759dafbf7eed0860a29efe70f98e930094abd647f14cf087d1c133f37c72a5",
+      "path": "/documents/",
+      "title": "062cde5e-8d62-468b-b060-ddd3af7199f8.png",
+      "dateModified": "2023-11-14T10:40:22Z"
+    },
+    "document:122242928": {
+      "kind": "document",
+      "id": 122242928,
+      "hash": "06e82d547c4430f980949a4b2b44619dc552aec820b0af424424fb36d3d325bd",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-16 13-07-41.png",
+      "dateModified": "2023-11-16T07:39:14Z"
+    },
+    "document:122242944": {
+      "kind": "document",
+      "id": 122242944,
+      "hash": "f81f16d058e3e36d72411ed318527e81b437c81786411a8bc1b085ee0a1c13c1",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-16 13-09-41.png",
+      "dateModified": "2023-11-16T07:40:09Z"
+    },
+    "document:122243754": {
+      "kind": "document",
+      "id": 122243754,
+      "hash": "0571a06822c2e1bd0cd73eace1a832b24b023a214bfe35d93c3ce0ff8b886b47",
+      "path": "/documents/",
+      "title": "Screenshot 2023-11-16 150336.png",
+      "dateModified": "2023-11-16T08:16:25Z"
+    },
+    "document:122243767": {
+      "kind": "document",
+      "id": 122243767,
+      "hash": "8cf98ff78b4cf06232ea92e3223210d9232b7137d0ee636f5164b22b187280ba",
+      "path": "/documents/",
+      "title": "bookController.png",
+      "dateModified": "2023-11-16T08:16:47Z"
+    },
+    "document:122249985": {
+      "kind": "document",
+      "id": 122249985,
+      "hash": "4a9263d16818acaa667bf9d8d1d6914023bbf3042a09d28e228756ca2f7c806d",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-17 12-11-14.png",
+      "dateModified": "2023-11-17T06:41:21Z"
+    },
+    "document:122249998": {
+      "kind": "document",
+      "id": 122249998,
+      "hash": "5d58a2d7294da9814567d408bd048f5072e32a493cebe8210c29670c0e4dc9a4",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-17 12-12-15.png",
+      "dateModified": "2023-11-17T06:42:29Z"
+    },
+    "document:122250012": {
+      "kind": "document",
+      "id": 122250012,
+      "hash": "2a31f4cd65bfaa0c9353121de7e7b44572209fc87128db148ff534d471a761f1",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-17 12-14-45.png",
+      "dateModified": "2023-11-17T06:45:17Z"
+    },
+    "document:122250024": {
+      "kind": "document",
+      "id": 122250024,
+      "hash": "2e49ced4e07f110ba92d17ca2302c68b59a9d25bad9aa4be8e9c9d05b693e116",
+      "path": "/documents/",
+      "title": "Screenshot from 2023-11-17 12-16-49.png",
+      "dateModified": "2023-11-17T06:47:07Z"
+    },
+    "document:122258503": {
+      "kind": "document",
+      "id": 122258503,
+      "hash": "c7259708d0dff76845c9b55b6fe321d5ca204732933844a3ff8659ebd26b70eb",
+      "path": "/documents/",
+      "title": "_template_lang_issue.gif",
+      "dateModified": "2023-11-24T02:42:35Z"
+    },
+    "document:122261532": {
+      "kind": "document",
+      "id": 122261532,
+      "hash": "b3c99b9ec99451defd18616ed1b002b57e40aa906b6dce770cd2c804f2db4513",
+      "path": "/documents/",
+      "title": "wait.png",
+      "dateModified": "2023-11-27T05:38:04Z"
+    },
+    "document:122273848": {
+      "kind": "document",
+      "id": 122273848,
+      "hash": "3423065c7b15a303090d92e1d405eb803aaa55e065e0f1b164bcd1faad3bb024",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-08 200821.png",
+      "dateModified": "2023-12-08T19:08:52Z"
+    },
+    "document:122284467": {
+      "kind": "document",
+      "id": 122284467,
+      "hash": "28ccfc7ba15ba22354009490e34185a3db4166ea6629b2939c36c104ada90007",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-11 at 17-43-54 General - General - Orders - Burundian Embassy in Kigali - IKIRARO.png",
+      "dateModified": "2023-12-11T16:02:14Z"
+    },
+    "document:122284480": {
+      "kind": "document",
+      "id": 122284480,
+      "hash": "1becb2f27e61923aabaafc4ecf95c205a733597374256077fb4e03da67db0899",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-11 at 17-43-54 General - General - Orders - Burundian Embassy in Kigali - IKIRARO (1).png",
+      "dateModified": "2023-12-11T16:05:25Z"
+    },
+    "document:122284492": {
+      "kind": "document",
+      "id": 122284492,
+      "hash": "51d3345c2d15863dc98c44304988e86f9c94cff1a374e6e9f3a0719311e4c92f",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-11 at 17-43-54 General - General - Orders.png",
+      "dateModified": "2023-12-11T16:05:55Z"
+    },
+    "document:122284504": {
+      "kind": "document",
+      "id": 122284504,
+      "hash": "277c96629e5e1e7f2d7a9691e29fb0218636005eeb6cd9daf4099e6035cf136e",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-11 at 17-47-42 Actions - Actions.png",
+      "dateModified": "2023-12-11T16:06:07Z"
+    },
+    "document:122284516": {
+      "kind": "document",
+      "id": 122284516,
+      "hash": "9bc4ba3e8836337587f9775f9769851acd2a1eeef101d92d8e98e9c622d5e992",
+      "path": "/documents/",
+      "title": "Screenshot 2023-12-11 at 17-48-37 Actions - Actions.png",
+      "dateModified": "2023-12-11T16:06:23Z"
+    },
+    "document:122289959": {
+      "kind": "document",
+      "id": 122289959,
+      "hash": "e2a84436df83495b04c6127a3ff3dfda2f0daa370433cd31748d4250fdf53eb1",
+      "path": "/documents/",
+      "title": "upgrade",
+      "dateModified": "2023-12-15T06:13:35Z"
+    },
+    "document:122289970": {
+      "kind": "document",
+      "id": 122289970,
+      "hash": "f418d5e14b797b976cf1aca91c9b7cfbc618f63e60257576dc182e1cc7ce52bb",
+      "path": "/documents/",
+      "title": "upgrade2",
+      "dateModified": "2023-12-15T06:20:38Z"
+    },
+    "document:122321811": {
+      "kind": "document",
+      "id": 122321811,
+      "hash": "5dbb4cc4f423d1da48d135aab9812e1ae667b4f97dbf48744fa23ffdee56ed89",
+      "path": "/documents/",
+      "title": "inline-styles.png",
+      "dateModified": "2024-01-04T14:19:57Z"
+    },
+    "document:122466220": {
+      "kind": "document",
+      "id": 122466220,
+      "hash": "7bb7d1295634106a5b5135608e2d6f564a46957771648337e4f869a75c401972",
+      "path": "/documents/",
+      "title": "liferay-portal-ce-7.4-ce-ga112-movie1.mp4",
+      "dateModified": "2024-03-13T23:26:36Z"
+    },
+    "document:122466234": {
+      "kind": "document",
+      "id": 122466234,
+      "hash": "cbd0508a657b37b19557b53992c64cb87f55f93a2715d6ce97cff90751982605",
+      "path": "/documents/",
+      "title": "liferay-portal-ce-7.4-ce-ga112-movie2.mp4",
+      "dateModified": "2024-03-13T23:30:42Z"
+    },
+    "document:122717947": {
+      "kind": "document",
+      "id": 122717947,
+      "hash": "64bd89ffbfeb54caf4242133bfe8d14fb73fdd6fb7f3da66fa1fab07878e816f",
+      "path": "/documents/",
+      "title": "liferay-portal-7-4-ga120-image22.mp4",
+      "dateModified": "2024-06-13T18:15:40Z"
+    },
+    "document:123123216": {
+      "kind": "document",
+      "id": 123123216,
+      "hash": "49a5672652ce07e6bcb87827533e8c5d2de7b5279540b74e1f7c1723ce018838",
+      "path": "/documents/",
+      "title": "liferay-portal-7.4-release.png",
+      "dateModified": "2024-12-13T23:06:08Z"
+    },
+    "document:125752097": {
+      "kind": "document",
+      "id": 125752097,
+      "hash": "e27d4bd4e370b1f6d7668d2ca0f87fdafd8cfd0a849ea0a32bf97debc0e89e80",
+      "path": "/documents/",
+      "title": "Trophy_OBL",
+      "dateModified": "2026-05-06T01:11:38Z"
+    }
+  }
+}

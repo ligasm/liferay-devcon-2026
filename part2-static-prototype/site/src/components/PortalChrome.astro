@@ -1,0 +1,21 @@
+---
+// The "late hydration" island: the page is static and identical for everyone,
+// then a 20-line script asks the portal who you are and swaps one element.
+// Requires the static site to be same-origin with Liferay (or CORS +
+// SameSite=None on the portal cookies); otherwise it stays on "Sign in".
+const { liferayUrl } = Astro.props as { liferayUrl: string };
+---
+<div id="portal-chrome" data-liferay={liferayUrl}>
+  <a class="btn" href={`${liferayUrl}/c/portal/login`} rel="nofollow">Sign in</a>
+</div>
+<script>
+  const el = document.getElementById('portal-chrome')!;
+  const base = el.dataset.liferay!;
+  fetch(`${base}/o/headless-admin-user/v1.0/my-user-account`, { credentials: 'include', headers: { Accept: 'application/json' } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((me) => {
+      if (!me || !me.name) return; // anonymous → keep "Sign in"
+      el.innerHTML = `<span class="meta">Hi ${me.givenName || me.name}</span> <a href="${base}/c/portal/logout" rel="nofollow">Sign out</a>`;
+    })
+    .catch(() => {}); // network/CORS failure → static default stays
+</script>

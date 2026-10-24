@@ -1,0 +1,13 @@
+# S3 — a global JS client extension that must not block rendering.
+# scriptElementAttributes is the documented, theme-upgrade-safe way to defer JS.
+assemble:
+  - from: build
+    into: static
+analytics-tag:
+  name: Analytics tag
+  type: globalJS
+  url: analytics.js
+  scriptElementAttributes:
+    async: true
+    fetchpriority: "low"
+    data-senna-track: permanent

@@ -1,0 +1,22 @@
+<section id="demo" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Live demo against liferay.dev</h2>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">132</p>
+<p style="font-size:36px;color:#4a5a66">pages, full build</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">0.1s</p>
+<p style="font-size:36px;color:#4a5a66">when nothing changed</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">4</p>
+<p style="font-size:36px;color:#4a5a66">URLs purged per edit</p>
+</div>
+</div>
+<p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ bun pipeline/regenerate.ts</p>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Prerecord a fallback. Step 1: bun pipeline/regenerate.ts --full --no-ai --max-items 80 against liferay.dev's public Headless API: 132 pages in about 10 to 19 seconds, most of it fetch; Astro plus Pagefind 3 to 7 seconds; 3.4 MB. Step 2: run it again with no flags: nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check. Most cycles cost nothing. Step 3: edit one post, rerun: plan says one changed, rebuild in about 3 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page. Step 4: link checker, zero broken of about 3,850 internal links; anything the static site doesn't own links back to the portal.</aside>
+</section>

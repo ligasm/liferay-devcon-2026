@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { posts, POSTS_PER_PAGE } from '../../lib/content';
+const pageCount = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+---
+<Base title="Blog" description="All blog posts" cacheTags={['blog', 'blog-list']}>
+  <h1>Blog</h1>
+  <p class="meta">{posts.length} posts · page 1 of {pageCount}</p>
+  <div class="grid" data-pagefind-ignore>{posts.slice(0, POSTS_PER_PAGE).map((p) => <PostCard post={p} />)}</div>
+  <nav class="pager">{pageCount > 1 && <a class="btn" href="/blog/page/2/">Older →</a>}</nav>
+</Base>

@@ -1,0 +1,12 @@
+
+┌─ S0-mock / asset-publisher ────────────────────────────
+│ requests          302   28.9 req/s
+│ duration      p50     37ms  p95     71ms  p99     74ms
+│ ttfb          p50     37ms  p95     70ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page               151 req  p95     72ms  edge hit   0.0%
+│   content_page          151 req  p95     32ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

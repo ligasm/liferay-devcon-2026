@@ -1,0 +1,7 @@
+<!-- S0 — Baseline: the HTTP connector as shipped in the Liferay Tomcat bundle.
+     Tomcat defaults apply for everything not listed: maxThreads=200,
+     acceptCount=100, maxConnections=8192 (NIO), connectionTimeout=20000. -->
+<Connector port="8080" protocol="HTTP/1.1"
+           connectionTimeout="20000"
+           redirectPort="8443"
+           URIEncoding="UTF-8" />

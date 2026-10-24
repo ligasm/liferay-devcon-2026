@@ -1,0 +1,22 @@
+<section id="s4results" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">S4 result: guest browse</h2>
+<div style="flex:1;display:flex;align-items:center">
+<div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">−98%</p>
+<p style="font-size:36px;color:#4a5a66">p95 latency</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">100%</p>
+<p style="font-size:36px;color:#4a5a66">edge hit</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">0%</p>
+<p style="font-size:36px;color:#4a5a66">login served from cache</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Placeholder numbers from the mock run · replace with your S0 → S4 results</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Demo: docker compose up Varnish in front of the same Liferay, bun run.ts S4-edge mix, open SUMMARY.md and the p95 chart. Mock reference: guest browse p95 32 to 1 ms, Asset Publisher 72 to 1, search 69 to 1, the whole mix 48 to 13 ms with 95 percent edge hit. The number that matters most is the third one: login stays at 0 percent edge hit, 100 percent private. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. Replace these with your own runs before the talk.</aside>
+</section>

@@ -1,0 +1,21 @@
+---
+// Renders a Liferay navigation menu (already mapped to static paths by ai.mjs).
+import type { NavItem } from '../lib/content';
+const { items } = Astro.props as { items: NavItem[] };
+---
+<nav aria-label="Site menu">
+  <ul>
+    {items.map((i) => (
+      <li>
+        <a href={i.href} target={i.newTab ? '_blank' : undefined} rel={i.external ? 'noopener' : undefined}>{i.label}</a>
+        {i.children.length > 0 && <ul>{i.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>}
+      </li>
+    ))}
+  </ul>
+</nav>
+<style>
+  nav > ul { display:flex; gap:18px; list-style:none; margin:0; padding:0; flex-wrap:wrap; }
+  nav a { color:var(--fg); font-weight:500; } nav li { position:relative; }
+  nav li ul { display:none; position:absolute; top:100%; left:0; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; list-style:none; min-width:180px; }
+  nav li:hover ul, nav li:focus-within ul { display:block; }
+</style>

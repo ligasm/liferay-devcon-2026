@@ -1,0 +1,17 @@
+<!-- S3 — image markup for a fragment / web content template.
+     Adaptive Media gives you variant URLs; building responsive markup is the
+     template author's job. Always set width/height (CLS), lazy-load everything
+     EXCEPT the LCP hero (that one gets fetchpriority="high" loading="eager"). -->
+<img
+  src="/o/adaptive-media/image/${fileEntryId}/Preview-1000x0/${fileName}?t=${timestamp}"
+  srcset="/o/adaptive-media/image/${fileEntryId}/Thumbnail-300x300/${fileName}?t=${timestamp} 300w,
+          /o/adaptive-media/image/${fileEntryId}/Preview-1000x0/${fileName}?t=${timestamp} 1000w"
+  sizes="(max-width: 600px) 100vw, 50vw"
+  width="1000" height="562"
+  loading="lazy" decoding="async"
+  alt="${alt}" />
+
+<!-- LCP image: the opposite -->
+<link rel="preload" as="image" href="/o/adaptive-media/image/${heroId}/Preview-1000x0/hero.jpg" fetchpriority="high" />
+<img src="/o/adaptive-media/image/${heroId}/Preview-1000x0/hero.jpg" width="1000" height="562"
+     fetchpriority="high" loading="eager" decoding="async" alt="…" />

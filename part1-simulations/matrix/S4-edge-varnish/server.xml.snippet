@@ -1,0 +1,15 @@
+<!-- S4 — Tomcat behind Varnish (and possibly nginx/CDN in front of that).
+     RemoteIpValve makes request.isSecure()/getScheme()/getRemoteAddr() reflect
+     the client, not the proxy, based on X-Forwarded-For / X-Forwarded-Proto.
+     internalProxies must match the proxy addresses (Docker bridge/host, LB). -->
+<Engine name="Catalina" defaultHost="localhost">
+  <Valve className="org.apache.catalina.valves.RemoteIpValve"
+         remoteIpHeader="X-Forwarded-For"
+         protocolHeader="X-Forwarded-Proto"
+         protocolHeaderHttpsValue="https"
+         portHeader="X-Forwarded-Port"
+         internalProxies="127\.0\.0\.1|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}" />
+  <!-- ... Host etc. unchanged ... -->
+</Engine>
+
+<!-- Connector: same as S2; compression stays off (proxy/CDN compresses). -->

@@ -1,0 +1,52 @@
+# Regenerate the static site on a schedule AND on demand (repository_dispatch,
+# which the webhook receiver — or Liferay itself — can trigger with one HTTP call).
+name: regenerate-static-site
+on:
+  schedule:
+    - cron: '*/15 * * * *'          # every 15 minutes (GitHub may delay a few minutes)
+  repository_dispatch:
+    types: [liferay-content-changed] # curl -X POST -H "Authorization: Bearer $GH_TOKEN" \
+                                     #   https://api.github.com/repos/<owner>/<repo>/dispatches \
+                                     #   -d '{"event_type":"liferay-content-changed"}'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Full rebuild (ignore state)'
+        default: 'false'
+
+concurrency: { group: regenerate, cancel-in-progress: false }
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      # state.json, raw mirror, rules and ai-cache persist between runs via the cache;
+      # commit content/rules and content/ai-cache to git instead if you want them reviewable.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            content/raw
+            content/state.json
+            content/rules
+            content/ai-cache
+            reports/latest.json
+          key: liferay-static-state-${{ github.run_id }}
+          restore-keys: liferay-static-state-
+      - run: node pipeline/regenerate.mjs ${{ github.event.inputs.full == 'true' && '--full' || '' }}
+        env:
+          LIFERAY_URL: ${{ vars.LIFERAY_URL }}
+          LIFERAY_SITE_ID: ${{ vars.LIFERAY_SITE_ID }}
+          LIFERAY_AUTH: ${{ vars.LIFERAY_AUTH }}
+          LIFERAY_OAUTH_CLIENT_ID: ${{ secrets.LIFERAY_OAUTH_CLIENT_ID }}
+          LIFERAY_OAUTH_CLIENT_SECRET: ${{ secrets.LIFERAY_OAUTH_CLIENT_SECRET }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+          DEPLOY_CMD: ${{ vars.DEPLOY_CMD }}   # e.g. npx wrangler pages deploy dist  |  aws s3 sync dist s3://bucket --delete
+          PURGE_CMD: ${{ vars.PURGE_CMD }}     # gets PURGE_URLS / PURGE_TAGS / PURGE_ALL in env
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: report, path: reports/latest.json }

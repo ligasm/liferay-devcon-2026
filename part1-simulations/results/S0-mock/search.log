@@ -1,0 +1,9 @@
+
+┌─ S0-mock / search ─────────────────────────────────────
+│ requests          151   14.5 req/s
+│ duration      p50     56ms  p95     69ms  p99     71ms
+│ ttfb          p50     56ms  p95     69ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

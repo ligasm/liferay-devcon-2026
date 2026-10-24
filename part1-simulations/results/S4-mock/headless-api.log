@@ -1,0 +1,12 @@
+
+┌─ S4-mock / headless-api ───────────────────────────────
+│ requests          303   28.6 req/s
+│ duration      p50     28ms  p95     50ms  p99     52ms
+│ ttfb          p50     22ms  p95     50ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        151 req  p95     13ms  edge hit   0.0%
+│   headless_list         151 req  p95     51ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

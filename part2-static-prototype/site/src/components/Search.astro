@@ -1,0 +1,34 @@
+---
+// Fully static search: Pagefind indexes dist/ at build time, the browser
+// downloads only the index fragments it needs. No server, no portal.
+// The 120 kB Pagefind UI bundle is loaded lazily, on first focus, so a
+// visitor who never searches pays nothing for it.
+---
+<div id="search" class="pagefind-ui">
+  <input id="search-placeholder" type="search" placeholder="Search…" aria-label="Search" />
+</div>
+<script>
+  const box = document.getElementById('search')!;
+  const placeholder = document.getElementById('search-placeholder') as HTMLInputElement;
+  let loaded = false;
+  const load = () => {
+    if (loaded) return;
+    loaded = true;
+    const css = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: '/pagefind/pagefind-ui.css' });
+    const js = Object.assign(document.createElement('script'), { src: '/pagefind/pagefind-ui.js' });
+    js.onload = () => {
+      const typed = placeholder.value;
+      box.innerHTML = '';
+      // @ts-ignore PagefindUI is a global from the script above
+      new window.PagefindUI({ element: '#search', showSubResults: true, showImages: false, resetStyles: false });
+      const input = box.querySelector('input') as HTMLInputElement | null;
+      if (input) { input.value = typed; input.focus(); input.dispatchEvent(new Event('input')); }
+    };
+    document.head.append(css, js);
+  };
+  placeholder.addEventListener('focus', load, { once: true });
+  placeholder.addEventListener('input', load, { once: true });
+</script>
+<style>
+  #search-placeholder { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); font: inherit; }
+</style>

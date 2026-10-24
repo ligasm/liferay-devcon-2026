@@ -1,0 +1,24 @@
+<section id="s3" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S3 Front-end delivery</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Assets were never the problem</h2>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:44px;font-weight:600">cdn.host rewrites</h3>
+<ul style="font-size:36px;line-height:1.6;color:#4a5a66">
+<li>Theme JS / CSS</li>
+<li>Module bundles</li>
+<li>Portal images</li>
+</ul>
+</div>
+<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:44px;font-weight:600">It doesn't touch</h3>
+<ul style="font-size:36px;line-height:1.6;color:#b9cfd3">
+<li>Documents &amp; Media</li>
+<li>Adaptive Media</li>
+<li><span style="color:#eab000">Page HTML</span></li>
+</ul>
+</div>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>cdn.host.https plus cdn.dynamic.resources.enabled covers theme and module JS and CSS, the combo servlet, ES modules and portal images. It does not touch Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Documents and Media has its own Cache Control setting. The first change that makes a guest page describable as cacheable is browser.cache.disabled=false, keeping browser.cache.signed.in.disabled=true. Regenerate Adaptive Media for existing content; lazy-load everything except the LCP image. Result with WITH_ASSETS=1: asset requests 100 percent edge hit, HTML still zero.</aside>
+</section>

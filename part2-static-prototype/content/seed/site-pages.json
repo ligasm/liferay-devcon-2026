@@ -1,0 +1,37 @@
+{
+  "note": "Fallback list of site pages used when GET /site-pages fails (it returned HTTP 500 on liferay.dev on 2026-09-18). Each page is then refreshed individually via /site-pages/{friendlyUrlPath}.",
+  "items": [
+    {
+      "friendlyUrlPath": "/home",
+      "title": "Home"
+    },
+    {
+      "friendlyUrlPath": "/meet",
+      "title": "Meet"
+    },
+    {
+      "friendlyUrlPath": "/project",
+      "title": "Project"
+    },
+    {
+      "friendlyUrlPath": "/meet/how-to-start-a-lug-",
+      "title": "How to Start a LUG?"
+    },
+    {
+      "friendlyUrlPath": "/meet/what-is-a-lug-",
+      "title": "What is a LUG?"
+    },
+    {
+      "friendlyUrlPath": "/contribute",
+      "title": "Contribute"
+    },
+    {
+      "friendlyUrlPath": "/open-source",
+      "title": "Open Source"
+    },
+    {
+      "friendlyUrlPath": "/vulnerabilities",
+      "title": "Known Vulnerabilities"
+    }
+  ]
+}

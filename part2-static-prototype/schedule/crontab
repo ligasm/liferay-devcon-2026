@@ -1,0 +1,5 @@
+# crontab -e  (user that owns /opt/liferay-static)
+# Every 15 minutes; flock guarantees two cycles never overlap (a long full rebuild vs the timer).
+*/15 * * * *  cd /opt/liferay-static && flock -n /tmp/liferay-static.lock node pipeline/regenerate.mjs >> /var/log/liferay-static.log 2>&1
+# Once a night: full deletion sweep and a rebuild from scratch (belt and braces)
+15 3 * * *    cd /opt/liferay-static && flock -n /tmp/liferay-static.lock node pipeline/regenerate.mjs --full >> /var/log/liferay-static.log 2>&1

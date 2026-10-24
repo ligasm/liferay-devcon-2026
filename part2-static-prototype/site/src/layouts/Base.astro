@@ -1,0 +1,87 @@
+---
+// Base layout: header with the "Site Menu" navigation menu, the portal-chrome
+// island (late hydration of sign-in state), Pagefind search, footer menus.
+import { site, categories } from '../lib/content';
+import Nav from '../components/Nav.astro';
+import PortalChrome from '../components/PortalChrome.astro';
+import Search from '../components/Search.astro';
+
+interface Props { title: string; description?: string; cacheTags?: string[]; portalUrl?: string }
+const { title, description = '', cacheTags = ['page'], portalUrl } = Astro.props;
+const menu = site.nav[site.siteMenuName] ?? [];
+const footerMenus = Object.entries(site.nav).filter(([name]) => /^footer/i.test(name));
+const canonical = site.publicUrl + Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {site.name}</title>
+    {description && <meta name="description" content={description.slice(0, 160)} />}
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content="liferay-static-prototype" />
+    <!-- cache tags are also emitted into _headers by build.mjs; this meta lets the edge read them from HTML -->
+    <meta name="cache-tag" content={cacheTags.join(',')} />
+    <style is:global>
+      :root { --bg:#fff; --fg:#1b1b1f; --muted:#5f6368; --line:#e3e5e8; --brand:#0b5fff; --brand-ink:#fff; --card:#f6f7f9; }
+      @media (prefers-color-scheme: dark) { :root { --bg:#0f1115; --fg:#e8eaee; --muted:#9aa0a6; --line:#2a2e35; --card:#171a20; } }
+      * { box-sizing: border-box; }
+      body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      a { color:var(--brand); text-decoration:none; } a:hover { text-decoration:underline; }
+      .wrap { max-width:1080px; margin:0 auto; padding:0 16px; }
+      header.top { border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:5; }
+      header.top .wrap { display:flex; align-items:center; gap:24px; min-height:60px; flex-wrap:wrap; }
+      .logo { font-weight:700; color:var(--fg); letter-spacing:-.01em; }
+      main { padding:32px 0 64px; min-height:60vh; }
+      footer { border-top:1px solid var(--line); padding:32px 0; color:var(--muted); font-size:14px; }
+      footer .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:24px; }
+      footer ul { list-style:none; margin:8px 0 0; padding:0; } footer h4 { margin:0; color:var(--fg); }
+      .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+      .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+      .meta { color:var(--muted); font-size:14px; }
+      .tag { display:inline-block; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-size:13px; margin:0 6px 6px 0; color:var(--fg); }
+      .btn { display:inline-block; background:var(--brand); color:var(--brand-ink); padding:8px 16px; border-radius:8px; }
+      .prose img { max-width:100%; height:auto; } .prose pre { overflow:auto; background:var(--card); padding:12px; border-radius:8px; }
+      .prose h1, .prose h2, .prose h3 { line-height:1.25; } .prose table { border-collapse:collapse; } .prose td, .prose th { border:1px solid var(--line); padding:6px 10px; }
+      .hero { padding:48px 0 32px; } .hero h1 { font-size:clamp(28px,5vw,44px); margin:0 0 8px; letter-spacing:-.02em; }
+      .pager { display:flex; gap:12px; justify-content:center; margin-top:32px; }
+      .portal-link { font-size:14px; color:var(--muted); border-top:1px solid var(--line); margin-top:32px; padding-top:16px; }
+      .pagefind-ui { --pagefind-ui-primary: var(--brand); --pagefind-ui-text: var(--fg); --pagefind-ui-background: var(--bg); --pagefind-ui-border: var(--line); --pagefind-ui-font: inherit; }
+      .searchbox { margin-left:auto; min-width:220px; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="/">{site.name}</a>
+        <Nav items={menu} />
+        <div class="searchbox"><Search /></div>
+        <PortalChrome liferayUrl={site.liferayUrl} />
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+      {portalUrl && (
+        <p class="portal-link">
+          Editors: <a href={portalUrl} rel="nofollow">comment / edit this in the portal</a>.
+          Static copy generated {site.generatedAt.slice(0, 16).replace('T', ' ')} UTC.
+        </p>
+      )}
+    </main>
+    <footer>
+      <div class="wrap cols">
+        {footerMenus.map(([name, items]) => (
+          <div>
+            <h4>{name.replace(/^footer\s*-\s*/i, '')}</h4>
+            <ul>{items.map((i) => <li><a href={i.href} target={i.newTab ? '_blank' : undefined} rel={i.external ? 'noopener' : undefined}>{i.label}</a></li>)}</ul>
+          </div>
+        ))}
+        <div>
+          <h4>Categories</h4>
+          <ul>{categories.slice(0, 8).map((c) => <li><a href={`/category/${c.slug}/`}>{c.name} ({c.count})</a></li>)}</ul>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

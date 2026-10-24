@@ -1,0 +1,37 @@
+<section id="architecture" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Authored in Liferay, served as files</h2>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">Liferay</h3>
+<p style="font-size:26px;color:#4a5a66">Headless API</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">Delta</h3>
+<p style="font-size:26px;color:#4a5a66">what changed</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
+<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600;color:#34a1a0">AI</h3>
+<p style="font-size:26px;color:#b9cfd3">decides</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">Astro</h3>
+<p style="font-size:26px;color:#4a5a66">static build</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">CDN</h3>
+<p style="font-size:26px;color:#4a5a66">tag purge</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;justify-content:center">
+<p style="font-size:32px;font-weight:600;background:#ffffff;border:1px solid #d8e0e2;border-radius:40px;padding:20px 40px">Webhook on publish</p>
+<p style="font-size:32px;font-weight:600;background:#ffffff;border:1px solid #d8e0e2;border-radius:40px;padding:20px 40px">Timer every 15 min</p>
+</div>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>The pipeline, all TypeScript on Bun. Fetch pulls a delta from Headless Delivery with filter dateModified gt lastRun. Plan diffs content hashes and writes a small plan.json. The AI orchestrator reads only that plan: nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget. Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index. The report lists exactly which URLs and cache tags to purge. Triggered by a Liferay webhook or Object Action, or a timer every 15 minutes.</aside>
+</section>

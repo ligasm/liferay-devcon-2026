@@ -1,0 +1,18 @@
+---
+// Content pages from /site-pages: the rendered page was reduced to its editorial
+// region by the cached extraction rule, then sanitised. Catch-all so that
+// nested friendly URLs such as /meet/what-is-a-lug/ map 1:1.
+import Base from '../layouts/Base.astro';
+import { pages, fmtDate } from '../lib/content';
+export function getStaticPaths() {
+  return pages.filter((p) => p.path !== '/').map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+<Base title={page.title} description={page.seoDescription} cacheTags={['page', `page-${page.id}`]} portalUrl={page.portalUrl}>
+  <article class="prose" data-pagefind-body>
+    <h1>{page.title}</h1>
+    <p class="meta" data-pagefind-ignore>updated {fmtDate(page.dateModified)} · master layout: {page.master} · extraction rule: {page.ruleSource}</p>
+    <Fragment set:html={page.html} />
+  </article>
+</Base>

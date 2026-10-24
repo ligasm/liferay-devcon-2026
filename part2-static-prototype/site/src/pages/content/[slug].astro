@@ -1,0 +1,22 @@
+---
+// Structured contents (web content articles) — 0 on liferay.dev, present on a
+// real DXP. Rendered generically; add site/src/templates/<template>.astro to specialise.
+import Base from '../../layouts/Base.astro';
+import { structured, fmtDate } from '../../lib/content';
+export function getStaticPaths() {
+  return structured.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props;
+---
+<Base title={item.title} description={item.description} cacheTags={['content', `structured-${item.id}`]} portalUrl={item.portalUrl}>
+  <article class="prose" data-pagefind-body>
+    <h1>{item.title}</h1>
+    <p class="meta">structure {item.structureId} · template {item.template} · updated {fmtDate(item.dateModified)}</p>
+    {item.fields.map((f) => (
+      <section>
+        <h3>{f.label || f.name}</h3>
+        {f.html ? <Fragment set:html={f.html} /> : <p>{f.value}</p>}
+      </section>
+    ))}
+  </article>
+</Base>

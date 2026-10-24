@@ -1,0 +1,12 @@
+
+┌─ S0-mock / headless-api ───────────────────────────────
+│ requests          302   28.5 req/s
+│ duration      p50     22ms  p95     49ms  p99     52ms
+│ ttfb          p50     14ms  p95     49ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        151 req  p95     13ms  edge hit   0.0%
+│   headless_list         150 req  p95     51ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

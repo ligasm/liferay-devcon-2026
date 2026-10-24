@@ -1,0 +1,22 @@
+<section id="s5purge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S5 Purge on publish</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Purge by tag, not by URL</h2>
+<div style="display:flex;align-items:center;gap:32px;flex:1">
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">Publish</h3>
+<p style="font-size:28px;color:#4a5a66">in Liferay</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:72px;height:36px"></x-shape>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">ModelListener</h3>
+<p style="font-size:28px;color:#4a5a66">after commit</p>
+</div>
+<x-shape kind="arrow-right" style="background:#34a1a0;width:72px;height:36px"></x-shape>
+<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:600">Soft purge</h3>
+<p style="font-size:28px;color:#b9cfd3;font-family:'JetBrains Mono', 'Courier New', monospace">Surrogate-Key</p>
+</div>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>A ModelListener on JournalArticle, Layout and BlogsEntry fires a soft purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version. Sketch in matrix/S5-edge-purge, with Varnish and Cloudflare purgers. publish-to-fresh.ts measures publish to fresh-at-edge in milliseconds. Say what is missing: there is no listener API for "Publication published", and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects. Classic web content still needs Java.</aside>
+</section>

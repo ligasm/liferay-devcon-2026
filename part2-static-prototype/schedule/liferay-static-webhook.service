@@ -1,0 +1,16 @@
+# /etc/systemd/system/liferay-static-webhook.service
+# Long-running receiver for Liferay webhooks (POST /hooks/liferay). Debounces
+# bursts of edits into a single regeneration cycle.
+[Unit]
+Description=Liferay → static site webhook receiver
+After=network-online.target
+
+[Service]
+User=www-data
+WorkingDirectory=/opt/liferay-static
+EnvironmentFile=/opt/liferay-static/.env
+ExecStart=/usr/bin/node pipeline/webhook.mjs
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

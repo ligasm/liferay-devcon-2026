@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import { documents, fmtDate } from '../../lib/content';
+const kb = (b: number) => (b / 1024).toFixed(0) + ' kB';
+---
+<Base title="Documents" description="Documents and media from the portal's document library" cacheTags={['documents']}>
+  <h1>Documents</h1>
+  <p class="meta">{documents.length} items · thumbnails come from Liferay Adaptive Media, files stay on the portal/CDN.</p>
+  <div class="grid" data-pagefind-body>
+    {documents.map((d) => (
+      <article class="card">
+        {d.thumb ? <a href={d.preview || d.url}><img src={d.thumb} alt={d.title} loading="lazy" style="max-width:100%;border-radius:8px" /></a> : <div class="tag">{d.ext?.toUpperCase()}</div>}
+        <h3 style="margin:8px 0 4px;font-size:16px"><a href={d.url}>{d.title}</a></h3>
+        <p class="meta">{d.ext} · {kb(d.size)} · {fmtDate(d.dateModified)}</p>
+        {d.description && <p>{d.description}</p>}
+      </article>
+    ))}
+  </div>
+</Base>

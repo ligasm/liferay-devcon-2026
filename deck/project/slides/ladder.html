@@ -1,0 +1,32 @@
+<section id="ladder" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The ladder</h2>
+<div style="display:flex;flex-direction:column;gap:16px;flex:1;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:40px;background:#0f2838;color:#f4f7f7;border-radius:12px;padding:24px 48px">
+<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">5</p>
+<p style="font-size:44px;font-weight:600;flex:1">Precompute</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">≈ 0 ms</p>
+</div>
+<div style="display:flex;align-items:center;gap:40px;background:#1d4a5c;color:#f4f7f7;border-radius:12px;padding:24px 48px">
+<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">4</p>
+<p style="font-size:44px;font-weight:600;flex:1">Edge HTML</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+</div>
+<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
+<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">3</p>
+<p style="font-size:44px;font-weight:600;flex:1">Edge static</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+</div>
+<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
+<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">2</p>
+<p style="font-size:44px;font-weight:600;flex:1">JVM caches</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~50 ms</p>
+</div>
+<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
+<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">1</p>
+<p style="font-size:44px;font-weight:600;flex:1">Origin render</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">200–2000 ms</p>
+</div>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5.</aside>
+</section>

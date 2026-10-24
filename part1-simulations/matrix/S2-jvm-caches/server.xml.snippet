@@ -1,0 +1,21 @@
+<!-- S2 — Tomcat HTTP connector, per "Tuning Liferay" + 7.4 Deployment Checklist.
+     Liferay is CPU-bound per request: a SMALL worker pool (start at 50, 75 is the
+     documented example, go to 250 only if pages take 2–3 s because they are
+     I/O-blocked) plus a LARGE connection backlog is the right shape.
+     "Queueing beats thrashing."
+     acceptCount is NOT in Liferay's published config (Tomcat default 100): raise
+     it so bursts queue instead of getting connection-refused at the OS.
+     connectionTimeout=600000 (10 min) is only acceptable behind a reverse proxy
+     that has its own slow-client protection; internet-facing Tomcat should keep 20000. -->
+<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="75"
+           minSpareThreads="50"
+           acceptCount="1000"
+           maxConnections="16384"
+           maxKeepAliveRequests="-1"
+           connectionTimeout="600000"
+           socketBuffer="-1"
+           redirectPort="8443"
+           URIEncoding="UTF-8"
+           compression="off" />
+<!-- compression="off": brotli/gzip is done by the proxy in front (S3/S4). -->

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+bin/k6
+bin/.download-*
+results/*/*.ndjson
+part2-static-prototype/content/raw/
+part2-static-prototype/content/build/
+part2-static-prototype/reports/*.md
+.DS_Store

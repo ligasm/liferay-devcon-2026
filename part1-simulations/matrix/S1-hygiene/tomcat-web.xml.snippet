@@ -1,0 +1,30 @@
+<!-- S1 — Hygiene: $CATALINA_HOME/conf/web.xml, the "jsp" servlet.
+     development=false  → stop checking JSP timestamps on every request
+     mappedFile=false   → stop generating one out.write() per JSP source line
+     Both recommended by Liferay's "Tuning Liferay" page and the 7.4 Deployment
+     Checklist. Restart Tomcat and clear work/ after changing. -->
+<servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+        <param-name>fork</param-name>
+        <param-value>false</param-value>
+    </init-param>
+    <init-param>
+        <param-name>development</param-name>
+        <param-value>false</param-value>
+    </init-param>
+    <init-param>
+        <param-name>mappedFile</param-name>
+        <param-value>false</param-value>
+    </init-param>
+    <init-param>
+        <param-name>genStringAsCharArray</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <init-param>
+        <param-name>trimSpaces</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+</servlet>

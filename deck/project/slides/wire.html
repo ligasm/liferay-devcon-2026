@@ -1,0 +1,12 @@
+<section id="wire" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">A stock guest page is uncacheable. Twice.</h2>
+<div style="background:#0f2838;border-radius:16px;padding:48px 56px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;color:#b9cfd3">
+<p style="font-size:32px;color:#f4f7f7">$ curl -sSD- -o /dev/null https://your-liferay/</p>
+<p style="font-size:32px;color:#eab000">cache-control: private, no-cache, no-store</p>
+<p style="font-size:32px;color:#eab000">set-cookie: JSESSIONID=…</p>
+<p style="font-size:32px;color:#eab000">set-cookie: COOKIE_SUPPORT=true</p>
+<p style="font-size:32px;color:#eab000">set-cookie: SERVER_ID=…</p>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Live demo here, 30 seconds: curl your own Liferay. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies. Either one alone makes any CDN refuse to cache. session.disabled existed through 7.3 and was removed in 7.4 with no replacement; Liferay's own KB says a user always has a session. Everyone strips the cookie at the edge instead. Captured on learn.liferay.com and liferay.dev.</aside>
+</section>

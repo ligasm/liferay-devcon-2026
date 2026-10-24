@@ -1,0 +1,14 @@
+
+┌─ S0-mock / mix ────────────────────────────────────────
+│ requests          394   29.1 req/s
+│ duration      p50     26ms  p95     48ms  p99     65ms
+│ ttfb          p50     26ms  p95     48ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page                12 req  p95     66ms  edge hit   0.0%
+│   guest_browse          340 req  p95     32ms  edge hit   0.0%
+│   login                  24 req  p95     34ms  edge hit   0.0%
+│   search                 18 req  p95     68ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

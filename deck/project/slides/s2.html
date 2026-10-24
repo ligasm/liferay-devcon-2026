@@ -1,0 +1,23 @@
+<section id="s2" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S2 JVM caches</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Cache the entities, not the pages</h2>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">2025.Q2</p>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Ehcache 2 → 3</h3>
+<p style="font-size:32px;color:#4a5a66">Rewrite your XML</p>
+</div>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cluster Link</p>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Invalidates</h3>
+<p style="font-size:32px;color:#4a5a66">Never replicate</p>
+</div>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cacheable</p>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Audit first</h3>
+<p style="font-size:32px;color:#4a5a66">Or leak user data</p>
+</div>
+</div>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Entity and finder cache sizing per hot entity is the biggest query-elimination lever. DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema. Cluster Link: replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery. Fragment and Web Content template Cacheable checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to everyone. HikariCP at about two times maxThreads, sized after cache tuning. Hibernate L2 cache does not exist in Liferay; skip it. Result: origin p95 down, but every request still reaches the JVM.</aside>
+</section>

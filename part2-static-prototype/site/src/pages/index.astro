@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { site, posts, pages, categories } from '../lib/content';
+const latest = posts.slice(0, 6);
+const featuredPages = pages.filter((p) => !p.hidden && p.path !== '/').slice(0, 6);
+---
+<Base title="Home" description={`Static mirror of ${site.name}: blogs, community pages and documents.`} cacheTags={['home', 'blog']}>
+  <section class="hero">
+    <h1>{site.name}, served as plain HTML</h1>
+    <p class="meta">{site.counts.posts} posts · {site.counts.pages} pages · {site.counts.documents} documents — authored in Liferay, generated {site.generatedAt.slice(0, 10)}.</p>
+    <a class="btn" href="/blog/">Read the blog</a>
+  </section>
+  <h2>Latest posts</h2>
+  <div class="grid" data-pagefind-ignore>{latest.map((p) => <PostCard post={p} />)}</div>
+  <h2 style="margin-top:40px">Popular categories</h2>
+  <p>{categories.slice(0, 12).map((c) => <a class="tag" href={`/category/${c.slug}/`}>{c.name} ({c.count})</a>)}</p>
+  {featuredPages.length > 0 && (
+    <>
+      <h2 style="margin-top:40px">Community pages</h2>
+      <ul>{featuredPages.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
+    </>
+  )}
+</Base>

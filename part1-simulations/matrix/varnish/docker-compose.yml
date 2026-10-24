@@ -1,0 +1,51 @@
+# S4 — Varnish 7 in front of the speaker's own Liferay.
+#
+#   LIFERAY_UPSTREAM=host-gateway docker compose up        # Liferay on the Docker host :8080
+#   LIFERAY_UPSTREAM=10.0.0.12   docker compose up          # Liferay on another machine
+#   VCL_FILE=default-xkey.vcl GUEST_HTML_OVERRIDE=1 docker compose up
+#
+# Then point k6 at Varnish:  BASE_URL=http://localhost:6081 ./run.sh S4-edge mix
+# Origin stays reachable on :8080 for the S0–S3 runs (no restart needed to compare).
+#
+# Varnish does NOT do TLS or brotli: put nginx/Caddy (TLS + brotli) in front of :6081
+# for a real deployment, or let the CDN do both (matrix/cloudflare/cache-rules.md).
+services:
+  varnish:
+    image: varnish:7.6            # official image; includes varnish-modules (vmod_xkey)
+    container_name: liferay-varnish
+    ports:
+      - "6081:80"                 # HTTP
+    volumes:
+      - ./default.vcl:/etc/varnish/default.vcl:ro
+      - ./default-xkey.vcl:/etc/varnish/default-xkey.vcl:ro
+    environment:
+      VARNISH_SIZE: ${VARNISH_SIZE:-512m}
+      GUEST_HTML_OVERRIDE: ${GUEST_HTML_OVERRIDE:-0}   # 1 = ignore origin private/no-store on anonymous HTML
+    # The VCL's backend is ".host = liferay" — resolve it to your Liferay:
+    extra_hosts:
+      - "liferay:${LIFERAY_UPSTREAM:-host-gateway}"
+    command: >
+      varnishd -F
+        -f /etc/varnish/${VCL_FILE:-default.vcl}
+        -a http=:80,HTTP
+        -s malloc,${VARNISH_SIZE:-512m}
+        -p feature=+http2
+        -p default_ttl=60
+        -p default_grace=3600
+        -p thread_pool_min=50
+        -p thread_pool_max=1000
+        -p http_resp_hdr_len=32k
+        -p http_resp_size=64k
+        -p workspace_backend=128k
+    tmpfs:
+      - /var/lib/varnish:exec
+    ulimits:
+      nofile: { soft: 131072, hard: 131072 }
+    healthcheck:
+      test: ["CMD", "varnishadm", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Optional: live hit/miss counters on stage — `docker compose exec varnish varnishstat -1 | grep -E "cache_hit|cache_miss"`
+  # or run `varnishlog -g request -q 'RespHeader ~ "X-Cache"'` in the container.

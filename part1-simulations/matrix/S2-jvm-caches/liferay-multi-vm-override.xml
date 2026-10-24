@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+S2 — Ehcache 3 override for the clustered (MultiVM) cache manager.
+DXP 2025.Q2+ / CE 7.4 GA132+ ship Ehcache 3.10.8 (LPD-40485): the Ehcache 2 schema
+(<ehcache><defaultCache maxElementsInMemory=…>) FAILS TO PARSE. This file uses the
+Ehcache 3 core schema exactly like the shipped ehcache/liferay-multi-vm.xml.
+
+Place at: tomcat/webapps/ROOT/WEB-INF/classes/ehcache/liferay-multi-vm-override.xml
+Point to it: ehcache.multi.vm.config.location=/ehcache/liferay-multi-vm-override.xml
+Then clear osgi/state, work, temp and restart.
+
+<heap> counts ENTRIES, not bytes. Size from a heap dump under load:
+  heap = (memory budget for the cache) / (retained bytes per entry).
+The numbers below are the SHIPPED values for the big three plus larger caches for
+the entities that are hot on a content site — treat them as a starting point,
+not a recommendation for your data volume.
+
+Ehcache 2 → 3 cheat-sheet:  name= → alias=,  maxElementsInMemory → <heap>,
+timeToIdleSeconds → <expiry><tti>,  timeToLiveSeconds → <expiry><ttl>,
+<cacheEventListenerFactory> → REMOVED (use PortalCache.registerPortalCacheListener()).
+-->
+<config
+	xmlns="http://www.ehcache.org/v3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.10.xsd"
+>
+
+	<!-- Default template: 10 minutes idle, 200k entries (shipped values) -->
+	<cache-template name="default">
+		<key-type>java.io.Serializable</key-type>
+		<value-type>java.io.Serializable</value-type>
+		<expiry>
+			<tti unit="seconds">600</tti>
+		</expiry>
+		<heap unit="entries">200000</heap>
+	</cache-template>
+
+	<cache alias="default" uses-template="default" />
+
+	<!-- ===================== Entity cache (one entry per row) ===================== -->
+
+	<!-- Shipped: 1,000,000. Permission checks touch this on every render. -->
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.ResourcePermissionImpl" uses-template="default">
+		<heap unit="entries">1000000</heap>
+	</cache>
+
+	<!-- Shipped: 100,000 -->
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.UserImpl" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+
+	<!-- Hot on a content site: layouts, articles, fragment entry links, DL entries.
+	     Aliases follow the pattern EntityCache.<Impl FQCN>; the module-entity FQCNs
+	     below are the standard ones for 7.4 — UNVERIFIED for your release, confirm
+	     with JMX (org.ehcache:type=Cache,CacheManager=liferay-multi-vm,Cache=*). -->
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portal.model.impl.LayoutImpl" uses-template="default">
+		<heap unit="entries">50000</heap>
+	</cache>
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.journal.model.impl.JournalArticleImpl" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.fragment.model.impl.FragmentEntryLinkImpl" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+	<cache alias="com.liferay.portal.kernel.dao.orm.EntityCache.com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+
+	<!-- ===================== Finder cache (query results → PKs) ===================== -->
+
+	<!-- Shipped: 100,000 -->
+	<cache alias="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.ResourcePermissionImpl.List1" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+	<cache alias="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.portal.model.impl.LayoutImpl" uses-template="default">
+		<heap unit="entries">50000</heap>
+	</cache>
+	<cache alias="com.liferay.portal.kernel.dao.orm.FinderCache.com.liferay.journal.model.impl.JournalArticleImpl" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+
+	<!-- ===================== Other ===================== -->
+
+	<!-- Shipped: 100,000. Permission checker results per user/role/resource. -->
+	<cache alias="com.liferay.portal.security.permission.PermissionCacheUtil_PERMISSION" uses-template="default">
+		<heap unit="entries">100000</heap>
+	</cache>
+
+	<!-- Rendered web-content (JournalContent). Key = group/article/version/template/
+	     layoutSet/language/viewMode/page/secure — NO user/segment. Only DDM templates
+	     with the "Cacheable" checkbox land here. TTL, not TTI: content should age out
+	     even when hot, so a missed invalidation self-heals. -->
+	<cache alias="com.liferay.journal.util.JournalContent" uses-template="default">
+		<expiry>
+			<ttl unit="seconds">3600</ttl>
+		</expiry>
+		<heap unit="entries">20000</heap>
+	</cache>
+</config>

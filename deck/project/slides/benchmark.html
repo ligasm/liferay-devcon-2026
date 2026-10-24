@@ -1,0 +1,22 @@
+<section id="benchmark" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">It's CPU in the app tier</h2>
+<div style="flex:1;display:flex;align-items:center">
+<div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">25k</p>
+<p style="font-size:36px;color:#4a5a66">users · web content</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">15k</p>
+<p style="font-size:36px;color:#4a5a66">users · Asset Publisher</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">93%</p>
+<p style="font-size:36px;color:#4a5a66">app-tier CPU at peak</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Liferay's own benchmark, one node, AMD Epyc, 8 cores, 16 vCPU, 64 GB. 25,000 concurrent users on plain web content, 15,000 on an Asset Publisher page, 93 to 94 percent application-tier CPU at peak. Bonus fact: native login degrades past about 400 concurrent attempts; a dedicated IdP took it to 19,000, because password hashing is CPU by design. Caveats: vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are load-model users with think time. Takeaway: you cannot buy your way out with a bigger database.</aside>
+</section>

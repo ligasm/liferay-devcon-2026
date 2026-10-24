@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts, fmtDate } from '../../lib/content';
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+const { post } = Astro.props;
+---
+<Base title={post.seoTitle || post.title} description={post.description} cacheTags={['blog', `post-${post.id}`]} portalUrl={post.portalUrl}>
+  <article class="prose" data-pagefind-body>
+    <h1>{post.title}</h1>
+    <p class="meta" data-pagefind-ignore>
+      {post.author} · published {fmtDate(post.datePublished)} · updated {fmtDate(post.dateModified)} · {post.readingMinutes} min read
+      {post.numberOfComments > 0 && <> · <a href={post.portalUrl + '#comments'}>{post.numberOfComments} comments</a></>}
+    </p>
+    <p data-pagefind-ignore>{post.categories.map((c) => <a class="tag" href={`/category/${c.slug}/`} data-pagefind-filter="category">{c.name}{c.suggested ? ' (suggested)' : ''}</a>)}</p>
+    {post.image && <img src={post.image} alt="" />}
+    <Fragment set:html={post.html} />
+  </article>
+  <p class="portal-link" data-pagefind-ignore>
+    Comments live in the portal: <a href={post.portalUrl + '#comments'} rel="nofollow">join the discussion</a>.
+    <span class="meta" title="where the description came from"> · description: {post.descriptionSource}</span>
+  </p>
+</Base>

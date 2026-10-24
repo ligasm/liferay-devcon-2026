@@ -1,0 +1,17 @@
+# /etc/systemd/system/liferay-static.service
+# One regeneration cycle. Triggered by liferay-static.timer (every 15 min) and
+# by the webhook (systemctl start liferay-static.service). Idempotent: with no
+# changes it exits in ~1 s without building.
+[Unit]
+Description=Regenerate static site from Liferay Headless Delivery
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=www-data
+WorkingDirectory=/opt/liferay-static
+EnvironmentFile=/opt/liferay-static/.env
+ExecStart=/usr/bin/node pipeline/regenerate.mjs
+TimeoutStartSec=15min
+Nice=10

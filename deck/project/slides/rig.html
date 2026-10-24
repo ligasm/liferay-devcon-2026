@@ -1,0 +1,39 @@
+<section id="rig" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">One layer per stage, same load every time</h2>
+<div style="flex:1;display:grid;grid-template-columns:repeat(4, 1fr);grid-template-rows:1fr 1fr;gap:24px">
+<div style="background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S0</p>
+<p style="font-size:36px;font-weight:600">Baseline</p>
+</div>
+<div style="background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S1</p>
+<p style="font-size:36px;font-weight:600">Hygiene</p>
+</div>
+<div style="background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S2</p>
+<p style="font-size:36px;font-weight:600">JVM caches</p>
+</div>
+<div style="background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S3</p>
+<p style="font-size:36px;font-weight:600">Front-end</p>
+</div>
+<div style="background:#0f2838;color:#f4f7f7;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S4</p>
+<p style="font-size:36px;font-weight:600">Edge HTML</p>
+</div>
+<div style="background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#34a1a0;font-family:'JetBrains Mono', 'Courier New', monospace">S5</p>
+<p style="font-size:36px;font-weight:600">Purge</p>
+</div>
+<div style="background:#34a1a0;color:#0f2838;border-radius:16px;padding:36px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:64px;font-weight:700;line-height:1;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace">S6</p>
+<p style="font-size:36px;font-weight:600">Static</p>
+</div>
+<div style="display:flex;align-items:center;justify-content:center">
+<svg aria-label="Layered pyramid: five layers from origin render at the base to precompute at the top" width="300" height="240" viewBox="0 0 300 240"><polygon points="150,10 175.5,50 124.5,50" fill="#34a1a0"/><polygon points="120.7,56 179.3,56 204.7,96 95.3,96" fill="#0f2838"/><polygon points="91.5,102 208.5,102 234,142 66,142" fill="#1d4a5c"/><polygon points="62.2,148 237.8,148 263.2,188 36.8,188" fill="#b9cfd3"/><polygon points="33,194 267,194 292.5,234 7.5,234" fill="#d8e0e2"/></svg>
+</div>
+</div>
+<p style="font-size:32px;color:#4a5a66;font-family:'JetBrains Mono', 'Courier New', monospace">k6 · TypeScript · Bun · Varnish as the local edge</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>The rig: k6 scenarios written in TypeScript, run with Bun, against a self-hosted DXP on Tomcat with Varnish in front as the local edge. Scenarios: guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id, and a 70/15/10/5 mix. The metrics that matter more than latency: edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, and publish-to-fresh time at the edge. Every stage changes one layer and runs the same mix. S4 is the core of Part 1; S6 is Part 2.</aside>
+</section>

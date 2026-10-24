@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { posts, categories } from '../../lib/content';
+export function getStaticPaths() {
+  return categories.map((c) => ({ params: { slug: c.slug }, props: { category: c, list: posts.filter((p) => p.categories.some((x) => x.slug === c.slug)) } }));
+}
+const { category, list } = Astro.props;
+---
+<Base title={`Category: ${category.name}`} cacheTags={['blog', `category-${category.slug}`]}>
+  <h1>{category.name}</h1>
+  <p class="meta">{list.length} posts</p>
+  <div class="grid" data-pagefind-ignore>{list.map((p) => <PostCard post={p} />)}</div>
+</Base>

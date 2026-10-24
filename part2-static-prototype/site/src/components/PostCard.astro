@@ -1,0 +1,11 @@
+---
+import { fmtDate } from '../lib/content';
+import type { Post } from '../lib/content';
+const { post } = Astro.props as { post: Post };
+---
+<article class="card">
+  <h3 style="margin:0 0 6px"><a href={post.path}>{post.title}</a></h3>
+  <p class="meta">{post.author} · {fmtDate(post.datePublished)} · {post.readingMinutes} min read</p>
+  <p>{post.description}</p>
+  <div>{post.categories.slice(0, 4).map((c) => <a class="tag" href={`/category/${c.slug}/`}>{c.name}</a>)}</div>
+</article>

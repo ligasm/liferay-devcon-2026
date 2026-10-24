@@ -1,0 +1,12 @@
+<section id="isomorphism" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Pages and AI: the same move</h2>
+<table style="font-size:36px;font-family:'IBM Plex Sans', Arial, sans-serif;color:#0f2838;border:1px solid #d8e0e2">
+<tr style="background:#0f2838;color:#f4f7f7"><th style="width:28%;text-align:left"></th><th style="width:36%;text-align:left">Static pages</th><th style="width:36%;text-align:left">AI features</th></tr>
+<tr style="background:#ffffff"><td>Expensive</td><td>Render</td><td>Inference</td></tr>
+<tr><td>Do it at</td><td>Publish</td><td>Publish</td></tr>
+<tr style="background:#ffffff"><td>Invalidate</td><td>Tag purge</td><td>Content hash</td></tr>
+<tr><td>Per request</td><td><b>≈ 0</b></td><td><b>≈ 0</b></td></tr>
+</table>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>The closing idea. Static generation and AI cost control are the same engineering move: take expensive, repeatable work off the request path, do it at publish time, cache the result, invalidate by event, serve stale on failure, and keep an escape hatch for the genuinely dynamic: islands for pages, a rate-limited live call for AI. Liferay already does this internally for semantic search: documents are embedded at index time, only the query is embedded live, and even that is cached. The market prices it too: batch inference is half price for accepting a 24-hour window. The counter-argument: precompute trades freshness for cost, and fails on cardinality. Content times locale times segment times device can explode.</aside>
+</section>
