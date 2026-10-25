@@ -1,0 +1,12 @@
+# S6 — static output of Part 2 served by nginx on :8090.
+#   cd part2-static-prototype && ENV_FILE=.env.local-proventeq node pipeline/regenerate.mjs --full --no-ai
+#   cd part1-simulations/matrix/S6-static/local && docker compose up -d
+services:
+  static:
+    image: nginx:1.27-alpine
+    container_name: proventeq-static
+    ports:
+      - "8090:8090"
+    volumes:
+      - ../../../../part2-static-prototype/dist-proventeq:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro

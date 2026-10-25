@@ -1,0 +1,11 @@
+time="2026-10-24T16:59:37+01:00" level=warning msg="Insufficient VUs, reached 1500 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=stress
+time="2026-10-24T16:59:41+01:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8086/web/proventeq/digital-experience\": request timeout"
+
+┌─ stress/S0-origin-pages / step-600 ────────────────────
+│ requests        26547   418.7 req/s
+│ duration      p50   3509ms  p95   4133ms  p99   4368ms
+│ ttfb          p50   3501ms  p95   4122ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

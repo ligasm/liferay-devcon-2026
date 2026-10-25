@@ -1,0 +1,10 @@
+time="2026-10-24T11:43:28+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=login
+
+┌─ S2-jvm-caches / login ────────────────────────────────
+│ requests         2395   36.4 req/s
+│ duration      p50     13ms  p95    752ms  p99    825ms
+│ ttfb          p50     15ms  p95    766ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

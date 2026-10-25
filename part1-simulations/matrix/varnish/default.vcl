@@ -110,6 +110,10 @@ sub vcl_recv {
         req.url ~ "[?&]p_auth=" ||
         req.url ~ "[?&]p_p_auth=" ||
         req.url ~ "[?&]p_p_lifecycle=[12]" ||
+        # The sign-in form (/c/portal/login redirects to <page>?p_p_id=…LoginPortlet…,
+        # lifecycle 0) carries a session-bound CSRF token: cached and cookie-stripped,
+        # every login POST fails with 403. Measured on the local lab (S4, 2026-10-24).
+        req.url ~ "[?&]p_p_id=com_liferay_login_web_portlet_" ||
         req.url ~ "[?&]p_l_mode=edit") {
         return (pass);
     }

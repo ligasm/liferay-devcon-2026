@@ -1,0 +1,9 @@
+
+┌─ S0-baseline / dl-download ────────────────────────────
+│ requests          601   10.0 req/s
+│ duration      p50      3ms  p95      4ms  p99      5ms
+│ ttfb          p50      2ms  p95      3ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

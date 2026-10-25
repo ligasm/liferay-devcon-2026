@@ -1,0 +1,9 @@
+
+┌─ stress/S3-origin-login / step-20 ─────────────────────
+│ requests         5205   77.8 req/s
+│ duration      p50    377ms  p95   5874ms  p99   6936ms
+│ ttfb          p50    587ms  p95   6354ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private  33.3%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

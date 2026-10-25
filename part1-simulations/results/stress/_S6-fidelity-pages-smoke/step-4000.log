@@ -1,0 +1,9 @@
+
+┌─ stress/S6-fidelity-pages / step-4000 ─────────────────
+│ requests       120000   3999.9 req/s
+│ duration      p50      1ms  p95      3ms  p99      8ms
+│ ttfb          p50      0ms  p95      2ms
+│ errors          0.0%   checks passed  88.8%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

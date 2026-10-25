@@ -1,0 +1,9 @@
+
+┌─ stress/S4-edge-mix / step-1000 ───────────────────────
+│ requests        63493   907.0 req/s
+│ duration      p50      2ms  p95   3192ms  p99   6515ms
+│ ttfb          p50      1ms  p95      7ms
+│ errors          1.3%   checks passed  98.7%
+│ edge hit       94.1%   set-cookie on guest   0.0%   cache-control private   1.4%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

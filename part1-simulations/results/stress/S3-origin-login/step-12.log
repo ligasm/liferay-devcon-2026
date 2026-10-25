@@ -1,0 +1,9 @@
+
+┌─ stress/S3-origin-login / step-12 ─────────────────────
+│ requests         3605   59.4 req/s
+│ duration      p50     12ms  p95    878ms  p99    961ms
+│ ttfb          p50      8ms  p95    919ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private  33.3%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

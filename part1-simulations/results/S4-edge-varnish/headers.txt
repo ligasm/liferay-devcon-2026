@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Cache-Control: no-cache, must-revalidate, max-age=0
+Age: 0
+X-Cache: MISS
+--
+HTTP/1.1 200 OK
+Cache-Control: no-cache, must-revalidate, max-age=0
+Age: 0
+X-Cache: HIT
+X-Cache-Hits: 1
+--
+HTTP/1.1 200 OK
+X-Cache: BYPASS

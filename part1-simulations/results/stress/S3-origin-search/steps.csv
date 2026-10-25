@@ -1,0 +1,7 @@
+label,workload,target_rate,achieved_iter_s,req_s,dropped_pct,error_pct,p50_ms,p95_ms,p99_ms,max_vus,liferay_cores_p90,host_cores_p90,k6_cores_p90,heap_old_mb_max,full_gc,saturated
+S3-origin-search,search,10,10.0,10.0,0.0,0.00,287.2,386.9,400.8,20,3.5,3.7,0.0,620,0,0
+S3-origin-search,search,20,20.0,19.9,0.0,0.00,413.6,638.5,744.3,20,10.0,10.3,0.1,634,0,0
+S3-origin-search,search,40,34.1,29.2,14.8,42.03,8590.9,10001.0,10002.3,376,18.7,19.1,0.1,638,0,1
+S3-origin-search,search,25,24.9,24.7,0.5,0.00,659.6,1071.9,1197.7,28,18.3,18.7,0.1,631,0,0
+S3-origin-search,search,30,28.1,26.4,6.6,0.00,2331.1,4696.9,5277.0,138,18.7,19.2,0.1,646,0,0
+S3-origin-search,search,35,30.8,26.5,12.0,4.87,5163.3,9991.9,10001.1,272,18.6,19.0,0.1,655,0,1

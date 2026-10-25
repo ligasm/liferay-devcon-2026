@@ -1,0 +1,9 @@
+# Local lab override: Liferay runs as a plain `docker run` container on the default
+# bridge (host port 8086 → container 8080). The VCL's backend is liferay:8080, so put
+# Varnish on that same bridge and point "liferay" at the container IP:
+#
+#   LIFERAY_UPSTREAM=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' liferay26112) \
+#     docker compose -f docker-compose.yml -f docker-compose.local.yml up -d
+services:
+  varnish:
+    network_mode: bridge

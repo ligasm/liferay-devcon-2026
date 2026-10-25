@@ -1,0 +1,141 @@
+== warm-up (http://127.0.0.1:8086)
+== stage: S3-frontend   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse guest-browse-sticky asset-publisher search login dl-download headless-api mix
+== VUS=10 RATE=10 DURATION=60s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T11:53:25+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S3-frontend / guest-browse ───────────────────────────
+│ requests         1189   18.3 req/s
+│ duration      p50      9ms  p95     17ms  p99     19ms
+│ ttfb          p50      7ms  p95     15ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S3-frontend/guest-browse.summary.json
+
+── guest-browse-sticky ─────────────────────────────────────────────────────
+time="2026-10-24T11:54:30+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S3-frontend / guest-browse-sticky ────────────────────
+│ requests         1188   18.3 req/s
+│ duration      p50      8ms  p95     16ms  p99     18ms
+│ ttfb          p50      7ms  p95     15ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   -     cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S3-frontend/guest-browse-sticky.summary.json
+
+── asset-publisher ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / asset-publisher ────────────────────────
+│ requests         1169   18.6 req/s
+│ duration      p50     16ms  p95     28ms  p99     30ms
+│ ttfb          p50     15ms  p95     27ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│
+│   ap_page               585 req  p95     29ms  edge hit   0.0%
+│   content_page          584 req  p95      9ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S3-frontend/asset-publisher.summary.json
+
+── search ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / search ─────────────────────────────────
+│ requests          583   9.3 req/s
+│ duration      p50    273ms  p95    371ms  p99    387ms
+│ ttfb          p50    272ms  p95    369ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 62s → results/S3-frontend/search.summary.json
+
+── login ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / login ──────────────────────────────────
+│ requests         1791   29.5 req/s
+│ duration      p50     13ms  p95    830ms  p99    953ms
+│ ttfb          p50    383ms  p95    887ms
+│ errors          0.0%   checks passed  75.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    FAILED → login_success: rate>0.99
+└──────────────────────────────────────────────────────────────────────
+time="2026-10-24T11:58:34+01:00" level=error msg="thresholds on metrics 'login_success' have been crossed"
+!! k6 exited with 99 for login (threshold failure = 99; see results/S3-frontend/login.log)
+   took 61s → results/S3-frontend/login.summary.json
+
+── dl-download ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / dl-download ────────────────────────────
+│ requests          601   10.0 req/s
+│ duration      p50      4ms  p95      5ms  p99      5ms
+│ ttfb          p50      3ms  p95      4ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 60s → results/S3-frontend/dl-download.summary.json
+
+── headless-api ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / headless-api ───────────────────────────
+│ requests         1178   17.9 req/s
+│ duration      p50     11ms  p95     25ms  p99     28ms
+│ ttfb          p50     11ms  p95     25ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        587 req  p95      8ms  edge hit   0.0%
+│   headless_list         586 req  p95     26ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 67s → results/S3-frontend/headless-api.summary.json
+
+── mix ─────────────────────────────────────────────────────
+
+┌─ S3-frontend / mix ────────────────────────────────────
+│ requests         1219   18.3 req/s
+│ duration      p50      7ms  p95    158ms  p99    501ms
+│ ttfb          p50      6ms  p95    196ms
+│ errors          0.0%   checks passed  99.4%
+│ edge hit        0.0%   set-cookie on guest  98.2%   cache-control private   0.0%
+│
+│   ap_page                41 req  p95     28ms  edge hit   0.0%
+│   guest_browse         1052 req  p95     14ms  edge hit   0.0%
+│   login                  63 req  p95    515ms  edge hit   0.0%
+│   search                 63 req  p95    319ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 67s → results/S3-frontend/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:8086)
+== stage: S3-frontend-load   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: mix
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── mix ─────────────────────────────────────────────────────
+time="2026-10-24T12:04:03+01:00" level=warning msg="Insufficient VUs, reached 280 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=guest_browse
+
+┌─ S3-frontend-load / mix ───────────────────────────────
+│ requests        11591   114.1 req/s
+│ duration      p50      6ms  p95    422ms  p99    836ms
+│ ttfb          p50      4ms  p95    426ms
+│ errors          0.0%   checks passed  99.3%
+│ edge hit        0.0%   set-cookie on guest  97.7%   cache-control private   0.0%
+│
+│   ap_page               500 req  p95     36ms  edge hit   0.0%
+│   guest_browse         9580 req  p95     21ms  edge hit   0.0%
+│   login                 765 req  p95    921ms  edge hit   0.0%
+│   search                746 req  p95    653ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 102s → results/S3-frontend-load/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py

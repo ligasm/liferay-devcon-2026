@@ -1,0 +1,12 @@
+
+┌─ S2-jvm-caches / asset-publisher ──────────────────────
+│ requests         1172   18.7 req/s
+│ duration      p50     13ms  p95     28ms  p99     33ms
+│ ttfb          p50     11ms  p95     27ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page               586 req  p95     30ms  edge hit   0.0%
+│   content_page          586 req  p95      9ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

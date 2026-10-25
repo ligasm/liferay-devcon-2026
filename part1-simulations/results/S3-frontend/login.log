@@ -1,0 +1,10 @@
+time="2026-10-24T12:06:17+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=login
+
+┌─ S3-frontend / login ──────────────────────────────────
+│ requests         2380   36.5 req/s
+│ duration      p50      9ms  p95    708ms  p99    757ms
+│ ttfb          p50      6ms  p95    726ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private  33.3%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

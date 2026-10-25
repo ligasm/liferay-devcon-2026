@@ -1,0 +1,4 @@
+label,workload,target_rate,achieved_iter_s,req_s,dropped_pct,error_pct,p50_ms,p95_ms,p99_ms,max_vus,liferay_cores_p90,host_cores_p90,k6_cores_p90,heap_old_mb_max,full_gc,saturated
+S0-origin-mix,mix,50,50.0,56.0,0.0,0.00,11.8,378.0,676.9,20,4.6,4.9,0.1,661,0,0
+S0-origin-mix,mix,100,99.9,112.6,0.1,0.00,15.9,630.5,950.9,26,14.5,15.1,0.3,657,0,0
+S0-origin-mix,mix,200,164.6,154.5,16.7,6.31,5217.1,10000.3,10001.1,1500,18.9,19.8,0.7,717,0,1

@@ -1,0 +1,141 @@
+== warm-up (http://127.0.0.1:8086)
+== stage: S1-hygiene   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse guest-browse-sticky asset-publisher search login dl-download headless-api mix
+== VUS=10 RATE=10 DURATION=60s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T11:24:22+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S1-hygiene / guest-browse ────────────────────────────
+│ requests         1202   18.5 req/s
+│ duration      p50     12ms  p95     19ms  p99     22ms
+│ ttfb          p50     11ms  p95     17ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S1-hygiene/guest-browse.summary.json
+
+── guest-browse-sticky ─────────────────────────────────────────────────────
+time="2026-10-24T11:25:27+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S1-hygiene / guest-browse-sticky ─────────────────────
+│ requests         1191   18.3 req/s
+│ duration      p50     12ms  p95     18ms  p99     20ms
+│ ttfb          p50     11ms  p95     17ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   -     cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S1-hygiene/guest-browse-sticky.summary.json
+
+── asset-publisher ─────────────────────────────────────────────────────
+
+┌─ S1-hygiene / asset-publisher ─────────────────────────
+│ requests         1171   18.6 req/s
+│ duration      p50     18ms  p95     29ms  p99     33ms
+│ ttfb          p50     17ms  p95     28ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page               585 req  p95     31ms  edge hit   0.0%
+│   content_page          586 req  p95     15ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S1-hygiene/asset-publisher.summary.json
+
+── search ─────────────────────────────────────────────────────
+
+┌─ S1-hygiene / search ──────────────────────────────────
+│ requests          582   9.2 req/s
+│ duration      p50    266ms  p95    360ms  p99    372ms
+│ ttfb          p50    265ms  p95    359ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S1-hygiene/search.summary.json
+
+── login ─────────────────────────────────────────────────────
+time="2026-10-24T11:28:43+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=login
+
+┌─ S1-hygiene / login ───────────────────────────────────
+│ requests         2370   36.1 req/s
+│ duration      p50     13ms  p95    757ms  p99    885ms
+│ ttfb          p50     15ms  p95    786ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S1-hygiene/login.summary.json
+
+── dl-download ─────────────────────────────────────────────────────
+
+┌─ S1-hygiene / dl-download ─────────────────────────────
+│ requests          601   10.0 req/s
+│ duration      p50      4ms  p95      4ms  p99      5ms
+│ ttfb          p50      3ms  p95      4ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 60s → results/S1-hygiene/dl-download.summary.json
+
+── headless-api ─────────────────────────────────────────────────────
+
+┌─ S1-hygiene / headless-api ────────────────────────────
+│ requests         1175   17.9 req/s
+│ duration      p50     11ms  p95     25ms  p99     30ms
+│ ttfb          p50     10ms  p95     25ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        585 req  p95      8ms  edge hit   0.0%
+│   headless_list         585 req  p95     27ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S1-hygiene/headless-api.summary.json
+
+── mix ─────────────────────────────────────────────────────
+
+┌─ S1-hygiene / mix ─────────────────────────────────────
+│ requests         1261   19.1 req/s
+│ duration      p50     10ms  p95    205ms  p99    499ms
+│ ttfb          p50      9ms  p95    206ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  98.3%   cache-control private 100.0%
+│
+│   ap_page                42 req  p95     26ms  edge hit   0.0%
+│   guest_browse         1056 req  p95     16ms  edge hit   0.0%
+│   login                 100 req  p95    508ms  edge hit   0.0%
+│   search                 63 req  p95    317ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 67s → results/S1-hygiene/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:8086)
+== stage: S1-hygiene-load   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: mix
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── mix ─────────────────────────────────────────────────────
+time="2026-10-24T11:35:06+01:00" level=warning msg="Insufficient VUs, reached 280 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=guest_browse
+time="2026-10-24T11:35:21+01:00" level=warning msg="Insufficient VUs, reached 20 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=login
+
+┌─ S1-hygiene-load / mix ────────────────────────────────
+│ requests        11947   119.1 req/s
+│ duration      p50     17ms  p95    423ms  p99    899ms
+│ ttfb          p50     15ms  p95    436ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  97.9%   cache-control private 100.0%
+│
+│   ap_page               501 req  p95     55ms  edge hit   0.0%
+│   guest_browse         9568 req  p95     35ms  edge hit   0.0%
+│   login                1135 req  p95    992ms  edge hit   0.0%
+│   search                743 req  p95    792ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 101s → results/S1-hygiene-load/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py

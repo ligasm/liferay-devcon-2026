@@ -1,0 +1,18 @@
+S3 tuned origin (fragments Cacheable), guest pages at 600/s — 4 jcmd Thread.print samples, 4 s apart, http-nio-8080-exec threads only
+
+thread states: {'WAITING': 183, 'RUNNABLE': 17}
+
+RUNNABLE request threads by activity:
+    17   100 %  other work
+
+top frames of RUNNABLE request threads:
+     2  java.util.concurrent.ConcurrentHashMap.get
+     1  com.liferay.petra.io.unsync.UnsyncPrintWriter.write
+     1  java.lang.invoke.LambdaForm$DMH/0x00007f081d1a4000.invokeInterface
+     1  org.apache.catalina.connector.RequestFacade.getAttribute
+     1  com.liferay.petra.lang.CentralizedThreadLocal.initialValue
+     1  com.liferay.portal.url.builder.internal.BaseWebContextResourceAbsolutePortalURLBuilderImpl.build
+     1  com.liferay.util.JS.getSafeName
+     1  java.util.LinkedHashMap$LinkedEntryIterator.next
+     1  java.lang.invoke.Invokers$Holder.invokeExact_MT
+     1  java.util.Comparator.lambda$comparing$77a9974f$1

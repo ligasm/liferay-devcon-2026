@@ -1,0 +1,12 @@
+
+┌─ S3-frontend / asset-publisher ────────────────────────
+│ requests         1169   18.6 req/s
+│ duration      p50     16ms  p95     28ms  p99     30ms
+│ ttfb          p50     15ms  p95     27ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│
+│   ap_page               585 req  p95     29ms  edge hit   0.0%
+│   content_page          584 req  p95      9ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

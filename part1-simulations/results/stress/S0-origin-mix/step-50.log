@@ -1,0 +1,9 @@
+
+┌─ stress/S0-origin-mix / step-50 ───────────────────────
+│ requests         3376   56.0 req/s
+│ duration      p50     12ms  p95    378ms  p99    677ms
+│ ttfb          p50     10ms  p95    382ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  96.9%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

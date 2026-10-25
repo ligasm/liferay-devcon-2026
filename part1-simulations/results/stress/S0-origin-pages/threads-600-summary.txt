@@ -1,0 +1,19 @@
+S0 stock origin, guest pages at 600/s target — 4 jcmd Thread.print samples, 4 s apart, http-nio-8080-exec threads only
+
+thread states: {'RUNNABLE': 261, 'BLOCKED': 2, 'WAITING': 37}
+
+RUNNABLE request threads by activity:
+   179    69 %  FreeMarker template PARSE (Template.<init>) for a fragment
+    82    31 %  other work
+
+top frames of RUNNABLE request threads:
+   114  freemarker.core.FMParserTokenManager.jjMoveNfa_0
+    48  freemarker.core.SimpleCharStream.GetImage
+     5  java.lang.Throwable.fillInStackTrace
+     4  sun.nio.ch.Net.poll
+     4  org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction
+     3  java.lang.invoke.DirectMethodHandle.allocateInstance
+     3  sun.nio.ch.SocketDispatcher.write0
+     3  freemarker.core.FMParserTokenManager.jjMoveNfa_2
+     2  java.util.HashMap.resize
+     2  java.lang.Long.getChars

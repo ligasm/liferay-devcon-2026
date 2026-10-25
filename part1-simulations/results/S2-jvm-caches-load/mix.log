@@ -1,0 +1,16 @@
+time="2026-10-24T11:49:51+01:00" level=warning msg="Insufficient VUs, reached 280 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=guest_browse
+time="2026-10-24T11:50:03+01:00" level=warning msg="Insufficient VUs, reached 20 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=login
+
+┌─ S2-jvm-caches-load / mix ─────────────────────────────
+│ requests        12023   118.0 req/s
+│ duration      p50      9ms  p95    379ms  p99    824ms
+│ ttfb          p50      8ms  p95    394ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  98.0%   cache-control private 100.0%
+│
+│   ap_page               499 req  p95     34ms  edge hit   0.0%
+│   guest_browse         9648 req  p95     21ms  edge hit   0.0%
+│   login                1130 req  p95    890ms  edge hit   0.0%
+│   search                746 req  p95    639ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

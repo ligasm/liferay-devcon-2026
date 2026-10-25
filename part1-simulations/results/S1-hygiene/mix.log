@@ -1,0 +1,14 @@
+
+┌─ S1-hygiene / mix ─────────────────────────────────────
+│ requests         1261   19.1 req/s
+│ duration      p50     10ms  p95    205ms  p99    499ms
+│ ttfb          p50      9ms  p95    206ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  98.3%   cache-control private 100.0%
+│
+│   ap_page                42 req  p95     26ms  edge hit   0.0%
+│   guest_browse         1056 req  p95     16ms  edge hit   0.0%
+│   login                 100 req  p95    508ms  edge hit   0.0%
+│   search                 63 req  p95    317ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

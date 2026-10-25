@@ -122,7 +122,9 @@ export function loginFlow() {
   const ok = check(post, {
     'login: POST → 302 redirect': (r) => r.status === 302 || r.status === 303,
     'login: auth cookies set (COMPANY_ID/ID/USER_UUID)': () => authCookies.length > 0,
-    'login: Cache-Control private': (r) => /private|no-store/.test(header(r, 'cache-control') || ''),
+    // With browser.cache.disabled=false (S3+) the 302 carries no Cache-Control at all;
+    // what matters is that nothing marks it shareable. The signed-in page is checked below.
+    'login: POST not publicly cacheable': (r) => !/public|s-maxage/.test(header(r, 'cache-control') || ''),
   }, tags);
   loginSuccess.add(ok);
   if (!ok) {
@@ -137,6 +139,7 @@ export function loginFlow() {
     'login: signed-in page 200': (r) => r.status === 200,
     'login: page shows signed-in marker': (r) => !!r.body && r.body.includes(cfg.SIGNED_IN_MARKER),
     'login: signed-in page NOT served from edge': (r) => !/HIT/i.test(header(r, 'cf-cache-status') || header(r, 'x-cache') || ''),
+    'login: signed-in page Cache-Control private': (r) => /private|no-store/.test(header(r, 'cache-control') || ''),
   }, tags);
 
   // 4. logout

@@ -1,0 +1,9 @@
+
+┌─ stress/S3-origin-mix / step-150 ──────────────────────
+│ requests        10057   164.5 req/s
+│ duration      p50     19ms  p95   1576ms  p99   3075ms
+│ ttfb          p50     13ms  p95   1620ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  96.8%   cache-control private   3.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

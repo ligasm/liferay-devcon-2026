@@ -1,0 +1,16 @@
+time="2026-10-24T11:35:06+01:00" level=warning msg="Insufficient VUs, reached 280 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=guest_browse
+time="2026-10-24T11:35:21+01:00" level=warning msg="Insufficient VUs, reached 20 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=login
+
+┌─ S1-hygiene-load / mix ────────────────────────────────
+│ requests        11947   119.1 req/s
+│ duration      p50     17ms  p95    423ms  p99    899ms
+│ ttfb          p50     15ms  p95    436ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  97.9%   cache-control private 100.0%
+│
+│   ap_page               501 req  p95     55ms  edge hit   0.0%
+│   guest_browse         9568 req  p95     35ms  edge hit   0.0%
+│   login                1135 req  p95    992ms  edge hit   0.0%
+│   search                743 req  p95    792ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

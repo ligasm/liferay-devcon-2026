@@ -3,13 +3,20 @@
 Runnable k6 load tests + a configuration matrix (S0 … S6) + a summariser that
 turns the runs into slide tables and charts. Target: a **self-hosted Liferay DXP
 2025+/CE 7.4 on Tomcat** that you own. Everything here was verified against a
-local mock of Liferay (`mock/server.mjs`), not against a real portal — see
-"What was verified" at the end.
+local mock of Liferay (`mock/server.mjs`) and then run for real against a local
+DXP 2026.Q1 with the Part 0 base site: the fixed-load S0…S6 ladder is in
+[results/LAB-RESULTS.md](results/LAB-RESULTS.md), the capacity ladders (step the rate up until
+it breaks) in [results/STRESS-RESULTS.md](results/STRESS-RESULTS.md).
 
 ```
 part1-simulations/
 ├── bin/k6                     k6 v2.2.0 linux/amd64 (downloaded from GitHub releases)
 ├── run.sh                     ./run.sh <STAGE_LABEL> [scenario …]
+├── campaign.sh, run-stage.sh  one stage of the lab ladder (standard pass + load pass)
+├── stress.sh                  capacity ladder: ./stress.sh <label> pages|search|login|mix <rate …>
+├── stress-campaign.sh         every ladder in STRESS-RESULTS.md (S3, S4, S0, refinements, light edge)
+├── stress_sampler.py          host / container / k6 CPU + Liferay heap, every 2 s
+├── stress_report.py           results/stress/*/steps.csv → STEPS.md + stress-*.png
 ├── summarize.py               results/*/*.json → SUMMARY.md, SUMMARY.csv, DELTAS.md, PNGs
 ├── k6/
 │   ├── lib/config.js          env vars + defaults, executors, shared options
@@ -23,11 +30,13 @@ part1-simulations/
 │   ├── dl-download.js         Documents & Media download, bytes/s + edge hit
 │   ├── headless-api.js        list (search index) vs get-by-id (DB)
 │   ├── mix.js                 70/15/10/5 mixed workload, ramping-arrival-rate
+│   ├── stress.js              one capacity step: open model, no think time (LIGHT=1 for edge)
 │   └── publish-to-fresh.js    S5: time from publish to fresh page at the edge
 ├── matrix/
 │   ├── MATRIX.md              the S0…S6 table: what changes, which scenario, which metric
 │   ├── S0-baseline/ … S6-static/   config files per stage
 │   ├── varnish/               default.vcl, default-xkey.vcl, docker-compose.yml
+│   ├── local/apply-stage.sh   apply S0…S3 to the local Docker Liferay (incl. fragment Cacheable)
 │   └── cloudflare/cache-rules.md
 ├── mock/server.mjs            Node 22 fake Liferay (MODE=origin | MODE=edge)
 └── results/                   S0-mock/, S4-mock/ example runs + SUMMARY.md, PNGs

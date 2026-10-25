@@ -5,6 +5,37 @@ Durations are k6 `http_req_duration` (full response); TTFB is `res.timings.waiti
 `edge hit` = share of responses served by an edge cache (cf-cache-status / x-cache / x-varnish / Age).  
 `set-cookie on guest` = anonymous requests that received a `Set-Cookie`; `cache-control private` = responses a shared cache must not store.
 
+## S0-baseline
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S0-baseline | asset-publisher (all) | 18.6 | 17 | 28 | 33 | 27 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | asset-publisher/ap_page | 9.3 | 24 | 30 | 34 | 29 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | asset-publisher/content_page | 9.3 | 11 | 14 | 16 | 13 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | dl-download | 10.0 | 3 | 4 | 5 | 3 | 0.00% | 0% | 100% | 0% |
+| S0-baseline | guest-browse | 18.4 | 12 | 19 | 21 | 17 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | guest-browse-sticky | 18.2 | 11 | 18 | 20 | 16 | 0.00% | 0% | – | 100% |
+| S0-baseline | headless-api (all) | 18.7 | 10 | 24 | 27 | 24 | 0.00% | 0% | 0% | 100% |
+| S0-baseline | headless-api/headless_by_id | 9.3 | 6 | 8 | 9 | 8 | 0.00% | 0% | 0% | 100% |
+| S0-baseline | headless-api/headless_list | 9.3 | 21 | 25 | 27 | 25 | 0.00% | 0% | 0% | 100% |
+| S0-baseline | login | 36.4 | 11 | 742 | 825 | 762 | 0.00% | 0% | 0% | 100% |
+| S0-baseline | mix (all) | 18.7 | 10 | 173 | 499 | 204 | 0.00% | 0% | 98% | 100% |
+| S0-baseline | mix/ap_page | 0.6 | 19 | 27 | 27 | 25 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | mix/guest_browse | 15.6 | 10 | 16 | 19 | 15 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | mix/login | 1.5 | 10 | 505 | 507 | 507 | 0.00% | 0% | 0% | 100% |
+| S0-baseline | mix/search | 0.9 | 247 | 322 | 339 | 321 | 0.00% | 0% | 100% | 100% |
+| S0-baseline | search | 9.3 | 292 | 392 | 418 | 391 | 0.00% | 0% | 100% | 100% |
+
+## S0-baseline-load
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S0-baseline-load | mix (all) | 117.6 | 20 | 521 | 1037 | 533 | 0.00% | 0% | 98% | 100% |
+| S0-baseline-load | mix/ap_page | 4.9 | 39 | 76 | 110 | 71 | 0.00% | 0% | 100% | 100% |
+| S0-baseline-load | mix/guest_browse | 94.3 | 19 | 49 | 72 | 44 | 0.00% | 0% | 100% | 100% |
+| S0-baseline-load | mix/login | 11.1 | 14 | 1106 | 1283 | 1194 | 0.00% | 0% | 0% | 100% |
+| S0-baseline-load | mix/search | 7.3 | 522 | 994 | 1249 | 991 | 0.00% | 0% | 100% | 100% |
+
 ## S0-mock
 
 | stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
@@ -25,6 +56,142 @@ Durations are k6 `http_req_duration` (full response); TTFB is `res.timings.waiti
 | S0-mock | mix/login | 1.8 | 24 | 34 | 36 | 35 | 0.00% | 0% | 100% | 100% |
 | S0-mock | mix/search | 1.3 | 55 | 68 | 70 | 68 | 0.00% | 0% | 100% | 100% |
 | S0-mock | search | 14.5 | 56 | 69 | 71 | 69 | 0.00% | 0% | 100% | 100% |
+
+## S1-hygiene
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S1-hygiene | asset-publisher (all) | 18.6 | 18 | 29 | 33 | 28 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | asset-publisher/ap_page | 9.3 | 25 | 31 | 34 | 30 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | asset-publisher/content_page | 9.3 | 12 | 15 | 16 | 13 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | dl-download | 10.0 | 4 | 4 | 5 | 4 | 0.00% | 0% | 100% | 0% |
+| S1-hygiene | guest-browse | 18.5 | 12 | 19 | 22 | 17 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | guest-browse-sticky | 18.3 | 12 | 18 | 20 | 17 | 0.00% | 0% | – | 100% |
+| S1-hygiene | headless-api (all) | 17.9 | 11 | 25 | 30 | 25 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene | headless-api/headless_by_id | 8.9 | 6 | 8 | 11 | 8 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene | headless-api/headless_list | 8.9 | 22 | 27 | 30 | 27 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene | login | 36.1 | 13 | 757 | 885 | 786 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene | mix (all) | 19.1 | 10 | 205 | 499 | 206 | 0.00% | 0% | 98% | 100% |
+| S1-hygiene | mix/ap_page | 0.6 | 20 | 26 | 29 | 24 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | mix/guest_browse | 16.0 | 10 | 16 | 19 | 15 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | mix/login | 1.5 | 9 | 508 | 523 | 517 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene | mix/search | 1.0 | 236 | 317 | 324 | 316 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene | search | 9.2 | 266 | 360 | 372 | 359 | 0.00% | 0% | 100% | 100% |
+
+## S1-hygiene-load
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S1-hygiene-load | mix (all) | 119.1 | 17 | 423 | 899 | 436 | 0.00% | 0% | 98% | 100% |
+| S1-hygiene-load | mix/ap_page | 5.0 | 34 | 55 | 82 | 51 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene-load | mix/guest_browse | 95.4 | 16 | 35 | 56 | 32 | 0.00% | 0% | 100% | 100% |
+| S1-hygiene-load | mix/login | 11.3 | 12 | 992 | 1157 | 1038 | 0.00% | 0% | 0% | 100% |
+| S1-hygiene-load | mix/search | 7.4 | 422 | 792 | 935 | 790 | 0.00% | 0% | 100% | 100% |
+
+## S2-jvm-caches
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S2-jvm-caches | asset-publisher (all) | 18.7 | 13 | 28 | 33 | 27 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | asset-publisher/ap_page | 9.3 | 25 | 30 | 33 | 29 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | asset-publisher/content_page | 9.3 | 8 | 9 | 10 | 8 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | dl-download | 10.0 | 4 | 5 | 5 | 4 | 0.00% | 0% | 100% | 0% |
+| S2-jvm-caches | guest-browse | 18.2 | 10 | 17 | 19 | 15 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | guest-browse-sticky | 18.4 | 9 | 17 | 19 | 15 | 0.00% | 0% | – | 100% |
+| S2-jvm-caches | headless-api (all) | 17.9 | 11 | 25 | 28 | 24 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches | headless-api/headless_by_id | 8.9 | 6 | 8 | 10 | 8 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches | headless-api/headless_list | 8.9 | 21 | 26 | 29 | 25 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches | login | 36.4 | 13 | 752 | 825 | 766 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches | mix (all) | 19.3 | 8 | 208 | 499 | 215 | 0.00% | 0% | 98% | 100% |
+| S2-jvm-caches | mix/ap_page | 0.6 | 20 | 23 | 24 | 22 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | mix/guest_browse | 16.2 | 7 | 15 | 17 | 13 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | mix/login | 1.5 | 10 | 510 | 519 | 514 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches | mix/search | 1.0 | 258 | 311 | 335 | 310 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches | search | 9.2 | 265 | 353 | 370 | 352 | 0.00% | 0% | 100% | 100% |
+
+## S2-jvm-caches-load
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S2-jvm-caches-load | mix (all) | 118.0 | 9 | 379 | 824 | 394 | 0.00% | 0% | 98% | 100% |
+| S2-jvm-caches-load | mix/ap_page | 4.9 | 26 | 34 | 38 | 32 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches-load | mix/guest_browse | 94.7 | 7 | 21 | 23 | 18 | 0.00% | 0% | 100% | 100% |
+| S2-jvm-caches-load | mix/login | 11.1 | 12 | 890 | 973 | 917 | 0.00% | 0% | 0% | 100% |
+| S2-jvm-caches-load | mix/search | 7.3 | 381 | 639 | 712 | 636 | 0.00% | 0% | 100% | 100% |
+
+## S3-frontend
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S3-frontend | asset-publisher (all) | 18.6 | 16 | 28 | 30 | 27 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | asset-publisher/ap_page | 9.3 | 24 | 29 | 32 | 28 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | asset-publisher/content_page | 9.3 | 8 | 9 | 10 | 8 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | dl-download | 10.0 | 4 | 5 | 5 | 4 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | guest-browse | 18.3 | 9 | 17 | 19 | 15 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | guest-browse-sticky | 18.3 | 8 | 16 | 18 | 15 | 0.00% | 0% | – | 0% |
+| S3-frontend | headless-api (all) | 17.9 | 11 | 25 | 28 | 25 | 0.00% | 0% | 0% | 100% |
+| S3-frontend | headless-api/headless_by_id | 8.9 | 6 | 8 | 11 | 8 | 0.00% | 0% | 0% | 100% |
+| S3-frontend | headless-api/headless_list | 8.9 | 21 | 26 | 29 | 26 | 0.00% | 0% | 0% | 100% |
+| S3-frontend | login | 36.5 | 9 | 708 | 757 | 726 | 0.00% | 0% | 0% | 33% |
+| S3-frontend | mix (all) | 18.3 | 7 | 158 | 501 | 196 | 0.00% | 0% | 98% | 0% |
+| S3-frontend | mix/ap_page | 0.6 | 21 | 28 | 30 | 26 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | mix/guest_browse | 15.8 | 7 | 14 | 17 | 12 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | mix/login | 0.9 | 11 | 515 | 526 | 521 | 0.00% | 0% | 0% | 0% |
+| S3-frontend | mix/search | 0.9 | 216 | 319 | 325 | 318 | 0.00% | 0% | 100% | 0% |
+| S3-frontend | search | 9.3 | 273 | 371 | 387 | 369 | 0.00% | 0% | 100% | 0% |
+
+## S3-frontend-gb80
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S3-frontend-gb80 | guest-browse | 38.8 | 7 | 15 | 17 | 14 | 0.00% | 0% | 100% | 0% |
+
+## S3-frontend-load
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S3-frontend-load | mix (all) | 114.1 | 6 | 422 | 836 | 426 | 0.00% | 0% | 98% | 0% |
+| S3-frontend-load | mix/ap_page | 4.9 | 27 | 36 | 42 | 33 | 0.00% | 0% | 100% | 0% |
+| S3-frontend-load | mix/guest_browse | 94.3 | 6 | 21 | 23 | 18 | 0.00% | 0% | 100% | 0% |
+| S3-frontend-load | mix/login | 7.5 | 12 | 921 | 1007 | 944 | 0.00% | 0% | 0% | 0% |
+| S3-frontend-load | mix/search | 7.3 | 391 | 653 | 724 | 651 | 0.00% | 0% | 100% | 0% |
+
+## S4-edge-varnish
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S4-edge-varnish | asset-publisher (all) | 18.6 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | asset-publisher/ap_page | 9.3 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | asset-publisher/content_page | 9.3 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | dl-download | 10.0 | 1 | 2 | 2 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | guest-browse | 18.4 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | guest-browse-sticky | 18.2 | 3 | 3 | 4 | 1 | 0.00% | 100% | – | 0% |
+| S4-edge-varnish | headless-api (all) | 18.7 | 10 | 23 | 25 | 23 | 0.00% | 0% | 0% | 100% |
+| S4-edge-varnish | headless-api/headless_by_id | 9.3 | 7 | 8 | 8 | 7 | 0.00% | 0% | 0% | 100% |
+| S4-edge-varnish | headless-api/headless_list | 9.3 | 21 | 24 | 26 | 24 | 0.00% | 0% | 0% | 100% |
+| S4-edge-varnish | login | 37.1 | 8 | 668 | 706 | 683 | 0.00% | 0% | 0% | 33% |
+| S4-edge-varnish | mix (all) | 18.4 | 3 | 5 | 478 | 2 | 0.00% | 95% | 0% | 2% |
+| S4-edge-varnish | mix/ap_page | 0.6 | 2 | 3 | 3 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | mix/guest_browse | 15.4 | 2 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | mix/login | 1.5 | 10 | 486 | 497 | 492 | 0.00% | 0% | 0% | 33% |
+| S4-edge-varnish | mix/search | 0.9 | 2 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish | search | 9.3 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+
+## S4-edge-varnish-gb80
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S4-edge-varnish-gb80 | guest-browse | 39.2 | 3 | 3 | 4 | 1 | 0.00% | 100% | 0% | 0% |
+
+## S4-edge-varnish-load
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S4-edge-varnish-load | mix (all) | 120.4 | 1 | 6 | 528 | 4 | 0.00% | 94% | 0% | 2% |
+| S4-edge-varnish-load | mix/ap_page | 5.0 | 1 | 2 | 3 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish-load | mix/guest_browse | 96.1 | 1 | 2 | 3 | 1 | 0.00% | 100% | 0% | 0% |
+| S4-edge-varnish-load | mix/login | 11.8 | 6 | 537 | 550 | 543 | 0.00% | 0% | 0% | 33% |
+| S4-edge-varnish-load | mix/search | 7.5 | 1 | 2 | 3 | 1 | 0.00% | 100% | 0% | 0% |
 
 ## S4-mock
 
@@ -47,65 +214,109 @@ Durations are k6 `http_req_duration` (full response); TTFB is `res.timings.waiti
 | S4-mock | mix/search | 1.4 | 1 | 1 | 1 | 1 | 0.00% | 100% | 0% | 0% |
 | S4-mock | search | 14.3 | 1 | 1 | 1 | 1 | 0.00% | 100% | 0% | 0% |
 
+## S5-edge-purge
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S5-edge-purge | publish-to-fresh | 7.7 | 14 | 25 | 25 | 23 | 0.00% | 49% | 49% | 0% |
+| S5-edge-purge | publish-to-fresh.run1 | 7.6 | 14 | 26 | 27 | 24 | 0.00% | 49% | 49% | 0% |
+| S5-edge-purge | publish-to-fresh.run2 | 7.6 | 14 | 25 | 26 | 24 | 0.00% | 49% | 49% | 0% |
+| S5-edge-purge | publish-to-fresh.run3 | 7.7 | 14 | 25 | 25 | 23 | 0.00% | 49% | 49% | 0% |
+
+## S5-edge-ttl
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S5-edge-ttl | publish-to-fresh | 4.3 | 3 | 23 | 28 | 22 | 0.00% | 90% | 10% | 0% |
+
+## S6-static
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S6-static | asset-publisher (all) | 18.6 | 3 | 4 | 4 | 3 | 0.00% | 0% | 0% | 0% |
+| S6-static | asset-publisher/ap_page | 9.3 | 3 | 4 | 4 | 3 | 0.00% | 0% | 0% | 0% |
+| S6-static | asset-publisher/content_page | 9.3 | 3 | 4 | 4 | 3 | 0.00% | 0% | 0% | 0% |
+| S6-static | guest-browse | 18.4 | 2 | 3 | 3 | 2 | 0.00% | 0% | 0% | 0% |
+| S6-static | guest-browse-sticky | 18.3 | 2 | 3 | 3 | 2 | 0.00% | 0% | – | 0% |
+| S6-static | search | 9.4 | 2 | 2 | 3 | 2 | 0.00% | 0% | 0% | 0% |
+
+## S6-static-gb80
+
+| stage | scenario | req/s | p50 ms | p95 ms | p99 ms | TTFB p95 ms | errors | edge hit | set-cookie on guest | cache-control private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| S6-static-gb80 | guest-browse | 38.5 | 2 | 3 | 3 | 2 | 0.00% | 0% | 0% | 0% |
+
 ## p95 response time (ms) by stage
 
-| scenario | S0-mock | S4-mock |
-|---|---:|---:|
-| asset-publisher (all) | 71 | 1 |
-| asset-publisher/ap_page | 72 | 1 |
-| asset-publisher/content_page | 32 | 1 |
-| dl-download | 19 | 1 |
-| guest-browse | 32 | 1 |
-| guest-browse-sticky | 32 | 1 |
-| headless-api (all) | 49 | 50 |
-| headless-api/headless_by_id | 13 | 13 |
-| headless-api/headless_list | 51 | 51 |
-| login | 35 | 36 |
-| mix (all) | 48 | 13 |
-| mix/ap_page | 66 | 1 |
-| mix/guest_browse | 32 | 1 |
-| mix/login | 34 | 36 |
-| mix/search | 68 | 1 |
-| search | 69 | 1 |
+| scenario | S0-baseline | S0-baseline-load | S0-mock | S1-hygiene | S1-hygiene-load | S2-jvm-caches | S2-jvm-caches-load | S3-frontend | S3-frontend-gb80 | S3-frontend-load | S4-edge-varnish | S4-edge-varnish-gb80 | S4-edge-varnish-load | S4-mock | S5-edge-purge | S5-edge-ttl | S6-static | S6-static-gb80 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| asset-publisher (all) | 28 | – | 71 | 29 | – | 28 | – | 28 | – | – | 3 | – | – | 1 | – | – | 4 | – |
+| asset-publisher/ap_page | 30 | – | 72 | 31 | – | 30 | – | 29 | – | – | 3 | – | – | 1 | – | – | 4 | – |
+| asset-publisher/content_page | 14 | – | 32 | 15 | – | 9 | – | 9 | – | – | 3 | – | – | 1 | – | – | 4 | – |
+| dl-download | 4 | – | 19 | 4 | – | 5 | – | 5 | – | – | 2 | – | – | 1 | – | – | – | – |
+| guest-browse | 19 | – | 32 | 19 | – | 17 | – | 17 | 15 | – | 3 | 3 | – | 1 | – | – | 3 | 3 |
+| guest-browse-sticky | 18 | – | 32 | 18 | – | 17 | – | 16 | – | – | 3 | – | – | 1 | – | – | 3 | – |
+| headless-api (all) | 24 | – | 49 | 25 | – | 25 | – | 25 | – | – | 23 | – | – | 50 | – | – | – | – |
+| headless-api/headless_by_id | 8 | – | 13 | 8 | – | 8 | – | 8 | – | – | 8 | – | – | 13 | – | – | – | – |
+| headless-api/headless_list | 25 | – | 51 | 27 | – | 26 | – | 26 | – | – | 24 | – | – | 51 | – | – | – | – |
+| login | 742 | – | 35 | 757 | – | 752 | – | 708 | – | – | 668 | – | – | 36 | – | – | – | – |
+| mix (all) | 173 | 521 | 48 | 205 | 423 | 208 | 379 | 158 | – | 422 | 5 | – | 6 | 13 | – | – | – | – |
+| mix/ap_page | 27 | 76 | 66 | 26 | 55 | 23 | 34 | 28 | – | 36 | 3 | – | 2 | 1 | – | – | – | – |
+| mix/guest_browse | 16 | 49 | 32 | 16 | 35 | 15 | 21 | 14 | – | 21 | 3 | – | 2 | 1 | – | – | – | – |
+| mix/login | 505 | 1106 | 34 | 508 | 992 | 510 | 890 | 515 | – | 921 | 486 | – | 537 | 36 | – | – | – | – |
+| mix/search | 322 | 994 | 68 | 317 | 792 | 311 | 639 | 319 | – | 653 | 3 | – | 2 | 1 | – | – | – | – |
+| search | 392 | – | 69 | 360 | – | 353 | – | 371 | – | – | 3 | – | – | 1 | – | – | 2 | – |
+| publish-to-fresh | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 25 | 23 | – | – |
+| publish-to-fresh.run1 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 26 | – | – | – |
+| publish-to-fresh.run2 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 25 | – | – | – |
+| publish-to-fresh.run3 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 25 | – | – | – |
 
 ## throughput (req/s) by stage
 
-| scenario | S0-mock | S4-mock |
-|---|---:|---:|
-| asset-publisher (all) | 28.9 | 28.8 |
-| asset-publisher/ap_page | 14.5 | 14.4 |
-| asset-publisher/content_page | 14.5 | 14.4 |
-| dl-download | 15.1 | 15.1 |
-| guest-browse | 43.9 | 46.0 |
-| guest-browse-sticky | 45.4 | 45.2 |
-| headless-api (all) | 28.5 | 28.6 |
-| headless-api/headless_by_id | 14.3 | 14.2 |
-| headless-api/headless_list | 14.2 | 14.2 |
-| login | 51.9 | 53.9 |
-| mix (all) | 29.1 | 29.6 |
-| mix/ap_page | 0.9 | 0.9 |
-| mix/guest_browse | 25.1 | 25.6 |
-| mix/login | 1.8 | 1.8 |
-| mix/search | 1.3 | 1.4 |
-| search | 14.5 | 14.3 |
+| scenario | S0-baseline | S0-baseline-load | S0-mock | S1-hygiene | S1-hygiene-load | S2-jvm-caches | S2-jvm-caches-load | S3-frontend | S3-frontend-gb80 | S3-frontend-load | S4-edge-varnish | S4-edge-varnish-gb80 | S4-edge-varnish-load | S4-mock | S5-edge-purge | S5-edge-ttl | S6-static | S6-static-gb80 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| asset-publisher (all) | 18.6 | – | 28.9 | 18.6 | – | 18.7 | – | 18.6 | – | – | 18.6 | – | – | 28.8 | – | – | 18.6 | – |
+| asset-publisher/ap_page | 9.3 | – | 14.5 | 9.3 | – | 9.3 | – | 9.3 | – | – | 9.3 | – | – | 14.4 | – | – | 9.3 | – |
+| asset-publisher/content_page | 9.3 | – | 14.5 | 9.3 | – | 9.3 | – | 9.3 | – | – | 9.3 | – | – | 14.4 | – | – | 9.3 | – |
+| dl-download | 10.0 | – | 15.1 | 10.0 | – | 10.0 | – | 10.0 | – | – | 10.0 | – | – | 15.1 | – | – | – | – |
+| guest-browse | 18.4 | – | 43.9 | 18.5 | – | 18.2 | – | 18.3 | 38.8 | – | 18.4 | 39.2 | – | 46.0 | – | – | 18.4 | 38.5 |
+| guest-browse-sticky | 18.2 | – | 45.4 | 18.3 | – | 18.4 | – | 18.3 | – | – | 18.2 | – | – | 45.2 | – | – | 18.3 | – |
+| headless-api (all) | 18.7 | – | 28.5 | 17.9 | – | 17.9 | – | 17.9 | – | – | 18.7 | – | – | 28.6 | – | – | – | – |
+| headless-api/headless_by_id | 9.3 | – | 14.3 | 8.9 | – | 8.9 | – | 8.9 | – | – | 9.3 | – | – | 14.2 | – | – | – | – |
+| headless-api/headless_list | 9.3 | – | 14.2 | 8.9 | – | 8.9 | – | 8.9 | – | – | 9.3 | – | – | 14.2 | – | – | – | – |
+| login | 36.4 | – | 51.9 | 36.1 | – | 36.4 | – | 36.5 | – | – | 37.1 | – | – | 53.9 | – | – | – | – |
+| mix (all) | 18.7 | 117.6 | 29.1 | 19.1 | 119.1 | 19.3 | 118.0 | 18.3 | – | 114.1 | 18.4 | – | 120.4 | 29.6 | – | – | – | – |
+| mix/ap_page | 0.6 | 4.9 | 0.9 | 0.6 | 5.0 | 0.6 | 4.9 | 0.6 | – | 4.9 | 0.6 | – | 5.0 | 0.9 | – | – | – | – |
+| mix/guest_browse | 15.6 | 94.3 | 25.1 | 16.0 | 95.4 | 16.2 | 94.7 | 15.8 | – | 94.3 | 15.4 | – | 96.1 | 25.6 | – | – | – | – |
+| mix/login | 1.5 | 11.1 | 1.8 | 1.5 | 11.3 | 1.5 | 11.1 | 0.9 | – | 7.5 | 1.5 | – | 11.8 | 1.8 | – | – | – | – |
+| mix/search | 0.9 | 7.3 | 1.3 | 1.0 | 7.4 | 1.0 | 7.3 | 0.9 | – | 7.3 | 0.9 | – | 7.5 | 1.4 | – | – | – | – |
+| search | 9.3 | – | 14.5 | 9.2 | – | 9.2 | – | 9.3 | – | – | 9.3 | – | – | 14.3 | – | – | 9.4 | – |
+| publish-to-fresh | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 7.7 | 4.3 | – | – |
+| publish-to-fresh.run1 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 7.6 | – | – | – |
+| publish-to-fresh.run2 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 7.6 | – | – | – |
+| publish-to-fresh.run3 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 7.7 | – | – | – |
 
 ## edge hit ratio by stage
 
-| scenario | S0-mock | S4-mock |
-|---|---:|---:|
-| asset-publisher (all) | 0% | 100% |
-| asset-publisher/ap_page | 0% | 100% |
-| asset-publisher/content_page | 0% | 100% |
-| dl-download | 0% | 100% |
-| guest-browse | 0% | 100% |
-| guest-browse-sticky | 0% | 100% |
-| headless-api (all) | 0% | 0% |
-| headless-api/headless_by_id | 0% | 0% |
-| headless-api/headless_list | 0% | 0% |
-| login | 0% | 0% |
-| mix (all) | 0% | 95% |
-| mix/ap_page | 0% | 100% |
-| mix/guest_browse | 0% | 100% |
-| mix/login | 0% | 0% |
-| mix/search | 0% | 100% |
-| search | 0% | 100% |
+| scenario | S0-baseline | S0-baseline-load | S0-mock | S1-hygiene | S1-hygiene-load | S2-jvm-caches | S2-jvm-caches-load | S3-frontend | S3-frontend-gb80 | S3-frontend-load | S4-edge-varnish | S4-edge-varnish-gb80 | S4-edge-varnish-load | S4-mock | S5-edge-purge | S5-edge-ttl | S6-static | S6-static-gb80 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| asset-publisher (all) | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | 0% | – |
+| asset-publisher/ap_page | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | 0% | – |
+| asset-publisher/content_page | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | 0% | – |
+| dl-download | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | – | – |
+| guest-browse | 0% | – | 0% | 0% | – | 0% | – | 0% | 0% | – | 100% | 100% | – | 100% | – | – | 0% | 0% |
+| guest-browse-sticky | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | 0% | – |
+| headless-api (all) | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 0% | – | – | 0% | – | – | – | – |
+| headless-api/headless_by_id | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 0% | – | – | 0% | – | – | – | – |
+| headless-api/headless_list | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 0% | – | – | 0% | – | – | – | – |
+| login | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 0% | – | – | 0% | – | – | – | – |
+| mix (all) | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 0% | – | 0% | 95% | – | 94% | 95% | – | – | – | – |
+| mix/ap_page | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 0% | – | 0% | 100% | – | 100% | 100% | – | – | – | – |
+| mix/guest_browse | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 0% | – | 0% | 100% | – | 100% | 100% | – | – | – | – |
+| mix/login | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 0% | – | 0% | 0% | – | 0% | 0% | – | – | – | – |
+| mix/search | 0% | 0% | 0% | 0% | 0% | 0% | 0% | 0% | – | 0% | 100% | – | 100% | 100% | – | – | – | – |
+| search | 0% | – | 0% | 0% | – | 0% | – | 0% | – | – | 100% | – | – | 100% | – | – | 0% | – |
+| publish-to-fresh | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 49% | 90% | – | – |
+| publish-to-fresh.run1 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 49% | – | – | – |
+| publish-to-fresh.run2 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 49% | – | – | – |
+| publish-to-fresh.run3 | – | – | – | – | – | – | – | – | – | – | – | – | – | – | 49% | – | – | – |

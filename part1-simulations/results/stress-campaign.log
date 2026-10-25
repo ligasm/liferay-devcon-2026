@@ -1,0 +1,126 @@
+== restart liferay26112 (15:46:33)
+== stress S3-origin-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000 2500 3000 4000   (15:47:50)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95      22 ms  liferay  0.8 cores  k6  0.1  heap   719 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  1.3 cores  k6  0.2  heap   697 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  1.6 cores  k6  0.3  heap   689 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  2.4 cores  k6  0.5  heap   698 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95      15 ms  liferay  3.2 cores  k6  0.7  heap   767 MB  ok
+   rate   600/s →   600.0 it/s  drop   0.0%  err  0.00%  p95      21 ms  liferay  6.2 cores  k6  1.2  heap   871 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95      23 ms  liferay  7.9 cores  k6  1.5  heap  1014 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95      24 ms  liferay  8.8 cores  k6  1.9  heap  1239 MB  ok
+   rate  1200/s →  1200.0 it/s  drop   0.0%  err  0.00%  p95      28 ms  liferay 11.9 cores  k6  2.5  heap  1472 MB  ok
+   rate  1500/s →  1388.7 it/s  drop   7.4%  err  0.00%  p95    1186 ms  liferay 15.1 cores  k6  4.0  heap  1773 MB  ok
+   rate  2000/s →  1368.3 it/s  drop  31.6%  err  0.00%  p95    1295 ms  liferay 15.0 cores  k6  4.0  heap  2140 MB  SATURATED
+== saturated at 2000/s — ladder stops
+== done S3-origin-pages (16:02:15)
+== restart liferay26112 (16:02:15)
+== stress S3-origin-search / search → http://127.0.0.1:8086   steps: 10 20 40 60 80 100 150 200 300 400   (16:03:34)
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95     387 ms  liferay  3.5 cores  k6  0.0  heap   620 MB  ok
+   rate    20/s →    20.0 it/s  drop   0.0%  err  0.00%  p95     638 ms  liferay 10.0 cores  k6  0.1  heap   634 MB  ok
+   rate    40/s →    34.1 it/s  drop  14.8%  err 42.03%  p95   10001 ms  liferay 18.7 cores  k6  0.1  heap   638 MB  SATURATED
+== saturated at 40/s — ladder stops
+== done S3-origin-search (16:07:26)
+== restart liferay26112 (16:07:26)
+== stress S3-origin-login / login → http://127.0.0.1:8086   steps: 2 5 10 20 40 60 80 120 160 200 300   (16:08:45)
+   rate     2/s →     2.0 it/s  drop   0.0%  err  0.00%  p95     516 ms  liferay  1.3 cores  k6  0.0  heap   614 MB  ok
+   rate     5/s →     5.0 it/s  drop   0.0%  err  0.00%  p95     603 ms  liferay  3.3 cores  k6  0.0  heap   614 MB  ok
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95     793 ms  liferay  8.8 cores  k6  0.1  heap   611 MB  ok
+   rate    20/s →    17.4 it/s  drop  13.2%  err  0.00%  p95    5874 ms  liferay 19.7 cores  k6  0.1  heap   601 MB  SATURATED
+== saturated at 20/s — ladder stops
+== done S3-origin-login (16:13:55)
+== restart liferay26112 (16:13:55)
+== stress S3-origin-mix / mix → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (16:15:13)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95     365 ms  liferay  4.7 cores  k6  0.1  heap   598 MB  ok
+   rate   100/s →    99.9 it/s  drop   0.1%  err  0.00%  p95     535 ms  liferay 11.1 cores  k6  0.3  heap   610 MB  ok
+   rate   200/s →   172.0 it/s  drop  13.3%  err  2.01%  p95    8607 ms  liferay 18.8 cores  k6  0.7  heap   670 MB  SATURATED
+== saturated at 200/s — ladder stops
+== done S3-origin-mix (16:19:05)
+== restart liferay26112 (16:19:05)
+== stress S4-edge-pages / pages → http://127.0.0.1:6081   steps: 500 1000 2000 4000 6000 8000 12000 16000 20000 25000   (16:20:24)
+   rate   500/s →   500.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.1 cores  k6  1.6  heap   611 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.1 cores  k6  3.0  heap   611 MB  ok
+   rate  2000/s →  2000.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.1 cores  k6  4.5  heap   611 MB  ok
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       3 ms  liferay  0.2 cores  k6  8.6  heap   611 MB  ok
+   rate  6000/s →  6000.1 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  0.2 cores  k6 13.6  heap   611 MB  ok
+   rate  8000/s →  6838.4 it/s  drop  14.3%  err  0.00%  p95     422 ms  liferay  0.2 cores  k6 17.7  heap   611 MB  SATURATED
+== saturated at 8000/s — ladder stops
+== done S4-edge-pages (16:28:06)
+== restart liferay26112 (16:28:06)
+== stress S4-edge-mix / mix → http://127.0.0.1:6081   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (16:29:26)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95       9 ms  liferay  1.6 cores  k6  0.2  heap   631 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95       9 ms  liferay  3.0 cores  k6  0.3  heap   631 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95      12 ms  liferay  6.1 cores  k6  0.5  heap   628 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95      12 ms  liferay  9.2 cores  k6  0.8  heap   625 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95      12 ms  liferay 15.2 cores  k6  1.1  heap   619 MB  ok
+   rate   600/s →   593.8 it/s  drop   0.9%  err  0.13%  p95    2513 ms  liferay 18.1 cores  k6  1.9  heap   626 MB  ok
+   rate   800/s →   793.5 it/s  drop   0.5%  err  0.93%  p95    3223 ms  liferay 18.9 cores  k6  2.4  heap   629 MB  ok
+   rate  1000/s →   993.6 it/s  drop   0.4%  err  1.32%  p95    3192 ms  liferay 18.1 cores  k6  2.9  heap   627 MB  ok
+   rate  1200/s →  1194.4 it/s  drop   0.4%  err  1.78%  p95    1390 ms  liferay 18.6 cores  k6  3.4  heap   628 MB  ok
+   rate  1500/s →  1495.3 it/s  drop   0.2%  err  2.17%  p95      23 ms  liferay 19.5 cores  k6  4.0  heap   632 MB  ok
+   rate  2000/s →  1995.1 it/s  drop   0.1%  err  2.56%  p95      44 ms  liferay 19.6 cores  k6  5.2  heap   635 MB  ok
+== done S4-edge-mix (16:45:12)
+== S0 applied; restarting liferay26112
+== up after 16 s
+com.liferay.portal.kernel.events.ActionException: java.lang.NullPointerException: Cannot invoke "com.liferay.portal.kernel.model.Group.getGroupId()" because "liveGroup" is null
+Caused by: java.lang.NullPointerException: Cannot invoke "com.liferay.portal.kernel.model.Group.getGroupId()" because "liveGroup" is null
+2026-10-24 15:45:25.436 ERROR [http-nio-8080-exec-4][error_jsp:534] com.liferay.portal.kernel.events.ActionException: java.lang.NullPointerException: Cannot invoke "com.liferay.portal.kernel.model.Group.getGroupId()" because "liveGroup" is null
+com.liferay.portal.kernel.events.ActionException: java.lang.NullPointerException: Cannot invoke "com.liferay.portal.kernel.model.Group.getGroupId()" because "liveGroup" is null
+Caused by: java.lang.NullPointerException: Cannot invoke "com.liferay.portal.kernel.model.Group.getGroupId()" because "liveGroup" is null
+== restart liferay26112 (16:45:28)
+== stress S0-origin-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000 2500 3000 4000   (16:46:47)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95      22 ms  liferay  0.8 cores  k6  0.1  heap   621 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  1.3 cores  k6  0.2  heap   613 MB  ok
+== relaunch 16:50:51: S0 (fragments cacheable=false) R L
+== S0 applied; restarting liferay26112
+== up after 18 s
+== fragment cacheable flags now: {False: 16}
+== restart liferay26112 (16:51:20)
+== stress S0-origin-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000 2500 3000 4000   (16:52:37)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95      21 ms  liferay  1.0 cores  k6  0.1  heap   635 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  1.6 cores  k6  0.2  heap   624 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  2.5 cores  k6  0.3  heap   651 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95      24 ms  liferay  5.0 cores  k6  0.5  heap   705 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95     118 ms  liferay 17.4 cores  k6  0.9  heap   779 MB  ok
+   rate   600/s →   442.4 it/s  drop  26.3%  err  0.00%  p95    4133 ms  liferay 18.2 cores  k6  1.4  heap  2530 MB  SATURATED
+== saturated at 600/s — ladder stops
+== done S0-origin-pages (17:00:22)
+== restart liferay26112 (17:00:22)
+== stress S0-origin-mix / mix → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (17:01:41)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95     378 ms  liferay  4.6 cores  k6  0.1  heap   661 MB  ok
+   rate   100/s →    99.9 it/s  drop   0.1%  err  0.00%  p95     630 ms  liferay 14.5 cores  k6  0.3  heap   657 MB  ok
+   rate   200/s →   164.6 it/s  drop  16.7%  err  6.31%  p95   10000 ms  liferay 18.9 cores  k6  0.7  heap   717 MB  SATURATED
+== saturated at 200/s — ladder stops
+== done S0-origin-mix (17:05:33)
+== S3 applied; restarting liferay26112
+== up after 17 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (17:06:02)
+== stress S3-origin-search / search → http://127.0.0.1:8086   steps: 25 30 35   (17:07:21)
+   rate    25/s →    24.9 it/s  drop   0.5%  err  0.00%  p95    1072 ms  liferay 18.3 cores  k6  0.1  heap   631 MB  ok
+   rate    30/s →    28.1 it/s  drop   6.6%  err  0.00%  p95    4697 ms  liferay 18.7 cores  k6  0.1  heap   646 MB  ok
+   rate    35/s →    30.8 it/s  drop  12.0%  err  4.87%  p95    9992 ms  liferay 18.6 cores  k6  0.1  heap   655 MB  SATURATED
+== done S3-origin-search (17:11:36)
+== restart liferay26112 (17:11:36)
+== stress S3-origin-login / login → http://127.0.0.1:8086   steps: 12 15   (17:12:54)
+   rate    12/s →    12.0 it/s  drop   0.0%  err  0.00%  p95     878 ms  liferay 10.8 cores  k6  0.1  heap   617 MB  ok
+   rate    15/s →    15.0 it/s  drop   0.0%  err  0.00%  p95    1022 ms  liferay 16.3 cores  k6  0.1  heap   610 MB  ok
+== done S3-origin-login (17:15:36)
+== restart liferay26112 (17:15:36)
+== stress S3-origin-mix / mix → http://127.0.0.1:8086   steps: 125 150 175   (17:16:54)
+   rate   125/s →   124.3 it/s  drop   0.5%  err  0.00%  p95     945 ms  liferay 18.8 cores  k6  0.4  heap   623 MB  ok
+   rate   150/s →   148.6 it/s  drop   0.9%  err  0.00%  p95    1576 ms  liferay 18.9 cores  k6  0.5  heap   657 MB  ok
+   rate   175/s →   162.2 it/s  drop   7.3%  err  0.00%  p95    4915 ms  liferay 18.8 cores  k6  0.6  heap   700 MB  ok
+== done S3-origin-mix (17:21:04)
+== restart liferay26112 (17:21:04)
+== stress S4-edge-pages-light / pages → http://127.0.0.1:6081   steps: 4000 6000 8000 12000 16000 20000 25000 30000   (17:22:23)
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.7  heap   639 MB  ok
+   rate  6000/s →  6000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  3.1  heap   639 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  3.5  heap   639 MB  ok
+   rate 12000/s → 12000.1 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.2 cores  k6  5.9  heap   639 MB  ok
+   rate 16000/s → 16000.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  0.2 cores  k6  8.1  heap   639 MB  ok
+   rate 20000/s → 19999.8 it/s  drop   0.0%  err  0.00%  p95      52 ms  liferay  0.2 cores  k6 10.0  heap   639 MB  ok
+   rate 25000/s → 24811.0 it/s  drop   0.7%  err  0.02%  p95      70 ms  liferay  0.2 cores  k6 13.1  heap   639 MB  ok
+   rate 30000/s → 26536.9 it/s  drop  11.5%  err  0.08%  p95      80 ms  liferay  0.3 cores  k6 14.1  heap   639 MB  SATURATED
+== saturated at 30000/s — ladder stops
+== done S4-edge-pages-light (17:32:50)
+== campaign done (17:32:50)

@@ -1,0 +1,9 @@
+
+┌─ stress/S3-origin-pages / step-50 ─────────────────────
+│ requests         3001   50.0 req/s
+│ duration      p50      7ms  p95     22ms  p99     26ms
+│ ttfb          p50      6ms  p95     21ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

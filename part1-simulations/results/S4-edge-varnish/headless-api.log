@@ -1,0 +1,12 @@
+
+┌─ S4-edge-varnish / headless-api ───────────────────────
+│ requests         1178   18.7 req/s
+│ duration      p50     10ms  p95     23ms  p99     25ms
+│ ttfb          p50      9ms  p95     23ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        587 req  p95      8ms  edge hit   0.0%
+│   headless_list         586 req  p95     24ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

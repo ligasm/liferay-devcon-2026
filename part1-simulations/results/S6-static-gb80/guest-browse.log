@@ -1,0 +1,10 @@
+time="2026-10-24T12:48:36+01:00" level=warning msg="Insufficient VUs, reached 80 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S6-static-gb80 / guest-browse ────────────────────────
+│ requests         3659   38.5 req/s
+│ duration      p50      2ms  p95      3ms  p99      3ms
+│ ttfb          p50      2ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

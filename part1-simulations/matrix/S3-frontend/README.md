@@ -4,7 +4,7 @@
 |---|---|---|
 | `cdn.host.https`, `cdn.dynamic.resources.enabled` | `portal-ext.properties` (or Instance Settings → General) | `portal-ext.properties` |
 | `browser.cache.disabled=false`, keep `browser.cache.signed.in.disabled=true` | `portal-ext.properties` | `portal-ext.properties` |
-| **Documents & Media → Cache Control** (Public, max-age) | Control Panel → System/Instance Settings → Documents and Media → Cache Control | `osgi-configs/` has the *shape*; PID marked UNVERIFIED |
+| **Documents & Media → Cache Control** (Public, max-age) | Control Panel → System/Instance Settings → Documents and Media → Cache Control | `osgi-configs/` (PID + keys verified on 2026.Q1: `…document.library.web.internal.configuration.CacheControlConfiguration`) |
 | **Adaptive Media** resolutions + regenerate existing | Control Panel → Configuration → Adaptive Media (add resolutions, then *Adapt Remaining Images*) | UI only — Liferay 7.4 docs do not document a `.config` for resolutions |
 | **Frontend Resource Caching** (DXP 2025.Q4+/2026.Q1+) | Instance Settings → Platform → Infrastructure → Frontend Caching | UI; enables hashed, infinitely cacheable CSS/JS |
 | `loading="lazy"` + `width`/`height` on images (never on the LCP image) | fragment / theme templates | `fragment-image.html` |

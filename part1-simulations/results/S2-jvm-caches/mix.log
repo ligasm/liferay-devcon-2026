@@ -1,0 +1,14 @@
+
+┌─ S2-jvm-caches / mix ──────────────────────────────────
+│ requests         1260   19.3 req/s
+│ duration      p50      8ms  p95    208ms  p99    499ms
+│ ttfb          p50      7ms  p95    215ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  98.3%   cache-control private 100.0%
+│
+│   ap_page                41 req  p95     23ms  edge hit   0.0%
+│   guest_browse         1056 req  p95     15ms  edge hit   0.0%
+│   login                 100 req  p95    510ms  edge hit   0.0%
+│   search                 63 req  p95    311ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

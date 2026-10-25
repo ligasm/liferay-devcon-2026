@@ -1,0 +1,9 @@
+
+┌─ S0-baseline / search ─────────────────────────────────
+│ requests          582   9.3 req/s
+│ duration      p50    292ms  p95    392ms  p99    418ms
+│ ttfb          p50    291ms  p95    391ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -1,0 +1,14 @@
+
+┌─ S3-frontend / mix ────────────────────────────────────
+│ requests         1219   18.3 req/s
+│ duration      p50      7ms  p95    158ms  p99    501ms
+│ ttfb          p50      6ms  p95    196ms
+│ errors          0.0%   checks passed  99.4%
+│ edge hit        0.0%   set-cookie on guest  98.2%   cache-control private   0.0%
+│
+│   ap_page                41 req  p95     28ms  edge hit   0.0%
+│   guest_browse         1052 req  p95     14ms  edge hit   0.0%
+│   login                  63 req  p95    515ms  edge hit   0.0%
+│   search                 63 req  p95    319ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

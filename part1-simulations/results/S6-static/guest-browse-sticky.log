@@ -1,0 +1,10 @@
+time="2026-10-24T12:37:17+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S6-static / guest-browse-sticky ──────────────────────
+│ requests         1187   18.3 req/s
+│ duration      p50      2ms  p95      3ms  p99      3ms
+│ ttfb          p50      2ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   -     cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

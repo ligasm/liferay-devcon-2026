@@ -1,0 +1,9 @@
+
+┌─ stress/S3-origin-search / step-30 ────────────────────
+│ requests         1683   26.4 req/s
+│ duration      p50   2331ms  p95   4697ms  p99   5277ms
+│ ttfb          p50   2327ms  p95   4693ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

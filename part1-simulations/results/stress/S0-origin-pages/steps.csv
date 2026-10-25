@@ -1,0 +1,7 @@
+label,workload,target_rate,achieved_iter_s,req_s,dropped_pct,error_pct,p50_ms,p95_ms,p99_ms,max_vus,liferay_cores_p90,host_cores_p90,k6_cores_p90,heap_old_mb_max,full_gc,saturated
+S0-origin-pages,pages,50,50.0,50.0,0.0,0.00,8.7,21.2,26.3,20,1.0,1.3,0.1,635,0,0
+S0-origin-pages,pages,100,100.0,100.0,0.0,0.00,6.5,17.0,20.9,20,1.6,1.9,0.2,624,0,0
+S0-origin-pages,pages,200,200.0,200.0,0.0,0.00,6.5,16.5,22.3,40,2.5,3.0,0.3,651,0,0
+S0-origin-pages,pages,300,300.0,299.9,0.0,0.00,9.9,24.1,33.7,60,5.0,5.9,0.5,705,0,0
+S0-origin-pages,pages,400,400.0,399.8,0.0,0.00,39.0,118.0,174.0,80,17.4,18.8,0.9,779,0,0
+S0-origin-pages,pages,600,442.4,418.7,26.3,0.00,3508.9,4132.7,4367.5,1500,18.2,19.9,1.4,2530,9,1

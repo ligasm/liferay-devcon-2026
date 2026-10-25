@@ -38,7 +38,7 @@ services:
         -p http_resp_size=64k
         -p workspace_backend=128k
     tmpfs:
-      - /var/lib/varnish:exec
+      - /var/lib/varnish:exec,mode=1777   # the image runs varnishd as user "varnish", not root
     ulimits:
       nofile: { soft: 131072, hard: 131072 }
     healthcheck:

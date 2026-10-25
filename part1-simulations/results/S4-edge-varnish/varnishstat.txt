@@ -1,0 +1,6 @@
+MAIN.client_req          23574        28.37 Good client requests received
+MAIN.cache_hit           18656        22.45 Cache hits
+MAIN.cache_hitpass            0         0.00 Cache hits for pass.
+MAIN.cache_miss              16         0.02 Cache misses
+MAIN.s_pass                4902         5.90 Total pass-ed requests seen
+MAIN.backend_req           4999         6.02 Backend requests made

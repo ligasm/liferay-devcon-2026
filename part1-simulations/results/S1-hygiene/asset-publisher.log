@@ -1,0 +1,12 @@
+
+┌─ S1-hygiene / asset-publisher ─────────────────────────
+│ requests         1171   18.6 req/s
+│ duration      p50     18ms  p95     29ms  p99     33ms
+│ ttfb          p50     17ms  p95     28ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page               585 req  p95     31ms  edge hit   0.0%
+│   content_page          586 req  p95     15ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -1,0 +1,116 @@
+== warm-up (http://127.0.0.1:8086)
+== stage: S0-baseline   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse guest-browse-sticky asset-publisher search login dl-download headless-api mix
+== VUS=10 RATE=10 DURATION=60s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T11:09:33+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S0-baseline / guest-browse ───────────────────────────
+│ requests         1198   18.4 req/s
+│ duration      p50     12ms  p95     19ms  p99     21ms
+│ ttfb          p50     11ms  p95     17ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S0-baseline/guest-browse.summary.json
+
+── guest-browse-sticky ─────────────────────────────────────────────────────
+time="2026-10-24T11:10:38+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S0-baseline / guest-browse-sticky ────────────────────
+│ requests         1185   18.2 req/s
+│ duration      p50     11ms  p95     18ms  p99     20ms
+│ ttfb          p50     10ms  p95     16ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   -     cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S0-baseline/guest-browse-sticky.summary.json
+
+── asset-publisher ─────────────────────────────────────────────────────
+
+┌─ S0-baseline / asset-publisher ────────────────────────
+│ requests         1170   18.6 req/s
+│ duration      p50     17ms  p95     28ms  p99     33ms
+│ ttfb          p50     16ms  p95     27ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│
+│   ap_page               584 req  p95     30ms  edge hit   0.0%
+│   content_page          586 req  p95     14ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S0-baseline/asset-publisher.summary.json
+
+── search ─────────────────────────────────────────────────────
+
+┌─ S0-baseline / search ─────────────────────────────────
+│ requests          582   9.3 req/s
+│ duration      p50    292ms  p95    392ms  p99    418ms
+│ ttfb          p50    291ms  p95    391ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S0-baseline/search.summary.json
+
+── login ─────────────────────────────────────────────────────
+time="2026-10-24T11:13:54+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=login
+
+┌─ S0-baseline / login ──────────────────────────────────
+│ requests         2370   36.4 req/s
+│ duration      p50     11ms  p95    742ms  p99    825ms
+│ ttfb          p50     14ms  p95    762ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S0-baseline/login.summary.json
+
+── dl-download ─────────────────────────────────────────────────────
+
+┌─ S0-baseline / dl-download ────────────────────────────
+│ requests          601   10.0 req/s
+│ duration      p50      3ms  p95      4ms  p99      5ms
+│ ttfb          p50      2ms  p95      3ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 60s → results/S0-baseline/dl-download.summary.json
+
+── headless-api ─────────────────────────────────────────────────────
+
+┌─ S0-baseline / headless-api ───────────────────────────
+│ requests         1177   18.7 req/s
+│ duration      p50     10ms  p95     24ms  p99     27ms
+│ ttfb          p50     10ms  p95     24ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        586 req  p95      8ms  edge hit   0.0%
+│   headless_list         586 req  p95     25ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S0-baseline/headless-api.summary.json
+
+── mix ─────────────────────────────────────────────────────
+
+┌─ S0-baseline / mix ────────────────────────────────────
+│ requests         1257   18.7 req/s
+│ duration      p50     10ms  p95    173ms  p99    499ms
+│ ttfb          p50      9ms  p95    204ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest  98.3%   cache-control private 100.0%
+│
+│   ap_page                42 req  p95     27ms  edge hit   0.0%
+│   guest_browse         1052 req  p95     16ms  edge hit   0.0%
+│   login                 100 req  p95    505ms  edge hit   0.0%
+│   search                 63 req  p95    322ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 68s → results/S0-baseline/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py

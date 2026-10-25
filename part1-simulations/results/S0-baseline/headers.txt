@@ -1,0 +1,5 @@
+HTTP/1.1 200 
+Set-Cookie: JSESSIONID=CE631D4158B52E03D0B2263BB3990385; Path=/; HttpOnly
+Cache-Control: private, no-cache, no-store, must-revalidate
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Sun, 24 Oct 2027 10:07:44 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Sun, 24 Oct 2027 10:07:44 GMT; Path=/; HttpOnly

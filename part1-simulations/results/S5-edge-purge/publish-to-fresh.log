@@ -1,0 +1,12 @@
+time="2026-10-24T12:33:36+01:00" level=info msg="\n>>> Publish the change to /web/proventeq/news in Liferay now (marker: \"devcon1792841615\"). Polling for up to 120s…\n" source=console
+time="2026-10-24T12:33:42+01:00" level=info msg="origin fresh at +0 ms" source=console
+time="2026-10-24T12:33:43+01:00" level=info msg="edge fresh at +19 ms after origin (X-Cache: MISS, Age: 0)" source=console
+
+┌─ S5-edge-purge / publish-to-fresh ─────────────────────
+│ requests           53   7.7 req/s
+│ duration      p50     14ms  p95     25ms  p99     25ms
+│ ttfb          p50     13ms  p95     23ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit       49.1%   set-cookie on guest  49.1%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

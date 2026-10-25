@@ -1,0 +1,116 @@
+== warm-up (http://127.0.0.1:8090)
+== stage: S6-static   target: http://127.0.0.1:8090   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse guest-browse-sticky asset-publisher search
+== VUS=10 RATE=10 DURATION=60s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T12:36:12+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S6-static / guest-browse ─────────────────────────────
+│ requests         1194   18.4 req/s
+│ duration      p50      2ms  p95      3ms  p99      3ms
+│ ttfb          p50      2ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S6-static/guest-browse.summary.json
+
+── guest-browse-sticky ─────────────────────────────────────────────────────
+time="2026-10-24T12:37:17+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S6-static / guest-browse-sticky ──────────────────────
+│ requests         1187   18.3 req/s
+│ duration      p50      2ms  p95      3ms  p99      3ms
+│ ttfb          p50      2ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   -     cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S6-static/guest-browse-sticky.summary.json
+
+── asset-publisher ─────────────────────────────────────────────────────
+
+┌─ S6-static / asset-publisher ──────────────────────────
+│ requests         1171   18.6 req/s
+│ duration      p50      3ms  p95      4ms  p99      4ms
+│ ttfb          p50      2ms  p95      3ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│
+│   ap_page               586 req  p95      4ms  edge hit   0.0%
+│   content_page          585 req  p95      4ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S6-static/asset-publisher.summary.json
+
+── search ─────────────────────────────────────────────────────
+
+┌─ S6-static / search ───────────────────────────────────
+│ requests          587   9.4 req/s
+│ duration      p50      2ms  p95      2ms  p99      3ms
+│ ttfb          p50      1ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S6-static/search.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:8086)
+== stage: S3-frontend-gb80   target: http://127.0.0.1:8086   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T12:42:04+01:00" level=warning msg="Insufficient VUs, reached 80 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S3-frontend-gb80 / guest-browse ──────────────────────
+│ requests         3686   38.8 req/s
+│ duration      p50      7ms  p95     15ms  p99     17ms
+│ ttfb          p50      5ms  p95     14ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 95s → results/S3-frontend-gb80/guest-browse.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:6081)
+== stage: S4-edge-varnish-gb80   target: http://127.0.0.1:6081   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T12:45:20+01:00" level=warning msg="Insufficient VUs, reached 80 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S4-edge-varnish-gb80 / guest-browse ──────────────────
+│ requests         3720   39.2 req/s
+│ duration      p50      3ms  p95      3ms  p99      4ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 95s → results/S4-edge-varnish-gb80/guest-browse.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:8090)
+== stage: S6-static-gb80   target: http://127.0.0.1:8090   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T12:48:36+01:00" level=warning msg="Insufficient VUs, reached 80 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S6-static-gb80 / guest-browse ────────────────────────
+│ requests         3659   38.5 req/s
+│ duration      p50      2ms  p95      3ms  p99      3ms
+│ ttfb          p50      2ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 95s → results/S6-static-gb80/guest-browse.summary.json
+
+== done. Summarise with:  python3 summarize.py

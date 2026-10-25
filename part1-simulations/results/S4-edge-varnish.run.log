@@ -1,0 +1,141 @@
+== warm-up (http://127.0.0.1:6081)
+== stage: S4-edge-varnish   target: http://127.0.0.1:6081   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: guest-browse guest-browse-sticky asset-publisher search login dl-download headless-api mix
+== VUS=10 RATE=10 DURATION=60s WITH_ASSETS=0 RAW=0
+
+── guest-browse ─────────────────────────────────────────────────────
+time="2026-10-24T12:19:55+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse
+
+┌─ S4-edge-varnish / guest-browse ───────────────────────
+│ requests         1198   18.4 req/s
+│ duration      p50      3ms  p95      3ms  p99      4ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 65s → results/S4-edge-varnish/guest-browse.summary.json
+
+── guest-browse-sticky ─────────────────────────────────────────────────────
+time="2026-10-24T12:21:00+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=guest_browse_sticky
+
+┌─ S4-edge-varnish / guest-browse-sticky ────────────────
+│ requests         1185   18.2 req/s
+│ duration      p50      3ms  p95      3ms  p99      4ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   -     cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S4-edge-varnish/guest-browse-sticky.summary.json
+
+── asset-publisher ─────────────────────────────────────────────────────
+
+┌─ S4-edge-varnish / asset-publisher ────────────────────
+│ requests         1171   18.6 req/s
+│ duration      p50      3ms  p95      3ms  p99      4ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│
+│   ap_page               585 req  p95      3ms  edge hit 100.0%
+│   content_page          586 req  p95      3ms  edge hit 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S4-edge-varnish/asset-publisher.summary.json
+
+── search ─────────────────────────────────────────────────────
+
+┌─ S4-edge-varnish / search ─────────────────────────────
+│ requests          585   9.3 req/s
+│ duration      p50      3ms  p95      3ms  p99      4ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S4-edge-varnish/search.summary.json
+
+── login ─────────────────────────────────────────────────────
+time="2026-10-24T12:24:17+01:00" level=warning msg="Insufficient VUs, reached 40 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=login
+
+┌─ S4-edge-varnish / login ──────────────────────────────
+│ requests         2440   37.1 req/s
+│ duration      p50      8ms  p95    668ms  p99    706ms
+│ ttfb          p50      6ms  p95    683ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private  33.3%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 66s → results/S4-edge-varnish/login.summary.json
+
+── dl-download ─────────────────────────────────────────────────────
+
+┌─ S4-edge-varnish / dl-download ────────────────────────
+│ requests          601   10.0 req/s
+│ duration      p50      1ms  p95      2ms  p99      2ms
+│ ttfb          p50      1ms  p95      1ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit       99.8%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 60s → results/S4-edge-varnish/dl-download.summary.json
+
+── headless-api ─────────────────────────────────────────────────────
+
+┌─ S4-edge-varnish / headless-api ───────────────────────
+│ requests         1178   18.7 req/s
+│ duration      p50     10ms  p95     23ms  p99     25ms
+│ ttfb          p50      9ms  p95     23ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private 100.0%
+│
+│   headless_by_id        587 req  p95      8ms  edge hit   0.0%
+│   headless_list         586 req  p95     24ms  edge hit   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 63s → results/S4-edge-varnish/headless-api.summary.json
+
+── mix ─────────────────────────────────────────────────────
+
+┌─ S4-edge-varnish / mix ────────────────────────────────
+│ requests         1265   18.4 req/s
+│ duration      p50      3ms  p95      5ms  p99    478ms
+│ ttfb          p50      1ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit       95.1%   set-cookie on guest   0.0%   cache-control private   1.6%
+│
+│   ap_page                42 req  p95      3ms  edge hit 100.0%
+│   guest_browse         1060 req  p95      3ms  edge hit 100.0%
+│   login                 100 req  p95    486ms  edge hit   0.0%
+│   search                 63 req  p95      3ms  edge hit 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 69s → results/S4-edge-varnish/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py
+== warm-up (http://127.0.0.1:6081)
+== stage: S4-edge-varnish-load   target: http://127.0.0.1:6081   k6: k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)
+== scenarios: mix
+== VUS=20 RATE=80 DURATION=90s WITH_ASSETS=0 RAW=0
+
+── mix ─────────────────────────────────────────────────────
+time="2026-10-24T12:30:40+01:00" level=warning msg="Insufficient VUs, reached 280 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=guest_browse
+time="2026-10-24T12:31:03+01:00" level=warning msg="Insufficient VUs, reached 20 active VUs and cannot initialize more" executor=ramping-arrival-rate scenario=login
+
+┌─ S4-edge-varnish-load / mix ───────────────────────────
+│ requests        12060   120.4 req/s
+│ duration      p50      1ms  p95      6ms  p99    528ms
+│ ttfb          p50      0ms  p95      4ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit       93.9%   set-cookie on guest   0.0%   cache-control private   2.0%
+│
+│   ap_page               499 req  p95      2ms  edge hit 100.0%
+│   guest_browse         9628 req  p95      2ms  edge hit 100.0%
+│   login                1180 req  p95    537ms  edge hit   0.0%
+│   search                753 req  p95      2ms  edge hit 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
+   took 100s → results/S4-edge-varnish-load/mix.summary.json
+
+== done. Summarise with:  python3 summarize.py
