@@ -158,7 +158,7 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 ## Prep checklist
 
 - [x] Run the S0→S4 matrix against a real Liferay and replace the placeholder numbers on slide 13 (done 2026-10-24, DXP 2026.q1.12; charts on slides 14, 15, 17).
-- [ ] `varnishd -C -f matrix/varnish/default.vcl` once — the VCL was reviewed, not compiled.
+- [x] `varnishd -C -f matrix/varnish/default.vcl` once — compiled and loaded on Varnish 7.6.5 (`vcl.load`, 2026-10-25).
 - [ ] Confirm items marked `UNVERIFIED` in `part1-simulations/matrix/`.
 - [ ] Set `ANTHROPIC_API_KEY` and confirm current model IDs so the enrichment path runs live once.
 - [ ] Point `.env` at your DXP for one rehearsal.
