@@ -1,0 +1,503 @@
+{
+ "meta": {
+  "scenario": "step-10000",
+  "stage": "stress/S6-static-pageview",
+  "base_url": "http://127.0.0.1:8091",
+  "generated_at": "2026-10-25T10:28:57.637Z",
+  "config": {
+   "VUS": 10,
+   "RATE": 10000,
+   "DURATION": "60s",
+   "THINK_MIN": 0,
+   "THINK_MAX": 0,
+   "WITH_ASSETS": false
+  }
+ },
+ "root_group": {
+  "name": "",
+  "path": "",
+  "id": "d41d8cd98f00b204e9800998ecf8427e",
+  "groups": [],
+  "checks": [
+    {
+     "fails": 0,
+     "name": "home: 200 + full page",
+     "path": "::home: 200 + full page",
+     "id": "e9187175f7bea20a5175f005e5a865f6",
+     "passes": 150258
+    },
+    {
+     "name": "blog: 200 + full page",
+     "path": "::blog: 200 + full page",
+     "id": "313866173e05c26a1b63466c214b4c62",
+     "passes": 90035,
+     "fails": 0
+    },
+    {
+     "passes": 269703,
+     "fails": 0,
+     "name": "content: 200 + full page",
+     "path": "::content: 200 + full page",
+     "id": "8fff95470760033fad4cc32ab7304988"
+    },
+    {
+     "name": "news: 200 + full page",
+     "path": "::news: 200 + full page",
+     "id": "7b877fb14d0a49a24167c0f59e134bd5",
+     "passes": 89757,
+     "fails": 0
+    },
+    {
+     "name": "home: every file 200",
+     "path": "::home: every file 200",
+     "id": "3f61caf86c37833ee446e4c2ce52d094",
+     "passes": 150258,
+     "fails": 0
+    },
+    {
+     "id": "b1067a7e4d870fa19166e1659ad4e581",
+     "passes": 90035,
+     "fails": 0,
+     "name": "blog: every file 200",
+     "path": "::blog: every file 200"
+    },
+    {
+     "id": "79ec16180cd103f0768bd38d7545e36d",
+     "passes": 89757,
+     "fails": 0,
+     "name": "news: every file 200",
+     "path": "::news: every file 200"
+    },
+    {
+     "name": "content: every file 200",
+     "path": "::content: every file 200",
+     "id": "74c241059716b001034d9750848b1055",
+     "passes": 269703,
+     "fails": 0
+    }
+   ]
+ },
+ "options": {
+  "noColor": true,
+  "summaryTrendStats": [
+   "avg",
+   "min",
+   "med",
+   "p(90)",
+   "p(95)",
+   "p(99)",
+   "max"
+  ],
+  "summaryTimeUnit": ""
+ },
+ "state": {
+  "isStdOutTTY": false,
+  "isStdErrTTY": false,
+  "testRunDurationMs": 60004.005491
+ },
+ "metrics": {
+  "vus": {
+   "values": {
+    "value": 13,
+    "min": 8,
+    "max": 949
+   },
+   "type": "gauge",
+   "contains": "default"
+  },
+  "http_req_duration{page:content}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(95)": 23.012255599999982,
+    "p(99)": 43.953328679999835,
+    "max": 165.957446,
+    "avg": 5.634411899887976,
+    "min": 0.062289,
+    "med": 1.036451,
+    "p(90)": 16.300138399999994
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   }
+  },
+  "edge_hit": {
+   "type": "rate",
+   "contains": "default",
+   "values": {
+    "fails": 599753,
+    "rate": 0,
+    "passes": 0
+   }
+  },
+  "page_view_duration{page:home}": {
+   "contains": "time",
+   "values": {
+    "avg": 25.169894448215736,
+    "min": 0,
+    "med": 8,
+    "p(90)": 74,
+    "p(95)": 91,
+    "p(99)": 131,
+    "max": 372
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   },
+   "type": "trend"
+  },
+  "page_views": {
+   "values": {
+    "count": 599753,
+    "rate": 9995.216070866418
+   },
+   "type": "counter",
+   "contains": "default"
+  },
+  "data_received": {
+   "type": "counter",
+   "contains": "data",
+   "values": {
+    "count": 59234299039,
+    "rate": 987172415.4795724
+   }
+  },
+  "vus_max": {
+   "type": "gauge",
+   "contains": "default",
+   "values": {
+    "max": 2014,
+    "value": 2014,
+    "min": 2014
+   }
+  },
+  "http_req_duration{page:home}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(99)": 45.92255654999995,
+    "max": 172.691074,
+    "avg": 5.842455036226129,
+    "min": 0.06134,
+    "med": 1.0606309999999999,
+    "p(90)": 16.898839800000008,
+    "p(95)": 24.114144499999995
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   }
+  },
+  "page_view_duration": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "max": 372,
+    "avg": 25.63871293682566,
+    "min": 0,
+    "med": 8,
+    "p(90)": 75,
+    "p(95)": 93,
+    "p(99)": 133
+   }
+  },
+  "checks": {
+   "type": "rate",
+   "contains": "default",
+   "values": {
+    "rate": 1,
+    "passes": 1199506,
+    "fails": 0
+   }
+  },
+  "iteration_duration": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(90)": 76.65192840000002,
+    "p(95)": 95.27124760000001,
+    "p(99)": 135.23908395999993,
+    "max": 389.395636,
+    "avg": 26.23466164672608,
+    "min": 0.483606,
+    "med": 8.217094
+   }
+  },
+  "http_req_blocked": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(90)": 0.004113,
+    "p(95)": 0.005026,
+    "p(99)": 0.014491770000000018,
+    "max": 126.671984,
+    "avg": 0.08805675124436747,
+    "min": 0.000571,
+    "med": 0.002434
+   }
+  },
+  "http_req_connecting": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(90)": 0,
+    "p(95)": 0,
+    "p(99)": 0,
+    "max": 108.813432,
+    "avg": 0.05106363409844198,
+    "min": 0,
+    "med": 0
+   }
+  },
+  "http_req_duration{page:search}": {
+   "values": {
+    "p(90)": 0,
+    "p(95)": 0,
+    "p(99)": 0,
+    "max": 0,
+    "avg": 0,
+    "min": 0,
+    "med": 0
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   },
+   "type": "trend",
+   "contains": "time"
+  },
+  "data_sent": {
+   "type": "counter",
+   "contains": "data",
+   "values": {
+    "count": 902819530,
+    "rate": 15045987.723859766
+   }
+  },
+  "http_req_tls_handshaking": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "avg": 0,
+    "min": 0,
+    "med": 0,
+    "p(90)": 0,
+    "p(95)": 0,
+    "p(99)": 0,
+    "max": 0
+   }
+  },
+  "http_req_receiving": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(90)": 0.05144170000000019,
+    "p(95)": 0.14478570000000018,
+    "p(99)": 3.9364175400000003,
+    "max": 130.414279,
+    "avg": 0.2462885784268989,
+    "min": 0.005613,
+    "med": 0.02379
+   }
+  },
+  "set_cookie_on_guest": {
+   "type": "rate",
+   "contains": "default",
+   "values": {
+    "rate": 0,
+    "passes": 0,
+    "fails": 599753
+   }
+  },
+  "iterations": {
+   "type": "counter",
+   "contains": "default",
+   "values": {
+    "count": 599753,
+    "rate": 9995.216070866418
+   }
+  },
+  "http_req_waiting": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "avg": 4.766032019063519,
+    "min": 0.037571,
+    "med": 0.9055934999999999,
+    "p(90)": 14.417029600000003,
+    "p(95)": 19.392058400000003,
+    "p(99)": 30.68526433000001,
+    "max": 124.625126
+   }
+  },
+  "ttfb": {
+   "values": {
+    "p(90)": 15.861867400000005,
+    "p(95)": 21.31765180000001,
+    "p(99)": 34.57980203999997,
+    "max": 124.049189,
+    "avg": 5.123395923360338,
+    "min": 0.040563,
+    "med": 0.851534
+   },
+   "type": "trend",
+   "contains": "time"
+  },
+  "http_req_duration{page:news}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(95)": 23.96847234999993,
+    "p(99)": 45.89383864999979,
+    "max": 152.253225,
+    "avg": 5.83766164010892,
+    "min": 0.063168,
+    "med": 1.0714055,
+    "p(90)": 16.8829593
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   }
+  },
+  "http_req_duration{expected_response:true}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "med": 1.04467,
+    "p(90)": 16.510116900000003,
+    "p(95)": 23.385711200000006,
+    "p(99)": 44.764666520000034,
+    "max": 172.691074,
+    "avg": 5.708110209780747,
+    "min": 0.06134
+   }
+  },
+  "http_req_duration{page:login}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(99)": 0,
+    "max": 0,
+    "avg": 0,
+    "min": 0,
+    "med": 0,
+    "p(90)": 0,
+    "p(95)": 0
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   }
+  },
+  "cache_control_private": {
+   "values": {
+    "fails": 599753,
+    "rate": 0,
+    "passes": 0
+   },
+   "type": "rate",
+   "contains": "default"
+  },
+  "http_req_failed": {
+   "type": "rate",
+   "contains": "default",
+   "values": {
+    "passes": 0,
+    "fails": 2758824,
+    "rate": 0
+   },
+   "thresholds": {
+    "rate<0.05": {
+     "ok": true
+    }
+   }
+  },
+  "dropped_iterations": {
+   "values": {
+    "count": 249,
+    "rate": 4.14972297203305
+   },
+   "thresholds": {
+    "count>=0": {
+     "ok": true
+    }
+   },
+   "type": "counter",
+   "contains": "default"
+  },
+  "http_req_duration": {
+   "values": {
+    "med": 1.04467,
+    "p(90)": 16.510116900000003,
+    "p(95)": 23.385711200000006,
+    "p(99)": 44.764666520000034,
+    "max": 172.691074,
+    "avg": 5.708110209780747,
+    "min": 0.06134
+   },
+   "type": "trend",
+   "contains": "time"
+  },
+  "http_req_sending": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "p(99)": 23.630668010000004,
+    "max": 116.2225,
+    "avg": 0.6957896122902805,
+    "min": 0.002122,
+    "med": 0.007725,
+    "p(90)": 0.055639,
+    "p(95)": 0.4538745000000047
+   }
+  },
+  "http_reqs": {
+   "contains": "default",
+   "values": {
+    "count": 2758824,
+    "rate": 45977.33063693216
+   },
+   "type": "counter"
+  },
+  "html_bytes": {
+   "contains": "default",
+   "values": {
+    "p(95)": 6674,
+    "p(99)": 6674,
+    "max": 6674,
+    "avg": 5686.905694510907,
+    "min": 4538,
+    "med": 5378,
+    "p(90)": 6674
+   },
+   "type": "trend"
+  },
+  "http_req_duration{page:blog}": {
+   "type": "trend",
+   "contains": "time",
+   "values": {
+    "max": 155.90741,
+    "avg": 5.646202283716468,
+    "min": 0.061708,
+    "med": 1.029626,
+    "p(90)": 16.326473600000003,
+    "p(95)": 23.1013742,
+    "p(99)": 44.46042330000003
+   },
+   "thresholds": {
+    "p(95)>=0": {
+     "ok": true
+    }
+   }
+  }
+ }
+}

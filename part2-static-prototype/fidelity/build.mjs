@@ -17,6 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import zlib from 'node:zlib';
 import { config, ROOT } from '../pipeline/lib/config.mjs';
 import { request, listAll } from '../pipeline/lib/liferay.mjs';
 import { log, slugify } from '../pipeline/lib/util.mjs';
@@ -297,6 +298,8 @@ http {
 	tcp_nopush    on;
 	keepalive_timeout 65;
 	access_log    off;
+	# the .gz next to each text file is sent as is, with a Content-Length; gzip covers the rest
+	gzip_static   on;
 	gzip          on;
 	gzip_types    text/css application/javascript application/json image/svg+xml;
 	server {
@@ -316,6 +319,16 @@ ${types}
 }
 `);
 
+// precompressed copies for gzip_static: nginx then never compresses per request
+let gzBytes = 0;
+const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]);
+for (const f of walk(OUT).filter((f) => /\.(html|css|js|json|svg)$/.test(f) && !f.includes(`${path.sep}_server${path.sep}`))) {
+  const gz = zlib.gzipSync(fs.readFileSync(f), { level: 9 });
+  fs.writeFileSync(`${f}.gz`, gz);
+  gzBytes += gz.length;
+}
+
 // ---- 7. report ------------------------------------------------------------------------------
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
 const report = {
@@ -332,6 +345,7 @@ const report = {
     listAndTagPages: outputs.length - pages.length - news.length - posts.length,
   },
   htmlBytes,
+  gzBytes,
   css: { bytes: Buffer.byteLength(cssRewritten), sources: cssStats },
   icons: [...icons],
   documents: copied,

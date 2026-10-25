@@ -6,15 +6,19 @@ turns the runs into slide tables and charts. Target: a **self-hosted Liferay DXP
 local mock of Liferay (`mock/server.mjs`) and then run for real against a local
 DXP 2026.Q1 with the Part 0 base site: the fixed-load S0…S6 ladder is in
 [results/LAB-RESULTS.md](results/LAB-RESULTS.md), the capacity ladders (step the rate up until
-it breaks) in [results/STRESS-RESULTS.md](results/STRESS-RESULTS.md).
+it breaks) in [results/STRESS-RESULTS.md](results/STRESS-RESULTS.md), and the static site against
+Varnish in [results/STATIC-VS-EDGE.md](results/STATIC-VS-EDGE.md).
 
 ```
 part1-simulations/
 ├── bin/k6                     k6 v2.2.0 linux/amd64 (downloaded from GitHub releases)
 ├── run.sh                     ./run.sh <STAGE_LABEL> [scenario …]
 ├── campaign.sh, run-stage.sh  one stage of the lab ladder (standard pass + load pass)
-├── stress.sh                  capacity ladder: ./stress.sh <label> pages|search|login|mix <rate …>
+├── stress.sh                  capacity ladder: ./stress.sh <label> pages|search|login|mix|pageview <rate …>
 ├── stress-campaign.sh         every ladder in STRESS-RESULTS.md (S3, S4, S0, refinements, light edge)
+├── static-vs-edge.sh          every ladder in STATIC-VS-EDGE.md (static nginx vs Varnish, HTML and page views)
+├── capture_pageview.py        Chromium net log → k6/data/pageview-*.json (what a first visit fetches)
+├── static_vs_edge_report.py   results/stress/S6-static-*, S4-edge-page* → STATIC-VS-EDGE.steps.md
 ├── stress_sampler.py          host / container / k6 CPU + Liferay heap, every 2 s
 ├── stress_report.py           results/stress/*/steps.csv → STEPS.md + stress-*.png
 ├── summarize.py               results/*/*.json → SUMMARY.md, SUMMARY.csv, DELTAS.md, PNGs

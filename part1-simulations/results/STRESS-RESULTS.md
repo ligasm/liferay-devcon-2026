@@ -4,7 +4,8 @@ These are capacity tests. The request rate goes up in steps until the target sat
 fixed-load S0…S6 comparison is in [LAB-RESULTS.md](LAB-RESULTS.md). That run's "load pass"
 was light (≈ 120 req/s, under 10 requests in flight). This one pushes every configuration
 past its limit. The same site, container and host are used, and the
-[setup table](LAB-RESULTS.md#setup) applies.
+[setup table](LAB-RESULTS.md#setup) applies. The static site against the same Varnish edge,
+for HTML and for whole page views, is in [STATIC-VS-EDGE.md](STATIC-VS-EDGE.md).
 
 ![capacity per ladder](stress-capacity.png)
 

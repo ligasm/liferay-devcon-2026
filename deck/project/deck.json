@@ -3,7 +3,7 @@
   "createdOnFiles": {"v": 1, "at": "2026-10-06T20:30:00Z"},
   "lists": "css",
   "title": "Making Liferay Blazing Fast",
-  "order": ["cover","agenda","graveyard","ladder","wire","benchmark","rig","s1","s2","s3","s4rules","breach","s4results","stages","capacity","s5purge","cost","wall","part2","boundary","architecture","demo","sidebyside","tokens","breaks","isomorphism","ask","close"],
+  "order": ["cover","agenda","graveyard","ladder","wire","benchmark","rig","s1","s2","s3","s4rules","breach","s4results","stages","capacity","s5purge","cost","wall","part2","boundary","architecture","demo","sidebyside","staticvsedge","tokens","breaks","isomorphism","ask","close"],
   "sections": {
     "open": {"description": "Cold open: the advice graveyard and the five-layer ladder.", "start": "cover"},
     "part1": {"description": "Part 1: traditional optimisation, measured stage by stage up to guest HTML at the edge.", "start": "wire"},

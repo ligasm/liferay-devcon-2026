@@ -9,7 +9,7 @@
 | **Frontend Resource Caching** (DXP 2025.Q4+/2026.Q1+) | Instance Settings → Platform → Infrastructure → Frontend Caching | UI; enables hashed, infinitely cacheable CSS/JS |
 | `loading="lazy"` + `width`/`height` on images (never on the LCP image) | fragment / theme templates | `fragment-image.html` |
 | Client extension JS `async` / `fetchpriority` | `client-extension.yaml` | `client-extension.yaml` |
-| Brotli/gzip at the proxy | nginx / Varnish / Cloudflare | see `../varnish/default.vcl` (Varnish does not compress; put nginx or the CDN in front for brotli) |
+| Brotli/gzip at the proxy | nginx / Varnish / Cloudflare | see `../varnish/default.vcl` (Varnish gzips with `do_gzip`, HTML and text assets, but has no brotli: put nginx or the CDN in front for that) |
 
 ## What to measure
 

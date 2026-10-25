@@ -1,0 +1,26 @@
+<section id="staticvsedge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · static nginx vs Liferay behind Varnish</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Static wins on the page, not the HTML</h2>
+<p style="font-size:34px;color:#4a5a66">HTML alone is a tie: ≈ 25,000 req/s each. Whole page views: <span style="color:#0f2838;font-weight:600">1,200/s</span> through Varnish, <span style="color:#34a1a0;font-weight:600">10,000+/s</span> static.</p>
+<div style="flex:1;display:grid;grid-template-columns:repeat(4, 392px);gap:32px;align-items:end">
+<div style="display:flex">
+<img data-chart-fallback src="/_blob/0eccc07c7af3041826509a02e3d064c6" alt="Requests per page view: Varnish 56, static 4.6" style="width:392px;height:520px;object-fit:contain">
+<canvas data-chart="vs-requests" width="392" height="520" role="img" aria-label="Requests per page view: Varnish 56, static 4.6" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="/_blob/9259776431d8e675fa7e09b46ebeb686" alt="Kilobytes on the wire per page view: Varnish 545, static 99" style="width:392px;height:520px;object-fit:contain">
+<canvas data-chart="vs-bytes" width="392" height="520" role="img" aria-label="Kilobytes on the wire per page view: Varnish 545, static 99" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="/_blob/fbda50afd3cc112a576731029c147057" alt="Edge CPU at 1,000 page views/s: Varnish 3.1 cores, static nginx 0.3 cores" style="width:392px;height:520px;object-fit:contain">
+<canvas data-chart="vs-cpu" width="392" height="520" role="img" aria-label="Edge CPU at 1,000 page views/s: Varnish 3.1 cores, static nginx 0.3 cores" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="/_blob/b90a92a6be53900a0b922c17d36fbc68" alt="Page view p95: Varnish 13 ms, static 2 ms" style="width:392px;height:520px;object-fit:contain">
+<canvas data-chart="vs-latency" width="392" height="520" role="img" aria-label="Page view p95: Varnish 13 ms, static 2 ms" style="display:none"></canvas>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84"><span style="color:#34a1a0;font-weight:600">■</span> static · both at 1,000 page views/s · first visit, empty browser cache · one box, no network · STATIC-VS-EDGE.md</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Part 1 ended with Varnish in front of Liferay. So is static worth it, if the edge already caches the HTML? We ran the same guests against both, on the same box, on the same day. For the HTML alone it's a tie: both about 25,000 requests a second at a p95 around 70 milliseconds, and in both cases the limit was the load generator. nginx used 1.1 cores, Varnish 2.6, because Liferay's HTML is four times bigger. The difference is the page around the HTML. A first visit to a Liferay page is 56 requests: on the home page 41 JavaScript files and 8 stylesheets. The static page is four or five: the HTML, one stylesheet, the images. At the same 1,000 page views a second that is 12 times the requests, five and a half times the bytes, ten times the edge CPU, and a p95 of 13 against 2 milliseconds for the whole page view, on loopback, before a single network round trip. Pushed until it breaks, Varnish stops at 1,200 page views a second, on its default 2,000 threads. Static went past 10,000, and there the limit was k6 again. One finding on the way: our VCL stored CSS and JS uncompressed, 1.9 MB per page view, because Liferay's GZip filter was off and the asset branch never set do_gzip. Check that your edge compresses the assets, not just the HTML.</aside>
+</section>

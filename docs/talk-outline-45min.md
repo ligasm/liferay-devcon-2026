@@ -10,13 +10,13 @@ Companion material in this repository:
 | | What | Where |
 |---|---|---|
 | Evidence | Research dossier, 6 parts, fact-checked | `docs/liferay-performance-dossier.md` |
-| Slides | 28-slide deck, speaker notes, generated art, measured charts (Chart.js, PNG fallbacks) | `deck/` |
+| Slides | 29-slide deck, speaker notes, generated art, measured charts (Chart.js, PNG fallbacks) | `deck/` |
 | Part 1 demos | k6 scenarios (TypeScript), S0–S6 config matrix, Varnish VCL, Cloudflare rules, purge listener, Bun runner + summariser + charts | `part1-simulations/` |
 | Part 2 demo | Astro static site from Liferay Headless, delta regeneration, AI orchestrator with budget, webhook + timers — all TypeScript on Bun | `part2-static-prototype/` |
 
 Everything we wrote is TypeScript run by Bun (`bun <file>.ts`); k6 executes its own `.ts` scenarios natively (≥ 0.57, no flag). Only the Java `ModelListener` sketch, the Varnish VCL and the Tomcat `setenv.sh` fragments stay in their native languages — they run inside Liferay/Varnish/Tomcat, not on your laptop.
 
-Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if behind" line so you can land on time. Slide numbers refer to the current 28-slide deck in `deck/`.
+Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if behind" line so you can land on time. Slide numbers refer to the current 29-slide deck in `deck/`.
 
 ---
 
@@ -117,7 +117,7 @@ Precompute when the output space is small and read:write is high; render live wh
 
 ## 2.2 Demo — 28:00–35:00 · *prerecord a fallback*
 
-**Slides:** 22 live demo · 23 same post, two deliveries
+**Slides:** 22 live demo · 23 same post, two deliveries · 24 static wins on the page, not the HTML
 
 1. `bun pipeline/regenerate.ts --full --no-ai --max-items 80` → 132 pages in ~10–19 s, 3.3 MB.
 2. Run again → "nothing changed → skip build (0 tokens)" in ~0.1 s offline / 2–3 s live.
@@ -125,16 +125,19 @@ Precompute when the output space is small and read:write is high; render live wh
 4. Edit one post → plan `+0 ~1 -0`, rebuild ~3 s, purge list = that post + home + blog list + its category page.
 5. `--dry-run --full --offline` → ≈12–16k tokens ≈ $0.03 for the whole catalogue, once; lower `AI_BUDGET_TOKENS` and fallbacks kick in.
 6. `bun tools/check-links.ts` → 0 broken of ~3,850 links.
+7. Measured against Varnish (`part1-simulations/results/STATIC-VS-EDGE.md`), same box, same k6: HTML alone is a tie at ≈ 25,000 req/s, k6-bound for both. A whole first-visit page view is 56 requests through Varnish vs 4–5 static; at 1,000 page views/s that is 12× the requests, 5.5× the bytes, ≈ 10× the edge CPU, p95 13 vs 2 ms. Capacity: 1,200 page views/s (Varnish's 2,000 threads) vs 10,000+ (k6). Found on the way: the S4 VCL never gzipped CSS/JS (1.9 MB per page view, fixed).
+
+*Cut if behind:* slide 24; say "HTML is a tie, the page is twelve times the requests" over slide 23.
 
 ## 2.3 Token efficiency — 35:00–38:00
 
-**Slide:** 24 ($0.03)
+**Slide:** 25 ($0.03)
 
 Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
 
 ## 2.4 What you give up — 38:00–41:00
 
-**Slide:** 25
+**Slide:** 26
 
 Search → Pagefind; comments/forms → islands to the Headless API; sign-in state → late-hydration island; preview/workflow → stays in the portal. Resilience story: the site-pages listing returned HTTP 500 on liferay.dev all day; the fetcher fell back to a seed list.
 
@@ -142,7 +145,7 @@ Search → Pagefind; comments/forms → islands to the Headless API; sign-in sta
 
 ## Close — 41:00–43:00
 
-**Slides:** 26 pages and AI: the same move · 27 please ship it · 28 thank you
+**Slides:** 27 pages and AI: the same move · 28 please ship it · 29 thank you
 
 Static pages and AI cost control are the same architecture: expensive op → do it at publish time → cache → invalidate by event → marginal cost ≈ 0. Then the ask: `www.liferay.com` already runs an unshipped guest-HTML cache (`x-lfr-guest-html-cache: 1`) — ship it, and publish Core Web Vitals.
 
@@ -160,4 +163,4 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 - [ ] Set `ANTHROPIC_API_KEY` and confirm current model IDs so the enrichment path runs live once.
 - [ ] Point `.env` at your DXP for one rehearsal.
 - [ ] Prerecord both demos; conference Wi-Fi is where demos die.
-- [ ] Demo the *bare* `www.liferay.com` hostname for slide 27.
+- [ ] Demo the *bare* `www.liferay.com` hostname for slide 28.

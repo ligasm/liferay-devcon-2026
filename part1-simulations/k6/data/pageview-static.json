@@ -1,0 +1,52 @@
+{
+ "base": "http://127.0.0.1:8091",
+ "pages": {
+  "/web/proventeq/home": [
+   "/web/proventeq/home",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/hero-migrate-jpg"
+  ],
+  "/web/proventeq/about": [
+   "/web/proventeq/about",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/split-team-jpg",
+   "/documents/d/proventeq/split-data-jpg",
+   "/documents/d/proventeq/split-cloud-jpg"
+  ],
+  "/web/proventeq/services": [
+   "/web/proventeq/services",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/split-cloud-jpg"
+  ],
+  "/web/proventeq/proventeq365": [
+   "/web/proventeq/proventeq365",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/split-team-jpg",
+   "/documents/d/proventeq/hero-govern-jpg"
+  ],
+  "/web/proventeq/digital-experience": [
+   "/web/proventeq/digital-experience",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/split-team-jpg",
+   "/documents/d/proventeq/hero-portal-jpg"
+  ],
+  "/web/proventeq/blog": [
+   "/web/proventeq/blog",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/assets/icons.e65ea002d1.svg",
+   "/documents/d/proventeq/split-cloud-jpg"
+  ],
+  "/web/proventeq/news": [
+   "/web/proventeq/news",
+   "/assets/site.6afc2dbaaf.css",
+   "/documents/d/proventeq/proventeq-logo-png",
+   "/documents/d/proventeq/split-cloud-jpg"
+  ]
+ }
+}

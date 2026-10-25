@@ -1,0 +1,93 @@
+/web/proventeq/home                        4 requests
+/web/proventeq/about                       6 requests
+/web/proventeq/services                    4 requests
+/web/proventeq/proventeq365                5 requests
+/web/proventeq/digital-experience          5 requests
+/web/proventeq/blog                        5 requests
+/web/proventeq/news                        4 requests
+/web/proventeq/home                       53 requests
+/web/proventeq/about                      52 requests
+/web/proventeq/services                   50 requests
+/web/proventeq/proventeq365               54 requests
+/web/proventeq/digital-experience         51 requests
+/web/proventeq/blog                       75 requests
+/web/proventeq/news                       54 requests
+== stress S6-static-pages / pages → http://127.0.0.1:8091   steps: 4000 8000 12000 16000 20000 25000 30000 35000   (09:46:27)
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.7  heap   789 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  3.9  heap   789 MB  ok
+   rate 12000/s → 12000.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.2 cores  k6  6.0  heap   789 MB  ok
+   rate 16000/s → 16000.0 it/s  drop   0.0%  err  0.00%  p95      18 ms  liferay  0.2 cores  k6  8.3  heap   789 MB  ok
+   rate 20000/s → 20000.3 it/s  drop   0.0%  err  0.00%  p95      43 ms  liferay  0.2 cores  k6  9.9  heap   789 MB  ok
+   rate 25000/s → 24947.5 it/s  drop   0.2%  err  0.00%  p95      66 ms  liferay  0.2 cores  k6 12.8  heap   789 MB  ok
+   rate 30000/s → 29009.6 it/s  drop   3.3%  err  0.00%  p95      72 ms  liferay  0.2 cores  k6 15.3  heap   789 MB  ok
+   rate 35000/s → 29815.0 it/s  drop  14.8%  err  0.00%  p95      66 ms  liferay  0.2 cores  k6 15.6  heap   789 MB  SATURATED
+== saturated at 35000/s — ladder stops
+== done S6-static-pages (09:56:56)
+== stress S4-edge-pages-r2 / pages → http://127.0.0.1:6081   steps: 4000 8000 12000 16000 20000 25000 30000 35000   (09:56:56)
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.7  heap   789 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  3.6  heap   789 MB  ok
+   rate 12000/s → 12000.1 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.1 cores  k6  6.0  heap   789 MB  ok
+   rate 16000/s → 16000.0 it/s  drop   0.0%  err  0.00%  p95      10 ms  liferay  0.2 cores  k6  8.0  heap   789 MB  ok
+   rate 20000/s → 19999.6 it/s  drop   0.0%  err  0.00%  p95      51 ms  liferay  0.2 cores  k6  9.8  heap   789 MB  ok
+   rate 25000/s → 24806.4 it/s  drop   0.8%  err  0.03%  p95      71 ms  liferay  0.2 cores  k6 13.2  heap   789 MB  ok
+   rate 30000/s → 26145.0 it/s  drop  12.9%  err  0.12%  p95      80 ms  liferay  0.2 cores  k6 14.1  heap   789 MB  SATURATED
+== saturated at 30000/s — ladder stops
+== done S4-edge-pages-r2 (10:06:03)
+== stress S6-static-pageview / pageview → http://127.0.0.1:8091   steps: 500 1000 2000 3000 4000 5000 6000 8000   (10:06:03)
+   rate   500/s →   500.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.4  heap   789 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.2  heap   789 MB  ok
+   rate  2000/s →  2000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  3.0  heap   789 MB  ok
+   rate  3000/s →  3000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  3.4  heap   789 MB  ok
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  4.4  heap   789 MB  ok
+   rate  5000/s →  5000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  5.8  heap   789 MB  ok
+   rate  6000/s →  6000.1 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.2 cores  k6  6.8  heap   789 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95      11 ms  liferay  0.2 cores  k6  9.5  heap   789 MB  ok
+== done S6-static-pageview (10:16:49)
+== stress S4-edge-pageview / pageview → http://127.0.0.1:6081   steps: 50 100 200 300 400 500 600 800   (10:16:49)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.0  heap   789 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.8  heap   785 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.5  heap   785 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  3.1  heap   785 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  4.0  heap   785 MB  ok
+   rate   500/s →   500.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  4.9  heap   785 MB  ok
+   rate   600/s →   600.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.2  heap   785 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.8  heap   785 MB  ok
+== done S4-edge-pageview (10:27:35)
+S6-static-pages      clean   24,948 req/s    24,946 req/s  p95   65.9 ms  view p95      0 ms  proventeq-fidelity  1.1 cores  (0.045 ms CPU per req)  k6 12.8  host 16.1
+S4-edge-pages-r2     clean   24,806 req/s    24,789 req/s  p95   71.3 ms  view p95      0 ms  liferay-varnish  2.6 cores  (0.107 ms CPU per req)  k6 13.2  host 18.2
+S6-static-pageview   clean    8,000 view/s    36,797 req/s  p95   11.1 ms  view p95     45 ms  proventeq-fidelity  1.7 cores  (0.209 ms CPU per view)  k6  9.5  host 14.5
+S4-edge-pageview     clean      800 view/s    44,686 req/s  p95    0.4 ms  view p95      9 ms  liferay-varnish  2.4 cores  (2.987 ms CPU per view)  k6  5.8  host 11.2
+== stress S6-static-pageview / pageview → http://127.0.0.1:8091   steps: 10000 12000 15000 20000   (10:27:55)
+   rate 10000/s →  9995.9 it/s  drop   0.0%  err  0.00%  p95      23 ms  liferay  0.2 cores  k6 12.1  heap   785 MB  ok
+   rate 12000/s → 11398.3 it/s  drop   5.0%  err  0.00%  p95      89 ms  liferay  0.2 cores  k6 13.7  heap   785 MB  ok
+   rate 15000/s →  8850.5 it/s  drop  41.0%  err  0.57%  p95     192 ms  liferay  0.2 cores  k6 13.5  heap   785 MB  SATURATED
+== saturated at 15000/s — ladder stops
+== done S6-static-pageview (10:31:41)
+== stress S4-edge-pageview / pageview → http://127.0.0.1:6081   steps: 1000 1200 1500 2000 3000   (10:31:41)
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  9.0  heap   785 MB  ok
+   rate  1200/s →  1200.0 it/s  drop   0.0%  err  0.00%  p95       3 ms  liferay  0.2 cores  k6  9.8  heap   785 MB  ok
+   rate  1500/s →   414.9 it/s  drop  72.3%  err  3.93%  p95    2741 ms  liferay  0.2 cores  k6 10.3  heap   785 MB  SATURATED
+== saturated at 1500/s — ladder stops
+== done S4-edge-pageview (10:35:36)
+S6-static-pages      clean   24,948 req/s    24,946 req/s  p95   65.9 ms  view p95      0 ms  proventeq-fidelity  1.1 cores  (0.045 ms CPU per req)  k6 12.8  host 16.1
+S4-edge-pages-r2     clean   24,806 req/s    24,789 req/s  p95   71.3 ms  view p95      0 ms  liferay-varnish  2.6 cores  (0.107 ms CPU per req)  k6 13.2  host 18.2
+S6-static-pageview   clean    9,996 view/s    45,977 req/s  p95   23.4 ms  view p95     93 ms  proventeq-fidelity  2.0 cores  (0.203 ms CPU per view)  k6 12.1  host 18.2
+S4-edge-pageview     clean    1,200 view/s    67,065 req/s  p95    3.4 ms  view p95     35 ms  liferay-varnish  4.5 cores  (3.783 ms CPU per view)  k6  9.8  host 18.8
+== stress S4-edge-pageview / pageview → http://127.0.0.1:6081   steps: 50 100 200 300 400 500 600 800 1000 1200 1500 2000 3000   (10:37:01)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.0  heap   785 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  1.7  heap   785 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.5  heap   785 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  3.0  heap   785 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  4.0  heap   785 MB  ok
+   rate   500/s →   500.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  4.8  heap   785 MB  ok
+   rate   600/s →   600.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.2  heap   785 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.6  heap   785 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  7.6  heap   785 MB  ok
+   rate  1200/s →  1200.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  0.2 cores  k6  9.5  heap   781 MB  ok
+   rate  1500/s →   485.1 it/s  drop  67.7%  err  3.47%  p95    2672 ms  liferay  0.2 cores  k6 10.8  heap   781 MB  SATURATED
+== saturated at 1500/s — ladder stops
+== done S4-edge-pageview (10:51:41)
+S6-static-pages      clean   24,948 req/s    24,946 req/s  p95   65.9 ms  view p95      0 ms  proventeq-fidelity  1.1 cores  (0.045 ms CPU per req)  k6 12.8  host 16.1
+S4-edge-pages-r2     clean   24,806 req/s    24,789 req/s  p95   71.3 ms  view p95      0 ms  liferay-varnish  2.6 cores  (0.107 ms CPU per req)  k6 13.2  host 18.2
+S6-static-pageview   clean    9,996 view/s    45,977 req/s  p95   23.4 ms  view p95     93 ms  proventeq-fidelity  2.0 cores  (0.203 ms CPU per view)  k6 12.1  host 18.2
+S4-edge-pageview     clean    1,200 view/s    67,129 req/s  p95    2.3 ms  view p95     26 ms  liferay-varnish  4.1 cores  (3.450 ms CPU per view)  k6  9.5  host 18.1

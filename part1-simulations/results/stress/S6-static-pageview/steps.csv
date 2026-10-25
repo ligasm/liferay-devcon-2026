@@ -1,0 +1,12 @@
+label,workload,target_rate,achieved_iter_s,req_s,dropped_pct,error_pct,p50_ms,p95_ms,p99_ms,max_vus,liferay_cores_p90,host_cores_p90,k6_cores_p90,heap_old_mb_max,full_gc,saturated
+S6-static-pageview,pageview,500,500.0,2301.6,0.0,0.00,0.3,0.5,0.7,100,0.1,2.4,1.4,789,0,0
+S6-static-pageview,pageview,1000,1000.0,4596.0,0.0,0.00,0.3,0.4,1.6,200,0.1,4.2,2.2,789,0,0
+S6-static-pageview,pageview,2000,2000.0,9206.3,0.0,0.00,0.2,0.6,3.1,400,0.1,4.7,3.0,789,0,0
+S6-static-pageview,pageview,3000,3000.0,13790.4,0.0,0.00,0.1,0.6,3.5,600,0.1,5.0,3.4,789,0,0
+S6-static-pageview,pageview,4000,4000.0,18400.8,0.0,0.00,0.1,0.8,3.7,800,0.2,7.0,4.4,789,0,0
+S6-static-pageview,pageview,5000,5000.0,22992.8,0.0,0.00,0.2,1.1,3.9,1000,0.2,9.0,5.8,789,0,0
+S6-static-pageview,pageview,6000,6000.1,27597.7,0.0,0.00,0.2,1.9,5.1,1200,0.2,10.7,6.8,789,0,0
+S6-static-pageview,pageview,8000,8000.0,36797.3,0.0,0.00,0.2,11.1,25.8,1600,0.2,14.5,9.5,789,0,0
+S6-static-pageview,pageview,10000,9995.9,45977.3,0.0,0.00,1.0,23.4,44.8,2014,0.2,18.2,12.1,785,0,0
+S6-static-pageview,pageview,12000,11398.3,52374.3,5.0,0.00,37.7,89.4,148.2,3000,0.2,19.6,13.7,785,0,0
+S6-static-pageview,pageview,15000,8850.5,40648.2,41.0,0.57,67.6,191.9,264.5,3000,0.2,19.9,13.5,785,0,1

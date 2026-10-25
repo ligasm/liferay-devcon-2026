@@ -235,6 +235,11 @@ sub vcl_backend_response {
             }
             set beresp.grace = 7d;
         }
+        # Liferay's GZipFilter and Tomcat compression are off from S1 on: compress text
+        # assets here too, or CSS, JS and the icon sprite leave the edge uncompressed.
+        if (beresp.http.Content-Type ~ "^(text/|application/(json|javascript|xml)|image/svg\+xml)") {
+            set beresp.do_gzip = true;
+        }
         return (deliver);
     }
 

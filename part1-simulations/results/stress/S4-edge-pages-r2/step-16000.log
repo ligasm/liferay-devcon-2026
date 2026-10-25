@@ -1,0 +1,9 @@
+
+┌─ stress/S4-edge-pages-r2 / step-16000 ─────────────────
+│ requests       960001   15999.0 req/s
+│ duration      p50      0ms  p95     10ms  p99     26ms
+│ ttfb          p50      0ms  p95      6ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -6,7 +6,8 @@
  * script missing, the Slides artifact) the image stays. `bun render-fallbacks.ts` renders
  * these same configs to assets/charts/<id>.png, so the fallback is never out of date.
  *
- * Numbers: part1-simulations/results/LAB-RESULTS.md and STRESS-RESULTS.md (2026-10-24).
+ * Numbers: part1-simulations/results/LAB-RESULTS.md, STRESS-RESULTS.md (2026-10-24) and
+ * STATIC-VS-EDGE.md (2026-10-25).
  */
 (function () {
   const INK = '#0f2838', INK2 = '#4a5a66', MUTED = '#6a7a84', GRID = '#d8e0e2';
@@ -56,6 +57,33 @@
     ...extra,
   });
 
+  // One small-multiple panel: vertical bars, own scale, value on top of each bar
+  const panel = ({ title, subtitle, labels, data, colors, format = (v) => fmt(v), barPercentage = 0.74 }) => ({
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: colors,
+        borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: 'start',
+        barPercentage, categoryPercentage: 1, minBarLength: 4,
+      }],
+    },
+    options: base({
+      layout: { padding: { top: 8 } },
+      scales: {
+        x: { grid: { display: false }, border: { color: GRID }, ticks: { ...axisTicks, font: { family: FONT, size: 26 } } },
+        y: { display: false, min: 0, max: Math.max(...data) * 1.18 },
+      },
+      plugins: {
+        legend: { display: false }, tooltip: { enabled: false },
+        title: { display: true, text: title, align: 'start', color: INK, font: { family: FONT, size: 32, weight: 600 }, padding: { bottom: 8 } },
+        subtitle: { display: true, text: subtitle, align: 'start', color: MUTED, font: { family: FONT, size: 24 }, padding: { bottom: 24 } },
+        valueLabels: { size: 26, format },
+      },
+    }),
+  });
+
   const CHARTS = {
     // LAB-RESULTS.md "Load pass": p95 ms per flow, mix at ≈ 120 req/s; one panel per flow
     ...Object.fromEntries([
@@ -63,30 +91,19 @@
       ['ap', 'Asset Publisher', [76, 55, 34, 36, 2], true],
       ['search', 'Search', [994, 792, 639, 653, 2], true],
       ['signin', 'Sign-in · bypassed', [1106, 992, 890, 921, 537], false],
-    ].map(([id, title, data, cached]) => [`stages-${id}`, () => ({
-      type: 'bar',
-      data: {
-        labels: ['S0', 'S1', 'S2', 'S3', 'S4'],
-        datasets: [{
-          data,
-          backgroundColor: data.map((_v, i) => (i === 4 && cached ? TEAL : INK)),
-          borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: 'start',
-          barPercentage: 0.74, categoryPercentage: 1, minBarLength: 4,
-        }],
-      },
-      options: base({
-        layout: { padding: { top: 8 } },
-        scales: {
-          x: { grid: { display: false }, border: { color: GRID }, ticks: { ...axisTicks, font: { family: FONT, size: 26 } } },
-          y: { display: false, min: 0, max: Math.max(...data) * 1.18 },
-        },
-        plugins: {
-          legend: { display: false }, tooltip: { enabled: false },
-          title: { display: true, text: title, align: 'start', color: INK, font: { family: FONT, size: 32, weight: 600 }, padding: { bottom: 8 } },
-          subtitle: { display: true, text: 'p95 ms', align: 'start', color: MUTED, font: { family: FONT, size: 24 }, padding: { bottom: 24 } },
-          valueLabels: { size: 26, format: (v) => fmt(v) },
-        },
-      }),
+    ].map(([id, title, data, cached]) => [`stages-${id}`, () => panel({
+      title, subtitle: 'p95 ms', labels: ['S0', 'S1', 'S2', 'S3', 'S4'], data,
+      colors: data.map((_v, i) => (i === 4 && cached ? TEAL : INK)),
+    })])),
+
+    // STATIC-VS-EDGE.md: both at the same 1,000 page views/s, empty browser cache
+    ...Object.fromEntries([
+      ['requests', 'Requests', 'per page view', [56, 4.6], (v) => fmt(v)],
+      ['bytes', 'On the wire', 'KB per page view', [545, 99], (v) => fmt(v)],
+      ['cpu', 'Edge CPU', 'cores', [3.1, 0.3], (v) => v.toFixed(1)],
+      ['latency', 'Page view', 'p95 ms', [13, 2], (v) => fmt(v)],
+    ].map(([id, title, subtitle, data, format]) => [`vs-${id}`, () => panel({
+      title, subtitle, labels: ['Varnish', 'Static'], data, colors: [INK, TEAL], format, barPercentage: 0.62,
     })])),
 
     // STRESS-RESULTS.md "Headline numbers": clean capacity, guest pages

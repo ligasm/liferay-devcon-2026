@@ -32,6 +32,10 @@ const BLOBS: Record<string, string> = {
   "dfa39dae09ef6e3d69cbaa129ff9e416": "assets/charts/stages-signin.png",
   "481928c006392bd3b318da69cc156ccb": "assets/charts/capacity.png",
   "b020eda8caf6cf211acef7edfda25e69": "assets/charts/cost.png",
+  "0eccc07c7af3041826509a02e3d064c6": "assets/charts/vs-requests.png",
+  "9259776431d8e675fa7e09b46ebeb686": "assets/charts/vs-bytes.png",
+  "fbda50afd3cc112a576731029c147057": "assets/charts/vs-cpu.png",
+  "b90a92a6be53900a0b922c17d36fbc68": "assets/charts/vs-latency.png",
 };
 
 interface Deck {

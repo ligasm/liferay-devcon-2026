@@ -92,22 +92,26 @@ Prerecord a fallback. Step 1: bun pipeline/regenerate.ts --full --no-ai --max-it
 
 curl both. The portal's rendered page for a liferay.dev content page is about 120 kB with 34 script tags and an authToken in the body. The static post is 10.9 kB, two small inline module scripts, no authToken, and headers Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.
 
-## 24. tokens
+## 24. Static wins on the page, not the HTML
+
+Part 1 ended with Varnish in front of Liferay. So is static worth it, if the edge already caches the HTML? We ran the same guests against both, on the same box, on the same day. For the HTML alone it's a tie: both about 25,000 requests a second at a p95 around 70 milliseconds, and in both cases the limit was the load generator. nginx used 1.1 cores, Varnish 2.6, because Liferay's HTML is four times bigger. The difference is the page around the HTML. A first visit to a Liferay page is 56 requests: on the home page 41 JavaScript files and 8 stylesheets. The static page is four or five: the HTML, one stylesheet, the images. At the same 1,000 page views a second that is 12 times the requests, five and a half times the bytes, ten times the edge CPU, and a p95 of 13 against 2 milliseconds for the whole page view, on loopback, before a single network round trip. Pushed until it breaks, Varnish stops at 1,200 page views a second, on its default 2,000 threads. Static went past 10,000, and there the limit was k6 again. One finding on the way: our VCL stored CSS and JS uncompressed, 1.9 MB per page view, because Liferay's GZip filter was off and the asset branch never set do_gzip. Check that your edge compresses the assets, not just the HTML.
+
+## 25. tokens
 
 The token-efficiency story. Six mechanisms: plan before model, so no change means no model and no build; hash only the fields that matter, a comment counter ticking is not a change; extraction rules asked once per page layout and cached forever; enrichment keyed by content hash; batching eight posts per call on a cheap model with prompt caching on the system block; and a hard budget with a ledger of every call's tokens and cost. Dry run: about 12 to 16 thousand tokens for 80 posts, roughly three cents, once. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.
 
-## 25. What you give up
+## 26. What you give up
 
 The honest ledger. Search relevance and facets become a Pagefind index built at build time, fully static; link advanced search back to the portal. Comments, forms and ratings become islands posting to Objects or the Headless API, plus a "comment in the portal" link. Sign-in state comes from a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies. Preview and workflow stay in the portal; the static site only sees published content, live within the timer interval or instantly via webhook. Pages that are portlets in disguise are flagged as thin pages and link back. And yes, it's a second stack, but it's a timer, a script and a folder of files. Real story: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list. Your pipeline will meet a broken API; design for it.
 
-## 26. Pages and AI: the same move
+## 27. Pages and AI: the same move
 
 The closing idea. Static generation and AI cost control are the same engineering move: take expensive, repeatable work off the request path, do it at publish time, cache the result, invalidate by event, serve stale on failure, and keep an escape hatch for the genuinely dynamic: islands for pages, a rate-limited live call for AI. Liferay already does this internally for semantic search: documents are embedded at index time, only the query is embedded live, and even that is cached. The market prices it too: batch inference is half price for accepting a 24-hour window. The counter-argument: precompute trades freshness for cost, and fails on cardinality. Content times locale times segment times device can explode.
 
-## 27. Please ship it.
+## 28. Please ship it.
 
 Demo the bare hostname only: curl www.liferay.com returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header. The /web/guest/home path returns private, no-store. Liferay's web team built a guest-HTML cache for themselves and never shipped it. Two asks to the room and to Liferay: ship it, and publish Core Web Vitals data for Liferay sites. Nobody has, so anyone in this room could be first.
 
-## 28. Thank you
+## 29. Thank you
 
 Questions. Prepared answers: Why not a Cloudflare APO equivalent? There is no Liferay analogue; Liferay PaaS is Google Cloud CDN with a one-hour TTL you cannot change, and SaaS is fixed to USE_ORIGIN_HEADERS, so origin headers are the only lever. Why Astro? Static by default, islands, fast builds; Next.js ISR is the alternative for on-demand revalidation. Structured content? Wired by contentStructureId; test it on your own DXP. Model cost if AI is on everywhere? Show the ledger; the budget caps it.

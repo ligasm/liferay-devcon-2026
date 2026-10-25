@@ -1,0 +1,9 @@
+
+┌─ stress/S6-static-pages / step-20000 ──────────────────
+│ requests      1200019   19991.8 req/s
+│ duration      p50      0ms  p95     43ms  p99     69ms
+│ ttfb          p50      0ms  p95     32ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

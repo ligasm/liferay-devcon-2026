@@ -11,13 +11,18 @@
  *   WORKLOAD=search  /search?q=<term>  (Elasticsearch round-trip + full page render)
  *   WORKLOAD=login   GET sign-in form → POST credentials → signed-in page
  *   WORKLOAD=mix     pages 85 %, search 12 %, login 3 %
+ *   WORKLOAD=pageview  a first visit to a guest page (same weights as pages): the HTML, then
+ *                    every same-origin file a browser loaded with it, 6 at a time
+ *                    (PAGEVIEW_FILE, written by ../capture_pageview.py)
  *
  * Env: everything in lib/config.js plus WORKLOAD, MAX_VUS (default 1500),
  * REQ_TIMEOUT (default 10s), STEP_NAME (summary file name), LIGHT=1 (status +
- * Content-Length check only, body never read — needs a target that sends Content-Length).
+ * Content-Length check only, body never read — needs a target that sends Content-Length),
+ * MIN_BYTES (smallest valid page: default 15000 gzipped with LIGHT=1, else 20000).
  */
 import http from 'k6/http';
 import { check } from 'k6';
+import { Trend } from 'k6/metrics';
 import { cfg, url, pick, baseOptions } from './lib/config.js';
 import { recordResponse, guestHeaders, stripCookies } from './lib/checks.js';
 import { loginFlow } from './login.js';
@@ -28,6 +33,12 @@ const RATE = cfg.RATE || 50;
 const MAX_VUS = Number(__ENV.MAX_VUS || 1500);
 const TIMEOUT = __ENV.REQ_TIMEOUT || '10s';
 const LIGHT = __ENV.LIGHT === '1';
+const MIN_BYTES = Number(__ENV.MIN_BYTES || (LIGHT ? 15000 : 20000));
+const PAGEVIEW_FILE = __ENV.PAGEVIEW_FILE || '';
+const PAGEVIEW = WORKLOAD === 'pageview'
+  ? JSON.parse(open(PAGEVIEW_FILE.startsWith('/') ? PAGEVIEW_FILE : `../${PAGEVIEW_FILE}`)).pages
+  : null;
+const pageViewDuration = new Trend('page_view_duration', true);
 
 export const options = {
   ...baseOptions,
@@ -51,6 +62,7 @@ export const options = {
     'http_req_duration{page:news}': ['p(95)>=0'],
     'http_req_duration{page:search}': ['p(95)>=0'],
     'http_req_duration{page:login}': ['p(95)>=0'],
+    'page_view_duration{page:home}': ['p(95)>=0'],
     dropped_iterations: ['count>=0'],
   },
 };
@@ -66,19 +78,35 @@ function guestGet(path, page, name) {
     ...(LIGHT ? { responseType: 'none' } : {}),
   });
   // A Liferay error page is small; a rendered Proventeq page is > 20 KB (> 15 KB gzipped).
+  // The static pages carry no portal JS: MIN_BYTES=3000 (gzipped) for them.
   check(res, {
     [`${page}: 200 + full page`]: (r) => r.status === 200 &&
-      (LIGHT ? Number(r.headers['Content-Length'] || 0) > 15000 : !!r.body && r.body.length > 20000),
+      (LIGHT ? Number(r.headers['Content-Length'] || 0) > MIN_BYTES : !!r.body && r.body.length > MIN_BYTES),
   }, { page });
   recordResponse(res, { anonymous: true, html: true, tags: { page } });
 }
 
-function pages() {
+function pages(get = guestGet) {
   const r = Math.random();
-  if (r < 0.25) guestGet(cfg.HOME_PATH, 'home');
-  else if (r < 0.70) guestGet(pick(cfg.CONTENT_PAGES), 'content');
-  else if (r < 0.85) guestGet(cfg.BLOG_PATH, 'blog');
-  else guestGet(cfg.AP_PAGE, 'news');
+  if (r < 0.25) get(cfg.HOME_PATH, 'home');
+  else if (r < 0.70) get(pick(cfg.CONTENT_PAGES), 'content');
+  else if (r < 0.85) get(cfg.BLOG_PATH, 'blog');
+  else get(cfg.AP_PAGE, 'news');
+}
+
+// An empty browser cache, as for a first visit; k6's batchPerHost (6) matches a browser's
+// connections per host over HTTP/1.1
+function pageView(path, page) {
+  const started = Date.now();
+  guestGet(path, page);
+  const assets = http.batch(PAGEVIEW[path].slice(1).map((p) => ['GET', url(p), null, {
+    headers: { ...guestHeaders(), Accept: '*/*' },
+    timeout: TIMEOUT,
+    tags: { page, type: 'asset' },
+    ...(LIGHT ? { responseType: 'none' } : {}),
+  }]));
+  check(assets, { [`${page}: every file 200`]: (rs) => rs.every((r) => r.status === 200) }, { page });
+  pageViewDuration.add(Date.now() - started, { page });
 }
 
 function search() {
@@ -88,6 +116,7 @@ function search() {
 
 export function step() {
   if (WORKLOAD === 'pages') return pages();
+  if (WORKLOAD === 'pageview') return pages(pageView);
   if (WORKLOAD === 'search') return search();
   if (WORKLOAD === 'login') return loginFlow();
   const r = Math.random();

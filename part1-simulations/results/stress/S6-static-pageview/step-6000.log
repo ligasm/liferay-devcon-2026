@@ -1,0 +1,9 @@
+
+┌─ stress/S6-static-pageview / step-6000 ────────────────
+│ requests      1656104   27597.7 req/s
+│ duration      p50      0ms  p95      2ms  p99      5ms
+│ ttfb          p50      0ms  p95      2ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

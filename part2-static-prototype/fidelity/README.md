@@ -43,6 +43,8 @@ One build makes **34 requests** to Liferay. The output is:
 * one icon sprite;
 * the search index;
 * 7 documents;
+* a `.gz` next to every HTML, CSS, JS, JSON and SVG file, which nginx sends as is
+  (`gzip_static`), with a `Content-Length` and no compression per request;
 * `_server/nginx.conf`, which gives extension-less document URLs their real `Content-Type`.
 
 The CSS goes from **905 KB → 68 KB**; Clay alone goes from 791 KB to 41 KB.
@@ -103,15 +105,20 @@ portal page from :8086.
 
 ## Same traffic, measured
 
-These numbers come from a short `part1-simulations/stress.sh` run of 30 s per step,
-cookie-less guest pages, kept in `results/stress/_S6-fidelity-pages-smoke/`.
+`part1-simulations/static-vs-edge.sh` runs the same guests against this site on nginx and
+against Liferay behind Varnish (S4), on the same box. The results are in
+`part1-simulations/results/STATIC-VS-EDGE.md`.
 
-* **Throughput:** 4,000 req/s at p95 3 ms with 0 errors. nginx used 1.5 cores. The tuned
-  Liferay origin's clean capacity is 1,200 req/s.
-* **One home page view in Chrome:**
+* **HTML only:** a tie. Both serve ≈ 25,000 req/s, and both stop because k6 runs out of CPU.
+  nginx used 1.1 cores, Varnish 2.6.
+* **Whole first-visit page views** (the HTML plus every file a browser fetches for it):
 
-  | | static | Liferay |
+  | at 1,000 page views/s | static | Liferay via Varnish |
   |---|---:|---:|
-  | requests | 5 | 60 |
-  | JavaScript files | 0 | 47 |
-  | decoded size | 204 KB | 1.9 MB |
+  | requests per page view | 4.6 | 56 |
+  | bytes on the wire | 99 MB/s | 545 MB/s |
+  | server CPU | 0.3 cores | 3.1 cores |
+  | page-view p95 | 2 ms | 13 ms |
+
+* **Capacity:** 10,000+ page views/s static (k6-bound), 1,200 through Varnish (its default
+  2,000 threads).
