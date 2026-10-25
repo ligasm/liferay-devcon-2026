@@ -12,6 +12,7 @@
   /* inline styles set display:flex on every slide, so hiding needs !important */
   #stage > section { position: absolute; inset: 0; width: 1920px; height: 1080px; box-sizing: border-box; overflow: hidden; }
   #stage > section:not(.on) { display: none !important; }
+  .export #stage > section { display: flex !important; }
   /* the artifact paints flow content over pinned backdrops listed first; plain CSS needs a stacking hint */
   #stage > section > *:not([style*="position:absolute"]) { position: relative; z-index: 1; }
   section p, section h1, section h2, section h3, section ul { margin: 0; }
@@ -82,31 +83,32 @@
 <div style="display:flex;align-items:center;gap:40px;background:#0f2838;color:#f4f7f7;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">5</p>
 <p style="font-size:44px;font-weight:600;flex:1">Precompute</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">≈ 0 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">3 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#1d4a5c;color:#f4f7f7;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">4</p>
 <p style="font-size:44px;font-weight:600;flex:1">Edge HTML</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2–3 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">3</p>
 <p style="font-size:44px;font-weight:600;flex:1">Edge static</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">2</p>
 <p style="font-size:44px;font-weight:600;flex:1">JVM caches</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~50 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">9–21 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">1</p>
 <p style="font-size:44px;font-weight:600;flex:1">Origin render</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">200–2000 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">14 ms – 1 s</p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured p95 · one box, no network round trip · add your CDN's RTT to rungs 3–5</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5.</aside>
+<aside class="notes">The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5. The numbers are measured p95 on one box with no network in between: origin render 14 milliseconds for a stock content page at idle up to about a second for search under load; JVM caches 9 to 21 milliseconds once fragments are Cacheable; edge static, edge HTML and precompute all answer in 2 to 3 milliseconds. On a real CDN add the round trip to the top three. The top rungs do not differ in latency; they differ in what still has to stand behind them: the edge still needs the full origin for every miss and every purge, precompute needs none at request time.</aside>
 </section>
 
 <section id="wire" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -119,7 +121,7 @@
 <p style="font-size:32px;color:#eab000">set-cookie: SERVER_ID=…</p>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">Live demo here, 30 seconds: curl your own Liferay. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies. Either one alone makes any CDN refuse to cache. session.disabled existed through 7.3 and was removed in 7.4 with no replacement; Liferay's own KB says a user always has a session. Everyone strips the cookie at the edge instead. Captured on learn.liferay.com and liferay.dev.</aside>
+<aside class="notes">Live demo here, 30 seconds: curl your own Liferay. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies. Either one alone makes any CDN refuse to cache. session.disabled existed through 7.3 and was removed in 7.4 with no replacement; Liferay's own KB says a user always has a session. Everyone strips the cookie at the edge instead. Captured on learn.liferay.com and liferay.dev. In our lab: 100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.</aside>
 </section>
 
 <section id="benchmark" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -142,7 +144,7 @@
 </div>
 <p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">Liferay's own benchmark, one node, AMD Epyc, 8 cores, 16 vCPU, 64 GB. 25,000 concurrent users on plain web content, 15,000 on an Asset Publisher page, 93 to 94 percent application-tier CPU at peak. Bonus fact: native login degrades past about 400 concurrent attempts; a dedicated IdP took it to 19,000, because password hashing is CPU by design. Caveats: vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are load-model users with think time. Takeaway: you cannot buy your way out with a bigger database.</aside>
+<aside class="notes">Liferay's own benchmark, one node, AMD Epyc, 8 cores, 16 vCPU, 64 GB. 25,000 concurrent users on plain web content, 15,000 on an Asset Publisher page, 93 to 94 percent application-tier CPU at peak. Bonus fact: native login degrades past about 400 concurrent attempts; a dedicated IdP took it to 19,000, because password hashing is CPU by design. Caveats: vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are load-model users with think time. Our lab agrees: on one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing. Takeaway: you cannot buy your way out with a bigger database.</aside>
 </section>
 
 <section id="rig" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -194,8 +196,9 @@
 <p style="font-size:32px">JSP development=false</p>
 <p style="font-size:32px;color:#eab000">no portal-developer.properties</p>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured under load: guest page p95 49 → 35 ms · Set-Cookie and no-store still on 100 % of guest pages</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">Small, honest gains. index.on.startup false, session tracker off, Tomcat JSP development and mappedFile false, GZipFilter left off, JDK 21 with G1 or Generational ZGC, and make sure portal-developer.properties is not loaded in production. S1 exists so every later stage measures the real thing. Result: origin p95 drops a little, edge hit still zero, set-cookie on guests still 100 percent. Files in matrix/S1-hygiene.</aside>
+<aside class="notes">Small, honest gains. index.on.startup false, session tracker off, Tomcat JSP development and mappedFile false, GZipFilter left off, JDK 21 with G1 or Generational ZGC, and make sure portal-developer.properties is not loaded in production. S1 exists so every later stage measures the real thing. Measured: at 10 requests a second S1 changed nothing measurable; under load the guest page p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound. Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene.</aside>
 </section>
 
 <section id="s2" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -218,8 +221,9 @@
 <p style="font-size:32px;color:#4a5a66">Or leak user data</p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: content page 14 → 9 ms idle, 35 → 21 ms under load · stock: 69 % of busy threads re-parsing fragments</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">Entity and finder cache sizing per hot entity is the biggest query-elimination lever. DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema. Cluster Link: replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery. Fragment and Web Content template Cacheable checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to everyone. HikariCP at about two times maxThreads, sized after cache tuning. Hibernate L2 cache does not exist in Liferay; skip it. Result: origin p95 down, but every request still reaches the JVM.</aside>
+<aside class="notes">Entity and finder cache sizing per hot entity is the biggest query-elimination lever. DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema. Cluster Link: replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery. Fragment and Web Content template Cacheable checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to everyone. HikariCP at about two times maxThreads, sized after cache tuning. Hibernate L2 cache does not exist in Liferay; skip it. Measured: marking the 16 fragments Cacheable took the content page from 14 to 9 milliseconds at idle and from 35 to 21 under load; the Asset Publisher page did not move, so the gap widened to 3.3 times. In the capacity test, thread dumps of stock Liferay at 400 pages a second showed 69 percent of busy request threads re-parsing fragment FreeMarker templates. Cacheable is the single biggest origin lever we found. But every request still reaches the JVM.</aside>
 </section>
 
 <section id="s3" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -243,8 +247,9 @@
 </ul>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: TTFB flat · guest HTML private, no-store 100 % → 0 % · D&amp;M public, max-age=86400 · Set-Cookie still sent</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">cdn.host.https plus cdn.dynamic.resources.enabled covers theme and module JS and CSS, the combo servlet, ES modules and portal images. It does not touch Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Documents and Media has its own Cache Control setting. The first change that makes a guest page describable as cacheable is browser.cache.disabled=false, keeping browser.cache.signed.in.disabled=true. Regenerate Adaptive Media for existing content; lazy-load everything except the LCP image. Result with WITH_ASSETS=1: asset requests 100 percent edge hit, HTML still zero.</aside>
+<aside class="notes">cdn.host.https plus cdn.dynamic.resources.enabled covers theme and module JS and CSS, the combo servlet, ES modules and portal images. It does not touch Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Documents and Media has its own Cache Control setting. The first change that makes a guest page describable as cacheable is browser.cache.disabled=false, keeping browser.cache.signed.in.disabled=true. Regenerate Adaptive Media for existing content; lazy-load everything except the LCP image. Measured: S3 changes headers, not milliseconds. TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero, and the brochure PDF to public, max-age 86400. The Set-Cookie is still there, which is why the edge must strip it. Gotcha found on 2026.Q1: the D&amp;M Cache Control PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing.</aside>
 </section>
 
 <section id="s4rules" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -270,26 +275,64 @@
 </section>
 
 <section id="s4results" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">S4 result: guest browse</h2>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">S4 result: guest traffic at the edge</h2>
 <div style="flex:1;display:flex;align-items:center">
 <div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">−98%</p>
-<p style="font-size:36px;color:#4a5a66">p95 latency</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">−96%</p>
+<p style="font-size:36px;color:#4a5a66">guest page p95, 49 → 2 ms</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">100%</p>
-<p style="font-size:36px;color:#4a5a66">edge hit</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">99.9%</p>
+<p style="font-size:36px;color:#4a5a66">edge hit, cacheable requests</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
 <p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">0%</p>
-<p style="font-size:36px;color:#4a5a66">login served from cache</p>
+<p style="font-size:36px;color:#4a5a66">sign-ins served from cache</p>
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Placeholder numbers from the mock run · replace with your S0 → S4 results</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured · S0 → S4, mix at ≈ 120 req/s · Liferay CPU 10.1 → 1.9 cores at S3 → S4 · LAB-RESULTS.md</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">Demo: docker compose up Varnish in front of the same Liferay, bun run.ts S4-edge mix, open SUMMARY.md and the p95 chart. Mock reference: guest browse p95 32 to 1 ms, Asset Publisher 72 to 1, search 69 to 1, the whole mix 48 to 13 ms with 95 percent edge hit. The number that matters most is the third one: login stays at 0 percent edge hit, 100 percent private. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. Replace these with your own runs before the talk.</aside>
+<aside class="notes">Demo: Varnish in front of the same Liferay, the same mix at about 120 requests a second. Measured, not mocked: the guest content page p95 went from 49 milliseconds at S0, 21 at S3, to 2 behind Varnish, minus 96 percent overall. The whole mix went from 521 to 6 milliseconds. Varnish counted 18,656 hits and 16 misses; the 4,902 passes are sign-in, the APIs and /c/ URLs. The number that matters most is the third one: sign-in stays at 0 percent edge hit and its signed-in page stays private, no-cache, no-store. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. The real run found a bug the mock never could: the login redirect page was cached with its Set-Cookie stripped, so every login through the edge failed with 403. Never cache the login portlet's pages.</aside>
+</section>
+
+<section id="stages" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · same load at every stage</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The edge is the step that counts</h2>
+<div style="flex:1;display:grid;grid-template-columns:repeat(4, 392px);gap:32px;align-items:end">
+<div style="display:flex">
+<img data-chart-fallback src="assets/charts/stages-content.png" alt="Content page p95 S0 to S4: 49, 35, 21, 21, 2 ms" style="width:392px;height:560px;object-fit:contain">
+<canvas data-chart="stages-content" width="392" height="560" role="img" aria-label="Content page p95 S0 to S4: 49, 35, 21, 21, 2 ms" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="assets/charts/stages-ap.png" alt="Asset Publisher p95 S0 to S4: 76, 55, 34, 36, 2 ms" style="width:392px;height:560px;object-fit:contain">
+<canvas data-chart="stages-ap" width="392" height="560" role="img" aria-label="Asset Publisher p95 S0 to S4: 76, 55, 34, 36, 2 ms" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="assets/charts/stages-search.png" alt="Search p95 S0 to S4: 994, 792, 639, 653, 2 ms" style="width:392px;height:560px;object-fit:contain">
+<canvas data-chart="stages-search" width="392" height="560" role="img" aria-label="Search p95 S0 to S4: 994, 792, 639, 653, 2 ms" style="display:none"></canvas>
+</div>
+<div style="display:flex">
+<img data-chart-fallback src="assets/charts/stages-signin.png" alt="Sign-in p95 S0 to S4: 1106, 992, 890, 921, 537 ms, never cached" style="width:392px;height:560px;object-fit:contain">
+<canvas data-chart="stages-signin" width="392" height="560" role="img" aria-label="Sign-in p95 S0 to S4: 1106, 992, 890, 921, 537 ms, never cached" style="display:none"></canvas>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84"><span style="color:#34a1a0;font-weight:600">■</span> served by Varnish · own scale per panel · DXP 2026.q1.12, mix at ≈ 120 req/s · LAB-RESULTS.md</p>
+<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside class="notes">Same mix at every stage, about 120 requests a second, p95 per flow on a log scale. S0 to S3 is the traditional tuning: the content page goes from 49 to 21 milliseconds, a 2.3 times gain, search from about a second to 650 milliseconds. Real, but linear. S4 puts Varnish in front and every guest flow drops to 2 milliseconds: content page, Asset Publisher and search alike, because the VCL caches the normalised query string. The fourth panel is sign-in. It never leaves the origin, that is rule 1 holding, and it only gets faster at S4 because the origin has spare CPU: Liferay went from about 10 cores to 1.9 under the same load. Varnish counted 18,656 hits and 16 misses.</aside>
+</section>
+
+<section id="capacity" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · pushed until it breaks</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">How far each stage goes</h2>
+<div style="flex:1;display:flex;align-items:flex-end">
+<img data-chart-fallback src="assets/charts/capacity.png" alt="Clean capacity for guest pages: S0 stock origin 400 req/s, S3 tuned origin 1,200 req/s, S4 Varnish edge 24,800 req/s" style="width:1664px;height:560px;object-fit:contain">
+<canvas data-chart="capacity" width="1664" height="560" role="img" aria-label="Clean capacity for guest pages: S0 stock origin 400 req/s, S3 tuned origin 1,200 req/s, S4 Varnish edge 24,800 req/s" style="display:none"></canvas>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Rate stepped up until saturation · cookie-less guests · the S4 limit was the load generator, Varnish used 2.8 cores · STRESS-RESULTS.md</p>
+<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside class="notes">Then we stopped being polite and stepped the rate up until each configuration broke. Clean capacity means under one percent dropped, under one percent errors, every flow's p95 under two seconds. Stock Liferay: 400 guest page views a second, and the thread dumps say why: 69 percent of busy request threads were re-parsing fragment FreeMarker templates. Mark the fragments Cacheable and tune the rest: 1,200 a second, limited by the host's CPU. Put Varnish in front: 24,800 a second, and that is the lab's limit, not Varnish's. k6 needed 14 of the 20 cores, Varnish used 2.8, hit its default 2,000 thread cap, and Liferay sat at 0.2 cores creating no sessions. Twenty times the tuned origin, sixty times stock.</aside>
 </section>
 
 <section id="s5purge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -311,8 +354,21 @@
 <p style="font-size:28px;color:#b9cfd3;font-family:'JetBrains Mono', 'Courier New', monospace">Surrogate-Key</p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: publish → fresh at the edge 55.7 s on TTL alone · 17–19 ms with a ban right after commit</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">A ModelListener on JournalArticle, Layout and BlogsEntry fires a soft purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version. Sketch in matrix/S5-edge-purge, with Varnish and Cloudflare purgers. publish-to-fresh.ts measures publish to fresh-at-edge in milliseconds. Say what is missing: there is no listener API for "Publication published", and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects. Classic web content still needs Java.</aside>
+<aside class="notes">A ModelListener on JournalArticle, Layout and BlogsEntry fires a soft purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version. Sketch in matrix/S5-edge-purge, with Varnish and Cloudflare purgers. publish-to-fresh.ts measures publish to fresh-at-edge in milliseconds. Measured: PATCH a News title while polling origin and edge every 250 milliseconds. TTL alone, 60 seconds: the edge served the old title for 55.7 seconds. A ban right after the publish, which is what the listener sends: 17 to 19 milliseconds over three runs, which is the poll resolution. Say what is missing: there is no listener API for "Publication published", and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects. Classic web content still needs Java.</aside>
+</section>
+
+<section id="cost" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · CPU per unit of work</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">One sign-in costs a hundred page views</h2>
+<div style="flex:1;display:flex;align-items:flex-end">
+<img data-chart-fallback src="assets/charts/cost.png" alt="Liferay CPU per unit of work: page from Varnish 0.1 ms, page from the tuned origin 9 ms, search 350 to 500 ms, sign-in 650 to 1,100 ms" style="width:1664px;height:560px;object-fit:contain">
+<canvas data-chart="cost" width="1664" height="560" role="img" aria-label="Liferay CPU per unit of work: page from Varnish 0.1 ms, page from the tuned origin 9 ms, search 350 to 500 ms, sign-in 650 to 1,100 ms" style="display:none"></canvas>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Container CPU at a clean step ÷ rate · search ≈ 90 % Elasticsearch · sign-in = PBKDF2 password hashing · STRESS-RESULTS.md</p>
+<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside class="notes">Divide the container's CPU by the rate and you get the price list. A guest page from the tuned origin costs about 9 milliseconds of CPU; from Varnish about a tenth of a millisecond. A search costs 350 to 500, about fifty page views, and 90 percent of it is Elasticsearch. A sign-in, the four requests from form to signed-in page, costs 650 milliseconds to over a second, about a hundred page views, and the thread dumps show 100 percent of busy threads in PBKDF2 password hashing, which is slow on purpose. That is why the mixed workload behind Varnish tops out at 400 journeys a second while guest pages alone reach 24,800: three percent sign-ins eat the origin. The tuned origin peaks at 25 searches and 15 sign-ins a second. The edge cannot touch either.</aside>
 </section>
 
 <section id="wall" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
@@ -320,7 +376,7 @@
 <div style="position:absolute;left:0;top:0;width:1920px;height:1080px;background:linear-gradient(90deg, rgba(8,22,33,0.85) 0%, rgba(8,22,33,0.55) 60%, rgba(8,22,33,0.2) 100%)"></div>
 <h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px">The edge makes the fast path fast.</h2>
 <h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px;color:#34a1a0">It doesn't make the slow path cheap.</h2>
-<aside class="notes">The wall. Be blunt about the limits we just imposed: locale must be in the URL or the cache serves the wrong language; personalisation moves to late hydration; forms and action URLs must leave guest pages; every publish needs a purge; a cold or purged page still costs a full JVM render of 200 to 2000 ms, with a stampede on the popular ones; and the origin still runs 24/7 at full size for the misses. For marketing, docs, community and catalogue sites, the honest question is: why is there a JVM in the request path at all?</aside>
+<aside class="notes">The wall. Be blunt about the limits we just imposed: locale must be in the URL or the cache serves the wrong language; personalisation moves to late hydration; forms and action URLs must leave guest pages; every publish needs a purge; a cold or purged page still costs a full JVM render, in our lab 15 to 50 milliseconds for a simple page and about a second for search under load, with a stampede on the popular ones; sign-in and search never leave the origin, and they are what capped the edge mix at 400 journeys a second; and the origin still runs 24/7 at full size for the misses. For marketing, docs, community and catalogue sites, the honest question is: why is there a JVM in the request path at all?</aside>
 </section>
 
 <section id="part2" data-transition="fade" style="background:#34a1a0;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
@@ -510,7 +566,8 @@
     const a = slides[i].querySelector('aside.notes');
     notes.textContent = a ? a.textContent : '';
     count.textContent = (i + 1) + ' / ' + slides.length;
-    history.replaceState(null, '', '#' + (i + 1));
+    history.replaceState(null, '', location.search + '#' + (i + 1));
+    document.dispatchEvent(new CustomEvent('deck:slide', { detail: slides[i] }));
   }
   addEventListener('keydown', (e) => {
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) i = Math.min(slides.length - 1, i + 1);
@@ -526,6 +583,214 @@
   addEventListener('resize', fit);
   addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1)); if (n) { i = Math.max(0, Math.min(slides.length - 1, n - 1)); show(); } });
   fit(); show();
+</script>
+<script src="assets/vendor/chart-4.4.1.umd.js"></script>
+<script>
+/*
+ * Measured Part 1 charts, drawn with Chart.js (assets/vendor/chart-4.4.1.umd.js).
+ *
+ * A slide carries <canvas data-chart="<id>"> next to an <img data-chart-fallback> of the
+ * same chart. When Chart.js loads, the canvas replaces the image; without it (no JS, the
+ * script missing, the Slides artifact) the image stays. `bun render-fallbacks.ts` renders
+ * these same configs to assets/charts/<id>.png, so the fallback is never out of date.
+ *
+ * Numbers: part1-simulations/results/LAB-RESULTS.md and STRESS-RESULTS.md (2026-10-24).
+ */
+(function () {
+  const INK = '#0f2838', INK2 = '#4a5a66', MUTED = '#6a7a84', GRID = '#d8e0e2';
+  const TEAL = '#34a1a0';
+  const FONT = "'IBM Plex Sans', Arial, sans-serif";
+  const fmt = (n) => n.toLocaleString('en-US');
+
+  // Text next to each bar or at the end of each line, in ink, never in the series colour
+  const valueLabels = {
+    id: 'valueLabels',
+    afterDatasetsDraw(chart, _args, opts) {
+      if (!opts || !opts.format) return;
+      const { ctx } = chart;
+      ctx.save();
+      chart.data.datasets.forEach((ds, di) => {
+        const meta = chart.getDatasetMeta(di);
+        if (meta.hidden) return;
+        meta.data.forEach((el, i) => {
+          const text = opts.format(ds.data[i], i, ds);
+          if (!text) return;
+          const lines = [].concat(text);
+          const horizontal = chart.options.indexAxis === 'y';
+          const line = meta.type === 'line';
+          if (line && i !== meta.data.length - 1) return;
+          ctx.textBaseline = 'middle';
+          ctx.textAlign = horizontal || line ? 'left' : 'center';
+          const x = horizontal ? el.x + 20 : line ? el.x + 24 : el.x;
+          const y0 = horizontal || line ? el.y - (lines.length - 1) * 19 : el.y - (opts.size || 34) * 0.75 - (lines.length - 1) * 38;
+          lines.forEach((t, k) => {
+            ctx.font = `${k === 0 ? 600 : 400} ${k === 0 ? opts.size || 34 : 26}px ${FONT}`;
+            ctx.fillStyle = k === 0 ? INK : INK2;
+            ctx.fillText(t, x, y0 + k * 38);
+          });
+        });
+      });
+      ctx.restore();
+    },
+  };
+
+  const axisTicks = { color: INK2, font: { family: FONT, size: 28 } };
+  const axisTitle = (text) => ({ display: true, text, color: MUTED, font: { family: FONT, size: 26 } });
+  const base = (extra) => ({
+    responsive: false,
+    devicePixelRatio: 2,
+    animation: { duration: 900, easing: 'easeOutQuart' },
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    ...extra,
+  });
+
+  const CHARTS = {
+    // LAB-RESULTS.md "Load pass": p95 ms per flow, mix at ≈ 120 req/s; one panel per flow
+    ...Object.fromEntries([
+      ['content', 'Content page', [49, 35, 21, 21, 2], true],
+      ['ap', 'Asset Publisher', [76, 55, 34, 36, 2], true],
+      ['search', 'Search', [994, 792, 639, 653, 2], true],
+      ['signin', 'Sign-in · bypassed', [1106, 992, 890, 921, 537], false],
+    ].map(([id, title, data, cached]) => [`stages-${id}`, () => ({
+      type: 'bar',
+      data: {
+        labels: ['S0', 'S1', 'S2', 'S3', 'S4'],
+        datasets: [{
+          data,
+          backgroundColor: data.map((_v, i) => (i === 4 && cached ? TEAL : INK)),
+          borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: 'start',
+          barPercentage: 0.74, categoryPercentage: 1, minBarLength: 4,
+        }],
+      },
+      options: base({
+        layout: { padding: { top: 8 } },
+        scales: {
+          x: { grid: { display: false }, border: { color: GRID }, ticks: { ...axisTicks, font: { family: FONT, size: 26 } } },
+          y: { display: false, min: 0, max: Math.max(...data) * 1.18 },
+        },
+        plugins: {
+          legend: { display: false }, tooltip: { enabled: false },
+          title: { display: true, text: title, align: 'start', color: INK, font: { family: FONT, size: 32, weight: 600 }, padding: { bottom: 8 } },
+          subtitle: { display: true, text: 'p95 ms', align: 'start', color: MUTED, font: { family: FONT, size: 24 }, padding: { bottom: 24 } },
+          valueLabels: { size: 26, format: (v) => fmt(v) },
+        },
+      }),
+    })])),
+
+    // STRESS-RESULTS.md "Headline numbers": clean capacity, guest pages
+    capacity: () => ({
+      type: 'bar',
+      data: {
+        labels: ['S0 stock origin', 'S3 tuned origin', 'S4 Varnish edge'],
+        datasets: [{
+          data: [400, 1200, 24800],
+          backgroundColor: [INK, INK, TEAL],
+          borderRadius: { topRight: 6, bottomRight: 6 }, borderSkipped: 'start',
+          barPercentage: 0.62, categoryPercentage: 1,
+        }],
+      },
+      options: base({
+        indexAxis: 'y',
+        layout: { padding: { right: 340 } },
+        scales: {
+          x: {
+            min: 0, max: 25000, grid: { color: GRID }, border: { display: false },
+            ticks: { ...axisTicks, stepSize: 5000, callback: (v) => fmt(v) },
+            title: axisTitle('guest page views per second, < 1 % errors, every p95 < 2 s'),
+          },
+          y: { grid: { display: false }, border: { color: GRID }, ticks: { ...axisTicks, color: INK, font: { family: FONT, size: 32, weight: 600 } } },
+        },
+        plugins: {
+          legend: { display: false }, tooltip: { enabled: false },
+          valueLabels: { format: (v, i) => [`${fmt(v)} req/s`, ['', '3× stock', '62× stock · 20× tuned'][i]].filter(Boolean) },
+        },
+      }),
+    }),
+
+    // STRESS-RESULTS.md "What each step costs": Liferay container CPU per unit of work
+    cost: () => ({
+      type: 'bar',
+      data: {
+        labels: ['Page from Varnish', 'Page, tuned origin', 'Search', 'Sign-in'],
+        datasets: [{
+          data: [0.1, 9, 425, 875],
+          backgroundColor: [TEAL, TEAL, INK, INK],
+          borderRadius: { topRight: 6, bottomRight: 6 }, borderSkipped: 'start',
+          barPercentage: 0.62, categoryPercentage: 1, minBarLength: 4,
+        }],
+      },
+      options: base({
+        indexAxis: 'y',
+        layout: { padding: { right: 360 } },
+        scales: {
+          x: {
+            min: 0, max: 1000, grid: { color: GRID }, border: { display: false },
+            ticks: { ...axisTicks, stepSize: 250, callback: (v) => `${fmt(v)} ms` },
+            title: axisTitle('Liferay CPU per unit of work'),
+          },
+          y: { grid: { display: false }, border: { color: GRID }, ticks: { ...axisTicks, color: INK, font: { family: FONT, size: 32, weight: 600 } } },
+        },
+        plugins: {
+          legend: { display: false }, tooltip: { enabled: false },
+          valueLabels: {
+            format: (_v, i) => [
+              ['≈ 0.1 ms', '1/80 of a page'],
+              ['≈ 9 ms', '1 page view'],
+              ['350–500 ms', '≈ 50 page views'],
+              ['650–1,100 ms', '≈ 100 page views'],
+            ][i],
+          },
+        },
+      }),
+    }),
+  };
+
+  const live = new Map();
+
+  function render(canvas, animate) {
+    const make = CHARTS[canvas.dataset.chart];
+    if (!make || !window.Chart) return null;
+    live.get(canvas)?.destroy();
+    canvas.style.display = 'block';
+    const fallback = canvas.parentElement.querySelector('[data-chart-fallback]');
+    if (fallback) fallback.style.display = 'none';
+    const config = make();
+    if (!animate) config.options.animation = false;
+    const chart = new window.Chart(canvas, { ...config, plugins: [valueLabels] });
+    live.set(canvas, chart);
+    return chart;
+  }
+
+  function renderSlide(section) {
+    section?.querySelectorAll('canvas[data-chart]').forEach((c) => render(c, true));
+  }
+
+  window.deckCharts = { CHARTS, render };
+
+  if (!window.Chart) return; // keep the fallback images
+  window.Chart.defaults.font.family = FONT;
+
+  const ready = document.fonts ? document.fonts.ready : Promise.resolve();
+  ready.then(() => {
+    if (new URLSearchParams(location.search).has('export')) {
+      // render-fallbacks.ts: draw every chart without animation and hand back PNG data URLs
+      document.documentElement.classList.add('export');
+      const out = {};
+      document.querySelectorAll('canvas[data-chart]').forEach((c) => {
+        render(c, false);
+        out[c.dataset.chart] = c.toDataURL('image/png');
+      });
+      const pre = document.createElement('pre');
+      pre.id = 'chart-export';
+      pre.textContent = JSON.stringify(out);
+      document.body.appendChild(pre);
+      return;
+    }
+    renderSlide(document.querySelector('#stage > section.on'));
+    document.addEventListener('deck:slide', (e) => renderSlide(e.detail));
+  });
+})();
+
 </script>
 </body>
 </html>

@@ -4,29 +4,30 @@
 <div style="display:flex;align-items:center;gap:40px;background:#0f2838;color:#f4f7f7;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">5</p>
 <p style="font-size:44px;font-weight:600;flex:1">Precompute</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">≈ 0 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">3 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#1d4a5c;color:#f4f7f7;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">4</p>
 <p style="font-size:44px;font-weight:600;flex:1">Edge HTML</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2–3 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">3</p>
 <p style="font-size:44px;font-weight:600;flex:1">Edge static</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~10 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">2</p>
 <p style="font-size:44px;font-weight:600;flex:1">JVM caches</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">~50 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">9–21 ms</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
 <p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">1</p>
 <p style="font-size:44px;font-weight:600;flex:1">Origin render</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">200–2000 ms</p>
+<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">14 ms – 1 s</p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured p95 · one box, no network round trip · add your CDN's RTT to rungs 3–5</p>
 <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5.</aside>
+<aside>The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5. The numbers are measured p95 on one box with no network in between: origin render 14 milliseconds for a stock content page at idle up to about a second for search under load; JVM caches 9 to 21 milliseconds once fragments are Cacheable; edge static, edge HTML and precompute all answer in 2 to 3 milliseconds. On a real CDN add the round trip to the top three. The top rungs do not differ in latency; they differ in what still has to stand behind them: the edge still needs the full origin for every miss and every purge, precompute needs none at request time.</aside>
 </section>

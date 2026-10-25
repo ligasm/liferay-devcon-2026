@@ -1,0 +1,11 @@
+<section id="cost" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · CPU per unit of work</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">One sign-in costs a hundred page views</h2>
+<div style="flex:1;display:flex;align-items:flex-end">
+<img data-chart-fallback src="/_blob/b020eda8caf6cf211acef7edfda25e69" alt="Liferay CPU per unit of work: page from Varnish 0.1 ms, page from the tuned origin 9 ms, search 350 to 500 ms, sign-in 650 to 1,100 ms" style="width:1664px;height:560px;object-fit:contain">
+<canvas data-chart="cost" width="1664" height="560" role="img" aria-label="Liferay CPU per unit of work: page from Varnish 0.1 ms, page from the tuned origin 9 ms, search 350 to 500 ms, sign-in 650 to 1,100 ms" style="display:none"></canvas>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Container CPU at a clean step ÷ rate · search ≈ 90 % Elasticsearch · sign-in = PBKDF2 password hashing · STRESS-RESULTS.md</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>Divide the container's CPU by the rate and you get the price list. A guest page from the tuned origin costs about 9 milliseconds of CPU; from Varnish about a tenth of a millisecond. A search costs 350 to 500, about fifty page views, and 90 percent of it is Elasticsearch. A sign-in, the four requests from form to signed-in page, costs 650 milliseconds to over a second, about a hundred page views, and the thread dumps show 100 percent of busy threads in PBKDF2 password hashing, which is slow on purpose. That is why the mixed workload behind Varnish tops out at 400 journeys a second while guest pages alone reach 24,800: three percent sign-ins eat the origin. The tuned origin peaks at 25 searches and 15 sign-ins a second. The edge cannot touch either.</aside>
+</section>

@@ -3,11 +3,14 @@
  *
  *   bun build.ts            → index.html (present with ← → / space, N toggles notes, F fullscreen)
  *                           → speaker-notes.md
+ *   bun render-fallbacks.ts → assets/charts/*.png (the images shown where charts.js cannot run)
  *
  * The slide files under project/ are the source of truth, in the format the
  * Claude Slides artifact uses: one <section> per slide, images referenced as
  * /_blob/<id>. This script maps those ids to the files in assets/ and turns the
  * artifact-only <x-shape> arrows into inline SVG so plain browsers render them.
+ * Measured charts are drawn by charts.js (Chart.js, vendored in assets/vendor/); each
+ * chart slide keeps a PNG of the same chart as its fallback.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -22,6 +25,13 @@ const BLOBS: Record<string, string> = {
   "92409000d05f018b363b9d3c7f3c166a": "assets/wall.jpg",
   "d13a5b9a6c5993d14dd563cfbc600104": "assets/pages.jpg",
   "daae0f910dac30168a6b7fb4555047fe": "assets/tokens.jpg",
+  // chart fallbacks (bun render-fallbacks.ts); re-upload to the artifact when they change
+  "62c1180d3f0b8a4a8cf05a02ed26af08": "assets/charts/stages-content.png",
+  "32b20ebbae09c9b60f17c8d847b9ccd7": "assets/charts/stages-ap.png",
+  "ab81ae9c4864faa198df3e70d00e69a2": "assets/charts/stages-search.png",
+  "dfa39dae09ef6e3d69cbaa129ff9e416": "assets/charts/stages-signin.png",
+  "481928c006392bd3b318da69cc156ccb": "assets/charts/capacity.png",
+  "b020eda8caf6cf211acef7edfda25e69": "assets/charts/cost.png",
 };
 
 interface Deck {
@@ -56,6 +66,8 @@ const sections = deck.order.map((id, i) => {
   return html.replace(/<aside>/, '<aside class="notes">');
 });
 
+const chartsJs = readFileSync(join(ROOT, "charts.js"), "utf8");
+
 const fontLinks = Object.values(deck.faces)
   .filter((f) => f.href)
   .map((f) => `<link rel="stylesheet" href="${f.href}">`)
@@ -74,6 +86,7 @@ ${fontLinks}
   /* inline styles set display:flex on every slide, so hiding needs !important */
   #stage > section { position: absolute; inset: 0; width: 1920px; height: 1080px; box-sizing: border-box; overflow: hidden; }
   #stage > section:not(.on) { display: none !important; }
+  .export #stage > section { display: flex !important; }
   /* the artifact paints flow content over pinned backdrops listed first; plain CSS needs a stacking hint */
   #stage > section > *:not([style*="position:absolute"]) { position: relative; z-index: 1; }
   section p, section h1, section h2, section h3, section ul { margin: 0; }
@@ -108,7 +121,8 @@ ${sections.join("\n")}
     const a = slides[i].querySelector('aside.notes');
     notes.textContent = a ? a.textContent : '';
     count.textContent = (i + 1) + ' / ' + slides.length;
-    history.replaceState(null, '', '#' + (i + 1));
+    history.replaceState(null, '', location.search + '#' + (i + 1));
+    document.dispatchEvent(new CustomEvent('deck:slide', { detail: slides[i] }));
   }
   addEventListener('keydown', (e) => {
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) i = Math.min(slides.length - 1, i + 1);
@@ -124,6 +138,10 @@ ${sections.join("\n")}
   addEventListener('resize', fit);
   addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1)); if (n) { i = Math.max(0, Math.min(slides.length - 1, n - 1)); show(); } });
   fit(); show();
+</script>
+<script src="assets/vendor/chart-4.4.1.umd.js"></script>
+<script>
+${chartsJs}
 </script>
 </body>
 </html>

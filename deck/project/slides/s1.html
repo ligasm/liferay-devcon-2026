@@ -7,6 +7,7 @@
 <p style="font-size:32px">JSP development=false</p>
 <p style="font-size:32px;color:#eab000">no portal-developer.properties</p>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured under load: guest page p95 49 → 35 ms · Set-Cookie and no-store still on 100 % of guest pages</p>
 <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>Small, honest gains. index.on.startup false, session tracker off, Tomcat JSP development and mappedFile false, GZipFilter left off, JDK 21 with G1 or Generational ZGC, and make sure portal-developer.properties is not loaded in production. S1 exists so every later stage measures the real thing. Result: origin p95 drops a little, edge hit still zero, set-cookie on guests still 100 percent. Files in matrix/S1-hygiene.</aside>
+<aside>Small, honest gains. index.on.startup false, session tracker off, Tomcat JSP development and mappedFile false, GZipFilter left off, JDK 21 with G1 or Generational ZGC, and make sure portal-developer.properties is not loaded in production. S1 exists so every later stage measures the real thing. Measured: at 10 requests a second S1 changed nothing measurable; under load the guest page p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound. Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene.</aside>
 </section>

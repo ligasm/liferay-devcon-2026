@@ -10,13 +10,13 @@ Companion material in this repository:
 | | What | Where |
 |---|---|---|
 | Evidence | Research dossier, 6 parts, fact-checked | `docs/liferay-performance-dossier.md` |
-| Slides | 25-slide deck, speaker notes, generated art | `deck/` |
+| Slides | 28-slide deck, speaker notes, generated art, measured charts (Chart.js, PNG fallbacks) | `deck/` |
 | Part 1 demos | k6 scenarios (TypeScript), S0–S6 config matrix, Varnish VCL, Cloudflare rules, purge listener, Bun runner + summariser + charts | `part1-simulations/` |
 | Part 2 demo | Astro static site from Liferay Headless, delta regeneration, AI orchestrator with budget, webhook + timers — all TypeScript on Bun | `part2-static-prototype/` |
 
 Everything we wrote is TypeScript run by Bun (`bun <file>.ts`); k6 executes its own `.ts` scenarios natively (≥ 0.57, no flag). Only the Java `ModelListener` sketch, the Varnish VCL and the Tomcat `setenv.sh` fragments stay in their native languages — they run inside Liferay/Varnish/Tomcat, not on your laptop.
 
-Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if behind" line so you can land on time. Slide numbers refer to the current 25-slide deck in `deck/`.
+Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if behind" line so you can land on time. Slide numbers refer to the current 28-slide deck in `deck/`.
 
 ---
 
@@ -29,12 +29,14 @@ Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if be
 **The ladder** — the frame for the whole talk:
 
 ```
-5  PRECOMPUTE     build/publish time      ≈0 ms/req     limit: staleness, cardinality       ← Part 2
-4  EDGE HTML      CDN/Varnish, guests     ~10 ms        limit: personalization, auth safety ← Part 1 end
-3  EDGE STATIC    CDN, JS/CSS/images      ~10 ms        limit: assets only
-2  JVM CACHES     entity/finder/fragment  ~50 ms        limit: memory, cluster invalidation
-1  ORIGIN RENDER  full page assembly      200–2000 ms   limit: CPU — always CPU
+5  PRECOMPUTE     build/publish time      3 ms          limit: staleness, cardinality       ← Part 2
+4  EDGE HTML      CDN/Varnish, guests     2–3 ms        limit: personalization, auth safety ← Part 1 end
+3  EDGE STATIC    CDN, JS/CSS/images      2 ms          limit: assets only
+2  JVM CACHES     entity/finder/fragment  9–21 ms       limit: memory, cluster invalidation
+1  ORIGIN RENDER  full page assembly      14 ms – 1 s   limit: CPU — always CPU
 ```
+
+Measured p95 on one box with no network RTT (`part1-simulations/results/LAB-RESULTS.md`); on a real CDN add the round trip to rungs 3–5. The top three rungs do not differ in latency, they differ in what must stand behind them.
 
 "Part 1 climbs rungs 1–4 and measures every step. Part 2 is what you do when rung 4 isn't enough."
 
@@ -84,20 +86,22 @@ Timing below assumes 45 min including ~5 min Q&A. Every section has a "cut if be
 
 ## 1.5 S4 Guest HTML at the edge — 16:00–23:00 · *the core of Part 1*
 
-**Slides:** 11 two rules, bypass first · 12 **the breach** · 13 S4 result · 14 S5 purge by tag
+**Slides:** 11 two rules, bypass first · 12 **the breach** · 13 S4 result · 14 the edge is the step that counts (p95 per stage) · 15 how far each stage goes (capacity) · 16 S5 purge by tag · 17 one sign-in costs a hundred page views
 
-**Demo 2 (90 s, prerecord a fallback):** `docker compose up` Varnish in front of the same Liferay (`part1-simulations/matrix/varnish/`), `bun run.ts S4-edge mix`, open `results/SUMMARY.md` and the p95 chart. Mock reference: guest-browse p95 −98%, `edge_hit` 0→100%, `set_cookie_on_guest` 100→0%, and **login stays at 0% edge hit** — the bypass works.
+**Demo 2 (90 s, prerecord a fallback):** `docker compose up` Varnish in front of the same Liferay (`part1-simulations/matrix/varnish/`), `bun run.ts S4-edge mix`, open `results/SUMMARY.md` and the p95 chart. Measured (`part1-simulations/results/LAB-RESULTS.md`): guest page p95 under load 49 → 21 → 2 ms (S0 → S3 → S4), the mix 521 → 6 ms, 18,656 hits / 16 misses at Varnish, Liferay CPU 10.1 → 1.9 cores, and **sign-in stays at 0% edge hit** — the bypass works. Capacity (`STRESS-RESULTS.md`): 400 → 1,200 → 24,800 guest pages/s clean; a sign-in costs ≈ 100 page views of CPU, a search ≈ 50.
+
+*Cut if behind:* slide 17 (cost); say its one line on the wall slide instead.
 
 1. Bypass when any auth cookie is present (`COMPANY_ID`, `ID`, `USER_UUID`, `REMEMBER_ME`) or method ≠ GET/HEAD.
 2. For anonymous GETs: strip `Cookie` in, strip `Set-Cookie` out, normalise the query string, `Vary: Accept-Encoding` only, TTL from origin with `grace` 1 h.
 
 **The breach slide (do not skip):** one wrong character in rule 1 is a data breach, not a bug. Defence in depth: origin keeps `private` on signed-in responses, browser TTL stays bypass, nothing on a public page may need `authToken`.
 
-**S5:** `ModelListener` → soft purge by `Surrogate-Key` after commit; `publish-to-fresh.ts` measures publish→fresh-at-edge. Missing in the product: no "Publication published" listener API; Object Actions can't fire from `JournalArticle`/`Layout`.
+**S5:** `ModelListener` → soft purge by `Surrogate-Key` after commit; `publish-to-fresh.ts` measures publish→fresh-at-edge: 55.7 s on the 60 s TTL alone, 17–19 ms with a ban right after the publish. Missing in the product: no "Publication published" listener API; Object Actions can't fire from `JournalArticle`/`Layout`.
 
 ## 1.6 The wall — 23:00–25:00
 
-**Slide:** 15
+**Slide:** 18
 
 Locale must be in the URL; personalisation moves to late hydration; forms and `ActionURL`s must leave guest pages; every publish needs a purge; a cold page still costs a full JVM render; the origin still runs 24/7 for the misses. **"The edge makes the fast path fast. It doesn't make the slow path cheap."**
 
@@ -107,13 +111,13 @@ Locale must be in the URL; personalisation moves to late hydration; forms and `A
 
 ## 2.1 The idea — 25:00–28:00
 
-**Slides:** 16 don't render it at all · 17 draw the line by cardinality · 18 authored in Liferay, served as files
+**Slides:** 19 don't render it at all · 20 draw the line by cardinality · 21 authored in Liferay, served as files
 
 Precompute when the output space is small and read:write is high; render live when output is per-user. Everything editors love stays in Liferay; what leaves is the request path.
 
 ## 2.2 Demo — 28:00–35:00 · *prerecord a fallback*
 
-**Slides:** 19 live demo · 20 same post, two deliveries
+**Slides:** 22 live demo · 23 same post, two deliveries
 
 1. `bun pipeline/regenerate.ts --full --no-ai --max-items 80` → 132 pages in ~10–19 s, 3.3 MB.
 2. Run again → "nothing changed → skip build (0 tokens)" in ~0.1 s offline / 2–3 s live.
@@ -124,13 +128,13 @@ Precompute when the output space is small and read:write is high; render live wh
 
 ## 2.3 Token efficiency — 35:00–38:00
 
-**Slide:** 21 ($0.03)
+**Slide:** 24 ($0.03)
 
 Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
 
 ## 2.4 What you give up — 38:00–41:00
 
-**Slide:** 22
+**Slide:** 25
 
 Search → Pagefind; comments/forms → islands to the Headless API; sign-in state → late-hydration island; preview/workflow → stays in the portal. Resilience story: the site-pages listing returned HTTP 500 on liferay.dev all day; the fetcher fell back to a seed list.
 
@@ -138,7 +142,7 @@ Search → Pagefind; comments/forms → islands to the Headless API; sign-in sta
 
 ## Close — 41:00–43:00
 
-**Slides:** 23 pages and AI: the same move · 24 please ship it · 25 thank you
+**Slides:** 26 pages and AI: the same move · 27 please ship it · 28 thank you
 
 Static pages and AI cost control are the same architecture: expensive op → do it at publish time → cache → invalidate by event → marginal cost ≈ 0. Then the ask: `www.liferay.com` already runs an unshipped guest-HTML cache (`x-lfr-guest-html-cache: 1`) — ship it, and publish Core Web Vitals.
 
@@ -150,10 +154,10 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 
 ## Prep checklist
 
-- [ ] Run the S0→S4 matrix against **your** Liferay and replace the placeholder numbers on slide 13.
+- [x] Run the S0→S4 matrix against a real Liferay and replace the placeholder numbers on slide 13 (done 2026-10-24, DXP 2026.q1.12; charts on slides 14, 15, 17).
 - [ ] `varnishd -C -f matrix/varnish/default.vcl` once — the VCL was reviewed, not compiled.
 - [ ] Confirm items marked `UNVERIFIED` in `part1-simulations/matrix/`.
 - [ ] Set `ANTHROPIC_API_KEY` and confirm current model IDs so the enrichment path runs live once.
 - [ ] Point `.env` at your DXP for one rehearsal.
 - [ ] Prerecord both demos; conference Wi-Fi is where demos die.
-- [ ] Demo the *bare* `www.liferay.com` hostname for slide 24.
+- [ ] Demo the *bare* `www.liferay.com` hostname for slide 27.
