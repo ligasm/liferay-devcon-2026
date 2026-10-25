@@ -1,0 +1,111 @@
+/* ------------------------------------------------------------------------
+ * Proventeq base-site design system. Lives in the header fragment because the
+ * master page puts the header on every page, so this CSS ships everywhere the
+ * site's pages render — and nowhere in the Control Panel.
+ * --------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Red+Hat+Display:wght@500;700;800&display=swap");
+
+:root {
+	--pq-navy: #16475c;
+	--pq-deep: #0b2230;
+	--pq-blue: #096285;
+	--pq-sky: #2e9cc7;
+	--pq-teal: #34a1a0;
+	--pq-teal-dark: #277978;
+	--pq-orange: #f98d50;
+	--pq-amber: #eab000;
+	--pq-lime: #b1eb46;
+	--pq-paper: #f3f8f8;
+	--pq-line: #dbe6e8;
+	--pq-ink: #1d2b33;
+	--pq-muted: #56666e;
+	--pq-radius: 14px;
+	--pq-shadow: 0 1px 2px rgba(11, 34, 48, .06), 0 8px 24px rgba(11, 34, 48, .08);
+	--pq-wrap: 1200px;
+	--pq-head: "Red Hat Display", "Segoe UI", system-ui, sans-serif;
+	--pq-body: "Open Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+/* Classic theme chrome off: the master page brings its own header/footer. */
+#banner, #footer, footer#footer { display: none !important; }
+#wrapper { padding: 0 !important; }
+body { background: #fff; color: var(--pq-ink); font-family: var(--pq-body); font-size: 16px; line-height: 1.6; }
+#main-content, .layout-content { padding: 0 !important; }
+
+.pq-band { padding: 88px 24px; position: relative; }
+.pq-band--tight { padding-top: 56px; padding-bottom: 56px; }
+.pq-band--flush-top { padding-top: 0; }
+.pq-band--paper { background: var(--pq-paper); }
+.pq-band--dark { background: var(--pq-deep); color: #e8f1f3; }
+.pq-band--navy { background: linear-gradient(135deg, var(--pq-deep), var(--pq-navy)); color: #e8f1f3; }
+.pq-wrap { max-width: var(--pq-wrap); margin: 0 auto; }
+.pq-band .row { row-gap: 24px; }
+
+.pq-h1, .pq-h2, .pq-h3, .pq-eyebrow { font-family: var(--pq-head); }
+.pq-h1 { font-size: clamp(2.3rem, 4.6vw, 3.7rem); font-weight: 800; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 20px; }
+.pq-h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -.015em; margin: 0 0 16px; }
+.pq-h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin: 0 0 8px; }
+.pq-eyebrow { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--pq-teal); margin-bottom: 14px; }
+.pq-band--dark .pq-eyebrow, .pq-band--navy .pq-eyebrow { color: var(--pq-lime); }
+.pq-lead { font-size: 1.15rem; color: var(--pq-muted); max-width: 46rem; }
+.pq-band--dark .pq-lead, .pq-band--navy .pq-lead { color: #b9cdd3; }
+.pq-h1 p, .pq-h2 p, .pq-h3 p { margin: 0; }
+
+.pq-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 999px; font-family: var(--pq-head); font-weight: 700; font-size: .98rem; text-decoration: none !important; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; border: 2px solid transparent; }
+.pq-btn:hover { transform: translateY(-1px); }
+.pq-btn--primary { background: var(--pq-teal); color: #fff !important; box-shadow: 0 6px 18px rgba(52, 161, 160, .35); }
+.pq-btn--primary:hover { background: var(--pq-teal-dark); }
+.pq-btn--ghost { border-color: currentColor; color: var(--pq-navy) !important; }
+.pq-band--dark .pq-btn--ghost, .pq-band--navy .pq-btn--ghost, .pq-hero--dark .pq-btn--ghost { color: #fff !important; }
+.pq-btn--accent { background: var(--pq-orange); color: #1d1206 !important; }
+.pq-link { font-family: var(--pq-head); font-weight: 700; color: var(--pq-blue) !important; text-decoration: none !important; }
+.pq-link::after { content: " \2192"; transition: margin .15s ease; }
+.pq-link:hover::after { margin-left: 4px; }
+.pq-band--dark .pq-link, .pq-band--navy .pq-link { color: var(--pq-lime) !important; }
+
+/* ---- header ---------------------------------------------------------- */
+.pq-header { position: sticky; top: 0; z-index: 900; background: rgba(255, 255, 255, .94); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--pq-line); }
+.has-control-menu .pq-header { top: var(--control-menu-container-height, 0); }
+.pq-header__inner { max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 28px; }
+.pq-header__logo img { height: 34px; width: auto; display: block; }
+.pq-nav { display: flex; gap: 2px; flex: 1; flex-wrap: wrap; justify-content: center; }
+.pq-nav a { padding: 8px 10px; white-space: nowrap; border-radius: 8px; color: var(--pq-ink) !important; font-family: var(--pq-head); font-weight: 700; font-size: .95rem; text-decoration: none !important; }
+.pq-nav a:hover { background: var(--pq-paper); color: var(--pq-blue) !important; }
+.pq-nav a.is-active { color: var(--pq-teal-dark) !important; box-shadow: inset 0 -2px 0 var(--pq-teal); border-radius: 0; }
+.pq-header__search { display: flex; align-items: center; border: 1px solid var(--pq-line); border-radius: 999px; padding: 2px 4px 2px 14px; background: #fff; }
+.pq-header__search input { border: 0; outline: 0; width: 150px; font-size: .9rem; background: transparent; }
+.pq-header__search button { border: 0; background: var(--pq-paper); border-radius: 999px; width: 32px; height: 32px; display: grid; place-items: center; color: var(--pq-navy); }
+.pq-header__toggle { display: none; margin-left: auto; border: 1px solid var(--pq-line); background: #fff; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
+@media (max-width: 1360px) { .pq-header__search { display: none; } .pq-header__inner { gap: 18px; } }
+@media (max-width: 1180px) {
+	.pq-header__inner { flex-wrap: wrap; }
+	.pq-header__toggle { display: block; }
+	.pq-nav, .pq-header__search, .pq-header__cta { display: none; }
+	.pq-header.is-open .pq-nav { display: flex; flex-direction: column; width: 100%; }
+	.pq-header.is-open .pq-header__search { display: flex; width: 100%; }
+	.pq-header.is-open .pq-header__search input { width: 100%; }
+}
+
+/* ---- generic card & helpers used by several fragments ----------------- */
+.pq-card { height: 100%; background: #fff; border: 1px solid var(--pq-line); border-radius: var(--pq-radius); padding: 28px; transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; display: flex; flex-direction: column; gap: 6px; }
+.pq-card:hover { box-shadow: var(--pq-shadow); transform: translateY(-2px); border-color: transparent; }
+.pq-card p { color: var(--pq-muted); margin: 0 0 12px; }
+.pq-card .pq-link { margin-top: auto; }
+.pq-band--dark .pq-card, .pq-band--navy .pq-card { background: rgba(255, 255, 255, .05); border-color: rgba(255, 255, 255, .12); color: #e8f1f3; }
+.pq-band--dark .pq-card p, .pq-band--navy .pq-card p { color: #b9cdd3; }
+.pq-icon { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(52, 161, 160, .14), rgba(46, 156, 199, .14)); color: var(--pq-teal-dark); margin-bottom: 12px; }
+.pq-icon svg { width: 24px; height: 24px; }
+.pq-band--dark .pq-icon, .pq-band--navy .pq-icon { background: rgba(177, 235, 70, .12); color: var(--pq-lime); }
+.pq-prose { color: var(--pq-muted); }
+.pq-prose p { margin: 0 0 14px; }
+.pq-ticks { list-style: none; padding: 0; margin: 18px 0 24px; display: grid; gap: 10px; }
+.pq-ticks li { padding-left: 32px; position: relative; }
+.pq-ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--pq-teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat; }
+
+/* Liferay widgets dropped into the site (blogs, asset publisher, search) */
+.pq-widgets { max-width: var(--pq-wrap); margin: 0 auto; }
+.pq-widgets .portlet-title-text, .pq-widgets h2, .pq-widgets .title, .pq-widgets .asset-title { font-family: var(--pq-head); font-weight: 700; color: var(--pq-navy); }
+.pq-widgets a { color: var(--pq-blue); }
+.pq-widgets .asset-abstract, .pq-widgets .entry, .pq-widgets .widget-mode-card { border: 1px solid var(--pq-line); border-radius: var(--pq-radius); padding: 24px; margin-bottom: 20px; background: #fff; }
+.pq-widgets .portlet { margin-bottom: 0; }
+.pq-link:empty, .pq-btn:empty, .pq-eyebrow:empty { display: none !important; }

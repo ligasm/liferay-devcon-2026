@@ -8,3 +8,5 @@ part2-static-prototype/content/raw/
 part2-static-prototype/content/build/
 part2-static-prototype/reports/*.md
 .DS_Store
+part0-base-site/dist/
+part1-simulations/bin/

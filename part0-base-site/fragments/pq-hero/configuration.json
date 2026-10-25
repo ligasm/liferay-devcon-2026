@@ -1,0 +1,5 @@
+{"fieldSets":[{"label":"Hero","fields":[
+ {"name":"variant","label":"Variant","type":"select","defaultValue":"dark","typeOptions":{"validValues":[{"label":"Dark","value":"dark"},{"label":"Light","value":"light"}]}},
+ {"name":"image","label":"Background","type":"select","defaultValue":"hero-migrate","typeOptions":{"validValues":[{"label":"Migrate (dark)","value":"hero-migrate"},{"label":"Govern (dark)","value":"hero-govern"},{"label":"AI (dark)","value":"hero-ai"},{"label":"Portal (dark)","value":"hero-portal"},{"label":"Team (light)","value":"split-team"},{"label":"Data (light)","value":"split-data"},{"label":"Cloud (light)","value":"split-cloud"},{"label":"Liferay (light)","value":"split-liferay"}]}},
+ {"name":"size","label":"Size","type":"select","defaultValue":"large","typeOptions":{"validValues":[{"label":"Large","value":"large"},{"label":"Compact","value":"compact"}]}}
+]}]}

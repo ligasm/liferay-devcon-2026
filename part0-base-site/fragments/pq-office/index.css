@@ -1,0 +1,3 @@
+.pq-office { height: 100%; padding: 28px; border-radius: var(--pq-radius); background: #fff; border: 1px solid var(--pq-line); border-left: 4px solid var(--pq-teal); }
+.pq-office p { margin: 0 0 6px; color: var(--pq-muted); }
+.pq-office__phone { font-weight: 700; color: var(--pq-navy) !important; }

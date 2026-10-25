@@ -1,0 +1,5 @@
+.pq-stat { text-align: center; padding: 12px; }
+.pq-stat__value { display: block; font-family: var(--pq-head); font-size: clamp(2.4rem, 4vw, 3.4rem); font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--pq-teal), var(--pq-sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pq-band--dark .pq-stat__value, .pq-band--navy .pq-stat__value { background: linear-gradient(135deg, var(--pq-lime), var(--pq-teal)); -webkit-background-clip: text; background-clip: text; }
+.pq-stat__label { display: block; margin-top: 10px; color: var(--pq-muted); font-weight: 600; }
+.pq-band--dark .pq-stat__label, .pq-band--navy .pq-stat__label { color: #b9cdd3; }

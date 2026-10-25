@@ -1,0 +1,4 @@
+.pq-heading { margin-bottom: 44px; }
+.pq-heading--center { text-align: center; }
+.pq-heading--center .pq-lead { margin: 0 auto; }
+.pq-heading .pq-eyebrow:empty, .pq-heading .pq-lead:empty { display: none; }

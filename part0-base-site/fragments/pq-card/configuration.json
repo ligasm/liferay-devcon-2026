@@ -1,0 +1,4 @@
+{"fieldSets":[{"label":"Card","fields":[
+ {"name":"icon","label":"Icon","type":"select","defaultValue":"sparkle","typeOptions":{"validValues":[
+  {"label":"Migrate","value":"migrate"},{"label":"Shield","value":"shield"},{"label":"Storage","value":"storage"},{"label":"Sparkle","value":"sparkle"},{"label":"Cloud","value":"cloud"},{"label":"Data","value":"data"},{"label":"Code","value":"code"},{"label":"People","value":"people"},{"label":"Gear","value":"gear"},{"label":"Chart","value":"chart"},{"label":"Building","value":"building"},{"label":"Scale","value":"scale"},{"label":"Flask","value":"flask"},{"label":"Factory","value":"factory"},{"label":"Bank","value":"bank"},{"label":"Government","value":"gov"},{"label":"Portal","value":"portal"},{"label":"Chat","value":"chat"}]}}
+]}]}

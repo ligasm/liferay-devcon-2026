@@ -1,0 +1,5 @@
+.pq-step { position: relative; height: 100%; padding: 28px 24px 24px; border-top: 3px solid var(--pq-teal); background: #fff; border-radius: 0 0 var(--pq-radius) var(--pq-radius); box-shadow: var(--pq-shadow); }
+.pq-step__num { font-family: var(--pq-head); font-weight: 800; font-size: 2rem; color: var(--pq-teal); opacity: .5; display: block; margin-bottom: 8px; }
+.pq-step p { color: var(--pq-muted); margin: 0; }
+.pq-band--dark .pq-step, .pq-band--navy .pq-step { background: rgba(255, 255, 255, .05); color: #e8f1f3; border-top-color: var(--pq-lime); }
+.pq-band--dark .pq-step p, .pq-band--navy .pq-step p { color: #b9cdd3; }

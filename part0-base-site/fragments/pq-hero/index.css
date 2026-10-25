@@ -1,0 +1,11 @@
+.pq-hero { position: relative; background-size: cover; background-position: center; padding: 120px 24px 112px; overflow: hidden; }
+.pq-hero--compact { padding: 84px 24px 72px; }
+.pq-hero--dark { color: #fff; }
+.pq-hero--dark::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9, 30, 42, .92) 0%, rgba(9, 30, 42, .7) 55%, rgba(9, 30, 42, .25) 100%); }
+.pq-hero--light::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .8) 60%, rgba(255, 255, 255, .3) 100%); }
+.pq-hero__inner { position: relative; max-width: var(--pq-wrap); margin: 0 auto; }
+.pq-hero .pq-h1 { max-width: 15em; }
+.pq-hero--dark .pq-lead { color: #cfe0e4; }
+.pq-hero--dark .pq-eyebrow { color: var(--pq-lime); }
+.pq-hero__actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+.pq-hero__actions a:empty, .pq-hero__actions a[href="#"]:not([data-lfr-editable-id]) { display: none; }

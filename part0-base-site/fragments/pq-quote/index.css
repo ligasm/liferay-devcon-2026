@@ -1,0 +1,5 @@
+.pq-quote { max-width: 860px; margin: 0 auto; text-align: center; }
+.pq-quote__mark { width: 48px; color: var(--pq-teal); margin-bottom: 18px; }
+.pq-quote blockquote { font-family: var(--pq-head); font-size: clamp(1.3rem, 2.4vw, 1.75rem); font-weight: 500; line-height: 1.45; margin: 0 0 20px; border: 0; padding: 0; }
+.pq-quote figcaption { color: var(--pq-muted); font-weight: 600; }
+.pq-band--dark .pq-quote figcaption, .pq-band--navy .pq-quote figcaption { color: var(--pq-lime); }

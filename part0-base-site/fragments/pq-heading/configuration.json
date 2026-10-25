@@ -1,0 +1,3 @@
+{"fieldSets":[{"label":"Heading","fields":[
+ {"name":"align","label":"Alignment","type":"select","defaultValue":"center","typeOptions":{"validValues":[{"label":"Center","value":"center"},{"label":"Left","value":"left"}]}}
+]}]}

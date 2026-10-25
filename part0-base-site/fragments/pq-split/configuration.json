@@ -1,0 +1,4 @@
+{"fieldSets":[{"label":"Split","fields":[
+ {"name":"imageSide","label":"Image side","type":"select","defaultValue":"right","typeOptions":{"validValues":[{"label":"Right","value":"right"},{"label":"Left","value":"left"}]}},
+ {"name":"image","label":"Image","type":"select","defaultValue":"split-team","typeOptions":{"validValues":[{"label":"Team","value":"split-team"},{"label":"Data","value":"split-data"},{"label":"Cloud","value":"split-cloud"},{"label":"Liferay","value":"split-liferay"},{"label":"Migrate (dark)","value":"hero-migrate"},{"label":"Govern (dark)","value":"hero-govern"},{"label":"AI (dark)","value":"hero-ai"},{"label":"Portal (dark)","value":"hero-portal"}]}}
+]}]}

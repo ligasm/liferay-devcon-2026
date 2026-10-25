@@ -1,0 +1,8 @@
+.pq-case { height: 100%; background: #fff; border: 1px solid var(--pq-line); border-radius: var(--pq-radius); padding: 32px; display: flex; flex-direction: column; }
+.pq-case__meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; font-size: .82rem; font-weight: 700; }
+.pq-case__tag { background: rgba(52, 161, 160, .12); color: var(--pq-teal-dark); padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: .08em; }
+.pq-case__route { color: var(--pq-blue); }
+.pq-case__client { color: var(--pq-navy) !important; font-weight: 700; margin: 0 0 8px; }
+.pq-case p { color: var(--pq-muted); }
+.pq-case .pq-ticks { margin: 8px 0 16px; font-size: .95rem; }
+.pq-case__quote { margin: auto 0 0; padding: 16px 0 0; border-top: 1px solid var(--pq-line); font-style: italic; color: var(--pq-ink); font-size: .95rem; }

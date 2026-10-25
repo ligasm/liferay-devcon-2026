@@ -1,0 +1,9 @@
+.pq-form { background: #fff; border-radius: 22px; padding: 36px; box-shadow: var(--pq-shadow); border: 1px solid var(--pq-line); }
+.pq-form__note { color: var(--pq-muted); }
+.pq-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0 24px; }
+.pq-form__full { grid-column: 1 / -1; }
+.pq-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: .9rem; color: var(--pq-navy); }
+.pq-form input, .pq-form textarea { border: 1px solid var(--pq-line); border-radius: 10px; padding: 11px 14px; font: inherit; font-weight: 400; color: var(--pq-ink); background: var(--pq-paper); }
+.pq-form input:focus, .pq-form textarea:focus { outline: 2px solid var(--pq-teal); background: #fff; }
+.pq-form__demo { font-size: .8rem; color: var(--pq-muted); margin: 12px 0 0; }
+@media (max-width: 700px) { .pq-form__grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,10 @@
+.pq-footer { background: var(--pq-deep); color: #b9cdd3; padding: 72px 24px 0; font-size: .95rem; }
+.pq-footer__inner { max-width: var(--pq-wrap); margin: 0 auto; display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 40px; padding-bottom: 48px; }
+.pq-footer__logo { height: 32px; width: auto; filter: brightness(0) invert(1); margin-bottom: 18px; }
+.pq-footer h4 { font-family: var(--pq-head); color: #fff; font-size: 1rem; margin: 0 0 14px; }
+.pq-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.pq-footer a { color: #b9cdd3 !important; text-decoration: none !important; }
+.pq-footer a:hover { color: var(--pq-lime) !important; }
+.pq-footer__contact { color: #8fa9b1; }
+.pq-footer__base { max-width: var(--pq-wrap); margin: 0 auto; border-top: 1px solid rgba(255, 255, 255, .1); padding: 20px 0 28px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .85rem; color: #7f979f; }
+@media (max-width: 900px) { .pq-footer__inner { grid-template-columns: 1fr 1fr; } .pq-footer__brand { grid-column: 1 / -1; } }

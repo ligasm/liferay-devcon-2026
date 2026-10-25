@@ -1,0 +1,1712 @@
+{
+ "site": {
+  "name": "Proventeq",
+  "tagline": "Migrate, modernise and govern your content estate, then put trusted AI to work on it.",
+  "footer": {
+   "about": "Proventeq helps organisations move content to Microsoft 365, keep it well governed and build digital experiences on top of it. Our teams combine a migration platform with hands-on consulting across Microsoft 365, data and AI, and Liferay.",
+   "address": "Proventeq Ltd, 4 Forbury Gate, Reading, Berkshire RG1 3QD, United Kingdom",
+   "email": "info@proventeq.com",
+   "phone": "+44 (0)118 555 0142",
+   "columns": [
+    {
+     "title": "Products",
+     "links": [
+      {
+       "label": "Proventeq365",
+       "page": "proventeq365"
+      },
+      {
+       "label": "Migration Solutions",
+       "page": "migration-solutions"
+      }
+     ]
+    },
+    {
+     "title": "Services",
+     "links": [
+      {
+       "label": "All Services",
+       "page": "services"
+      },
+      {
+       "label": "Digital Experience",
+       "page": "digital-experience"
+      }
+     ]
+    },
+    {
+     "title": "Resources",
+     "links": [
+      {
+       "label": "Case Studies",
+       "page": "case-studies"
+      },
+      {
+       "label": "News",
+       "page": "news"
+      },
+      {
+       "label": "Blog",
+       "page": "blog"
+      }
+     ]
+    },
+    {
+     "title": "Company",
+     "links": [
+      {
+       "label": "About Us",
+       "page": "about"
+      },
+      {
+       "label": "Contact",
+       "page": "contact"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "pages": [
+  {
+   "key": "home",
+   "name": "Home",
+   "title": "Proventeq | Content Migration, Microsoft 365, Data & AI and Liferay Experts",
+   "description": "Proventeq helps organisations migrate content to Microsoft 365, govern and optimise it, and build trusted AI and digital experiences on a clean foundation.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Content intelligence for the modern workplace",
+     "title": "Your content, migrated, governed and ready for AI",
+     "lead": "We help enterprises move decades of documents into Microsoft 365, keep them under control and turn them into a dependable base for Copilot, analytics and digital experiences.",
+     "primaryCta": {
+      "label": "Talk to an expert",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Explore Proventeq365",
+      "page": "proventeq365"
+     },
+     "variant": "dark"
+    },
+    {
+     "type": "logos",
+     "title": "Trusted by public sector bodies and global enterprises",
+     "items": [
+      "Department for Education",
+      "University of Leeds",
+      "Schreiber Foods",
+      "Sygnature Discovery",
+      "Toyo Engineering",
+      "Pool Re",
+      "McAllister Olivarius",
+      "Royal Ahrend",
+      "DLF Limited",
+      "Bionical Emas"
+     ]
+    },
+    {
+     "type": "cards",
+     "eyebrow": "The Proventeq365 platform",
+     "title": "Four modules, one connected approach to content",
+     "intro": "Proventeq365 brings migration, governance, storage control and AI readiness together so each stage builds on the one before it.",
+     "columns": 4,
+     "items": [
+      {
+       "icon": "migrate",
+       "title": "Migration Accelerator",
+       "text": "Move content and metadata from legacy repositories into Microsoft 365 with automated mapping, validation and detailed reporting.",
+       "link": {
+        "label": "Learn more",
+        "page": "proventeq365"
+       }
+      },
+      {
+       "icon": "shield",
+       "title": "Governance & Compliance",
+       "text": "Apply retention, sensitivity and ownership rules consistently so the new environment stays tidy and defensible.",
+       "link": {
+        "label": "Learn more",
+        "page": "proventeq365"
+       }
+      },
+      {
+       "icon": "storage",
+       "title": "Storage Optimization",
+       "text": "Find redundant, obsolete and oversized content, then archive or remove it to reduce cost and clutter.",
+       "link": {
+        "label": "Learn more",
+        "page": "proventeq365"
+       }
+      },
+      {
+       "icon": "sparkle",
+       "title": "Copilot Readiness",
+       "text": "Assess permissions, labelling and content quality so Copilot answers are accurate and never overshare.",
+       "link": {
+        "label": "Learn more",
+        "page": "proventeq365"
+       }
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "title": "A clear pathway from legacy to AI-ready",
+     "items": [
+      {
+       "title": "Migrate & modernise",
+       "text": "Discover what you hold, choose what is worth keeping and move it to Microsoft 365 with its structure and context intact."
+      },
+      {
+       "title": "Govern & optimise",
+       "text": "Put policies, labels and lifecycle rules in place, and trim storage so the estate remains healthy long after go-live."
+      },
+      {
+       "title": "Automate with trusted AI",
+       "text": "Layer Copilot, search and workflow automation on well-organised content so results can be relied upon."
+      }
+     ]
+    },
+    {
+     "type": "stats",
+     "title": "Proventeq in numbers",
+     "items": [
+      {
+       "value": "300+",
+       "label": "consultants and engineers"
+      },
+      {
+       "value": "3",
+       "label": "regional offices"
+      },
+      {
+       "value": "30+",
+       "label": "countries"
+      },
+      {
+       "value": "15+",
+       "label": "years in business"
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Industries",
+     "title": "Experience across regulated and content-heavy sectors",
+     "intro": "Our teams know the records, compliance and collaboration needs that differ from one sector to the next.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "scale",
+       "title": "Legal",
+       "text": "Modernise document management systems while preserving matter structures, versions and security.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      },
+      {
+       "icon": "building",
+       "title": "Retail",
+       "text": "Bring product, supplier and store knowledge into a single, searchable workplace.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      },
+      {
+       "icon": "bank",
+       "title": "Finance",
+       "text": "Meet audit and retention obligations while giving advisers faster access to client records.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      },
+      {
+       "icon": "flask",
+       "title": "Life Sciences",
+       "text": "Keep controlled documents and research material organised, traceable and inspection-ready.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      },
+      {
+       "icon": "gov",
+       "title": "Government",
+       "text": "Retire ageing records systems and deliver secure, accessible digital services to the public.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      },
+      {
+       "icon": "factory",
+       "title": "Manufacturing",
+       "text": "Connect engineering, quality and supplier documents across plants and regions.",
+       "link": {
+        "label": "See services",
+        "page": "services"
+       }
+      }
+     ]
+    },
+    {
+     "type": "quote",
+     "text": "The team handled a large and awkward legacy repository with discipline. We reached go-live on schedule and with far better visibility of our information than before.",
+     "role": "Head of Knowledge & Information, UK government department"
+    },
+    {
+     "type": "cta",
+     "title": "Ready to plan your migration?",
+     "text": "Tell us where your content lives today and where you want it to go. We will suggest a practical route and a realistic timeline.",
+     "cta": {
+      "label": "Book a discovery call",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "proventeq365",
+   "name": "Proventeq365",
+   "title": "Proventeq365 | Migration, Governance, Storage and Copilot Readiness Platform",
+   "description": "Proventeq365 is a modular platform for migrating content into Microsoft 365, governing it, optimising storage and preparing the estate for Copilot.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Product",
+     "title": "Proventeq365, the platform for a clean Microsoft 365 estate",
+     "lead": "One platform that carries content from legacy systems into Microsoft 365, keeps it compliant, controls storage growth and prepares it for AI.",
+     "primaryCta": {
+      "label": "Request a demo",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "View migration sources",
+      "page": "migration-solutions"
+     },
+     "variant": "dark"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Modules",
+     "title": "Choose the modules you need",
+     "intro": "Each module works alone or alongside the others, so you can start with the most pressing problem.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "migrate",
+       "title": "Migration Accelerator",
+       "text": "Automates extraction, mapping, transfer and validation from legacy repositories to SharePoint and OneDrive.",
+       "link": {
+        "label": "Migration sources",
+        "page": "migration-solutions"
+       }
+      },
+      {
+       "icon": "shield",
+       "title": "Governance & Compliance",
+       "text": "Discovers sensitive material, applies labels and retention, and reports on policy coverage.",
+       "link": {
+        "label": "Talk to us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "storage",
+       "title": "Storage Optimization",
+       "text": "Identifies duplicate, stale and oversized files so you can archive or delete with confidence.",
+       "link": {
+        "label": "Talk to us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "sparkle",
+       "title": "Copilot Readiness",
+       "text": "Scores permissions, labelling and content quality, then lists the fixes to make before rollout.",
+       "link": {
+        "label": "Talk to us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "data",
+       "title": "Migration Accelerator for Box",
+       "text": "A focused path for organisations consolidating Box content into Microsoft 365.",
+       "link": {
+        "label": "Talk to us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "data",
+       "title": "Migration Accelerator for M-Files",
+       "text": "Preserves M-Files metadata and views while moving content into SharePoint.",
+       "link": {
+        "label": "Talk to us",
+        "page": "contact"
+       }
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Why it matters",
+     "title": "Metadata, permissions and history travel with the content",
+     "text": "<p>Simple file copying loses the context that makes documents useful. Proventeq365 maps metadata, versions, links and security so that people find what they expect on the other side.</p><p>Every run produces reports that show what moved, what was skipped and why, giving programme teams evidence rather than assumptions.</p>",
+     "bullets": [
+      "Automated metadata and permission mapping",
+      "Delta runs for a smooth cut-over",
+      "Audit-ready migration reports",
+      "Scales across many parallel workstreams"
+     ],
+     "cta": {
+      "label": "Discuss your project",
+      "page": "contact"
+     },
+     "imageSide": "right"
+    },
+    {
+     "type": "steps",
+     "title": "How a typical engagement runs",
+     "items": [
+      {
+       "title": "Assess",
+       "text": "Scan the source, profile the content and agree what should move, be archived or be left behind."
+      },
+      {
+       "title": "Plan",
+       "text": "Design the target structure, mapping rules and migration waves."
+      },
+      {
+       "title": "Migrate",
+       "text": "Run pilot and production waves with validation at every step."
+      },
+      {
+       "title": "Govern",
+       "text": "Switch on policies, labels and storage controls for the new environment."
+      }
+     ]
+    },
+    {
+     "type": "chips",
+     "title": "Works with the systems you already have",
+     "items": [
+      "Documentum",
+      "FileNet",
+      "OpenText",
+      "iManage",
+      "Alfresco",
+      "Box",
+      "File Share",
+      "Hummingbird",
+      "Oracle UCM",
+      "Stellent",
+      "ShareFile",
+      "Laserfiche"
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "See Proventeq365 in action",
+     "text": "We will run a short demo using content that resembles your own estate.",
+     "cta": {
+      "label": "Request a demo",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "migration-solutions",
+   "name": "Migration Solutions",
+   "title": "Migration Solutions | Move to SharePoint and Microsoft 365 from Any Legacy System",
+   "description": "Migrate from Documentum, FileNet, OpenText, iManage and more than twenty other systems to SharePoint and Microsoft 365 with a proven, low-risk method.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Migration solutions",
+     "title": "Migrate to SharePoint and Microsoft 365 with confidence",
+     "lead": "A tested method and tooling for moving content from ageing repositories, file shares and cloud drives into a modern, governed workplace.",
+     "primaryCta": {
+      "label": "Plan your migration",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "About Proventeq365",
+      "page": "proventeq365"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "chips",
+     "title": "Supported source systems",
+     "items": [
+      "Documentum",
+      "FileNet",
+      "OpenText",
+      "iManage",
+      "Alfresco",
+      "Box",
+      "File Share",
+      "Hummingbird",
+      "Oracle UCM",
+      "Stellent",
+      "ShareFile",
+      "Laserfiche",
+      "IRIS iChannel",
+      "CCH",
+      "Meridio",
+      "M-Files",
+      "Google Drive",
+      "Dropbox",
+      "Lotus Notes",
+      "SharePoint On-Premises"
+     ]
+    },
+    {
+     "type": "steps",
+     "title": "Our migration method",
+     "items": [
+      {
+       "title": "Discover",
+       "text": "Inventory repositories, volumes, formats and permissions to understand scope and risk."
+      },
+      {
+       "title": "Rationalise",
+       "text": "Decide what to keep, archive or delete so you do not carry clutter forward."
+      },
+      {
+       "title": "Design",
+       "text": "Define the target information architecture, metadata model and security approach."
+      },
+      {
+       "title": "Migrate",
+       "text": "Move content in waves, with pilot runs, validation and delta synchronisation."
+      },
+      {
+       "title": "Handover",
+       "text": "Train owners, close out the source and enable governance in the new environment."
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Risk control",
+     "title": "Less disruption for the people who use the content",
+     "text": "<p>Migrations succeed when users barely notice the move. We schedule waves around business calendars and keep source systems available until sign-off.</p>",
+     "bullets": [
+      "Pilot waves before production",
+      "Rollback-friendly cut-over plans",
+      "Reconciliation reports for every batch"
+     ],
+     "cta": {
+      "label": "Talk to a migration expert",
+      "page": "contact"
+     },
+     "imageSide": "left"
+    },
+    {
+     "type": "faq",
+     "title": "Migration questions, answered",
+     "items": [
+      {
+       "q": "How long does a typical migration take?",
+       "a": "It depends on volume, complexity and how much clean-up is needed. Small estates can finish within weeks, while large regulated repositories are usually phased over several months."
+      },
+      {
+       "q": "Will our metadata and permissions be preserved?",
+       "a": "Yes. Metadata, versions and security are mapped during design, then checked in pilot runs before production waves begin."
+      },
+      {
+       "q": "Can users keep working during the migration?",
+       "a": "Generally yes. We use incremental delta runs so source and target stay aligned until the final cut-over window."
+      },
+      {
+       "q": "Do you migrate only to SharePoint?",
+       "a": "SharePoint Online and OneDrive are the most common targets, but we also move content into Box, M-Files and other platforms where they fit better."
+      },
+      {
+       "q": "What happens to content nobody needs?",
+       "a": "We help you classify it, then archive or dispose of it according to your retention rules, which reduces cost and risk."
+      }
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "Start with a free assessment",
+     "text": "A short scan of your source system gives you volumes, risks and a first plan.",
+     "cta": {
+      "label": "Request an assessment",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "services",
+   "name": "Services",
+   "title": "Services | Data & AI, Microsoft 365, Application, Managed and Digital Experience",
+   "description": "Five connected service lines: Data & AI, M365 Modern Work, Application Services, Managed Services and Digital Experience, for industries from legal to manufacturing.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Services",
+     "title": "Consulting and delivery across the Microsoft and Liferay stack",
+     "lead": "From the first assessment to ongoing support, our teams design, build and run the platforms that your people and customers depend on.",
+     "primaryCta": {
+      "label": "Discuss your needs",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Digital experience",
+      "page": "digital-experience"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Service lines",
+     "title": "Five ways we help",
+     "intro": "Engage us for a single outcome or combine lines into one programme.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "data",
+       "title": "Data & AI",
+       "text": "Prepare data, build analytics and deploy responsible AI, including Copilot and custom assistants grounded in your own content.",
+       "link": {
+        "label": "Get in touch",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "people",
+       "title": "M365 Modern Work",
+       "text": "Design and roll out SharePoint, Teams and OneDrive environments that people actually enjoy using.",
+       "link": {
+        "label": "Get in touch",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "code",
+       "title": "Application Services",
+       "text": "Build and modernise line-of-business applications on Azure and the Power Platform.",
+       "link": {
+        "label": "Get in touch",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "gear",
+       "title": "Managed Services",
+       "text": "Keep platforms secure, current and performing with proactive monitoring and support.",
+       "link": {
+        "label": "Get in touch",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "portal",
+       "title": "Digital Experience",
+       "text": "Create portals, intranets and customer sites on Liferay, with a strong focus on performance and usability.",
+       "link": {
+        "label": "Explore",
+        "page": "digital-experience"
+       }
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Industries",
+     "title": "Sector knowledge that shortens the learning curve",
+     "intro": "We tailor templates, compliance practices and examples to your sector.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "scale",
+       "title": "Legal",
+       "text": "Matter-centric workspaces and DMS modernisation.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "building",
+       "title": "Retail",
+       "text": "Unified knowledge for stores, suppliers and head office.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "bank",
+       "title": "Finance",
+       "text": "Records management and secure client collaboration.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "flask",
+       "title": "Life Sciences",
+       "text": "Controlled documents and research collaboration.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "gov",
+       "title": "Government",
+       "text": "Secure, citizen-friendly services and records.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "factory",
+       "title": "Manufacturing",
+       "text": "Engineering and quality content across sites.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      }
+     ]
+    },
+    {
+     "type": "quote",
+     "text": "They felt like part of our own team, challenging our assumptions politely and delivering a platform that people were glad to adopt.",
+     "role": "Programme Director, global professional services firm"
+    },
+    {
+     "type": "cta",
+     "title": "Not sure where to begin?",
+     "text": "A half-day workshop can turn a loose idea into a prioritised roadmap.",
+     "cta": {
+      "label": "Book a workshop",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "digital-experience",
+   "name": "Digital Experience",
+   "title": "Digital Experience | Liferay Portal Development, Liferay on Azure and Client Portals",
+   "description": "Liferay portal development, Liferay on Azure, client portals, CMS modernisation and employee experiences, built for performance and scale.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Digital Experience",
+     "title": "Portals and experiences built on Liferay",
+     "lead": "We design, build and tune Liferay solutions for intranets, customer portals and content-rich websites, then run them reliably in the cloud.",
+     "primaryCta": {
+      "label": "Plan a Liferay project",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Read our blog",
+      "page": "blog"
+     },
+     "variant": "dark"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Capabilities",
+     "title": "What we deliver with Liferay",
+     "intro": "Our certified developers cover the full lifecycle, from discovery to production support.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "code",
+       "title": "Liferay Portal Development",
+       "text": "Custom modules, client extensions, fragments and integrations delivered with clean, testable code.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "cloud",
+       "title": "Liferay on Azure",
+       "text": "Hosting designs using Kubernetes, managed databases and automated pipelines for resilient operations.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "portal",
+       "title": "Client Portals",
+       "text": "Secure self-service areas where customers manage documents, requests and accounts.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "migrate",
+       "title": "CMS & Portal Modernisation",
+       "text": "Move from older portals and legacy CMS platforms to current Liferay releases without losing content.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "people",
+       "title": "Employee Experiences",
+       "text": "Intranets that combine news, tools and Microsoft 365 content in one welcoming place.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "chart",
+       "title": "Performance & Scalability",
+       "text": "Profiling, caching and capacity planning so busy sites stay fast under heavy load.",
+       "link": {
+        "label": "Discuss",
+        "page": "contact"
+       }
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Performance",
+     "title": "Fast under load, by design",
+     "text": "<p>Large launches and seasonal peaks expose weak spots quickly. We load-test early, tune queries and caches, and size infrastructure from evidence instead of guesswork.</p>",
+     "bullets": [
+      "Repeatable load-test suites",
+      "Search and database tuning",
+      "Autoscaling on Azure Kubernetes Service",
+      "Observability dashboards for operations"
+     ],
+     "cta": {
+      "label": "Talk to our Liferay team",
+      "page": "contact"
+     },
+     "imageSide": "right"
+    },
+    {
+     "type": "steps",
+     "title": "From idea to live portal",
+     "items": [
+      {
+       "title": "Discover",
+       "text": "Workshops to capture users, journeys and integration points."
+      },
+      {
+       "title": "Design",
+       "text": "Information architecture, design system and technical blueprint."
+      },
+      {
+       "title": "Build",
+       "text": "Iterative delivery with automated tests and regular demos."
+      },
+      {
+       "title": "Run",
+       "text": "Managed hosting, upgrades and continuous improvement."
+      }
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "Build your next portal with us",
+     "text": "Share your goals and we will propose an approach and a team.",
+     "cta": {
+      "label": "Get in touch",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "case-studies",
+   "name": "Case Studies",
+   "title": "Case Studies | Real Migration and Digital Experience Outcomes",
+   "description": "See how organisations in government, legal, finance, life sciences and retail moved to Microsoft 365 and modern portals with Proventeq.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Case studies",
+     "title": "Results from real programmes",
+     "lead": "Browse examples of migrations, governance projects and portal builds across sectors and source systems.",
+     "primaryCta": {
+      "label": "Discuss your project",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Read the blog",
+      "page": "blog"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Overview",
+     "title": "What you will find here",
+     "intro": "Each story outlines the challenge, our approach and the measurable outcomes. Customer details are shown at a level the organisations are comfortable with.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "migrate",
+       "title": "Legacy migrations",
+       "text": "Moves from systems such as Meridio, Documentum and iManage.",
+       "link": {
+        "label": "Start a project",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "shield",
+       "title": "Governance",
+       "text": "Clean-up, labelling and retention programmes.",
+       "link": {
+        "label": "Start a project",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "portal",
+       "title": "Portals",
+       "text": "Customer and employee experiences on Liferay.",
+       "link": {
+        "label": "Start a project",
+        "page": "contact"
+       }
+      }
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "Want results like these?",
+     "text": "Tell us about your current environment and goals.",
+     "cta": {
+      "label": "Contact us",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "news",
+   "name": "News",
+   "title": "News | Latest from Proventeq",
+   "description": "Company announcements, product updates, partnerships and event news from Proventeq.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Newsroom",
+     "title": "Latest news from Proventeq",
+     "lead": "Product releases, partnerships, events and company milestones.",
+     "primaryCta": {
+      "label": "Media enquiries",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Read the blog",
+      "page": "blog"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Stay informed",
+     "title": "Announcements and updates",
+     "intro": "Below you will find our most recent news. For deeper articles and practical advice, visit the blog.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "chat",
+       "title": "Press",
+       "text": "Company and product announcements.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "people",
+       "title": "Events",
+       "text": "Conferences and webinars we attend or host.",
+       "link": {
+        "label": "Contact us",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "chart",
+       "title": "Insights",
+       "text": "Longer reading on migration and AI.",
+       "link": {
+        "label": "Blog",
+        "page": "blog"
+       }
+      }
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "Press and media enquiries",
+     "text": "Contact our team for interviews, product briefings or event speakers.",
+     "cta": {
+      "label": "Contact us",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "blog",
+   "name": "Blog",
+   "title": "Blog | Microsoft 365, Migration, Copilot and Liferay Insights",
+   "description": "Practical articles on SharePoint migration, M365 governance, Copilot readiness, storage optimisation, legal DMS modernisation and Liferay.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Blog",
+     "title": "Ideas and practical advice",
+     "lead": "Articles from our consultants on content migration, governance, AI readiness and digital experiences.",
+     "primaryCta": {
+      "label": "Subscribe via contact",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Case studies",
+      "page": "case-studies"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Topics",
+     "title": "What we write about",
+     "intro": "Our posts cover the subjects customers ask us about most.",
+     "columns": 3,
+     "items": [
+      {
+       "icon": "cloud",
+       "title": "Microsoft 365 and Copilot",
+       "text": "Governance, labelling and readiness advice for modern workplaces.",
+       "link": {
+        "label": "Case studies",
+        "page": "case-studies"
+       }
+      },
+      {
+       "icon": "migrate",
+       "title": "Migration",
+       "text": "Planning and delivering moves from legacy systems to SharePoint.",
+       "link": {
+        "label": "Migration solutions",
+        "page": "migration-solutions"
+       }
+      },
+      {
+       "icon": "portal",
+       "title": "Liferay",
+       "text": "Performance, architecture and portal design on Azure.",
+       "link": {
+        "label": "Digital experience",
+        "page": "digital-experience"
+       }
+      }
+     ]
+    },
+    {
+     "type": "cta",
+     "title": "Have a topic you would like covered?",
+     "text": "Tell us what you are struggling with and we may write about it.",
+     "cta": {
+      "label": "Suggest a topic",
+      "page": "contact"
+     }
+    }
+   ]
+  },
+  {
+   "key": "about",
+   "name": "About Us",
+   "title": "About Proventeq | Our Story, Values, Careers and Partners",
+   "description": "Learn about Proventeq's story, values, people, careers and partnerships across Microsoft and Liferay.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "About us",
+     "title": "A team that loves tidy, useful content",
+     "lead": "We started as migration specialists and grew into a wider consultancy helping organisations work well with their information.",
+     "primaryCta": {
+      "label": "Contact us",
+      "page": "contact"
+     },
+     "secondaryCta": {
+      "label": "Our services",
+      "page": "services"
+     },
+     "variant": "light"
+    },
+    {
+     "type": "split",
+     "eyebrow": "Our story",
+     "title": "From migration specialists to modern workplace partners",
+     "text": "<p>Proventeq began by solving one stubborn problem: moving content out of ageing systems without losing its meaning. Success there led to a platform, then to a broader practice covering Microsoft 365, data and AI, and Liferay.</p><p>Today we work from the UK, the USA and India, serving clients in many countries.</p>",
+     "bullets": [
+      "Founded by content-management practitioners",
+      "Microsoft and Liferay specialists",
+      "Product and services under one roof"
+     ],
+     "cta": {
+      "label": "Meet us",
+      "page": "contact"
+     },
+     "imageSide": "left"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Values",
+     "title": "How we work",
+     "intro": "Four principles guide our projects and our teams.",
+     "columns": 4,
+     "items": [
+      {
+       "icon": "shield",
+       "title": "Integrity",
+       "text": "We say what we think, including when it is inconvenient.",
+       "link": {
+        "label": "Contact",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "people",
+       "title": "Collaboration",
+       "text": "We work as one team with our clients.",
+       "link": {
+        "label": "Contact",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "sparkle",
+       "title": "Curiosity",
+       "text": "We keep learning new tools and methods.",
+       "link": {
+        "label": "Contact",
+        "page": "contact"
+       }
+      },
+      {
+       "icon": "gear",
+       "title": "Craft",
+       "text": "We take pride in dependable, maintainable delivery.",
+       "link": {
+        "label": "Contact",
+        "page": "contact"
+       }
+      }
+     ]
+    },
+    {
+     "type": "stats",
+     "title": "Proventeq in numbers",
+     "items": [
+      {
+       "value": "300+",
+       "label": "consultants and engineers"
+      },
+      {
+       "value": "3",
+       "label": "regional offices"
+      },
+      {
+       "value": "30+",
+       "label": "countries"
+      },
+      {
+       "value": "15+",
+       "label": "years in business"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Careers & partners",
+     "title": "Join us, or build with us",
+     "text": "<p>We hire engineers, consultants and project leaders who enjoy solving practical problems. We also partner with Microsoft, Liferay and specialist vendors to deliver complete solutions.</p>",
+     "bullets": [
+      "Open roles in the UK, USA and India",
+      "Training and certification support",
+      "Partner programme for integrators"
+     ],
+     "cta": {
+      "label": "Get in touch",
+      "page": "contact"
+     },
+     "imageSide": "right"
+    }
+   ]
+  },
+  {
+   "key": "contact",
+   "name": "Contact",
+   "title": "Contact Proventeq | Speak to Our Team",
+   "description": "Get in touch with Proventeq in the UK, USA or India to discuss migration, governance, AI or Liferay projects.",
+   "sections": [
+    {
+     "type": "hero",
+     "eyebrow": "Contact",
+     "title": "Talk to a Proventeq specialist",
+     "lead": "Tell us about your content estate, your Microsoft 365 plans or your Liferay platform, and we will get back to you within one business day.",
+     "primaryCta": {
+      "label": "Book a discovery call",
+      "page": "contact"
+     },
+     "variant": "dark"
+    },
+    {
+     "type": "contact",
+     "title": "Talk to our team",
+     "offices": [
+      {
+       "city": "Reading, UK (HQ)",
+       "address": "4 Forbury Gate, Reading, Berkshire RG1 3QD",
+       "phone": "+44 (0)118 555 0142"
+      },
+      {
+       "city": "Atlanta, USA",
+       "address": "1200 Peachtree Row, Suite 410, Atlanta, GA 30309",
+       "phone": "+1 404 555 0187"
+      },
+      {
+       "city": "Pune, India",
+       "address": "Level 6, Eastgate Business Park, Kharadi, Pune 411014",
+       "phone": "+91 20 5550 0173"
+      }
+     ],
+     "email": "info@proventeq.com",
+     "text": "Send us a few lines about your project and one of our consultants will reply within two working days."
+    },
+    {
+     "type": "faq",
+     "title": "Before you get in touch",
+     "items": [
+      {
+       "q": "What should I include in my message?",
+       "a": "Tell us your current system, rough content volume, target platform and any deadline. Even a short note helps us respond usefully."
+      },
+      {
+       "q": "Do you offer a demo?",
+       "a": "Yes. We can walk you through Proventeq365 using sample content that resembles your environment."
+      },
+      {
+       "q": "Can you work in my time zone?",
+       "a": "With teams in the UK, USA and India we can usually cover meetings and support across most regions."
+      },
+      {
+       "q": "Is there a charge for the initial conversation?",
+       "a": "No. Discovery calls and first assessments are offered without obligation."
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "title": "What happens after you contact us",
+     "items": [
+      {
+       "title": "We reply",
+       "text": "A consultant responds within two working days."
+      },
+      {
+       "title": "Discovery call",
+       "text": "A short conversation to understand your goals and constraints."
+      },
+      {
+       "title": "Proposal",
+       "text": "A practical outline of approach, team and timeline."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "caseStudies": [
+  {
+   "slug": "government-records-meridio-to-sharepoint",
+   "title": "Retiring a legacy records system for a national government body",
+   "client": "UK government department",
+   "industry": "Government",
+   "source": "Meridio",
+   "target": "SharePoint Online",
+   "summary": "A central government department replaced an unsupported records platform with SharePoint Online. Millions of records moved with their classification and audit trail intact.",
+   "challenge": "The department relied on a records platform that its vendor no longer supported. Staff struggled with a dated interface, security patches were increasingly difficult, and several teams kept shadow copies in shared drives. Records carried complex file plans, retention schedules and access rules that could not be lost. The programme also had to finish before a fixed contract expiry, leaving little room for delay or rework during migration. Senior officials also wanted a clear audit trail so that any queries after the move could be answered quickly and without argument.",
+   "solution": "We profiled the repository, agreed a rationalisation plan with records managers and mapped the legacy file plan to a SharePoint structure with content types and retention labels. Proventeq365 moved the content in controlled waves, running delta passes before each cut-over. Reconciliation reports compared counts, metadata and permissions after every batch, and records managers signed off each wave. Training sessions and short guides helped staff adjust to the new workspace before the old system was switched to read-only and then decommissioned. Weekly progress meetings with programme leaders kept risks visible, and a small support desk answered staff questions during each wave.",
+   "results": [
+    "Several million records migrated with metadata and audit history preserved",
+    "Legacy platform retired ahead of contract expiry",
+    "Shadow copies consolidated into governed libraries",
+    "Records managers gained consistent retention reporting"
+   ],
+   "endorsement": {
+    "text": "The programme was managed with real rigour, and our records team trusted the reconciliation evidence at every stage.",
+    "role": "Head of Knowledge & Information, UK government department"
+   }
+  },
+  {
+   "slug": "law-firm-imanage-modernisation",
+   "title": "Modernising document management for a global law firm",
+   "client": "International law firm",
+   "industry": "Legal",
+   "source": "iManage",
+   "target": "SharePoint Online",
+   "summary": "A large law firm moved selected matter workspaces from iManage to Microsoft 365 for better collaboration. Security walls and matter structures were carried across faithfully.",
+   "challenge": "The firm wanted lawyers to co-author documents and use Teams without losing the strict ethical walls and matter-centric organisation they depend on. Years of matters, versions and profile fields lived in the existing system, and partners were wary of any change that might disrupt client work. The IT group also needed to avoid large storage costs from carrying closed matters into the cloud. Any security slip involving a client matter would carry serious professional and reputational consequences for the firm.",
+   "solution": "We designed a matter-based architecture in SharePoint with templates for workspaces, mapped profile fields to metadata and translated security rules into permission groups. Closed matters were assessed separately and archived according to firm policy. Pilot practice groups validated the approach before wider rollout. Proventeq365 handled version history and cross-references, while reports let risk and compliance teams confirm that security walls behaved exactly as before. A short adoption programme supported fee earners and assistants. Regular steering meetings with partners and the risk team ensured that design choices were understood and approved before each rollout stage.",
+   "results": [
+    "Matter structure and security walls preserved after migration",
+    "Co-authoring enabled for active matters",
+    "Closed matters archived, lowering storage costs",
+    "Pilot groups reported faster document retrieval"
+   ],
+   "endorsement": {
+    "text": "Lawyers can now collaborate in familiar tools while our risk team still sees the controls it needs.",
+    "role": "Chief Information Officer, international law firm"
+   }
+  },
+  {
+   "slug": "food-manufacturer-file-share-consolidation",
+   "title": "Consolidating plant file shares for a global food manufacturer",
+   "client": "Global food manufacturer",
+   "industry": "Manufacturing",
+   "source": "File Share",
+   "target": "SharePoint Online and OneDrive",
+   "summary": "A food producer replaced scattered plant file servers with a single governed Microsoft 365 workplace. Duplicate and obsolete files were removed before the move.",
+   "challenge": "Each production site maintained its own file servers, resulting in duplicate specifications, unclear ownership and inconsistent backups. Quality and engineering teams could not easily find current documents across regions. Servers were nearing the end of their hardware life, and the business wanted to avoid paying to move terabytes of redundant material to the cloud. Language differences and varied working patterns between plants added further complexity to planning and communication.",
+   "solution": "We scanned all servers to identify duplicates, stale files and personal content. Business owners reviewed the findings and agreed what to archive. A site and library structure was defined for quality, engineering and operations content, with consistent metadata. Migration ran plant by plant, using delta synchronisation so production teams were never blocked. Storage Optimization reports remained available after go-live so teams could keep libraries tidy as new material arrived. Local champions at each plant helped colleagues adapt, and short sessions explained how to find and share documents in the new structure.",
+   "results": [
+    "Large share of legacy content identified as redundant and not migrated",
+    "Servers decommissioned on schedule",
+    "Single source of truth for specifications",
+    "Clear ownership recorded for every library"
+   ],
+   "endorsement": {
+    "text": "We now spend our time using documents instead of hunting for them, and the plants share one consistent structure.",
+    "role": "Director of Digital Workplace, global food manufacturer"
+   }
+  },
+  {
+   "slug": "life-sciences-documentum-controlled-documents",
+   "title": "Moving controlled documents out of Documentum for a life sciences company",
+   "client": "Mid-sized life sciences company",
+   "industry": "Life Sciences",
+   "source": "Documentum",
+   "target": "SharePoint Online",
+   "summary": "A research-driven company relocated quality and regulatory content from Documentum to Microsoft 365. Version history and approval records were preserved for inspections.",
+   "challenge": "Quality, regulatory and research teams used Documentum for controlled documents, with lifecycle states, renditions and electronic approvals. Licence and hosting costs were rising, and users disliked the interface. Because inspectors can request any historical version, the company needed proof that nothing was altered or lost in transit, and that approvals remained traceable after the move. Any gap in the record could delay product submissions or provoke findings during regulatory inspections.",
+   "solution": "We analysed document types and lifecycle states, then modelled them using SharePoint content types, approval flows and retention labels. Proventeq365 migrated versions, renditions and audit information, producing checksums to demonstrate integrity. A validation plan aligned with the company's computerised system procedures was executed with quality assurance staff. Migration happened in waves aligned to product lines, and the old platform was kept read-only for a defined period before retirement. Findings from each wave were documented and resolved before the next began, keeping the overall validation file complete and consistent.",
+   "results": [
+    "Complete version and approval history carried across",
+    "Integrity evidence produced for quality assurance",
+    "Platform licence and hosting costs removed",
+    "Users adopted a simpler authoring experience"
+   ],
+   "endorsement": {
+    "text": "The validation evidence gave our quality group confidence to approve the move without reservations.",
+    "role": "Head of Quality Systems, life sciences company"
+   }
+  },
+  {
+   "slug": "retail-liferay-supplier-portal",
+   "title": "A supplier portal on Liferay for a retail group",
+   "client": "Multi-brand retail group",
+   "industry": "Retail",
+   "source": "Legacy intranet and email",
+   "target": "Liferay DXP on Azure",
+   "summary": "A retailer replaced email-driven supplier onboarding with a secure Liferay portal. Suppliers now manage documents, orders and queries in one place.",
+   "challenge": "Supplier communications relied on email threads and spreadsheets, creating delays and compliance gaps. Onboarding a new supplier could take weeks, and category managers had no single view of outstanding documents. The retailer wanted a branded, secure portal that could handle seasonal peaks without slowing down, and integrate with its existing ERP and identity services. Several departments had competing requirements, and the old process offered no way to see where an application stood at any moment.",
+   "solution": "We built a portal on Liferay with role-based dashboards, guided onboarding forms, document upload with validation and service request tracking. Integrations with the ERP and single sign-on were delivered through REST services. The solution ran on Azure Kubernetes Service with autoscaling, and we executed load tests that simulated peak trading periods. Content editors received training to manage announcements and guidance without developer help. Usability testing with real suppliers shaped the forms and navigation before the portal went live, and a phased launch started with a small group of strategic suppliers.",
+   "results": [
+    "Supplier onboarding time shortened significantly",
+    "Email volume for routine queries fell",
+    "Portal remained responsive during peak-season load tests",
+    "Category managers gained a live view of compliance documents"
+   ],
+   "endorsement": {
+    "text": "Suppliers told us the portal was easier than anything they had used with other retailers.",
+    "role": "Head of Supplier Operations, multi-brand retail group"
+   }
+  },
+  {
+   "slug": "financial-services-copilot-readiness",
+   "title": "Preparing a financial services firm for Microsoft 365 Copilot",
+   "client": "Wealth management firm",
+   "industry": "Finance",
+   "source": "SharePoint On-Premises and Microsoft 365",
+   "target": "Microsoft 365 with Copilot",
+   "summary": "A wealth manager assessed and fixed permissions, labelling and content quality before enabling Copilot. Rollout began with confidence that sensitive data would stay protected.",
+   "challenge": "Leadership wanted Copilot for advisers, but worried that years of loose sharing and unlabelled client records could expose sensitive information in AI-generated answers. Site ownership was unclear, many sites had broad access groups, and the firm lacked visibility of where confidential material was held. A regulator-friendly approach was essential. The firm also had to demonstrate to its compliance team that risks had been understood and addressed in a structured way.",
+   "solution": "Using Copilot Readiness, we scanned sites, groups and sharing links to rank oversharing risk. High-risk areas were remediated first by tightening permissions, assigning owners and applying sensitivity labels. Stale content was archived to improve answer quality. We then created a phased rollout plan with a pilot adviser group, usage guidance and monitoring dashboards. Governance controls remained active afterwards to prevent drift. Weekly reports shared progress with the security and compliance teams, and owners received simple guidance describing exactly what to change and why.",
+   "results": [
+    "Oversharing risks identified and remediated before launch",
+    "Sensitivity labels applied across client content",
+    "Pilot users reported faster preparation of client summaries",
+    "Ongoing dashboards track permission drift"
+   ],
+   "endorsement": {
+    "text": "We were able to turn Copilot on knowing exactly what it could and could not reach.",
+    "role": "Chief Operating Officer, wealth management firm"
+   }
+  },
+  {
+   "slug": "education-box-to-m365-consolidation",
+   "title": "Consolidating Box into Microsoft 365 for an education provider",
+   "client": "Further education group",
+   "industry": "Government",
+   "source": "Box",
+   "target": "SharePoint Online and OneDrive",
+   "summary": "A college group moved staff and departmental content from Box into Microsoft 365 to cut duplicate licences. Sharing links and folder structures were rebuilt carefully.",
+   "challenge": "Departments adopted Box independently while the wider organisation standardised on Microsoft 365. The result was duplicate licences, scattered content and confusion about where official documents lived. Thousands of external sharing links needed careful treatment, and staff members had limited time to learn new tools around term-time deadlines. Leadership expected the change to cut costs, but not at the expense of a smooth experience for lecturers and support staff.",
+   "solution": "We used the Box-focused path of Proventeq365 to inventory accounts and shared folders, and planned migration around the academic calendar. Collaboration folders became Teams-connected libraries, while personal content moved to OneDrive. Shared links were reviewed, with external access retained only where justified. Redirect guidance and short video walkthroughs helped users adjust, and the Box contract was closed once reconciliation was complete. Regular updates kept department heads informed, and a drop-in help desk during the first weeks resolved questions quickly.",
+   "results": [
+    "Duplicate platform licences removed",
+    "External sharing reduced to reviewed, justified cases",
+    "Departmental content organised in Teams-connected sites",
+    "Migration completed outside peak term periods"
+   ],
+   "endorsement": {
+    "text": "The scheduling around our teaching calendar made a huge difference to staff goodwill.",
+    "role": "Director of IT Services, further education group"
+   }
+  },
+  {
+   "slug": "energy-liferay-employee-portal",
+   "title": "A unified employee portal for an energy company",
+   "client": "Regional energy company",
+   "industry": "Manufacturing",
+   "source": "Legacy Liferay 6.2 portal",
+   "target": "Liferay DXP on Azure",
+   "summary": "An energy provider upgraded an ageing Liferay portal into a modern employee experience. Search, news and Microsoft 365 documents now sit in one place.",
+   "challenge": "The company ran a heavily customised, out-of-support portal that few developers could safely change. Performance had declined, mobile use was poor and field staff struggled to reach safety documents. The upgrade needed to keep years of content and integrations while introducing a cleaner design and a sustainable code base. Different business units also disagreed about what the intranet should offer, so priorities needed careful negotiation.",
+   "solution": "We assessed customisations and retired those replaced by standard features, then rebuilt remaining needs as client extensions and fragments. Content was migrated with scripted transformations, and documents were surfaced from SharePoint instead of duplicated. The new portal was deployed on Azure with automated pipelines, monitored dashboards and load testing before launch. Editors gained an easier authoring experience through page fragments and reusable templates. User research with office and field staff informed the new navigation, and iterative demonstrations kept stakeholders engaged throughout delivery.",
+   "results": [
+    "Upgrade from an unsupported release to a current Liferay version",
+    "Page load times improved in load tests",
+    "Field staff access safety documents on mobile devices",
+    "Release process automated with repeatable pipelines"
+   ],
+   "endorsement": {
+    "text": "Our portal finally feels current, and our developers are no longer afraid to touch it.",
+    "role": "Head of Internal Communications and Digital, regional energy company"
+   }
+  }
+ ],
+ "news": [
+  {
+   "slug": "copilot-readiness-module-launch",
+   "title": "Proventeq365 gains a Copilot Readiness module",
+   "date": "2025-06-17",
+   "summary": "A new module scores permissions, labels and content quality ahead of Copilot rollouts.",
+   "body": "<p>Proventeq has added a Copilot Readiness module to the Proventeq365 platform. It helps organisations understand whether their Microsoft 365 content is in good enough shape for AI assistants to use safely and accurately. Many early adopters discover that years of loose sharing and untidy libraries can undermine answers, so the module is designed to surface those issues before users do. Teams get a clear view of risk and a practical order in which to tackle it, rather than an overwhelming list of findings. The module also tracks progress over time so that improvement is visible to programme sponsors and security teams alike.</p><h3>What the module covers</h3><ul><li>Oversharing and broad-access detection across sites and groups</li><li>Sensitivity label coverage and gaps</li><li>Stale, duplicate and low-quality content indicators</li><li>A prioritised remediation plan with owners</li></ul><p>The module is available now to existing customers and as part of new engagements. Contact the team for a walkthrough using representative sample data from your own environment, and to discuss how it fits alongside a wider governance programme.</p><p>Early pilots showed that organisations were often surprised by how much sharing had accumulated over the years. Feedback from those customers shaped the scoring approach, which concentrates on the issues that matter most to security teams and business owners.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Copilot",
+    "Product",
+    "Governance"
+   ]
+  },
+  {
+   "slug": "new-reading-office-fit-out",
+   "title": "Proventeq expands its Reading headquarters",
+   "date": "2025-07-22",
+   "summary": "The UK headquarters moves to larger premises to make space for a growing consulting team.",
+   "body": "<p>Proventeq has relocated its UK headquarters within Reading to larger premises designed for collaborative working. The new office offers more room for client workshops, a dedicated demonstration area for the Proventeq365 platform and flexible spaces for hybrid teams. The company has grown its UK delivery and consulting teams steadily over recent years, and the move reflects continued demand from public sector and commercial clients across the country.</p><h3>Highlights of the new space</h3><ul><li>Workshop rooms equipped for hybrid sessions with remote participants</li><li>A product demonstration suite</li><li>Quiet areas and collaboration zones for project teams</li><li>Good rail links for visiting clients and partners</li></ul><p>Clients and partners are welcome to visit by arrangement. The company will continue to operate across the UK, the USA and India, with all three offices contributing to delivery for customers worldwide.</p><p>Staff were involved in planning the layout, and the result includes areas for focused work, informal meetings and client sessions. The company says the space will also host community meetups for technology professionals in the Thames Valley.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Company",
+    "UK",
+    "Offices"
+   ]
+  },
+  {
+   "slug": "microsoft-partner-recognition",
+   "title": "Proventeq recognised in Microsoft partner programme",
+   "date": "2025-08-28",
+   "summary": "The company earns continued recognition for its Microsoft 365 and Azure capabilities.",
+   "body": "<p>Proventeq has again been recognised within the Microsoft partner ecosystem for its work on content migration, modern workplace and Azure solutions. The recognition reflects customer outcomes delivered over the past year and the depth of certified expertise across the consulting team. It follows a period of growth in projects that combine migration with governance and AI readiness.</p><h3>Why it matters to customers</h3><ul><li>Certified specialists across Microsoft 365, Azure and data</li><li>Established working relationships with Microsoft field teams</li><li>Early access to platform changes that affect migrations</li><li>A track record of delivery in regulated sectors</li></ul><p>Proventeq thanks its customers and partners for their trust, and will continue investing in training and certification so that clients benefit from up-to-date skills on every engagement.</p><p>The company has invested in certifications across migration, security and data disciplines. That investment is reflected in the range of customer engagements, which now span government, legal, finance, life sciences and manufacturing.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Partners",
+    "Microsoft",
+    "Company"
+   ]
+  },
+  {
+   "slug": "liferay-devcon-attendance",
+   "title": "Proventeq heads to Liferay DevCon",
+   "date": "2025-09-30",
+   "summary": "Solution architects will present load-testing lessons from large Liferay portals.",
+   "body": "<p>Proventeq's Liferay specialists will attend Liferay DevCon this year, joining developers and architects from across the community. A Proventeq solution architect will share practical lessons from load-testing busy portals, covering how to design realistic scenarios, interpret results and make changes that actually move the numbers. The session draws on experience from customer projects on Azure.</p><h3>What to expect from the session</h3><ul><li>A repeatable approach to designing load tests</li><li>Common causes of slow pages and how to find them</li><li>Caching and search tuning examples</li><li>Advice on sizing Kubernetes capacity from test results</li></ul><p>Delegates are welcome to find the team at the event for conversations about portal development, upgrades and running Liferay in the cloud. Slides and further reading will be published on the blog after the conference.</p><p>Proventeq has built and tuned Liferay portals for many years, and the team is keen to exchange ideas with other practitioners. The session is aimed at developers and architects who want practical, evidence-based guidance rather than theory.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Liferay",
+    "Events",
+    "Performance"
+   ]
+  },
+  {
+   "slug": "storage-optimization-update",
+   "title": "Storage Optimization adds archive recommendations",
+   "date": "2025-11-05",
+   "summary": "Updated reports suggest what to archive, delete or keep based on age, activity and size.",
+   "body": "<p>The Storage Optimization module in Proventeq365 now includes archive recommendations. Instead of presenting only raw numbers, the module groups content by age, last activity and size and proposes a sensible action for each group. Site owners can review suggestions, approve them in bulk and see the projected cost impact before anything changes.</p><h3>Key improvements</h3><ul><li>Recommendation groups with estimated savings</li><li>Owner review workflow with approvals</li><li>Exclusions for legal holds and protected content</li><li>Scheduled reports for IT and finance teams</li></ul><p>Many organisations find that a large share of their cloud storage is rarely touched. The update makes it easier to act on that insight safely, keeping the environment lean and easier to search.</p><p>Customers who tried the feature in preview reported that approval workflows were the most valuable addition, because they let business owners take responsibility for decisions while IT retains oversight of the process.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Storage",
+    "Product",
+    "Cost"
+   ]
+  },
+  {
+   "slug": "annual-customer-survey-2025",
+   "title": "Customer survey highlights demand for AI readiness",
+   "date": "2025-12-09",
+   "summary": "Clients ask for help with data quality and permissions before introducing AI tools.",
+   "body": "<p>Proventeq's annual customer survey shows that most organisations are now planning AI initiatives, but many are unsure whether their content is ready. Respondents pointed to permission sprawl, inconsistent labelling and duplicated files as the main obstacles. Interest in governance services grew compared with the previous year.</p><h3>Main themes from respondents</h3><ul><li>Clean-up is seen as a prerequisite for trustworthy AI</li><li>Security teams want clearer visibility of oversharing</li><li>Migration projects increasingly include governance goals</li><li>Teams value practical training for content owners</li></ul><p>The findings are shaping the company's product roadmap and the content of its upcoming guides and webinars. Thank you to everyone who took the time to respond.</p><p>The survey also asked about preferred learning formats. Respondents favoured short webinars, practical checklists and peer case studies, and the marketing team will adjust its programme of events accordingly over the coming months.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Research",
+    "AI",
+    "Customers"
+   ]
+  },
+  {
+   "slug": "india-delivery-centre-growth",
+   "title": "Pune delivery centre adds engineering capacity",
+   "date": "2026-02-10",
+   "summary": "Hiring in India strengthens round-the-clock support for global projects.",
+   "body": "<p>Proventeq has expanded its Pune delivery centre with new engineers and consultants specialising in migration, Microsoft 365 and Liferay. The additional capacity supports follow-the-sun delivery for customers, helping large programmes progress across time zones and improving response times for support requests.</p><h3>Areas of growth</h3><ul><li>Migration engineering and tooling</li><li>Liferay and Java development</li><li>Managed services and monitoring</li><li>Quality assurance and test automation</li></ul><p>New colleagues join a structured onboarding programme that includes certification support and mentoring from senior staff. The company expects further hiring across all regions during the coming year.</p><p>The Pune team works closely with colleagues in Reading and Atlanta, using shared tooling and common delivery practices. Leaders say that this consistency is key to maintaining quality as the organisation grows.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Company",
+    "India",
+    "Careers"
+   ]
+  },
+  {
+   "slug": "legal-dms-webinar-series",
+   "title": "Legal sector webinar series announced",
+   "date": "2026-04-14",
+   "summary": "Three sessions will look at modernising document management for law firms.",
+   "body": "<p>Proventeq will host a webinar series for legal professionals exploring how firms can modernise document management while protecting client confidentiality. Sessions combine practical advice from consultants with examples drawn from recent projects, and each includes time for questions.</p><h3>Planned sessions</h3><ul><li>Designing matter workspaces in Microsoft 365</li><li>Keeping ethical walls intact during migration</li><li>Using Copilot safely in a law firm</li></ul><p>Registration is free and recordings will be shared with attendees afterwards. Get in touch if you would like a private session for your own partners or IT leadership team.</p><p>Speakers include consultants who have led migrations for law firms and who understand the unique pressures of fee-earner workflows. Attendees will receive a short checklist after each session that they can adapt for their own projects.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Legal",
+    "Webinars",
+    "Events"
+   ]
+  },
+  {
+   "slug": "liferay-azure-reference-architecture",
+   "title": "New reference architecture for Liferay on Azure",
+   "date": "2026-06-23",
+   "summary": "A documented pattern covers networking, scaling and observability for production portals.",
+   "body": "<p>Proventeq has published an updated reference architecture for running Liferay on Azure. It captures lessons from recent portal projects and gives teams a sound starting point for design discussions. The pattern addresses networking, identity, scaling, search and monitoring, and highlights decisions that are commonly overlooked until late in a project.</p><h3>What the architecture addresses</h3><ul><li>Kubernetes cluster layout and node sizing</li><li>Managed database and search considerations</li><li>Deployment pipelines and environment promotion</li><li>Dashboards and alerts for operations teams</li></ul><p>The architecture is available to clients and prospects on request and is also used as the baseline for managed hosting engagements. Contact the digital experience team to review it against your requirements.</p><p>The document is maintained by Proventeq's architects and updated as Azure services and Liferay releases evolve. Feedback from project teams is reviewed regularly to keep it practical and relevant.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "Liferay",
+    "Azure",
+    "Architecture"
+   ]
+  },
+  {
+   "slug": "ai-assistant-pilot-programme",
+   "title": "Pilot programme opens for grounded AI assistants",
+   "date": "2026-10-06",
+   "summary": "Selected customers can trial assistants grounded in their own governed content.",
+   "body": "<p>Proventeq has opened a pilot programme for assistants that answer questions using an organisation's own governed content. The pilots combine the Data and AI practice with Proventeq365 modules, so that content is cleaned, labelled and permission-checked before any assistant is introduced. Participants receive hands-on support and a structured evaluation of accuracy and usefulness.</p><h3>What pilot participants receive</h3><ul><li>An assessment of source content quality</li><li>A scoped assistant for one business area</li><li>Evaluation criteria agreed with stakeholders</li><li>A recommendations report for wider rollout</li></ul><p>Places are limited so that each pilot receives proper attention. Organisations interested in taking part should contact the team with a short description of their use case.</p><p>The programme reflects a belief that dependable AI starts with dependable content. Proventeq will share anonymised lessons from the pilots so that the wider community can benefit from what is learned.</p><p>Proventeq is a technology consultancy and product company specialising in content migration, Microsoft 365, data and AI, and Liferay digital experiences, with offices in the UK, the USA and India.</p>",
+   "tags": [
+    "AI",
+    "Pilot",
+    "Product"
+   ]
+  }
+ ],
+ "blogPosts": [
+  {
+   "slug": "m365-governance-checklist",
+   "title": "A practical Microsoft 365 governance checklist for 2026",
+   "date": "2025-01-21",
+   "author": "Proventeq Team",
+   "description": "A step-by-step checklist for bringing order to sites, teams, groups and sharing.",
+   "body": "<p>Governance has a reputation for being slow and bureaucratic, yet the lack of it is far more expensive. Without clear ownership and lifecycle rules, Microsoft 365 tenants slowly fill with abandoned teams, orphaned sites and files shared with people who no longer need them. This checklist takes a pragmatic approach: start small, automate where possible and make rules easy to follow.</p><h2>1. Decide who owns what</h2><p>Every team, site and group needs at least two named owners. Ownership is the foundation for everything else, because owners are the people who can answer whether content is still needed. Set up a regular review that asks owners to confirm membership and purpose, and automatically flag spaces without active owners.</p><h2>2. Standardise how workspaces are created</h2><p>Uncontrolled creation leads to duplicates and inconsistent naming. Offer a small catalogue of templates, for example project, department and client workspaces, each with the right permissions, labels and structure already applied. When the easy path is also the compliant path, people stop working around it.</p><h2>3. Label content by sensitivity</h2><p>Sensitivity labels are the clearest way to tell systems and people how information should be treated. Keep the taxonomy short, ideally four or five levels, and use plain language. Apply defaults at the library and site level so that users are not asked to classify every document by hand.</p><h2>4. Control external sharing</h2><ul><li>Limit external sharing to sites that genuinely need it</li><li>Use expiry for guest access and sharing links</li><li>Review guests quarterly and remove those who have left projects</li><li>Report on anonymous links and convert them to named access where possible</li></ul><h2>5. Set lifecycle and retention rules</h2><p>Decide how long different content types must be kept and what happens at the end. Retention policies protect against accidental deletion and help to satisfy legal obligations, while inactive-site policies keep the estate tidy. Involve records and legal teams early to avoid rework.</p><h2>6. Monitor and report</h2><p>A governance programme is only credible if you can show it working. Track metrics such as the percentage of sites with owners, the proportion of labelled content, the number of external guests and the volume of inactive sites. Share them with leadership every quarter so that progress is visible and funding continues.</p><h2>7. Make it human</h2><p>Rules succeed when people understand them. Publish a short, friendly guide that explains what to do and why, and provide a place to ask questions. Recognise teams that keep their spaces in good shape.</p><h2>Where to start</h2><p>If the list feels long, pick one area, such as ownership, and finish it before moving on. Small, visible improvements build trust and momentum, and they create a clean base for later initiatives including Copilot and migration. Proventeq365 can help by scanning your tenant, highlighting the biggest risks and automating the repetitive tasks involved in cleaning up.</p><h2>Common mistakes to avoid</h2><ul><li>Writing a long policy document that nobody reads</li><li>Applying rules to new content only and ignoring the backlog</li><li>Giving every team a different process for requesting a workspace</li><li>Treating governance as an IT-only responsibility</li></ul><h2>How Proventeq can help</h2><p>Our consultants run governance assessments that scan your tenant, rank risks and produce a realistic roadmap. Proventeq365 then automates repetitive tasks such as owner confirmation, label coverage reporting and inactive-site reviews, so your internal team can concentrate on decisions rather than spreadsheets.</p>",
+   "tags": [
+    "Governance",
+    "Microsoft 365"
+   ]
+  },
+  {
+   "slug": "sharepoint-migration-planning-guide",
+   "title": "Planning a SharePoint migration: what to decide before you move a single file",
+   "date": "2025-02-18",
+   "author": "Proventeq Team",
+   "description": "The key decisions that determine whether a migration is smooth or painful.",
+   "body": "<p>Most migration problems are planning problems in disguise. Teams rush into moving content, then discover that nobody agreed on structure, ownership or cut-over timing. Spending a little more time at the start pays back many times over. Here are the decisions we encourage every programme to settle first.</p><h2>Know what you have</h2><p>Run a discovery scan of every source system. Capture volumes, file types, ages, owners and permissions. You will almost always find that a large share of content has not been opened for years. That finding is not a problem; it is an opportunity to reduce the scope of the migration and the cost of storage.</p><h2>Agree what to keep</h2><p>Content falls into broad groups: active, reference, records and disposable. Active content moves first and gets the best structure. Reference material may be archived with lighter metadata. Records follow retention rules, and disposable items should be deleted. Business owners, not IT, should make these calls, with clear evidence in front of them.</p><h2>Design the target</h2><ul><li>Choose between hub sites, communication sites and Teams-connected sites</li><li>Define a small set of content types and metadata fields</li><li>Decide how permissions will be managed, preferring groups over individuals</li><li>Plan navigation and search so people can find content without browsing</li></ul><h2>Plan the waves</h2><p>Break the migration into waves based on business area, risk and dependency. Start with a friendly pilot group that will give honest feedback. Schedule each wave around business calendars, avoiding month-end or peak seasons, and communicate dates well in advance.</p><h2>Handle users, not just files</h2><p>A migration is a change programme. People need to know where their content is going, how to find it and who to ask for help. Short videos, floor-walking and a visible support channel make an enormous difference to adoption.</p><h2>Prove it worked</h2><p>Reconciliation reports comparing counts, metadata and permissions between source and target give stakeholders confidence. Keep the source system read-only until sign-off, and set a firm date for decommissioning so that you do not end up running two platforms indefinitely.</p><h2>Avoid the common traps</h2><p>Typical pitfalls include migrating everything because it is easier, copying folder structures that never worked, ignoring long file paths and special characters, and leaving governance until after go-live. Tooling such as Proventeq365 handles many of the technical issues automatically, but the decisions above remain human ones. Get them right and the technical work becomes routine.</p><h2>Common mistakes to avoid</h2><ul><li>Moving everything because it is easier than deciding</li><li>Recreating a folder tree that already confused people</li><li>Ignoring long paths, special characters and file size limits</li><li>Leaving training and communication until the final week</li></ul><h2>How Proventeq can help</h2><p>Proventeq combines a proven method with the Migration Accelerator module to cover discovery, mapping, transfer and validation. We can run a short assessment of your source system and give you volumes, risks and a draft wave plan before you commit to a full programme.</p>",
+   "tags": [
+    "SharePoint",
+    "Migration"
+   ]
+  },
+  {
+   "slug": "copilot-readiness-five-checks",
+   "title": "Five checks to run before switching on Microsoft 365 Copilot",
+   "date": "2025-03-25",
+   "author": "Proventeq Team",
+   "description": "Copilot surfaces whatever a user can already access, so check your foundations first.",
+   "body": "<p>Copilot does not create new access rights. It works with whatever a person is already allowed to see. That is good news for security in principle, but it means that years of generous sharing can suddenly become very visible. A few focused checks before rollout can prevent awkward surprises.</p><h2>1. Look for oversharing</h2><p>Identify sites, libraries and files shared with large groups, such as everyone in the organisation, and review whether that is intentional. Pay particular attention to human resources, finance and legal material, where accidental exposure is most damaging.</p><h2>2. Review sensitivity labels</h2><p>Labels help both people and automated tools understand how to treat content. Check coverage on your most important sites and confirm that label policies match how information should be used. Where gaps exist, consider default labels and auto-labelling for well-understood patterns.</p><h2>3. Assess content quality</h2><p>AI answers are only as good as the material they draw on. Outdated policies, five near-identical versions of a document and unmanaged drafts can all lead to confusing responses. Archive or remove stale content, and identify authoritative sources so that the right documents are easy to find.</p><h2>4. Confirm ownership</h2><p>When Copilot reveals a problem, someone must be able to fix it. Make sure each site has an active owner who understands the content and can adjust permissions. Orphaned sites are a risk both before and after rollout.</p><h2>5. Plan the rollout and training</h2><ul><li>Begin with a pilot group from different departments</li><li>Provide examples of useful prompts for real tasks</li><li>Explain what Copilot can and cannot do, and how to check its answers</li><li>Collect feedback and usage data to guide wider deployment</li></ul><h2>Keep improving after launch</h2><p>Readiness is not a one-off. New sites appear and sharing patterns change, so schedule regular reviews and monitor for drift. Reports that highlight new oversharing or declining label coverage help owners act quickly.</p><p>The Copilot Readiness module in Proventeq365 automates much of this assessment. It scores your tenant, lists the issues in priority order and tracks progress as you remediate. Whether you use tooling or work manually, the principle is the same: tidy foundations lead to trustworthy AI.</p><h2>Common mistakes to avoid</h2><ul><li>Assuming the default permissions in your tenant are already sensible</li><li>Rolling out to everyone at once without a pilot</li><li>Skipping training and expecting people to work out good prompts</li><li>Treating readiness as a single event rather than a continuing habit</li></ul><h2>How Proventeq can help</h2><p>Proventeq offers a Copilot readiness assessment that combines tooling and consulting. We review permissions, labels and content quality, deliver a prioritised plan and, if you wish, help your teams carry out the fixes and prepare a controlled pilot.</p>",
+   "tags": [
+    "Copilot",
+    "Governance"
+   ]
+  },
+  {
+   "slug": "storage-optimization-quick-wins",
+   "title": "Storage optimisation: quick wins in SharePoint and OneDrive",
+   "date": "2025-04-29",
+   "author": "Proventeq Team",
+   "description": "Practical ways to cut cloud storage costs without risking important content.",
+   "body": "<p>Cloud storage can feel limitless until the invoice arrives or quotas are reached. The good news is that most tenants hold a surprising amount of content that nobody needs. With a careful approach you can reclaim space, lower costs and make search results cleaner at the same time.</p><h2>Start with the data</h2><p>Before deleting anything, understand where the space is going. Look at the largest sites, the biggest files and the content that has not been modified or opened for a long time. Often a handful of locations account for most of the usage, which means focusing there delivers quick results.</p><h2>Quick win one: version history</h2><p>Libraries can hold dozens or hundreds of versions of large files. Applying sensible version limits, for example keeping a defined number of major versions and trimming minor ones, can free substantial space with little impact on users. Test the change on a pilot library first and communicate it to owners.</p><h2>Quick win two: the recycle bin and abandoned sites</h2><ul><li>Review first- and second-stage recycle bins for large deleted items</li><li>Identify sites with no activity for twelve months or more</li><li>Ask owners to confirm whether they should be archived or removed</li><li>Apply inactive-site policies to prevent a repeat</li></ul><h2>Quick win three: duplicates and media</h2><p>Duplicate files and bulky media such as recordings, installers and exported backups account for a lot of waste. Detecting duplicates by content hash rather than name helps avoid mistakes. Large recordings can often move to cheaper storage or be removed after a set period.</p><h2>Archive with intent</h2><p>Content that must be kept but is rarely used can move to an archive tier. Make sure archived items remain discoverable and that retention requirements are respected. Document where archives live so that nobody has to guess later.</p><h2>Involve the owners</h2><p>Technical teams can find candidates, but only business owners can say whether content is still valuable. A simple review workflow that lists candidates, shows the projected saving and records approval keeps things safe and auditable.</p><h2>Make it routine</h2><p>One-off clean-ups fade. Schedule recurring reports and review them as part of normal operations. The Storage Optimization module in Proventeq365 automates the discovery and approval steps, but the habit matters more than any tool. Treat storage like any other asset: measure it, manage it and report on it.</p><h2>Common mistakes to avoid</h2><ul><li>Deleting content in bulk without owner approval</li><li>Ignoring legal holds and retention requirements</li><li>Archiving files but making them impossible to find</li><li>Running a single clean-up and never revisiting it</li></ul><h2>How Proventeq can help</h2><p>The Storage Optimization module in Proventeq365 profiles your tenant, suggests actions with projected savings and manages approvals. Our team can also run a short engagement that delivers the first round of reclaimed space and sets up a regular review process.</p>",
+   "tags": [
+    "Storage",
+    "SharePoint"
+   ]
+  },
+  {
+   "slug": "legal-dms-modernisation-lessons",
+   "title": "Lessons from modernising a legal document management system",
+   "date": "2025-05-27",
+   "author": "Proventeq Team",
+   "description": "What law firms should consider when moving from a traditional DMS to Microsoft 365.",
+   "body": "<p>Law firms have relied on dedicated document management systems for decades, and for good reason: they offer strict control, matter-based organisation and a strong audit trail. Yet lawyers increasingly expect modern co-authoring, mobile access and tools that connect to Teams. Modernising without weakening those controls is the central challenge.</p><h2>Start with the matter</h2><p>In a law firm, the matter is the organising principle. A successful design reflects that, with workspaces created from templates when a matter opens, naming conventions that people recognise and metadata that mirrors existing profile fields. If the new structure feels unfamiliar, adoption will suffer.</p><h2>Protect confidentiality</h2><p>Ethical walls and client restrictions are non-negotiable. Translate existing rules into permission groups and test them thoroughly with risk and compliance teams before migration. Reports that compare who could access each matter before and after the move provide the reassurance partners need.</p><h2>Preserve history</h2><ul><li>Carry across versions, authors and dates, not just the latest document</li><li>Keep email and attachments linked to their matters</li><li>Maintain cross-references and related-document links</li><li>Record checksums or counts as evidence of completeness</li></ul><h2>Decide what to do with closed matters</h2><p>Years of closed matters can dominate storage and slow down a migration. Many firms choose to archive them to a lower-cost location with retention rules, while migrating active matters fully. This reduces risk and lets lawyers enjoy the new experience sooner.</p><h2>Work with practice groups</h2><p>Different practice areas have different habits. Real estate may handle large bundles of scanned documents, while corporate teams produce many drafts. Piloting with one or two groups reveals practical issues early and creates advocates for the wider rollout.</p><h2>Think about AI carefully</h2><p>Tools such as Copilot could help lawyers summarise and draft, but only if permissions and labels are exact. A clean, well-governed repository is the best preparation. Do not enable assistants broadly until you are confident about what each user can reach.</p><h2>A phased approach wins</h2><p>The firms that succeed treat modernisation as a programme, with clear phases, strong communication and measurable outcomes. They keep the old system available until trust is established. With careful design, a firm can gain flexibility without giving up the discipline that clients expect.</p><h2>Common mistakes to avoid</h2><ul><li>Underestimating how much lawyers rely on familiar profiling fields</li><li>Treating ethical walls as something to configure after migration</li><li>Migrating every closed matter without considering cost</li><li>Rolling out to all practice groups on the same day</li></ul><h2>How Proventeq can help</h2><p>Proventeq has supported legal sector clients moving from systems such as iManage and Hummingbird into Microsoft 365. We bring matter-centric designs, migration tooling and evidence reporting that risk and compliance teams can trust.</p>",
+   "tags": [
+    "Legal",
+    "Migration"
+   ]
+  },
+  {
+   "slug": "liferay-performance-tuning-basics",
+   "title": "Liferay performance tuning: where to look first",
+   "date": "2025-06-24",
+   "author": "Proventeq Team",
+   "description": "A short tour of the usual suspects when a Liferay portal feels slow.",
+   "body": "<p>When a portal slows down, the instinct is often to add more servers. Sometimes that helps, but more often the real cause lies in a handful of familiar places. Starting with measurement rather than guesses saves time and avoids spending money on the wrong fix.</p><h2>Measure before changing anything</h2><p>Capture a baseline with realistic traffic. Look at response times by page type, error rates and resource usage on application servers, database and search. Without a baseline you cannot prove that a change helped, and you may not notice when it made things worse.</p><h2>Check the database</h2><p>Slow queries and missing indexes are common, particularly in custom code. Enable slow-query logging, review the worst offenders and check connection pool sizing. Pay attention to pages that run many small queries in a loop, which can look harmless in development but hurt under load.</p><h2>Use caching deliberately</h2><ul><li>Enable and size the built-in caches appropriately</li><li>Add a content delivery network for static assets</li><li>Cache expensive fragments or API responses where data does not change often</li><li>Avoid caching personalised content in shared layers</li></ul><h2>Look at search</h2><p>Search engines can become a bottleneck when indices are large or queries are unfocused. Review index settings, limit the fields returned and make sure the cluster has enough memory. Pagination and sensible default sorts reduce unnecessary work.</p><h2>Review custom code and widgets</h2><p>Custom portlets, fragments and client extensions can quietly consume resources. Profile them in a test environment, looking for repeated remote calls, large payloads and heavy processing during page render. Move long-running work to background jobs.</p><h2>Tune the JVM and infrastructure last</h2><p>Garbage collection settings, heap size and pod resources matter, but they are best tuned once you know the workload. Autoscaling policies should be based on measured behaviour, not hunches.</p><h2>Test again, regularly</h2><p>Performance is not a one-time project. Add load tests to your delivery pipeline so that regressions are caught early. Realistic scenarios that mimic real user journeys deliver far more insight than a simple hammering of the home page. A steady, evidence-led approach turns tuning from firefighting into routine engineering.</p><h2>Common mistakes to avoid</h2><ul><li>Adding hardware before measuring anything</li><li>Caching everything including personalised responses</li><li>Testing only the home page</li><li>Tuning the JVM first and the application last</li></ul><h2>How Proventeq can help</h2><p>Our Liferay engineers run performance reviews that combine profiling, load testing and architecture assessment. We deliver a ranked list of fixes with expected impact, and can implement them alongside your own developers.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Liferay",
+    "Performance"
+   ]
+  },
+  {
+   "slug": "liferay-on-azure-architecture-choices",
+   "title": "Running Liferay on Azure: five architecture choices that matter",
+   "date": "2025-07-29",
+   "author": "Proventeq Team",
+   "description": "Key design decisions when hosting Liferay DXP on Microsoft Azure.",
+   "body": "<p>Azure offers many ways to run Liferay, and the options can be overwhelming. In our projects, a small number of decisions have an outsized impact on reliability, cost and operations. Here are five worth settling early.</p><h2>1. Kubernetes or virtual machines</h2><p>Kubernetes provides autoscaling, rolling updates and consistent environments, which suits most modern deployments. Virtual machines may still make sense for small, stable workloads or teams with limited container experience. Whichever you choose, automate everything so environments can be rebuilt reliably.</p><h2>2. Database service</h2><p>Managed database services reduce operational burden, with backups, patching and high availability handled for you. Size them with headroom, enable monitoring and test failover. Place the database in a private network and restrict access tightly.</p><h2>3. Search and document storage</h2><p>Decide early where search indices and document library files will live. Dedicated search clusters scale better than embedded ones, and object storage for documents avoids tying files to individual servers. Plan backup and restore for both.</p><h2>4. Identity and networking</h2><ul><li>Integrate with Microsoft Entra ID for single sign-on</li><li>Use private endpoints and network security groups</li><li>Place a web application firewall in front of public traffic</li><li>Separate production and non-production networks</li></ul><h2>5. Observability and delivery</h2><p>Collect logs, metrics and traces in one place, and create dashboards that operations teams actually use. Build delivery pipelines that promote the same artefacts from test to production, with automated checks along the way.</p><h2>Plan for cost</h2><p>Autoscaling controls costs only if limits and schedules are sensible. Right-size node pools, use reserved capacity for steady workloads and switch off idle non-production environments out of hours.</p><h2>Keep it simple</h2><p>It is tempting to add every available service. Resist that. Each component adds cost and operational burden, so include only what you can justify. Proventeq has a reference architecture that captures these choices and gives teams a tested starting point; it is a useful basis for discussion even if your final design differs.</p><h2>Common mistakes to avoid</h2><ul><li>Copying a generic cluster design without considering your workload</li><li>Leaving backup and restore testing until after launch</li><li>Over-provisioning non-production environments permanently</li><li>Treating monitoring as an afterthought</li></ul><h2>How Proventeq can help</h2><p>Proventeq designs, builds and operates Liferay environments on Azure for clients across several sectors. We can review an existing deployment, propose improvements or provide a managed service that covers patching, scaling and monitoring.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Liferay",
+    "Azure"
+   ]
+  },
+  {
+   "slug": "liferay-devcon-load-testing-talk",
+   "title": "Load testing a Liferay portal: notes ahead of DevCon",
+   "date": "2025-09-23",
+   "author": "Proventeq Team",
+   "description": "How we approach realistic load tests, and what the numbers can and cannot tell you.",
+   "body": "<p>Load testing is often treated as a box-ticking exercise performed just before launch. Done properly, it is one of the best tools for understanding how a portal behaves and where to invest effort. These notes preview themes from our DevCon session.</p><h2>Define the questions first</h2><p>Begin by deciding what you want to learn. Are you checking that the portal handles the expected peak? Looking for the breaking point? Comparing two configurations? Each question calls for a different test design, so clarity here avoids confusing results.</p><h2>Model realistic behaviour</h2><p>Real users do not hit the home page repeatedly. They log in, search, open documents, fill forms and wander between sections. Build scenarios from analytics where possible and weight them according to actual traffic mix. Include think time between steps so that the simulation resembles human use.</p><h2>Prepare representative data</h2><ul><li>Use content volumes similar to production</li><li>Create enough test accounts to avoid unnatural cache behaviour</li><li>Keep environments equivalent in size or understand how they differ</li><li>Reset data between runs to keep results comparable</li></ul><h2>Watch the whole system</h2><p>Response times tell only part of the story. Capture application, database and search metrics at the same time. A rise in latency often has a cause in a different tier from where it appears.</p><h2>Interpret with care</h2><p>Averages hide problems, so look at percentiles. A page that responds in one second on average but takes ten seconds for one in twenty visitors will feel broken. Ramp load gradually and note where behaviour changes, rather than only recording the final figure.</p><h2>Change one thing at a time</h2><p>When tuning, adjust one variable and repeat the test. It is slower than changing many settings together, but you learn what actually works. Keep a log of runs, configurations and results so the team builds shared knowledge.</p><h2>Make it part of delivery</h2><p>A small, automated test suite that runs with each release catches regressions early. Larger tests can be scheduled before major events or upgrades. The aim is not a perfect report but confidence, and a clear picture of how much headroom your portal has. We look forward to discussing these ideas with fellow developers at the conference.</p><h2>Common mistakes to avoid</h2><ul><li>Using unrealistic data that fits entirely in cache</li><li>Judging results by averages alone</li><li>Changing many settings between two test runs</li><li>Running one big test and never repeating it</li></ul><h2>How Proventeq can help</h2><p>Our team has built reusable load-test suites for Liferay portals and the supporting infrastructure. If you would like to discuss your own performance goals, find us at the event or get in touch afterwards and we will be happy to compare notes.</p>",
+   "tags": [
+    "Liferay",
+    "Events",
+    "Performance"
+   ]
+  },
+  {
+   "slug": "client-portal-design-principles",
+   "title": "Designing a client portal people actually use",
+   "date": "2025-10-28",
+   "author": "Proventeq Team",
+   "description": "Design principles that turn a client portal from a document dump into a useful service.",
+   "body": "<p>Many client portals launch with fanfare and then gather dust. Clients return to email because it is familiar and the portal does not obviously make life easier. Avoiding that fate means designing around real tasks rather than around the organisation chart.</p><h2>Begin with the top tasks</h2><p>Interview clients and frontline staff to find the five or six things people do most often: find a document, check the status of a request, raise a query, approve something, update contact details. Put those tasks on the first screen and make each take as few steps as possible.</p><h2>Make sign-in painless</h2><p>Security matters, but friction drives people away. Support single sign-on where clients have it, offer multi-factor authentication with sensible options and make password recovery simple. Display clear messages when something goes wrong.</p><h2>Show status and next steps</h2><ul><li>Present open requests with plain-language status</li><li>Highlight what the client needs to do next</li><li>Send notifications that link straight to the relevant item</li><li>Keep a visible history so nobody needs to ask what happened</li></ul><h2>Treat documents as part of a workflow</h2><p>A folder of files is not a service. Tie documents to requests, tasks and approvals so that context travels with them. Provide previews, version history and the ability to upload several files at once. Behind the scenes, integrate with the document store you already use, whether SharePoint or another repository.</p><h2>Design for every device</h2><p>Clients check portals from phones between meetings. Responsive layouts, readable text and touch-friendly controls are essential, and so is performance on slower connections.</p><h2>Give staff the right tools</h2><p>Account managers and support teams need an efficient view of what each client sees. Provide administration screens that let them help without needing developer assistance. Content editors should be able to publish announcements and guidance themselves using reusable page fragments.</p><h2>Measure and refine</h2><p>After launch, track which features are used, where people drop out and what questions still arrive by email. Hold short review sessions with a few clients every quarter. Small improvements, driven by evidence, keep a portal relevant.</p><h2>Common mistakes to avoid</h2><ul><li>Organising the portal around internal departments instead of client tasks</li><li>Requiring too many clicks to find a document</li><li>Launching without a plan for content ownership</li><li>Forgetting to measure whether clients are actually using it</li></ul><h2>How Proventeq can help</h2><p>Proventeq builds client portals on Liferay that integrate with SharePoint, CRM and identity services. We start with research and prototyping, so that the first release already solves real problems, and we stay on to improve it with evidence from live usage.</p>",
+   "tags": [
+    "Liferay",
+    "Portals"
+   ]
+  },
+  {
+   "slug": "box-to-sharepoint-migration-tips",
+   "title": "Moving from Box to SharePoint Online: tips from the field",
+   "date": "2025-11-18",
+   "author": "Proventeq Team",
+   "description": "A guide to consolidating Box into Microsoft 365 without upsetting users or breaking links.",
+   "body": "<p>Many organisations adopted Box years ago and now want to consolidate collaboration on Microsoft 365. The move offers cost savings and tighter integration with Teams, Outlook and Copilot, but it needs careful handling. These tips come from projects across several sectors.</p><h2>Inventory accounts and folders</h2><p>Start by listing users, groups, collaborations and large folders. Identify content owned by people who have left, as it often needs a new home. Highlight external collaborators, since their access will need to be recreated.</p><h2>Choose the right destination</h2><p>Personal content belongs in OneDrive, team content in SharePoint sites linked to Teams, and department archives in controlled libraries. Resist the urge to replicate Box folder trees exactly if they were messy. A cleaner structure improves search and permissions.</p><h2>Handle sharing links with care</h2><ul><li>Export a list of shared links and their recipients</li><li>Decide which should be recreated, replaced or retired</li><li>Notify external partners before changing access</li><li>Avoid anonymous links where named access will do</li></ul><h2>Plan around the calendar</h2><p>Schedule waves to avoid busy periods such as financial year-end or term deadlines. Run an early pilot with a friendly department and learn from what they find confusing. Keep Box available in read-only mode for a defined period to reassure users.</p><h2>Preserve what matters</h2><p>Check how metadata, comments and version history will be handled, and agree what must be preserved. For most business content, versions and key properties matter, while some collaboration features can be summarised or exported.</p><h2>Communicate and train</h2><p>People are anxious about losing files. Explain what is happening, when and where their content will appear. Short walkthroughs and a visible help channel prevent many support calls.</p><h2>Close out cleanly</h2><p>When reconciliation is complete and users have signed off, set a firm date to retire Box and cancel licences. Delays here quietly erode the savings that justified the programme. Proventeq offers a Box-focused migration path within Proventeq365 that automates inventory, mapping and validation, helping teams complete the move predictably.</p><h2>Common mistakes to avoid</h2><ul><li>Recreating every Box folder exactly as it was</li><li>Forgetting about content owned by departed employees</li><li>Changing external sharing without telling partners</li><li>Cancelling Box licences before reconciliation is finished</li></ul><h2>How Proventeq can help</h2><p>Proventeq365 includes a migration path designed for Box content. It covers inventory, mapping, transfer and validation, and our consultants help with sharing decisions, communications and training so that users feel supported throughout.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Migration",
+    "Box"
+   ]
+  },
+  {
+   "slug": "retention-labels-versus-sensitivity-labels",
+   "title": "Retention labels versus sensitivity labels: knowing the difference",
+   "date": "2025-12-16",
+   "author": "Proventeq Team",
+   "description": "Two kinds of label solve two different problems. Here is how they fit together.",
+   "body": "<p>Labels are central to Microsoft 365 governance, yet the terminology confuses many teams. Sensitivity labels and retention labels are different tools that serve different goals, and understanding the distinction makes policies far easier to design.</p><h2>Sensitivity labels: how content is protected</h2><p>Sensitivity labels describe how confidential information is and what protections should apply. They can add encryption, restrict who can open a file, mark documents with headers or watermarks and control sharing at the site level. They travel with the file, so protection persists when it moves.</p><h2>Retention labels: how long content is kept</h2><p>Retention labels govern the lifecycle. They determine whether content must be kept for a set period, deleted afterwards, or reviewed by a person. They are essential for records management and for meeting legal obligations around keeping and disposing of information.</p><h2>Using them together</h2><p>A contract might carry a sensitivity label of confidential and a retention label of seven years from the end of the agreement. The two work side by side, and neither replaces the other. Designing both taxonomies together prevents contradictory rules.</p><h2>Keep taxonomies small</h2><ul><li>Limit sensitivity levels to a handful with plain names</li><li>Group retention labels by business purpose rather than by department</li><li>Document each label with an example so users can choose confidently</li><li>Review the taxonomy annually</li></ul><h2>Automate where it is safe</h2><p>Auto-labelling can classify content by sensitive information types or file locations. Start in simulation mode, review the matches and tune before enforcement. Defaults at library level reduce the need for users to make manual choices.</p><h2>Prepare for AI</h2><p>Accurate labels are one of the best preparations for Copilot and similar assistants. They help limit what is surfaced and show where oversharing exists.</p><h2>Roll out gradually</h2><p>Pilot with one department, collect feedback, then expand. Combine labelling with training and clear guidance. A well-planned labelling programme gives you better protection, simpler compliance and a stronger base for automation.</p><h2>Common mistakes to avoid</h2><ul><li>Creating dozens of overlapping labels</li><li>Letting each department invent its own taxonomy</li><li>Enforcing auto-labelling without a simulation phase</li><li>Forgetting to explain labels in plain language</li></ul><h2>How Proventeq can help</h2><p>Our governance consultants help design label taxonomies that suit your regulations and working culture. Proventeq365 reports on coverage and gaps, which makes it easy to show progress to security and compliance leaders.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Governance",
+    "Microsoft 365"
+   ]
+  },
+  {
+   "slug": "migrating-from-documentum",
+   "title": "Migrating from Documentum: what makes it different",
+   "date": "2026-01-20",
+   "author": "Proventeq Team",
+   "description": "Documentum estates carry rich lifecycles and relationships. Here is how to move them safely.",
+   "body": "<p>Documentum has served large organisations for a long time, and its depth is precisely what makes migration interesting. Content comes with lifecycles, renditions, virtual documents and detailed permission models. Treating it like a simple file share would lose much of its value.</p><h2>Understand the object model</h2><p>Documentum stores documents as typed objects with attributes, relationships and folder placement. Analyse which types matter, which attributes are used and which are legacy. Often, dozens of custom types collapse into a smaller set of SharePoint content types.</p><h2>Map lifecycles and states</h2><p>Draft, review, approved and effective are not just labels; they drive who can see and change a document. Work with business owners to translate lifecycle logic into approval flows, metadata and permissions in the target platform.</p><h2>Plan for renditions and virtual documents</h2><ul><li>Decide whether PDF renditions should be kept as separate files</li><li>Flatten or relate virtual document components</li><li>Preserve annotations where they carry meaning</li><li>Test unusual formats early</li></ul><h2>Preserve history and audit data</h2><p>Regulated sectors need to show who did what and when. Decide whether audit trails will be migrated into the target, stored in an archive or retained in a read-only copy. Whichever you choose, document it and get compliance approval.</p><h2>Handle permissions thoughtfully</h2><p>Access control lists and group structures rarely map perfectly. Simplify where possible, using groups rather than individual entries, and validate with sample users in each role.</p><h2>Migrate in waves and validate</h2><p>Move content by business area, starting with a pilot. Compare counts, metadata and checksums after each wave, and give owners the chance to review. Keep the source read-only until everyone is satisfied.</p><h2>Take the chance to simplify</h2><p>A migration is the best moment to remove clutter, retire unused types and improve findability. Proventeq365 has supported Documentum migrations for many years, with tooling that handles versions, relationships and metadata, but the success factors remain careful analysis and close collaboration with the people who use the content.</p><h2>Common mistakes to avoid</h2><ul><li>Assuming every custom object type needs a direct equivalent</li><li>Overlooking renditions and virtual documents</li><li>Migrating audit data without agreeing how it will be used</li><li>Switching off the source system before owners sign off</li></ul><h2>How Proventeq can help</h2><p>Documentum is one of the many source systems supported by Proventeq365. Our engineers have experience with complex lifecycles, regulated content and large volumes, and can run a pilot on your own data to show exactly what the result will look like.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Migration",
+    "Documentum"
+   ]
+  },
+  {
+   "slug": "managing-oversharing-before-ai",
+   "title": "Tackling oversharing before AI finds it for you",
+   "date": "2026-03-24",
+   "author": "Proventeq Team",
+   "description": "Why permission sprawl matters more in the age of AI assistants, and how to fix it.",
+   "body": "<p>For years, loose sharing was an annoyance that security teams grumbled about. With AI assistants able to search and summarise everything a user can reach, it has become a front-line issue. A document that nobody ever stumbled across can suddenly appear in an answer.</p><h2>How oversharing happens</h2><p>It rarely comes from malice. Someone shares a folder with a large group for a quick project, a site is created with open membership or a link is sent to everyone in the organisation to save time. Years later the original purpose is forgotten and the access remains.</p><h2>Find the biggest exposures first</h2><ul><li>Sites and libraries accessible to very large groups</li><li>Sharing links open to anyone or the whole organisation</li><li>Sensitive document types stored in broadly shared locations</li><li>Guests with access to content they no longer need</li></ul><h2>Fix in order of risk</h2><p>Focus on areas with the greatest potential harm, such as employee records, financial data and legal advice. Replace broad access with targeted groups, remove stale links and apply sensitivity labels. Work with site owners rather than around them, as they know who genuinely needs access.</p><h2>Use tools, but keep people involved</h2><p>Automated reports can surface thousands of issues. Group them by site and owner so that people receive a manageable list with clear instructions. Owners should confirm decisions, which also builds a culture of responsibility.</p><h2>Prevent a relapse</h2><p>Clean-up fades without guardrails. Set default sharing options to the least permissive that works, use expiry for guest access and review sites periodically. Monitor for new broad sharing and alert owners promptly.</p><h2>Communicate the why</h2><p>Explain to staff that tightening access protects them as much as the organisation. Provide guidance on how to share safely and how to request access. When people understand the reasons, they cooperate.</p><h2>A foundation for trustworthy AI</h2><p>Fixing oversharing improves security today and makes AI rollouts calmer tomorrow. The Copilot Readiness module in Proventeq365 helps teams find, prioritise and track these issues, but the discipline of regular review will always be the most reliable defence.</p><h2>Common mistakes to avoid</h2><ul><li>Attempting to fix every finding at once</li><li>Removing access without consulting owners</li><li>Relying on a one-off report</li><li>Leaving guest accounts unreviewed</li></ul><h2>How Proventeq can help</h2><p>Proventeq offers an oversharing assessment that identifies exposure, ranks it by risk and supports remediation. We also set up ongoing monitoring so that new issues are spotted quickly and routed to the right owner.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "Copilot",
+    "Governance",
+    "Security"
+   ]
+  },
+  {
+   "slug": "sharepoint-on-prem-end-of-support-options",
+   "title": "SharePoint on-premises: weighing your options as support windows close",
+   "date": "2026-10-13",
+   "author": "Proventeq Team",
+   "description": "Migrate, upgrade or hybrid? A framework for choosing a sensible path.",
+   "body": "<p>Organisations still running older on-premises SharePoint versions face a familiar dilemma as support windows close. Staying put carries security and compliance risk, while moving requires effort and budget. The right answer depends on your content, your regulations and your appetite for change.</p><h2>Option one: move fully to SharePoint Online</h2><p>For most organisations this is the strategic destination. It offers continuous updates, deep integration with Teams and Copilot and no infrastructure to maintain. It needs careful planning around customisations, large libraries and compliance requirements, but tooling and experience make it increasingly routine.</p><h2>Option two: upgrade in place</h2><p>Upgrading to a supported on-premises release buys time and may suit environments with strict data residency or network constraints. However, it keeps you responsible for infrastructure and delays access to cloud capabilities. Treat it as a bridge rather than a destination.</p><h2>Option three: hybrid</h2><ul><li>Keep selected workloads on-premises while moving others</li><li>Use hybrid search and identity to join the experience</li><li>Phase movement by department or content type</li><li>Avoid hybrid becoming a permanent state by setting clear end dates</li></ul><h2>Questions to ask</h2><p>How much of your content is actually used? Which customisations are essential? What are your regulatory constraints? Who owns each site? Honest answers shape both the destination and the timeline.</p><h2>Make clean-up part of the plan</h2><p>Many on-premises farms contain years of abandoned sites and duplicate files. Cleaning before moving reduces cost and risk, and improves the experience for users arriving in the new environment.</p><h2>Do not forget customisations</h2><p>Farm solutions, custom web parts and workflows rarely transfer directly. Decide which to rebuild with modern tools, which to replace with standard features and which to retire.</p><h2>Choose a pace you can sustain</h2><p>A phased programme with clear milestones allows teams to learn and adapt. A workshop with an experienced partner can quickly clarify scope and produce a roadmap. Whichever route you pick, start soon; the cost of delay only grows.</p><h2>Common mistakes to avoid</h2><ul><li>Delaying the decision until support has already lapsed</li><li>Migrating abandoned sites and duplicate content</li><li>Underestimating the effort of rebuilding custom solutions</li><li>Allowing a hybrid arrangement to become permanent by default</li></ul><h2>How Proventeq can help</h2><p>Proventeq has moved estates of all sizes from on-premises SharePoint into Microsoft 365. We begin with a discovery scan and workshop, so you can compare options with real numbers on content, customisations and effort.</p><h2>Key takeaway</h2><p>Whatever the topic, the pattern is the same: understand your current position with evidence, make a small number of clear decisions, involve the people who own the content and measure the outcome. Progress that is visible and steady earns trust, and trust is what keeps a programme funded and supported through the harder middle stages. If you would like a second opinion on your own plans, we are always glad to talk it through.</p>",
+   "tags": [
+    "SharePoint",
+    "Migration",
+    "Strategy"
+   ]
+  }
+ ]
+}

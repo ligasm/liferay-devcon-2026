@@ -1,0 +1,7 @@
+.pq-faq { max-width: 860px; margin: 0 auto 12px; border: 1px solid var(--pq-line); border-radius: 12px; background: #fff; }
+.pq-faq summary { cursor: pointer; list-style: none; padding: 20px 56px 20px 24px; font-family: var(--pq-head); font-weight: 700; font-size: 1.05rem; position: relative; }
+.pq-faq summary::-webkit-details-marker { display: none; }
+.pq-faq summary::after { content: "+"; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--pq-teal); }
+.pq-faq[open] summary::after { content: "\2212"; }
+.pq-faq__a { padding: 0 24px 20px; color: var(--pq-muted); }
+.pq-faq__a p { margin: 0; }

@@ -1,0 +1,4 @@
+.pq-logos { text-align: center; }
+.pq-logos__title { font-family: var(--pq-head); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; color: var(--pq-muted); margin-bottom: 22px; }
+.pq-logos__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; }
+.pq-logos__list li { font-family: var(--pq-head); font-weight: 800; font-size: 1.12rem; color: #8aa0a8; letter-spacing: -.01em; }

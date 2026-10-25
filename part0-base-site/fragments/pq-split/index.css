@@ -1,0 +1,5 @@
+.pq-split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.pq-split--left .pq-split__media { order: -1; }
+.pq-split__media img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 22px; box-shadow: var(--pq-shadow); display: block; }
+.pq-split .pq-eyebrow:empty, .pq-split .pq-btn:empty { display: none; }
+@media (max-width: 900px) { .pq-split { grid-template-columns: 1fr; gap: 32px; } .pq-split--left .pq-split__media { order: 0; } }

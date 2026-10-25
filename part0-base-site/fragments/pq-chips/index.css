@@ -1,0 +1,5 @@
+.pq-chips { text-align: center; }
+.pq-chips__title { margin-bottom: 22px; }
+.pq-chips__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.pq-chips__list li { padding: 9px 18px; border-radius: 999px; border: 1px solid var(--pq-line); background: #fff; font-weight: 600; color: var(--pq-navy); font-size: .93rem; }
+.pq-band--dark .pq-chips__list li, .pq-band--navy .pq-chips__list li { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .14); color: #e8f1f3; }
