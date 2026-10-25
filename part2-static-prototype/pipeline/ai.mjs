@@ -132,7 +132,12 @@ const transformStructured = (raw) => ({
   id: raw.id, slug: slugify(raw.friendlyUrlPath || raw.id), path: publicPath('structured', raw), hash: contentHash('structured', raw),
   title: raw.title, description: raw.description ?? '', dateModified: raw.dateModified, structureId: raw.contentStructureId,
   template: `structure-${raw.contentStructureId}`, portalUrl: `${config.liferayUrl}/w/${raw.friendlyUrlPath ?? ''}`,
-  fields: (raw.contentFields ?? []).map((f) => ({ name: f.name, label: f.label, type: f.dataType, value: f.contentFieldValue?.data ?? '', html: f.dataType === 'html' ? sanitizeHtml(f.contentFieldValue?.data ?? '') : null })),
+  fields: (raw.contentFields ?? []).map((f) => {
+    const value = f.contentFieldValue?.data ?? f.contentFieldValue?.image?.contentUrl ?? '';
+    // Basic Web Content's rich-text "content" field reports dataType "string"; treat anything that looks like markup as HTML
+    const isHtml = f.dataType === 'html' || /<[a-z][^>]*>/i.test(value);
+    return { name: f.name, label: f.label, type: f.dataType, value: isHtml ? '' : /^\/(documents|o\/adaptive-media|image)\//.test(value) ? rewriteHref(value) : value, html: isHtml ? sanitizeHtml(value) : null };
+  }),
 });
 
 function transformNav(menus, knownPaths, pages) {
@@ -156,6 +161,16 @@ function transformNav(menus, knownPaths, pages) {
   };
   const out = {};
   for (const m of menus) out[m.name] = (m.navigationMenuItems ?? []).map(toLink).filter(Boolean);
+  // No navigation menu with that name (e.g. the header is a fragment with hard-coded links):
+  // synthesise one from the visible site pages, NAV_PAGES order first, then by title.
+  if (!out[config.siteMenuName]) {
+    const order = config.navPages;
+    const visible = pages.filter((p) => !p.pageSettings?.hiddenFromNavigation);
+    const rank = (p) => { const i = order.indexOf(p.friendlyUrlPath); return i < 0 ? order.length : i; };
+    visible.sort((a, b) => rank(a) - rank(b) || String(a.title).localeCompare(b.title));
+    out[config.siteMenuName] = visible.map((p) => ({ label: p.title, href: publicPath('page', p), external: false, newTab: false, children: [] }));
+    log(`ai: no navigation menu "${config.siteMenuName}" → synthesised ${visible.length} entries from site pages`);
+  }
   return out;
 }
 
@@ -199,8 +214,8 @@ export async function orchestrate(flags = {}) {
   // 4. write build inputs
   const categories = {};
   for (const p of posts) for (const c of p.categories) (categories[c.slug] ??= { name: c.name, slug: c.slug, count: 0 }).count++;
-  const site = { name: config.liferayUrl.replace(/^https?:\/\//, ''), liferayUrl: config.liferayUrl, publicUrl: config.publicUrl, generatedAt: nowIso(),
-    siteMenuName: config.siteMenuName, nav, counts: { posts: posts.length, pages: pages.length, documents: documents.length, structured: structured.length } };
+  const site = { name: config.siteName || config.liferayUrl.replace(/^https?:\/\//, ''), liferayUrl: config.liferayUrl, publicUrl: config.publicUrl, generatedAt: nowIso(),
+    siteMenuName: config.siteMenuName, nav, homeFromPage: config.homeFromPage, counts: { posts: posts.length, pages: pages.length, documents: documents.length, structured: structured.length } };
   writeJson(path.join(config.dirs.build, 'site.json'), site);
   writeJson(path.join(config.dirs.build, 'posts.json'), posts);
   writeJson(path.join(config.dirs.build, 'pages.json'), pages);

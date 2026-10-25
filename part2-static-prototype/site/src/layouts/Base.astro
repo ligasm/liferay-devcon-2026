@@ -78,6 +78,10 @@ const canonical = site.publicUrl + Astro.url.pathname;
           </div>
         ))}
         <div>
+          <h4>About</h4>
+          <ul><li>Authored in Liferay DXP, served as static HTML.</li></ul>
+        </div>
+        <div>
           <h4>Categories</h4>
           <ul>{categories.slice(0, 8).map((c) => <li><a href={`/category/${c.slug}/`}>{c.name} ({c.count})</a></li>)}</ul>
         </div>

@@ -9,6 +9,11 @@ that need judgement, and its answers are cached so later cycles are free.
 
 Verified end-to-end against the public `liferay.dev` site (anonymous, no key needed).
 
+> **Same look as the portal:** [`fidelity/`](fidelity/README.md) is a second generator. It renders
+> the site from Headless Delivery's page definitions, the fragment templates and the theme CSS,
+> so the static pages match Liferay's pixel for pixel (`node fidelity/build.mjs`). The pipeline
+> below instead takes rendered page bodies and puts them into its own Astro layout.
+
 ## Architecture
 
 ```mermaid

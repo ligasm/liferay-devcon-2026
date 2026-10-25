@@ -1,0 +1,16 @@
+---
+// Static stand-in for the portal's /search page. Search itself is Pagefind running in the browser
+// (index built at build time); ?q=term is copied into the header search box on load.
+import Base from '../layouts/Base.astro';
+---
+<Base title="Search" description="Search this site" cacheTags={['search']}>
+  <h1>Search</h1>
+  <section class="search-results" data-pagefind-ignore>
+    <p class="meta">Type in the search box in the header. Results come from a static Pagefind index; there is no server round-trip to the portal.</p>
+  </section>
+</Base>
+<script>
+  const q = new URLSearchParams(location.search).get('q');
+  const box = document.getElementById('search-placeholder') as HTMLInputElement | null;
+  if (q && box) { box.value = q; box.dispatchEvent(new Event('input')); }
+</script>

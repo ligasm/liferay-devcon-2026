@@ -62,7 +62,7 @@ async function listSitePagesResilient() {
     return (await listAll('/site-pages', { max: config.maxItems, retries: 1 })).items; // fail fast, we have a fallback
   } catch (e) {
     log(`page: listing failed (${e.message}) → refreshing known pages one by one`);
-    const seed = readJson(path.join(config.dirs.raw, '..', 'seed', 'site-pages.json'), { items: [] }).items;
+    const seed = readJson(path.join(config.dirs.content, 'seed', 'site-pages.json'), { items: [] }).items;
     const paths = new Set([...loadRaw('page'), ...seed].map((p) => p.friendlyUrlPath));
     const limit = pLimit(config.concurrency);
     const items = await Promise.all([...paths].map((p) => limit(() => request(siteApi(`/site-pages${p}`)).catch((err) => (log(`page: ${p} → ${err.message}`), null)))));
@@ -81,8 +81,9 @@ async function fetchSitePages({ full }) {
   await Promise.all(items.map((p) => limit(async () => {
     const prev = known.get(p.id);
     const stale = full || !prev || prev.dateModified !== p.dateModified || !fs.existsSync(renderedFile(p.id));
-    if (stale && config.fetchRenderedPages && p.renderedPage?.renderedPageURL) {
-      const html = await request(p.renderedPage.renderedPageURL, { accept: 'text/html' });
+    if (stale && config.fetchRenderedPages) {
+      // renderedPageURL is the documented .../site-pages/{friendlyUrlPath}/rendered-page; build it ourselves if the listing omits it
+      const html = await request(p.renderedPage?.renderedPageURL ?? siteApi(`/site-pages${p.friendlyUrlPath}/rendered-page`), { accept: 'text/html' });
       fs.writeFileSync(renderedFile(p.id), html);
       rendered++;
     }

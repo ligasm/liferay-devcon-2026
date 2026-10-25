@@ -12,7 +12,7 @@ const HTML_CACHE = 'public, max-age=60, s-maxage=300, stale-while-revalidate=360
 const IMMUTABLE = 'public, max-age=31536000, immutable';
 
 function run(cmd, args, cwd) {
-  const r = spawnSync(cmd, args, { cwd, stdio: 'inherit', env: { ...process.env, PUBLIC_URL: config.publicUrl }, shell: process.platform === 'win32' });
+  const r = spawnSync(cmd, args, { cwd, stdio: 'inherit', env: { ...process.env, PUBLIC_URL: config.publicUrl, CONTENT_DIR: config.dirs.content, DIST_DIR: config.dirs.dist }, shell: process.platform === 'win32' });
   if (r.status !== 0) throw new Error(`${cmd} ${args.join(' ')} exited with ${r.status}`);
 }
 
@@ -77,7 +77,7 @@ export function build(flags = {}) {
   writeEdgeConfig(config.dirs.dist, pages);
   const size = dirSize(config.dirs.dist);
   const result = { skipped: false, seconds: (Date.now() - t0) / 1000, pages: pages.length, distBytes: size.bytes, distFiles: size.files, prevDistBytes: prev.bytes, pageList: pages.map(({ path: p, bytes, tags }) => ({ path: p, bytes, tags })), at: new Date().toISOString() };
-  writeJson(path.join(ROOT, 'content', 'build-result.json'), result);
+  writeJson(path.join(config.dirs.content, 'build-result.json'), result);
   log(`build: ${pages.length} pages in ${result.seconds.toFixed(1)}s, dist ${(size.bytes / 1e6).toFixed(2)} MB`);
   return result;
 }

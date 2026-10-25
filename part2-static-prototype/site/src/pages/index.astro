@@ -3,8 +3,17 @@ import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { site, posts, pages, categories } from '../lib/content';
 const latest = posts.slice(0, 6);
+const home = site.homeFromPage ? pages.find((p) => p.path === '/') : undefined;
 const featuredPages = pages.filter((p) => !p.hidden && p.path !== '/').slice(0, 6);
 ---
+{home ? (
+<Base title={home.title} description={home.seoDescription} cacheTags={['home', 'page', `page-${home.id}`]} portalUrl={home.portalUrl}>
+  <article class="prose" data-pagefind-body>
+    <h1>{home.title}</h1>
+    <Fragment set:html={home.html} />
+  </article>
+</Base>
+) : (
 <Base title="Home" description={`Static mirror of ${site.name}: blogs, community pages and documents.`} cacheTags={['home', 'blog']}>
   <section class="hero">
     <h1>{site.name}, served as plain HTML</h1>
@@ -22,3 +31,4 @@ const featuredPages = pages.filter((p) => !p.hidden && p.path !== '/').slice(0, 
     </>
   )}
 </Base>
+)}

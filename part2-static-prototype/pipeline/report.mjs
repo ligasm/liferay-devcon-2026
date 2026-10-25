@@ -40,7 +40,7 @@ export function report({ startedAt, buildResult, fetchInfo, review } = {}) {
   const ai = buildInfo.ai ?? { mode: 'skipped', totals: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, estimated: 0 }, calls: [] };
   const prevLatest = readJson(path.join(config.dirs.reports, 'latest.json'));
   const posts = readJson(path.join(config.dirs.build, 'posts.json'), []);
-  buildResult ??= buildInfo.skipBuild ? { skipped: true } : readJson(path.join(config.dirs.reports, '..', 'content', 'build-result.json'), { skipped: true });
+  buildResult ??= buildInfo.skipBuild ? { skipped: true } : readJson(path.join(config.dirs.content, 'build-result.json'), { skipped: true });
 
   const links = buildResult.skipped || !fs.existsSync(config.dirs.dist) ? null : checkLinks(config.dirs.dist);
   // size regressions: changed pages that grew > 50 % against the previous build

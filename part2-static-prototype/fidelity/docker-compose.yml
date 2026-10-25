@@ -1,0 +1,13 @@
+# Serve dist-fidelity/ with the nginx.conf that fidelity/build.mjs generates, on :8091.
+#   ENV_FILE=.env.local-proventeq node fidelity/build.mjs
+#   docker compose -f fidelity/docker-compose.yml up -d     → http://127.0.0.1:8091/web/proventeq/home
+# After a rebuild nginx keeps serving the new files; restart it only if nginx.conf changed.
+services:
+  fidelity:
+    image: nginx:1.27-alpine
+    container_name: proventeq-fidelity
+    ports:
+      - "8091:8091"
+    volumes:
+      - ../dist-fidelity:/usr/share/nginx/html:ro
+      - ../dist-fidelity/_server/nginx.conf:/etc/nginx/nginx.conf:ro

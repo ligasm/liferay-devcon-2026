@@ -10,3 +10,9 @@ reports/*.md
 .env
 site/.astro/
 site/node_modules/
+
+content-*/
+dist-*/
+reports-*/
+.env.*
+!.env.example

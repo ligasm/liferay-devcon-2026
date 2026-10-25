@@ -13,12 +13,14 @@
     "report": "node pipeline/report.mjs",
     "webhook": "node pipeline/webhook.mjs",
     "serve": "node tools/serve.mjs",
-    "check-links": "node tools/check-links.mjs"
+    "check-links": "node tools/check-links.mjs",
+    "fidelity": "node fidelity/build.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.126.0",
     "astro": "^5.0.0",
     "node-html-parser": "^9.0.4",
-    "pagefind": "^1.5.2"
+    "pagefind": "^1.5.2",
+    "postcss": "^8.5.28"
   }
 }

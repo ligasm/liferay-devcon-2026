@@ -4,8 +4,10 @@
 // nested friendly URLs such as /meet/what-is-a-lug/ map 1:1.
 import Base from '../layouts/Base.astro';
 import { pages, fmtDate } from '../lib/content';
+// Routes with a dedicated template win over a same-named portal page (e.g. the site's /blog page → our post listing).
 export function getStaticPaths() {
-  return pages.filter((p) => p.path !== '/').map((page) => ({ params: { slug: page.slug }, props: { page } }));
+  const RESERVED = new Set(['/', '/blog/', '/documents/', '/search/', '/404/']);
+  return pages.filter((p) => !RESERVED.has(p.path)).map((page) => ({ params: { slug: page.slug }, props: { page } }));
 }
 const { page } = Astro.props;
 ---

@@ -27,7 +27,8 @@ export function rewriteHref(href) {
   let h = href.startsWith(base) ? href.slice(base.length) || '/' : href;
   if (/^https?:\/\//.test(h)) return h; // external, leave alone
   if (/^(mailto:|tel:|#|javascript:)/i.test(h)) return h;
-  if (h.startsWith('/web/guest/')) h = h.slice('/web/guest'.length);
+  if (h === config.sitePath) h = '/';
+  else if (h.startsWith(config.sitePath + '/') || h.startsWith(config.sitePath + '?')) h = h.slice(config.sitePath.length);
   if (h.startsWith('/web/')) return base + h; // other site → back to the portal
   if (h.startsWith('/documents/') || h.startsWith('/o/adaptive-media/') || h.startsWith('/image/')) return config.assetOrigin + h;
   if (h.startsWith('/o/') || h.startsWith('/c/') || h.startsWith('/group/') || h.startsWith('/user/')) return base + h; // portal-only endpoints

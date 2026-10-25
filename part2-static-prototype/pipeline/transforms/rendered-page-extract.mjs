@@ -5,12 +5,14 @@
 // once per master layout — by the model on first sight, or by the fallback
 // below — and cached in content/rules/. Applying a rule is pure string work.
 import { parse } from 'node-html-parser';
+import { config } from '../lib/config.mjs';
 import { sanitizeHtml, textOf } from './html-sanitize.mjs';
 
 // Works for stock Liferay themes; the model refines it for custom masters.
 export const FALLBACK_RULE = {
-  contentSelector: '#main-content, main, .portlet-layout',
+  contentSelector: config.pageContentSelector || '#main-content, main, .portlet-layout',
   strip: [
+    ...config.pageStripSelectors, // PAGE_STRIP_SELECTORS: site-specific header/footer fragments
     'header', 'footer', 'nav', '.portlet-navigation', '.portlet-boundary_com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet_',
     '.lfr-layout-structure-item-header--2025---copy-', '[class*="lfr-layout-structure-item-header"]', '[class*="lfr-layout-structure-item-footer"]',
     '.portlet-boundary_com_liferay_login_web_portlet_LoginPortlet_', '.portlet-boundary_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_',
