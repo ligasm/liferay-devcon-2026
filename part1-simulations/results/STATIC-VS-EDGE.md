@@ -24,7 +24,7 @@ Every step is in [STATIC-VS-EDGE.steps.md](STATIC-VS-EDGE.steps.md).
 | HTML only: p95 at that rate | 71 ms | 66 ms | |
 | HTML only: server CPU there | 2.6 cores | 1.1 cores | |
 | HTML only: bytes on the wire | 575 MB/s | 150 MB/s | Liferay's HTML is ≈ 22 KB gzipped, the static HTML ≈ 5.5 KB |
-| **Page views**: clean capacity | **1,200 /s** (67,000 req/s) | **10,000 /s** (46,000 req/s) | Varnish: its 2,000-thread cap. Static: k6 again |
+| **Page views**: clean capacity | **1,200 /s** (67,000 req/s) | **10,000 /s** (46,000 req/s) | Varnish: the box (k6 + Varnish, 17–19 of 20 cores). Static: k6 again. Rerun with 5,000 Varnish threads: 1,200 clean, 1,500 not; see `RUNG-RESULTS.md` |
 | **at the same 1,000 page views/s**: requests | 55,900 req/s | 4,600 req/s | **12×** |
 | bytes on the wire | 545 MB/s | 99 MB/s | **5.5×** |
 | server CPU | 3.1 cores | 0.3 cores | **≈ 10×** |
@@ -57,14 +57,15 @@ views/s, the edge served 12× the requests, 5.5× the bytes and used ≈ 10× th
 whole page view was 13 ms against 2 ms, on loopback; every extra round of requests costs one
 RTT more on a real network.
 
-### 3. Through Varnish the box tops out at 1,200 page views/s, on Varnish's thread cap
+### 3. Through Varnish the box tops out at 1,200 page views/s
 
 At 1,500 page views/s (84,000 req/s target) 68 % of iterations were dropped and 3.5 % of
 requests failed. During that step `MAIN.sess_dropped` grew by ≈ 130,000 and
-`MAIN.threads_limited` by ≈ 40,000: Varnish runs one thread per connection, and the default
-2 pools × 1,000 threads could not hold k6's connections (3,000 VUs × up to 6 each). The host
-was at 18–20 cores too. A bigger `thread_pool_max` would move this; the 12× more requests per
-page view would not.
+`MAIN.threads_limited` by ≈ 40,000: Varnish runs one thread per connection, and the 2 pools × 1,000 threads we had
+set could not hold k6's connections (3,000 VUs × up to 6 each). The host was at 18–20 cores
+too. The 2026-11-01 rerun raised `thread_pool_max` to 5,000: the 1,500/s step went from 485 to
+1,145 page views/s, still 23.6 % dropped, with the host at 19 of 20 cores (k6 10, Varnish 4.4).
+So the thread limit was real, but the box is the next limit, and 1,200 stays the clean figure.
 
 The static ladder reached 11,400 page views/s at 12,000 (5 % dropped) and collapsed at 15,000,
 with nginx at 2.1 cores and k6 at 13.7: the limit there is the load generator.
@@ -79,8 +80,8 @@ icon sprite at 365 KB, and a page view weighed **1.9 MB** instead of 508 KB.
 * The fix is in `matrix/varnish/default.vcl` and `default-xkey.vcl`: the asset branch now sets
   `do_gzip` for text types and SVG.
 * The first edge page-view ladder ran before the fix and is kept as
-  `stress/_S4-edge-pageview-uncompressed-assets/`. Its capacity was the same 1,200 page views/s
-  (the thread cap), at 2.4 GB/s.
+  `stress/_S4-edge-pageview-uncompressed-assets/`. Its capacity was the same 1,200 page views/s,
+  at 2.4 GB/s.
 * The earlier S0–S6 and stress results are not affected: those workloads request HTML only.
 
 **Check that your edge compresses the assets, not just the HTML.**

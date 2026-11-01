@@ -1,0 +1,9 @@
+
+┌─ stress/R1-S0-pageview / step-200 ─────────────────────
+│ requests       666617   11098.7 req/s
+│ duration      p50      3ms  p95     31ms  p99     70ms
+│ ttfb          p50     27ms  p95     66ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

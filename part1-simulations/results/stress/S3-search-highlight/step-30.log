@@ -1,0 +1,9 @@
+
+┌─ stress/S3-search-highlight / step-30 ─────────────────
+│ requests         1658   25.3 req/s
+│ duration      p50   2954ms  p95   6015ms  p99   6784ms
+│ ttfb          p50   2951ms  p95   6011ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

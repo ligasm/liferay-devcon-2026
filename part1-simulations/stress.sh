@@ -57,7 +57,7 @@ def p90(col):
     xs = sorted(float(r[col]) for r in rows if r.get(col))
     return xs[max(0, int(len(xs) * 0.9) - 1)] if xs else 0
 heap = max([float(r["heap_old_mb"]) for r in rows if r.get("heap_old_mb")] or [0])
-fgc = max([int(r["full_gc"]) for r in rows if r.get("full_gc")] or [0])
+fgc = max([int(r["full_gc"]) for r in rows if (r.get("full_gc") or "").isdigit()] or [0])  # ZGC reports "-"
 sat = err > 5 or drop_pct > 10 or p95 > 5000
 print(",".join(str(x) for x in [label, workload, rate, f"{achieved:.1f}", f"{v('http_reqs', 'rate'):.1f}", f"{drop_pct:.1f}", f"{err:.2f}",
       f"{p50:.1f}", f"{p95:.1f}", f"{p99:.1f}", int(v("vus_max", "max", v("vus_max", "value"))), f"{p90(c + '_cores'):.1f}",

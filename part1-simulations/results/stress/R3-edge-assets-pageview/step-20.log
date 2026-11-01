@@ -1,0 +1,9 @@
+
+┌─ stress/R3-edge-assets-pageview / step-20 ─────────────
+│ requests        66824   1113.7 req/s
+│ duration      p50      0ms  p95      1ms  p99     10ms
+│ ttfb          p50      8ms  p95     27ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

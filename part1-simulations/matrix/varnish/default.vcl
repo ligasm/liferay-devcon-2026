@@ -142,6 +142,10 @@ sub vcl_recv {
         set req.http.X-Guest = "asset";
     }
     else {
+        # Rung 3 of the ladder (assets at the edge, HTML still from the origin): GUEST_HTML_CACHE=0
+        if (std.getenv("GUEST_HTML_CACHE") == "0") {
+            return (pass);
+        }
         # Guest HTML: keep only GUEST_LANGUAGE_ID (as a hash key), drop the rest
         # (JSESSIONID, COOKIE_SUPPORT, SERVER_ID, LFR_SESSION_STATE_*, analytics…).
         if (req.http.Cookie ~ "(^|;\s*)GUEST_LANGUAGE_ID=") {

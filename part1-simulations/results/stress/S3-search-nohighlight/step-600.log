@@ -1,0 +1,10 @@
+time="2026-11-01T20:41:46Z" level=warning msg="Insufficient VUs, reached 3000 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=stress
+
+┌─ stress/S3-search-nohighlight / step-600 ──────────────
+│ requests        26391   389.6 req/s
+│ duration      p50   6027ms  p95   7961ms  p99   8028ms
+│ ttfb          p50   6019ms  p95   7953ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

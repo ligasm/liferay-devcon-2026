@@ -1,0 +1,9 @@
+
+┌─ stress/R4-edge-html-pageview / step-1500 ─────────────
+│ requests      3845654   63322.1 req/s
+│ duration      p50     34ms  p95    194ms  p99    327ms
+│ ttfb          p50     60ms  p95    246ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

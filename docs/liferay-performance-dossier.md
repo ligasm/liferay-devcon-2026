@@ -19,7 +19,7 @@ Six documents. This one is the map and the argument; the other five are the evid
 | **01** | Platform-level caching inside the JVM | The "what Liferay does natively" act |
 | **02** | CDN + Cloudflare config in front of Liferay | The "standard approaches" act |
 | **03** | Aggressively caching public/anonymous pages | **The core of the talk** — the speaker's stated priority |
-| **04** | Front-end, infrastructure, measurement, benchmarks | Credibility numbers + the advice graveyard |
+| **04** | Front-end, infrastructure, measurement, benchmarks | Credibility numbers + evidence on out-of-date settings |
 | **05** | Static generation / code generators + the AI question | The "bolder strategies" act and the close |
 
 Confidence markers used in the parts: `[DOC]` official docs · `[SRC]` Liferay source on GitHub · `[BIN]` verified by disassembling a shipped artifact · `[3P]` third-party · `[JUDGEMENT]` analysis, not sourced · `[UNVERIFIED]` could not confirm — do not assert on stage.
@@ -30,8 +30,8 @@ Confidence markers used in the parts: `[DOC]` official docs · `[SRC]` Liferay s
 
 These are the things most of the audience does not know, all verified against Liferay's own source or live HTTP responses.
 
-**1. Liferay deleted its only built-in guest full-page HTML cache, and didn't tell anyone.**
-`com.liferay.portal.servlet.filters.cache.CacheFilter` exists at tag `7.4.3.122-ga122` and is gone at `7.4.3.123-ga123` (28 June 2023). It has no entry in the 7.4 breaking-changes list. Every blog post, StackOverflow answer and consultancy checklist telling you to tune it is describing a class that no longer ships. `<layout-cacheable>` still sits in the portlet DTD with no consumer. *(Part 01 §1)*
+**1. Liferay deleted its only built-in guest full-page HTML cache, with no breaking-change entry.**
+`com.liferay.portal.servlet.filters.cache.CacheFilter` exists at tag `7.4.3.122-ga122` and is gone at `7.4.3.123-ga123` (27 June 2024). It has no entry in the breaking-changes list; the only trace in the docs is one "Removed property" row on the 2024.Q1 Default Setting page. Leftover `CacheFilter` lines in `portal-ext.properties` now configure a class that no longer ships. `<layout-cacheable>` still sits in the portlet DTD with no consumer. *(Part 01 §1)*
 
 **2. Liferay's default response to an anonymous visitor is engineered to be uncacheable — twice over.**
 `browser.cache.disabled=true` (default, `portal.properties` line 5524) makes `ServicePreAction` emit `Cache-Control: private, no-cache, no-store, must-revalidate` + `Pragma: no-cache` + `Expires: 0`. Independently, Liferay sets `JSESSIONID`, `COOKIE_SUPPORT` and `SERVER_ID` cookies on the very first guest request. Either one alone is enough for any CDN to refuse to cache the page forever. **Edge-caching Liferay HTML is therefore never a config toggle — it is a deliberate, slightly dangerous act.** *(Parts 01, 03)*
@@ -57,15 +57,21 @@ Static generation and AI cost control are the *same engineering move*: take expe
 
 ## 2. The narrative spine
 
-A five-layer ladder. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. The talk climbs it.
+A five-layer ladder. Each rung costs less CPU per page view than the one below it, and each imposes a sharper limitation. The talk climbs it.
+
+Measured on one box, same test on every rung: 200 first-visit page views a second, HTML plus every file (`part1-simulations/results/RUNG-RESULTS.md`, 2026-11-01). CPU excludes k6. On a real CDN add the round trip to layers 3–5.
 
 ```
-  Layer 5   PRECOMPUTE      Build/publish time    cost ≈ 0/req   limit: staleness, cardinality
-  Layer 4   EDGE HTML       CDN, guest pages      ~10 ms         limit: personalization, auth safety
-  Layer 3   EDGE STATIC     CDN, JS/CSS/images    ~10 ms         limit: only assets, not pages
-  Layer 2   JVM CACHES      entity/finder/fragment ~50 ms        limit: memory, cluster invalidation
-  Layer 1   ORIGIN RENDER   full page assembly    200–2000 ms    limit: CPU, and it is always CPU
+  Layer 5   PRECOMPUTE      Build/publish time     3 ms    0.1 cores   limit: staleness, cardinality
+  Layer 4   EDGE HTML       CDN, guest pages       8 ms    0.8 cores   limit: personalization, auth safety
+  Layer 3   EDGE STATIC     CDN, JS/CSS/images    19 ms    1.9 cores   limit: only assets, not pages
+  Layer 2   JVM CACHES      entity/finder/fragment 37 ms   8.2 cores   limit: memory, cluster invalidation
+  Layer 1   ORIGIN RENDER   full page assembly    344 ms    13 cores   limit: CPU, and it is always CPU
 ```
+
+Layer 3 is a CPU gain more than a latency one: 84 % of Liferay's CPU in a first visit was static files, not rendering. Layers 1 and 2 tie at low load (30 vs 25 ms at 80 page views/s); the gap opens near saturation.
+
+Search has its own lever: with highlighting off on the Search Results widget, clean capacity went from 25 to 300 searches/s, with the same results (our compact template never shows snippets). Generational ZGC gave no gain on the 6 GB heap (§5.2).
 
 The rhetorical move: **most teams spend their whole budget optimising Layer 1 and never leave it.** The benchmark data says Liferay saturates application-tier CPU (93–94% at peak in Liferay's own study) — you cannot tune your way out of Layer 1, you have to leave it.
 
@@ -98,13 +104,15 @@ Rule 2 is what strips `Set-Cookie` — which is exactly why rule 1 has to be rig
 
 ## 4. Talk cuts
 
+> **Status, 2026-11-01:** the talk being delivered is `docs/talk-outline-45min.md`. The two cuts below are the original proposals. The advice-graveyard hook was dropped from the deck after `docs/slide-3-verification.md` found little of that advice is still being given; only `CacheFilter` survives, as one line on the wire slide.
+
 ### 20-minute cut — "The three things that actually matter"
 
 Ruthless. One demo. Drop the JVM tuning, drop the benchmarks, drop the framework survey.
 
 | Min | Beat | Source |
 |---|---|---|
-| 0–3 | **Hook: the advice graveyard.** Five pieces of universally-repeated Liferay tuning advice, each dead or reversed, proven from Liferay's own source. Ends on: "including the one cache that would have solved your problem." | 04 §10, 01 §1 |
+| 0–3 | **Hook: the advice graveyard** (since dropped, see the status note above). Five out-of-date Liferay settings, each dead or reversed, proven from Liferay's own source. Ends on: "including Liferay's only built-in guest page cache." | 04 §10, 01 §1 |
 | 3–6 | **Why Liferay is uncacheable by default.** Live `curl` of a guest page. Three cookies, four cache-killing headers. `session.disabled` is gone and isn't coming back. | 03 §0, §2, §3 |
 | 6–14 | **The fix: guest HTML at the edge.** `browser.cache.disabled=false`, the two-rule Cloudflare pair, cookie stripping, query-string allow-list, `stale-while-revalidate`. **Plus the breach slide** — this section is worthless without it. Live before/after `cf-cache-status`. | 02 §4, §6 · 03 §1, §2.4 |
 | 14–18 | **Precompute: the same move, twice.** Static shell + dynamic islands for pages; embed-at-index-time + semantic cache for AI. One table showing the two are isomorphic. | 05 §A6, §B10 |
@@ -116,9 +124,9 @@ Ruthless. One demo. Drop the JVM tuning, drop the benchmarks, drop the framework
 
 | Min | Beat | Source |
 |---|---|---|
-| 0–4 | **Hook: the advice graveyard** (extended — 7 entries, including the CMS GC flag still in Liferay's own PDF that won't boot on the JDK 21 DXP requires). | 04 §10 |
-| 4–8 | **Where the time actually goes.** Liferay's published benchmark: 25,000 concurrent users on web content vs 15,000 on Asset Publisher, same 8-core node. 93–94% app-tier CPU at peak. Native login saturates at ~400 concurrent attempts; a dedicated IdP takes it to 19,000. Establish: it's CPU in the app tier. | 04 §9 |
-| 8–14 | **Layer 2 — inside the JVM.** Entity/finder cache sizing (the biggest query-elimination lever), fragment `Cacheable`, web content template `Cacheable` and the data-leak it can cause, Cluster Link invalidates rather than replicates, and the Ehcache 3 migration that breaks your XML on 2025.Q2. | 01 |
+| 0–4 | **Hook: the advice graveyard** (since dropped, see the status note above; extended — 7 entries, including the CMS GC flag from Liferay's 2023 Deployment Checklist, which won't boot on the JDK 17 or 21 that DXP requires). | 04 §10 |
+| 4–8 | **Where the time actually goes.** Liferay's published benchmark: 25,000 concurrent users on web content vs 11,000 at the Asset Publisher inflection (Table 2; the study's summary says 15,000, where its own table shows 6.2 s), same 8-core node. 93–94% app-tier CPU at peak. Native login saturates at ~400 concurrent attempts; a dedicated IdP takes it to 19,000. Establish: it's CPU in the app tier. | 04 §9 |
+| 8–14 | **Layer 2 — inside the JVM.** Entity/finder cache sizing (on paper the biggest query-elimination lever; no measurable gain in our lab), fragment `Cacheable` (the measured gain), web content template `Cacheable` and the data-leak it can cause, Cluster Link invalidates rather than replicates, and the Ehcache 3 migration that breaks your XML on 2025.Q2. | 01 |
 | 14–19 | **Layer 3 — static at the edge.** What `cdn.host.*` actually rewrites and — more importantly — what it doesn't (DL files, Adaptive Media, portlet resource URLs, page HTML). Cache Control for Documents & Media. The duplicate `Cache-Control` bug on `/o/*`. | 02 §1–2 |
 | 19–30 | **Layer 4 — guest HTML at the edge.** The full core: default headers, cookies, sessions, `p_auth` nonces, the two-rule pair, cache keys, tag purge wired to a `ModelListener`, locale-in-URL correctness, `stale-while-revalidate`. **Demo.** **Breach slide.** | 03 (all) · 02 §4, §6 |
 | 30–33 | **Personalization vs cache.** The five patterns, ranked: late hydration of user chrome (default), segment-in-cache-key (≤5 segments), ESI, Worker `HTMLRewriter`, give up. Trade-offs: CLS, flicker, extra RTT. | 03 §5 |
@@ -144,16 +152,16 @@ Ranked by payoff-per-risk. All are reproducible on a laptop; record fallback vid
 
 ## 6. Corrections applied after an adversarial verification pass
 
-An independent fact-check tried to refute the headline claims. Results worth carrying into the slides:
+An independent fact-check tried to refute the headline claims. Results worth carrying into the slides. A second pass on 2026-11-01 (`docs/slide-3-verification.md`) corrected the `CacheFilter`, CMS, GZip, parallel-render and minifier claims in place throughout this dossier.
 
 | Claim as first written | Correction |
 |---|---|
-| Asset Publisher page handles ~11,000 concurrent users | **15,000** — verbatim from the study PDF. Ratio is 25k vs 15k, not 25k vs 11k. |
+| Asset Publisher page handles ~11,000 concurrent users | **Both numbers are in the study; use 11,000.** The executive summary says 15,000. Table 2 highlights 11,000 as the inflection (577 ms mean, 1,159 ms 2σ) and shows 6,164 ms 2σ at 15,000, three times the study's own 2 s target. An earlier pass changed 11,000 to 15,000 here; re-reading the PDF on 2026-11-01 reversed that. Compare 25k with 11k, the highlighted row of each table. |
 | "The DXP 7.4 benchmark study" | The PDF is named 7.4 but states *"we tested DXP 2024 Q2."* Call it the 2024.Q2 study. |
 | "40% Web Tier / 95% App Tier / <5% DB Tier" | **Not found in either source. Drop it.** The defensible version is the study's own 93–94% app-tier CPU at peak. |
 | `layout.parallel.render.enable` "removed recently" | Removed in **7.3** (LPS-110359), and only *server-side* parallel rendering is gone — parallel rendering still exists via AJAX rendering. |
 | Old `liferay-multi-vm.xml` "will not parse" | Docs say configs *"must be reviewed and rewritten to adhere to the Ehcache 3.x schema."* Say that. |
-| CacheFilter "removed around 7.4.3.123" | Exactly at `7.4.3.123-ga123`, 28 June 2023, **with no breaking-changes entry**. The silence is the story. |
+| CacheFilter "removed around 7.4.3.123" | Exactly at `7.4.3.123-ga123`, 27 June 2024, **with no breaking-changes entry**. One "Removed property" row on the 2024.Q1 Default Setting page exists, so say "quietly", not "silently". |
 | "Liferay SaaS is pinned to a 1-hour TTL" | Two different products fused. **PaaS**: Google Cloud CDN hard-limited to 1h `CLIENT_TTL`/`DEFAULT_TTL`, not customer-changeable. **SaaS**: cache mode fixed to `USE_ORIGIN_HEADERS` — meaning your origin `Cache-Control` is the only lever. |
 | `www.liferay.com` demo | Only the **bare hostname** is publicly cached. `/web/guest/home` returns `private, no-store`. Demo the bare domain. |
 | Guest cookies: `JSESSIONID`, `COOKIE_SUPPORT` | Add **`SERVER_ID`** — there are three. |
@@ -166,7 +174,7 @@ An independent fact-check tried to refute the headline claims. Results worth car
 The talk gets more credible, not less, by naming what nobody has answered. These are also the best Q&A bait and the best hallway conversations at DevCon.
 
 1. **No supported way to suppress the guest `HttpSession`.** Removed in 7.4, no replacement, no documented workaround. Everyone strips the cookie at the edge.
-2. **`CacheFilter`'s removal is undocumented.** It is not in the 7.4 breaking-changes reference.
+2. **`CacheFilter`'s removal is barely documented.** It has no breaking-changes entry, only one "Removed property" row on the 2024.Q1 Default Setting page.
 3. **There is no product feature for "cache this page publicly."** Liferay's CDN documentation is explicitly about static assets; HTML is never mentioned.
 4. **`x-lfr-guest-html-cache` is unshipped and unpublished.** Liferay solved guest HTML caching for themselves. Ask them to ship it.
 5. **No documented listener API for "Publication published"** (change-tracking / `CTCollection`). Workaround: `ModelListener` on `CTProcess`, or subscribe to `DestinationNames.BACKGROUND_TASK_STATUS`.
@@ -204,8 +212,8 @@ Scope: everything inside the JVM. No CDN. Anchored on **Liferay DXP quarterly re
 
 | # | Finding | Evidence |
 |---|---|---|
-| 1 | **`CacheFilter` no longer exists.** It was removed from Liferay Portal between CE `7.4.3.122-ga122` (June 14, 2023) and CE `7.4.3.123-ga123` (June 28, 2023). Every DXP quarterly release (2024.Q1+) ships **without** it. Every blog post telling you to tune it is wrong. | `[SRC][BIN]` |
-| 2 | **Liferay moved off Ehcache 2 in DXP 2025.Q2.** `net.sf.ehcache-2.10.6.LIFERAY-PATCHED-2.jar` → `ehcache-3.10.8.jar` (`org.ehcache.*`). Your `liferay-multi-vm.xml` from 7.4 **will not parse**. (LPD-40485) | `[DOC][BIN]` |
+| 1 | **`CacheFilter` no longer exists.** It was removed from Liferay Portal between CE `7.4.3.122-ga122` (June 14, 2024) and CE `7.4.3.123-ga123` (June 27, 2024). DXP binaries tested: **present** in 2024.Q1 patches up to Q1.12 and in 2024.Q2.0 and Q2.1; gone from 2024.Q2.2, 2024.Q1.13 and 2024.Q3.0 onward. | `[SRC][BIN]` |
+| 2 | **Liferay moved off Ehcache 2 in DXP 2025.Q2.** `net.sf.ehcache-2.10.6.LIFERAY-PATCHED-2.jar` → `ehcache-3.10.8.jar` (`org.ehcache.*`). Your `liferay-multi-vm.xml` from 7.4 must be rewritten for the 3.x schema. (LPD-40485) | `[DOC][BIN]` |
 | 3 | **Cluster Link does not replicate cache values by default — it invalidates.** `replicatePutsViaCopy=false`, `replicateUpdatesViaCopy=false` are the hard-coded defaults. A "PUT" event carries a key with a null value, and the receiving node calls `removeWithoutReplicator()`. | `[DOC][BIN]` |
 
 ---
@@ -219,12 +227,12 @@ Scope: everything inside the JVM. No CDN. Anchored on **Liferay DXP quarterly re
 Reproducible proof:
 
 ```bash
-# exists in 7.4 GA1 (Oct 2021) and every release up to 7.4.3.122 (14 Jun 2023)
+# exists in 7.4.0-ga1 (CE tag committed 2021-04-20) and every release up to 7.4.3.122 (14 Jun 2024)
 curl -o /dev/null -w "%{http_code}\n" \
   https://raw.githubusercontent.com/liferay/liferay-portal/7.4.3.122-ga122/portal-impl/src/com/liferay/portal/servlet/filters/cache/CacheFilter.java
 # -> 200
 
-# gone from 7.4.3.123 (28 Jun 2023) onward, including master
+# gone from 7.4.3.123 (27 Jun 2024) onward, including master
 curl -o /dev/null -w "%{http_code}\n" \
   https://raw.githubusercontent.com/liferay/liferay-portal/7.4.3.123-ga123/portal-impl/src/com/liferay/portal/servlet/filters/cache/CacheFilter.java
 # -> 404
@@ -232,7 +240,7 @@ curl -o /dev/null -w "%{http_code}\n" \
 
 Corroborating evidence `[BIN]`:
 - Current `com.liferay.portal.impl:114.1.0` JAR (Maven Central, July 2025) contains **no** `servlet/filters/cache/` package at all.
-- Current `portal-web/docroot/WEB-INF/liferay-web.xml` on `master` declares 44 filters — **none** is a `CacheFilter`.
+- Current `portal-web/docroot/WEB-INF/liferay-web.xml` on `master` declares 43 filters — **none** is a `CacheFilter`.
 - The `portal.properties` toggle `com.liferay.portal.servlet.filters.cache.CacheFilter=true` existed in 7.4 GA1 and is **absent from `master`**.
 
 **Orphaned properties.** Two properties survive in `master/portal-impl/src/portal.properties` with no remaining consumer — `PropsValues.CACHE_CONTENT_THRESHOLD_SIZE` and `PropsValues.CACHE_FILTER_INCLUDE_USER_AGENT` are still compiled fields but nothing reads them:
@@ -260,7 +268,7 @@ Source: https://raw.githubusercontent.com/liferay/liferay-portal/master/portal-i
 
 Similarly, `LayoutTypePortletImpl.isCacheable()` and the `<layout-cacheable>` element in `liferay-portlet-app_7_4_0.dtd` still exist but are now **dead code** — `CacheFilter` was their only caller `[BIN]`.
 
-**Talk framing:** this is the single best "optimization strategies and the limitations they impose" story you have. Liferay didn't tune the full-page cache — they deleted it, because in a modern personalized, segmented, SPA-ish portal it almost never hit.
+**Talk framing:** this is the single best "optimization strategies and the limitations they impose" story you have. Liferay didn't tune the full-page cache — they deleted it. PR #151255 says its hit ratio was "always 0" in their tests because none of the test URLs were cacheable, while preparing the cache key was "pure waste"; commit `7af5ad9` adds that `LanguageFilter` overlapped it. That it rarely hit on real portals is an inference, not Liferay's statement.
 
 ### 1.2 What it did, and why it stopped working (for the historical slide)
 
@@ -1585,7 +1593,7 @@ This is the highest-severity class, because it fails **correctness**, not perfor
 | `<cacheEventListenerFactory>` / `PortalCacheListenerFactory` in XML | Removed (LPD-43563). Use `registerPortalCacheListener()`. |
 | Custom XML named `liferay-multi-vm.xml` | `NullPointerException: Configuration path is null` — rename it. |
 | JMX monitoring matching `net.sf.ehcache:*` | Silently collects nothing on 2025.Q2+. Change to `org.ehcache:*`. |
-| `com.liferay.portal.servlet.filters.cache.CacheFilter=true` in `portal-ext.properties` | Inert since CE 7.4.3.123 (Jun 2023). |
+| `com.liferay.portal.servlet.filters.cache.CacheFilter=true` in `portal-ext.properties` | Inert since CE 7.4.3.123 (Jun 2024). |
 | `ehcache.statistics.enabled=true` | Inert (6.x property). |
 | `ehcache.cluster.link.replication.enabled=true` | Inert since DXP 7.0 — `[DOC]` *"Both of these are unnecessary in DXP."* |
 | `resourceModificationCheck="0"` in `FreeMarkerEngineConfiguration.config` | Inert since `portal-template-freemarker` 7.0.55 (~2024.Q3). |
@@ -1608,7 +1616,7 @@ This is the highest-severity class, because it fails **correctness**, not perfor
 
 | Technique | Impact | Effort | Verdict |
 |---|---|---|---|
-| Entity + Finder cache sizing per hot entity | **Very High** | Low–Med | **Do this first.** Biggest query-elimination lever. |
+| Entity + Finder cache sizing per hot entity | **Very High** | Low–Med | **Do this first.** Biggest query-elimination lever on paper. Our lab measured no gain from it: headless by-id stayed at 8 ms, and the gain came from fragment `Cacheable` (`part1-simulations/results/RUNG-RESULTS.md`). |
 | Cluster Link enabled + correct discovery (JDBC_PING) | **Very High** (correctness) | Med | Mandatory for clusters. |
 | Fragment `Cacheable` flag on static fragments | **High** | Very Low | Best modern page-level win. |
 | Web Content template `Cacheable` (audited) | **High** | Low | Audit templates first, or you ship a data leak. |
@@ -1622,7 +1630,7 @@ This is the highest-severity class, because it fails **correctness**, not perfor
 | `replicate*ViaCopy=true` on selected caches | Low, risky | Low | Almost always the wrong answer. |
 | Portlet `<expiration-cache>` | Low | Low | Session-memory cost usually exceeds the benefit. |
 | Hibernate second-level cache | **Zero** | — | Doesn't exist. Skip. |
-| `CacheFilter` tuning | **Zero** | — | Class deleted in 2023. Skip. |
+| `CacheFilter` tuning | **Zero** | — | Class deleted in 2024. Skip. |
 
 ## Appendix B — Reproduce every `[BIN]` finding in ~2 minutes
 
@@ -1633,7 +1641,7 @@ for n in 122 123; do
   curl -so /dev/null -w "%{http_code}\n" \
     "https://raw.githubusercontent.com/liferay/liferay-portal/7.4.3.$n-ga$n/portal-impl/src/com/liferay/portal/servlet/filters/cache/CacheFilter.java"
 done
-curl -s https://raw.githubusercontent.com/liferay/liferay-portal/7.4.3.123-ga123/release.properties | grep release.info.date
+curl -s https://releases-cdn.liferay.com/dxp/7.4.13-u123/release.properties | grep -E '^(release.date|git.hash.liferay-portal-ee)'
 
 # 2. Ehcache 2 -> 3
 for v in 4.0.35 4.0.36 4.0.40; do
@@ -3673,13 +3681,13 @@ sb.append(BrowserSnifferUtil.acceptsGzip(request));
 
 Conditions to cache: guest user only (`userId <= 0` and no `remoteUser`), no `p_p_id` parameter, not a servlet include, valid `p_l_id`, and **every portlet on the layout must declare `<layout-cacheable>true</layout-cacheable>`**.
 
-**I verified with direct HTTP HEADs against the raw GitHub tree: `portal-impl/src/com/liferay/portal/servlet/filters/cache/CacheFilter.java` returns 200 at `7.3.7-ga8` and 404 at `7.4.1-ga1` and at `master`.** The property is likewise gone from 7.4+ `portal.properties`.
+**I verified with direct HTTP HEADs against the raw GitHub tree: `portal-impl/src/com/liferay/portal/servlet/filters/cache/CacheFilter.java` returns 200 at `7.3.7-ga8`, `7.4.0-ga1`, `7.4.1-ga2`, `7.4.2-ga3`, `7.4.3.4-ga4` and `7.4.3.122-ga122`, and 404 at `7.4.3.123-ga123` and at `master`.** The property is present at `7.4.0-ga1` and gone from `portal.properties` at `7.4.3.123-ga123`.
 
-**This removal is not listed in Liferay's official 7.4 Breaking Changes page.** I searched it; the only cache entry is the unrelated `LPS-174415` "No Cache option for DM file downloads". So: Liferay silently deleted its only server-side anonymous page cache in 7.4, and there is no replacement. The `<layout-cacheable>` element still exists in `definitions/liferay-portlet-app_7_4_0.dtd` as a now-vestigial descriptor:
+**This removal is not listed in Liferay's official 7.4 Breaking Changes page.** I searched it; the only cache entry is the unrelated `LPS-174415` "No Cache option for DM file downloads". The one trace is a "Removed property" row on the 2024.Q1 Default Setting page. So: Liferay quietly deleted its only server-side anonymous page cache in June 2024, late in the 7.4 line, and there is no replacement. The `<layout-cacheable>` element still exists in `definitions/liferay-portlet-app_7_4_0.dtd` as a now-vestigial descriptor:
 
 > "Set the layout-cacheable flag to true if the data contained in this portlet can will never change unless the layout or Journal portlet entry is changed."
 
-**Talk framing: "Liferay 7.3 had a guest page cache. 7.4 doesn't. Nobody told you. That's why you need a CDN."**
+**Talk framing: "Liferay deleted its own guest page cache in 2024, after finding it never got a hit in their tests. The edge is what's left."**
 
 ---
 
@@ -4346,7 +4354,7 @@ Derive the origin-request-reduction figure from your own numbers and put it on t
 ## 11. Where the community has no answer (say these out loud)
 
 1. **There is no supported way to stop Liferay creating an `HttpSession` for a guest.** `session.disabled` existed through 7.3 and was deleted in 7.4 without a documented replacement. `ServicePreAction` calls `getSession()` unconditionally. Liferay's KB states it as a fact of life: *"A user always has a session."* Everyone strips the cookie at the edge instead.
-2. **Liferay removed `CacheFilter` — its only built-in guest full-page HTML cache — in 7.4, and it is not in the published 7.4 Breaking Changes list.** `<layout-cacheable>` remains in the portlet DTD with no consumer.
+2. **Liferay removed `CacheFilter` — its only built-in guest full-page HTML cache — in June 2024 (update 123 of the 7.4 line), and it is not in the published Breaking Changes list.** `<layout-cacheable>` remains in the portlet DTD with no consumer.
 3. **There is no product feature for "cache this page publicly."** Liferay's own CDN documentation is explicitly about static assets: *"Files included in Liferay and custom plugins"*, dynamically generated CSS/JS, and *"The CDN does not serve resources that are dynamically loaded from external sources."* No mention of HTML anywhere. Liferay Cloud's load balancer offers a boolean `{"loadBalancer": {"cdn": true}}` and a manual 30-minute cache clear, with no TTL, cache-key or cookie configuration.
 4. **`x-lfr-guest-html-cache: 1` on `www.liferay.com` is undocumented and unshipped.** Liferay's own web team built a bespoke guest-HTML cache. There is no public code or doc for it. *(Worth a slide, and worth asking a Liferay engineer about at DevCon — that conversation alone might be the best takeaway from your talk.)*
 5. **No documented listener API for "Publication published"** (change-tracking / `CTCollection`). Workaround: `ModelListener` on `CTProcess` or subscribe to `DestinationNames.BACKGROUND_TASK_STATUS` and filter.
@@ -4475,7 +4483,7 @@ duration_ms: 1820051</usage>
 
 **Scope note / anchor:** Verified against Liferay DXP 2024.Q2–2025.Q4 quarterly releases and Liferay Portal CE 7.4+. Property defaults below were read directly from `portal-impl/src/portal.properties` on the `master` branch of `liferay/liferay-portal` (12,431 lines, fetched during this research), which is the authoritative source for defaults — Liferay's own docs frequently lag it.
 
-> **Headline finding for the talk:** A large fraction of the "Liferay performance tuning" advice circulating on partner blogs, StackOverflow, and even in Liferay's own *Deployment Checklist* PDFs is **stale by 10+ years**. Three properties that every tuning listicle tells you to set are now deprecated, defaulted the other way, or *deleted from the product entirely*. This is a great, contrarian talk opening — see §1.1 and §10.
+> **Finding:** Several settings from older Liferay tuning advice, and from older editions of Liferay's own *Deployment Checklist*, are now deprecated, defaulted the other way, or *deleted from the product entirely*. The age varies: parallel rendering 2015, GZip 2018, Strip 2019, minifier 2020, CMS 2020, `CacheFilter` 2024. Little current advice still recommends them, and most of what is published on `minifier.enabled` and `GZipFilter` already says to turn them off, so this was dropped as the talk's opening (`docs/slide-3-verification.md`). See §1.1 and §10.
 
 ---
 
@@ -4501,8 +4509,8 @@ This is the most talk-worthy finding in the whole brief. Verbatim from current `
 ```
 - **What it did:** runtime minification of CSS via `MinifierUtil`.
 - **Why it changed:** minification moved to *build time* (the OSGi module build / Client Extension build produces already-minified artifacts). Runtime minification was pure CPU burn on every cache miss.
-- **Trade-off / limitation:** none — the work moved earlier in the pipeline. If you inherited a `portal-ext.properties` that sets `minifier.enabled=true`, you are paying runtime CPU for nothing.
-- **Impact vs effort:** *Low impact, zero effort* — but a fantastic slide, because it proves the tuning-advice ecosystem is stale.
+- **Trade-off / limitation:** the work moved earlier in the pipeline. If you inherited a `portal-ext.properties` that sets `minifier.enabled=true`, you are paying runtime CPU for CSS only: LPD-45984 removed the JS path in January 2025 (2025.Q2).
+- **Impact vs effort:** *Low impact, zero effort.*
 
 **`javascript.fast.load` — still real, still `true`, but the mechanism changed:**
 ```properties
@@ -4720,8 +4728,8 @@ able-custom-element:
 
 ### 1.7 Lazy loading portlets & reducing portlet count
 
-- **`layout.parallel.render.enable` no longer exists.** I grepped the entire current `portal.properties` for "parallel" — the only hits are about *upgrade* processes and a SQL `SELECT COUNT(1)` comment. Parallel portlet rendering was removed from Liferay. Any blog telling you to set this is pre-7.x. (Historical context: [LPS-57880 "Parallel rendering seems to be failing"](https://issues.liferay.com/browse/LPS-57880).) **Do not put this on a slide as a live recommendation** — put it on the "advice graveyard" slide.
-- **Portlet count is the dominant server-side page cost.** Each portlet on a Liferay page is a synchronous render pass: permission checks, preference lookup, its own JSP/FreeMarker execution, and its own contribution to top-head JS/CSS. Rendering is sequential.
+- **`layout.parallel.render.enable` no longer exists.** I grepped the entire current `portal.properties` for "parallel" — the only hits are about *upgrade* processes and a SQL `SELECT COUNT(1)` comment. Server-side parallel portlet rendering was hard-disabled in 2015 over OSGi servlet container thread-safety issues (LPS-58748), and its properties were deleted in March 2020 (LPS-110359, first absent at `7.3.1-ga2`). Any blog telling you to set this is pre-7.x. (Historical context: [LPS-57880 "Parallel rendering seems to be failing"](https://issues.liferay.com/browse/LPS-57880).) **Do not put this on a slide as a live recommendation.**
+- **Portlet count is the dominant server-side page cost.** Each portlet on a Liferay page is a synchronous render pass: permission checks, preference lookup, its own JSP/FreeMarker execution, and its own contribution to top-head JS/CSS. Rendering is serial on the server, unless `render-weight` is below 1 with `ajaxable=true`, which is AJAX rendered in parallel.
 - **Modern mitigation:** prefer **page fragments** (which are template-rendered, cheap, and cache well) over full portlets for presentational content; reserve portlets/custom elements for genuinely interactive apps. Use Collection Displays with pagination rather than N separate Asset Publishers.
 - **Client-side lazy loading:** with `customElement` CXs you can implement `IntersectionObserver`-gated hydration inside the element yourself. Liferay does not ship a built-in "lazy portlet" for the modern stack (the old [Lazy loading Portlet](https://liferay.dev/blogs/-/blogs/lazy-loading-portlet) blog is 2014-era).
 - **Impact vs effort:** *Very high impact, medium effort.* "Delete four widgets from the homepage" routinely beats every JVM flag in this brief.
@@ -4747,8 +4755,8 @@ From current `portal.properties`:
 
     com.liferay.portal.servlet.filters.dynamiccss.DynamicCSSFilter=true
 ```
-- **`GZipFilter=false` is the modern default** — compression is expected at the reverse proxy / ingress (nginx, Apache, ALB), where you should be using **brotli** anyway. Note the comment still says *"for users that are on dial up,"* which dates it beautifully.
-- **`StripFilter=false`** — matches the 7.4 Deployment Checklist recommendation. Its "significantly speed up page rendering" claim is dubious once gzip/brotli is in play (whitespace compresses to almost nothing), and it costs CPU on every response.
+- **`GZipFilter=false` is the default since 7.0 Fix Pack 46 and 7.1 GA1.** The stated reason is security, the BREACH attack over HTTPS (LPE-16413; legacy, non-official [KB](https://learn.liferay.com/kb-article/gzip-filter-disabled-by-default)), with CPU as a second reason. Compression is expected at the reverse proxy / ingress (nginx, Apache, ALB), where you should be using **brotli** anyway. BREACH depends on what gets compressed, not where, so moving compression to the edge doesn't by itself remove the risk for pages carrying a secret (our reading, not Liferay's statement). Note the comment still says *"for users that are on dial up,"* which dates it beautifully.
+- **`StripFilter=false`** — the default since 7.2 GA1 (LPS-95552; the commit cites CPU and memory cost against network savings), and matches the 2023 Deployment Checklist recommendation. Its "significantly speed up page rendering" claim is dubious once gzip/brotli is in play (whitespace compresses to almost nothing), and it costs CPU on every response.
 - **Takeaway:** terminate compression at the edge; leave both filters off.
 
 ### 1.9 CDN offload
@@ -5054,7 +5062,7 @@ From [JVM Configuration reference](https://learn.liferay.com/w/dxp/self-hosted-i
 -XX:+CMSParallelRemarkEnabled -XX:+CMSCompactWhenClearAllSoftRefs
 -XX:CMSInitiatingOccupancyFraction=85 -XX:+CMSScavengeBeforeRemark
 ```
-  ⚠️ **CMS was removed in JDK 15.** These flags will fail to start a JDK 17/21 JVM. Yet the **7.4 Deployment Checklist PDF still publishes them.** Since DXP 2024.Q3+ *requires* JDK 17/21, Liferay is shipping a deployment checklist whose GC section cannot run on its own supported JDK. **This is a strong, verifiable "check your sources" slide.**
+  ⚠️ **CMS was removed in JDK 14 (JEP 363); from JDK 15 the flag stops a HotSpot JVM booting.** OpenJ9 ignores it. The full block already fails on JDK 11, because of `-XX:+UseParNewGC`. DXP 2024.Q3+ *requires* JDK 17 or 21. The 2023 edition of the 7.4 Deployment Checklist printed these flags, but it has since been replaced: the current **Go Live Checklist 2026.Q1** recommends G1. CMS remains in the live 7.3 PDF and in the Java 8 section of Tuning Your JVM.
 - For **Java 11** the docs say: *"use the Garbage-First (G1) algorithm. It's enabled by default."*
 - For **Java 21**, the only Liferay-specific artifact is a KB article, [Garbage Collection on Java 21](https://learn.liferay.com/kb-article/garbage-collection-on-java-21) — and it is explicitly marked **"Legacy"** and **"not official documentation of Liferay."** It advises *"start testing with G1's default settings"* but notes internal testing showed G1 *"does not improve performance"*; it defers to Oracle's tuning guide and gives only:
 ```
@@ -5070,7 +5078,9 @@ From [JVM Configuration reference](https://learn.liferay.com/w/dxp/self-hosted-i
 | **Shenandoah** | ⚠️ Viable, less common | Similar concurrent-compaction goals; in OpenJDK builds (Red Hat/Temurin), **not in Oracle JDK**. Fine, but fewer Liferay practitioners = less community support. |
 | **Parallel** | ❌ | Throughput-only, long STW pauses. Wrong for an interactive portal. |
 
-**Talk framing:** since DXP 2024.Q3+ mandates JDK 21, and JDK 21 shipped Generational ZGC, **"Liferay on JDK 21 is the first time ZGC is genuinely the right answer for a latency-sensitive portal"** — and Liferay has published nothing about it. That's a legitimately novel angle for DevCon, and an honest "here's an experiment worth running, bring me your numbers" call to action.
+**Talk framing:** since DXP 2024.Q3+ requires JDK 17 or 21 (21 recommended), and JDK 21 shipped Generational ZGC, **"Liferay on JDK 21 is the first time ZGC is genuinely the right answer for a latency-sensitive portal"** — and Liferay has published nothing about it. That's a legitimately novel angle for DevCon, and an honest "here's an experiment worth running, bring me your numbers" call to action.
+
+**Measured 2026-11-01, this framing did not hold in our lab** (`part1-simulations/results/RUNG-RESULTS.md`, 6 GB pre-touched heap, S3, HTML only, about 600 MB live set). ZGC ties G1 at 400 pages/s (14.0 vs 15.5 ms), costs more CPU at 800 and 1,200 pages/s (11.8 vs 10.8 cores at 1,200) and is clean to 1,200 pages/s where G1 reaches about 1,500. One of five ZGC starts died with `OutOfMemoryError` 43 s after start, with 4.8 GB live after collection; the cause was not found and it did not reproduce. A 6 GB heap with a small live set is not where ZGC is expected to shine, so this is no verdict on large heaps. The talk recommends G1.
 
 **Heap sizing guidance:** note the tension — docs recommend `-Xmx2560m` (Tuning page) while the 7.4 Deployment Checklist recommends `-Xms4096m -Xmx4096m`. Reconcile on stage: **2.5–4 GB is a starting point per node; scale horizontally rather than vertically**, and never cross 32 GB (compressed oops). Liferay's own benchmark ran 8-core/64 GB app nodes — meaning most of that RAM is *not* heap, it's OS page cache and headroom.
 
@@ -5395,7 +5405,7 @@ appended to `CATALINA_OPTS` in `setenv.sh`/`setenv.bat`. A **Dynatrace Liferay F
 | Scenario | Peak / inflection | Response time | Notes |
 |---|---|---|---|
 | **Web Content (baseline)** | **25,000 concurrent users** | 95% of page views under 2 s, at **1,674 ms** (2-sigma) | Degraded past 25,500 users |
-| **Asset Publisher** | **~11,000 virtual users** | **577 ms** mean, **1,159 ms** p95 | **Less than half of web-content capacity** |
+| **Asset Publisher** | **~11,000 virtual users** | **577 ms** mean, **1,159 ms** p95 | **Less than half of web-content capacity.** The study's summary says 15,000; Table 2 shows 6,164 ms 2σ there, so use its highlighted 11,000 row |
 | **Document download** | 11,500 users (18,000 max tested) | **95% of 100 KB downloads in 5.96 ms** | |
 | **Document upload** | 12,000 users | **392 ms** for 95% of users | |
 | **Native IdP login** | 400 concurrent login attempts | **1,185.4 ms** (2-sigma) at threshold | **27,445 logins/hour** = 457/min |
@@ -5405,7 +5415,7 @@ appended to `CATALINA_OPTS` in `setenv.sh`/`setenv.bat`. A **Dynatrace Liferay F
 
 **Three findings worth a slide each:**
 1. **Asset Publisher costs ~2.3× a plain web content page** (11,000 vs 25,000 users). Directly actionable: convert dynamic Asset Publishers to static/manual selections or cached collections on high-traffic pages.
-2. **Offloading identity to a dedicated IdP took login capacity from ~400 concurrent attempts to 19,000 virtual users.** Native authentication (password hashing is *intentionally* CPU-expensive — bcrypt/PBKDF2) is a massive CPU sink on the app tier. Huge, counterintuitive, easily-actioned finding.
+2. **Offloading identity to a dedicated IdP took login capacity from ~400 concurrent attempts to 19,000 virtual users.** The study simulated the IdP by turning native password encryption off, so read this as the cost of the hashing, not as a test of a real IdP. Native authentication (password hashing is *intentionally* CPU-expensive — bcrypt/PBKDF2) is a massive CPU sink on the app tier. Huge, counterintuitive, easily-actioned finding.
 3. **One 8-core node served 25,000 concurrent users** for web content. Useful for right-sizing conversations and for pushing back on over-provisioning.
 
 **Caveats to state honestly:** vendor-published; "concurrent users" is a load-model construct (with think time) not simultaneous requests — treat as relative, not absolute; heap config undisclosed; single-node app tier; the 2-sigma (95.4%) convention differs from the p75 used for Core Web Vitals; and content volume (1,000 articles) is modest versus many real installs.
@@ -5415,9 +5425,9 @@ appended to `CATALINA_OPTS` in `setenv.sh`/`setenv.bat`. A **Dynatrace Liferay F
 [Reference Architecture & Hardware Requirements](https://www.liferay.com/documents/10182/1645493/Liferay+Portal+EE+Reference+Architecture+&+Hardware+Requirements/7f618f87-ca55-4e39-ba21-b3faadbca206), quoted in the 7.4 Deployment Checklist:
 - *"over **47,000 virtual collaboration users**"*
 - *"over **79,000 logins per minute** with average login times under **312 milliseconds**"*
-- Tier CPU utilization: **40% Web Tier, 95% Application Tier, <5% Database Tier**
+- Tier CPU utilization: 40% Web Tier, 95% Application Tier, <5% Database Tier. **Do not use: the fact-check in §6 of the summary could not find this split in either source.** The defensible figure is the 2024.Q2 study's 93–94% app-tier CPU at peak.
 
-**The tier breakdown is the most useful number in this whole brief.** *The database was under 5% utilized while the app tier was at 95%.* That single statistic reframes the entire talk: **Liferay is overwhelmingly CPU-bound in the application tier, not database-bound.** Most teams instinctively blame and upsize the database. Lead with this — it justifies why §1 (front-end), §5 (JVM/threads), and portlet-count reduction matter far more than §6.4 (read replicas).
+**The conclusion stands on the 2024.Q2 study, not on this split:** Tables 1 and 2 show 93–94% CPU on the single app server at saturation. Liferay is overwhelmingly CPU-bound in the application tier. Most teams instinctively blame and upsize the database, which is why §1 (front-end), §5 (JVM/threads) and portlet-count reduction matter far more than §6.4 (read replicas).
 
 Reference hardware (per node, app and DB tiers): 2× Intel Xeon E5-2643 v4 3.40 GHz, 32 GB memory, 2× 300 GB 15K RPM SATA 6 Gbps.
 
@@ -5434,20 +5444,20 @@ Reference hardware (per node, app and DB tiers): 2× Intel Xeon E5-2643 v4 3.40 
 
 ---
 
-## 10. Suggested talk structure & the "advice graveyard"
+## 10. Suggested talk structure & the "advice graveyard" (cut from the deck)
 
-**Opening (contrarian hook):** "Half of what the internet tells you about Liferay performance is wrong — and I can prove it from Liferay's own source."
+**Original opening, dropped:** "Half of what the internet tells you about Liferay performance is wrong — and I can prove it from Liferay's own source." The evidence doesn't support "half" (`docs/slide-3-verification.md`). The talk now opens on the ladder and the `curl` of a stock guest page.
 
-**The advice graveyard slide** — verified dead or reversed:
-| Common advice | Reality |
+**The former advice graveyard slide** — settings verified dead or reversed, kept as reference:
+| Setting | Reality |
 |---|---|
-| "Set `minifier.enabled=true`" | **Deprecated**, defaults `false`, moved to build time |
-| "Tune `javascript.barebone.files`" | **Deprecated + ships empty**; moved to BND manifest headers |
-| "Enable `layout.parallel.render.enable`" | **Removed from the product** — property no longer exists |
-| "Enable `GZipFilter`" | Defaults `false`; compress at the edge with brotli |
-| "Enable `StripFilter`" | Defaults `false`; near-worthless once compressed |
-| "Use CMS GC (`-XX:+UseConcMarkSweepGC`)" | **Removed in JDK 15** — won't boot on the JDK 17/21 that DXP 2024.Q3+ *requires*, yet still in Liferay's own Deployment Checklist PDF |
-| "`retryOnConflict=5`" | *"No longer used as of Liferay 7.1"* |
+| `minifier.enabled` | **Deprecated**, defaults `false`, moved to build time. Published advice is mostly to turn it off. |
+| `javascript.barebone.files` | **Deprecated + ships empty**; moved to BND manifest headers |
+| `layout.parallel.render.*` | **Removed from the product** — hard-disabled 2015 (LPS-58748), properties deleted in 7.3 (LPS-110359). Almost nobody still recommends it. |
+| `GZipFilter` | Defaults `false`, for BREACH and CPU; compress at the edge with brotli. Published advice is mostly to turn it off. |
+| `StripFilter` | Defaults `false`; near-worthless once compressed |
+| CMS GC (`-XX:+UseConcMarkSweepGC`) | **Removed in JDK 14**, fatal on HotSpot from JDK 15 — won't boot on the JDK 17 or 21 that DXP 2024.Q3+ *requires*. Printed in the 2023 Deployment Checklist; the current Go Live Checklist says G1. |
+| `retryOnConflict=5` | *"No longer used as of Liferay 7.1"* |
 
 **Then the real ranking — impact vs effort:**
 
@@ -5475,10 +5485,10 @@ Reference hardware (per node, app and DB tiers): 2× Intel Xeon E5-2643 v4 3.40 
 *Tier 3 — strategic (high impact, high effort):*
 18. AMD → ESM / Client Extension migration (§1.4)
 19. Critical CSS automation (§2.3)
-20. Evaluate Generational ZGC on JDK 21 (§5.2)
+20. Generational ZGC on JDK 21: evaluated in the lab, no gain at 6 GB (§5.2); larger heaps untested
 21. Read/write DB split — last resort, mind replication lag (§6.4)
 
-**Closing data point:** *"95% Application Tier CPU, <5% Database Tier."* Stop upsizing your database.
+**Closing data point:** 93–94% app-tier CPU at saturation in Liferay's own 2024.Q2 study. Stop upsizing your database.
 
 ---
 
@@ -5519,7 +5529,7 @@ Reference hardware (per node, app and DB tiers): 2× Intel Xeon E5-2643 v4 3.40 
 
 **Liferay PDFs / benchmarks**
 - [Liferay DXP Performance Benchmark Study of Liferay DXP 7.4](https://www.liferay.com/documents/10182/3292406/Liferay+DXP+Performance+Benchmark+Study+of+Liferay+DXP+7.4.pdf)
-- [Liferay DXP 7.4 Deployment Checklist](https://www.liferay.com/documents/10182/3292406/Liferay+DXP+7.4+Deployment+Checklist.pdf/f3464a36-c0f0-6708-37dd-efe7b8270403?t=1643744619710)
+- [Liferay DXP 7.4 Deployment Checklist](https://www.liferay.com/documents/10182/3292406/Liferay+DXP+7.4+Deployment+Checklist.pdf/f3464a36-c0f0-6708-37dd-efe7b8270403?t=1643744619710) (this URL now serves the Go Live Checklist 2026.Q1; citations in this dossier refer to the replaced 2023 PDF)
 - [Liferay DXP 7.3 Deployment Checklist](https://www.liferay.com/documents/10182/3292406/Liferay+DXP+7.3+Deployment+Checklist.pdf/bf1b2c5d-39df-94ab-41b9-77120f4543a8?t=1616026802771)
 - [Liferay Portal EE Reference Architecture & Hardware Requirements](https://www.liferay.com/documents/10182/1645493/Liferay+Portal+EE+Reference+Architecture+&+Hardware+Requirements/7f618f87-ca55-4e39-ba21-b3faadbca206)
 - [Benchmark Study of Liferay DXP 7.3 on DXP Cloud](https://www.liferay.com/documents/10182/282340280/Benchmark+Study+of+Liferay+DXP+7.3+on+DXP+Cloud/37f8801f-6728-1bdb-9896-2e9920a2e46d?download=true)
@@ -5578,11 +5588,11 @@ I researched all nine assigned areas, prioritizing primary sources. The single m
 
 **Highest-value findings for the talk:**
 
-1. **A large body of standard Liferay tuning advice is verifiably dead.** `minifier.enabled` is deprecated and defaults `false`; `javascript.barebone.files`/`everything.files` are deprecated *and ship empty* (moved to BND manifest headers); `layout.parallel.render.enable` **no longer exists in the product at all**. This gives the talk a strong contrarian opening backed by source code.
+1. **Several once-standard Liferay settings are verifiably dead, though little current advice still recommends them.** `minifier.enabled` is deprecated and defaults `false`; `javascript.barebone.files`/`everything.files` are deprecated *and ship empty* (moved to BND manifest headers); `layout.parallel.render.enable` **no longer exists in the product at all**.
 
-2. **Liferay's own 7.4 Deployment Checklist recommends CMS GC flags that were removed in JDK 15** — while DXP 2024.Q3+ *requires* JDK 17/21. Their published guidance can't run on their own required JDK. Verified against both the checklist PDF and the JVM Configuration reference.
+2. **Liferay's 2023 Deployment Checklist recommended CMS GC flags; CMS was removed in JDK 14 and the flag is fatal on HotSpot from JDK 15** — while DXP 2024.Q3+ *requires* JDK 17 or 21. The current Go Live Checklist 2026.Q1 has since moved to G1. Verified against the checklist PDFs and the JVM Configuration reference.
 
-3. **Concrete benchmark numbers exist and are underused.** DXP 7.4 study (DXP 2024.Q2.4, JDK 21, 8-core node): 25,000 concurrent users for web content at 1,674 ms 2-sigma; Asset Publisher inflects at only ~11,000; dedicated IdP took login capacity from ~400 concurrent attempts to 19,000 users / 2,070 TPS. The Reference Architecture's tier split — **95% app tier CPU vs <5% database CPU** — is the best single stat in the brief and reframes the whole talk.
+3. **Concrete benchmark numbers exist and are underused.** DXP 7.4 study (DXP 2024.Q2.4, JDK 21, 8-core node): 25,000 concurrent users for web content at 1,674 ms 2-sigma; Asset Publisher inflects at only ~11,000; dedicated IdP took login capacity from ~400 concurrent attempts to 19,000 users / 2,070 TPS. The study's **93–94% app-tier CPU** at saturation reframes the whole talk. (The "95% / <5%" tier split quoted elsewhere could not be verified; do not use it.)
 
 4. **Client Extensions expose `async`/`defer`/`fetchpriority` declaratively in `client-extension.yaml`**, and `scriptLocation: head` is new in **2025.Q4**. This is the most current, actionable front-end lever and connects directly to Core Web Vitals.
 

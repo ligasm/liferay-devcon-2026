@@ -20,18 +20,20 @@ liferay-devcon-2026/
 │   ├── project/                       source of truth: deck.json + slides/<id>.html (Claude Slides format)
 │   ├── assets/                        speaker photo, Proventeq logo, four generated backdrops
 │   └── art/gen_art.py                 generator for the backdrops (seed 7 → byte-identical images)
-├── part1-simulations/                 k6 + Bun load-test suite and the S0–S6 config matrix
+├── part1-simulations/                 k6 (JavaScript) load-test suite, bash runners and the S0–S6 config matrix
 └── part2-static-prototype/            Liferay Headless → Astro static site, AI orchestrator on a budget
 ```
 
 ## Presenting
 
-Open `deck/index.html`. Keys: **→ / space / click** next, **←** back, **N** speaker notes, **F** fullscreen, `#13` in the URL jumps to a slide. The live, editable version of the deck is the Claude Slides artifact "Making Liferay Blazing Fast"; after editing it there, re-export the slide files into `deck/project/` and run `bun deck/build.ts`.
+Open `deck/index.html`. Keys: **→ / space / click** next, **←** back, **N** speaker notes, **F** fullscreen, `#13` in the URL jumps to a slide. The live, editable version of the deck is the Claude Slides artifact ["Making Liferay Blazing Fast"](https://claude.ai/artifact/J89MAFxmVh7vreAcg2848Q) (private unless shared); after editing it there, re-export the slide files into `deck/project/` and run `bun deck/build.ts`.
 
 ## Requirements
 
-- [Bun](https://bun.sh) ≥ 1.3 for everything TypeScript (`deck/build.ts`, both demo projects).
-- k6 ≥ 0.57 for Part 1 (`bun install-k6.ts` inside `part1-simulations/` fetches it).
+- [Bun](https://bun.sh) ≥ 1.3 for `deck/build.ts` and `part0-base-site/build.ts`.
+- Node.js for the Part 2 pipeline (`npm run regenerate`, `.mjs` files).
+- Python 3 for `part1-simulations/stress_sampler.py` and `rungs_report.py`.
+- k6 ≥ 0.57 for Part 1, at `part1-simulations/bin/k6` or set by `K6=`.
 - Python 3 + numpy, pillow, scipy only if you want to regenerate the backdrop art.
 - Docker only for the Varnish stage of Part 1.
 

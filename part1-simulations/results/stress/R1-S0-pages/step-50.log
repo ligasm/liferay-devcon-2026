@@ -1,0 +1,9 @@
+
+┌─ stress/R1-S0-pages / step-50 ─────────────────────────
+│ requests         3001   50.0 req/s
+│ duration      p50      9ms  p95     22ms  p99     29ms
+│ ttfb          p50      8ms  p95     21ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

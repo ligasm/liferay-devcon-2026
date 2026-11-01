@@ -1,0 +1,9 @@
+
+┌─ stress/R2-S2-pageview / step-300 ─────────────────────
+│ requests       981000   16163.5 req/s
+│ duration      p50     36ms  p95    132ms  p99    163ms
+│ ttfb          p50     44ms  p95    139ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

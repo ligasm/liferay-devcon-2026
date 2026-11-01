@@ -81,7 +81,8 @@ function guestGet(path, page, name) {
   // The static pages carry no portal JS: MIN_BYTES=3000 (gzipped) for them.
   check(res, {
     [`${page}: 200 + full page`]: (r) => r.status === 200 &&
-      (LIGHT ? Number(r.headers['Content-Length'] || 0) > MIN_BYTES : !!r.body && r.body.length > MIN_BYTES),
+      // the origin answers chunked (no Content-Length): LIGHT=1 can then only check the status
+      (LIGHT ? !r.headers['Content-Length'] || Number(r.headers['Content-Length']) > MIN_BYTES : !!r.body && r.body.length > MIN_BYTES),
   }, { page });
   recordResponse(res, { anonymous: true, html: true, tags: { page } });
 }

@@ -1,0 +1,12 @@
+time="2026-11-01T19:55:39Z" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8086/web/proventeq/home\": request timeout"
+time="2026-11-01T19:55:53Z" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8086/web/proventeq/proventeq365\": request timeout"
+time="2026-11-01T19:55:55Z" level=warning msg="Insufficient VUs, reached 3000 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=stress
+
+┌─ stress/R1-S0-pages / step-600 ────────────────────────
+│ requests        27475   411.3 req/s
+│ duration      p50   6583ms  p95   7742ms  p99   8456ms
+│ ttfb          p50   6578ms  p95   7734ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

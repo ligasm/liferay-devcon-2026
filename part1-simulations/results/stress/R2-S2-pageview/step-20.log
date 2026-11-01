@@ -1,0 +1,9 @@
+
+┌─ stress/R2-S2-pageview / step-20 ──────────────────────
+│ requests        66948   1115.3 req/s
+│ duration      p50      1ms  p95      2ms  p99      6ms
+│ ttfb          p50      4ms  p95     19ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

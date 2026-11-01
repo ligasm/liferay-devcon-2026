@@ -7,7 +7,8 @@ local mock of Liferay (`mock/server.mjs`) and then run for real against a local
 DXP 2026.Q1 with the Part 0 base site: the fixed-load S0…S6 ladder is in
 [results/LAB-RESULTS.md](results/LAB-RESULTS.md), the capacity ladders (step the rate up until
 it breaks) in [results/STRESS-RESULTS.md](results/STRESS-RESULTS.md), and the static site against
-Varnish in [results/STATIC-VS-EDGE.md](results/STATIC-VS-EDGE.md).
+Varnish in [results/STATIC-VS-EDGE.md](results/STATIC-VS-EDGE.md). One comparable test on all five
+ladder rungs, plus ZGC and search highlighting, is in [results/RUNG-RESULTS.md](results/RUNG-RESULTS.md).
 
 ```
 part1-simulations/

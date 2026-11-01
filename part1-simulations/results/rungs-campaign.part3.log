@@ -1,0 +1,68 @@
+== S3 applied; restarting liferay26112
+== up after 26 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (17:55:44)
+== stress S3-ZGC-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (17:57:08)
+== ZGC rc=1
+== S3 applied; restarting liferay26112
+== up after 20 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (17:58:40)
+== stress R3-edge-assets-pageview / pageview → http://127.0.0.1:6081   steps: 5 10 20 40 80 120 160 200 300 400 600 800 1000 1500 2000 3000 4000   (18:00:04)
+   rate     5/s →     5.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.3 cores  k6  0.1  heap   707 MB  ok
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.3 cores  k6  0.2  heap   707 MB  ok
+   rate    20/s →    20.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.5 cores  k6  0.3  heap   703 MB  ok
+   rate    40/s →    40.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.8 cores  k6  0.5  heap   692 MB  ok
+   rate    80/s →    80.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.9 cores  k6  0.8  heap   710 MB  ok
+   rate   120/s →   120.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.9 cores  k6  1.0  heap   724 MB  ok
+   rate   160/s →   160.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  1.3 cores  k6  1.3  heap   754 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  1.5 cores  k6  1.6  heap   798 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  2.6 cores  k6  2.4  heap   862 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  3.8 cores  k6  3.2  heap   936 MB  ok
+   rate   600/s →   599.5 it/s  drop   0.1%  err  0.00%  p95       4 ms  liferay  7.3 cores  k6  5.7  heap  1069 MB  ok
+   rate   800/s →   731.8 it/s  drop   8.5%  err  0.33%  p95      40 ms  liferay  7.7 cores  k6  7.2  heap  1187 MB  ok
+   rate  1000/s →   717.2 it/s  drop  28.3%  err  0.42%  p95     208 ms  liferay  7.4 cores  k6  7.4  heap  1304 MB  SATURATED
+== saturated at 1000/s — ladder stops
+== done R3-edge-assets-pageview (18:17:14)
+== S3 applied; restarting liferay26112
+== up after 24 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (18:17:49)
+== stress R4-edge-html-pages / pages → http://127.0.0.1:6081   steps: 100 200 400 800 1200 2000 4000 8000 16000 25000 30000   (18:19:16)
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.2  heap   709 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.3  heap   709 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.5  heap   709 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.9  heap   709 MB  ok
+   rate  1200/s →  1200.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.2  heap   705 MB  ok
+   rate  2000/s →  2000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  1.7  heap   705 MB  ok
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.7  heap   705 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  3.8  heap   705 MB  ok
+   rate 16000/s → 16000.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  0.2 cores  k6  8.1  heap   705 MB  ok
+   rate 25000/s → 24767.0 it/s  drop   0.9%  err  0.00%  p95      72 ms  liferay  0.2 cores  k6 13.5  heap   705 MB  ok
+   rate 30000/s → 25692.7 it/s  drop  14.2%  err  0.00%  p95      65 ms  liferay  0.2 cores  k6 14.0  heap   705 MB  SATURATED
+== saturated at 30000/s — ladder stops
+== done R4-edge-html-pages (18:33:44)
+== restart liferay26112 (18:33:44)
+== stress R4-edge-html-pageview / pageview → http://127.0.0.1:6081   steps: 5 10 20 40 80 120 160 200 300 400 600 800 1000 1500 2000 3000 4000   (18:35:10)
+   rate     5/s →     5.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.1  heap   719 MB  ok
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.2  heap   719 MB  ok
+   rate    20/s →    20.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.4  heap   715 MB  ok
+   rate    40/s →    40.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.8  heap   715 MB  ok
+   rate    80/s →    80.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.4  heap   715 MB  ok
+   rate   120/s →   120.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  1.9  heap   715 MB  ok
+   rate   160/s →   160.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.2  heap   715 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.5  heap   715 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  3.1  heap   715 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  4.0  heap   715 MB  ok
+   rate   600/s →   600.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.0  heap   715 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.2 cores  k6  5.5  heap   715 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  7.5  heap   715 MB  ok
+   rate  1500/s →  1145.4 it/s  drop  23.6%  err  0.00%  p95     194 ms  liferay  0.2 cores  k6 11.0  heap   715 MB  SATURATED
+== saturated at 1500/s — ladder stops
+== done R4-edge-html-pageview (18:53:42)
+Error response from daemon: failed to set up container networking: network 48e885dccd232a7ab3594b3568b7ab7de99c6cd187a6edf9fe115174bd4d28d3 not found
+failed to start containers: proventeq-fidelity
+== S3 applied; restarting liferay26112
+== up after 25 s
+== fragment cacheable flags now: {True: 16}
+== finished rc=1 S3 re-applied (18:54:19)

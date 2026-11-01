@@ -1,0 +1,9 @@
+
+┌─ stress/R2-S2-pages / step-1500 ───────────────────────
+│ requests        90000   1499.0 req/s
+│ duration      p50     12ms  p95    103ms  p99    188ms
+│ ttfb          p50      9ms  p95     93ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private 100.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -21,6 +21,7 @@ services:
     environment:
       VARNISH_SIZE: ${VARNISH_SIZE:-512m}
       GUEST_HTML_OVERRIDE: ${GUEST_HTML_OVERRIDE:-0}   # 1 = ignore origin private/no-store on anonymous HTML
+      GUEST_HTML_CACHE: ${GUEST_HTML_CACHE:-1}         # 0 = cache assets only, HTML passes to the origin (ladder rung 3)
     # The VCL's backend is ".host = liferay" — resolve it to your Liferay:
     extra_hosts:
       - "liferay:${LIFERAY_UPSTREAM:-host-gateway}"
@@ -33,7 +34,7 @@ services:
         -p default_ttl=60
         -p default_grace=3600
         -p thread_pool_min=50
-        -p thread_pool_max=1000
+        -p thread_pool_max=${VARNISH_THREAD_POOL_MAX:-5000}
         -p http_resp_hdr_len=32k
         -p http_resp_size=64k
         -p workspace_backend=128k

@@ -77,7 +77,7 @@ and in S4 it was 0 % for both.
 
 | scenario | S0 | S1 | S2 | S3 | S4 |
 |---|---:|---:|---:|---:|---:|
-| guest content page | 49 | 35 | 21 | 21 | **2** |
+| guest pages (`mix/guest_browse`: four pages in one journey) | 49 | 35 | 21 | 21 | **2** |
 | Asset Publisher page | 76 | 55 | 34 | 36 | **2** |
 | search | 994 | 792 | 639 | 653 | **2** |
 | login (must not be cached) | 1106 | 992 | 890 | 921 | 537 |
@@ -86,7 +86,7 @@ and in S4 it was 0 % for both.
 
 ![origin CPU](lab-origin-cpu.png)
 
-At S4, Varnish counted 18,656 hits and 16 misses. The 4,902 passes are login, the APIs
+Across the whole S4 campaign, not this pass alone, Varnish counted 18,656 hits and 16 misses. The 4,902 passes are login, the APIs
 and `/c/` URLs. Login through the edge stays at 0 % edge hit, and its signed-in page
 stays `private, no-cache, no-store`. Login gets *faster* at S4 only because the origin
 has spare CPU.
@@ -143,7 +143,7 @@ so it measures the edge mechanics, not the module.
    cache at all: guest HTML lost `no-store`, and the brochure PDF went to `public, max-age=86400`.
 5. **Search is the slowest guest page (about 350–390 ms at idle, about 1 s under load).**
    * At the edge it becomes 3 ms because the VCL caches `?q=` results by normalised query string.
-   * Keep the cache key's query allow-list tight, or unique queries will fill the cache.
+   * Our VCL only strips tracking parameters (a deny-list) and sorts the rest, so unique queries can fill the cache. Consider an allow-list, or a cap on `?q=` objects.
 6. **Without a purge, freshness is the TTL; with a purge it is immediate.** 55.7 s versus
    under 20 ms is the S5 slide.
 

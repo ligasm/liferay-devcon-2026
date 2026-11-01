@@ -26,7 +26,7 @@ const BLOBS: Record<string, string> = {
   "d13a5b9a6c5993d14dd563cfbc600104": "assets/pages.jpg",
   "daae0f910dac30168a6b7fb4555047fe": "assets/tokens.jpg",
   // chart fallbacks (bun render-fallbacks.ts); re-upload to the artifact when they change
-  "62c1180d3f0b8a4a8cf05a02ed26af08": "assets/charts/stages-content.png",
+  "3667191d17718d39f03467a17bd6d7ef": "assets/charts/stages-content.png",
   "32b20ebbae09c9b60f17c8d847b9ccd7": "assets/charts/stages-ap.png",
   "ab81ae9c4864faa198df3e70d00e69a2": "assets/charts/stages-search.png",
   "dfa39dae09ef6e3d69cbaa129ff9e416": "assets/charts/stages-signin.png",
@@ -66,8 +66,9 @@ const sections = deck.order.map((id, i) => {
   html = html.replace(/<x-shape kind="arrow-right" style="([^"]*)"><\/x-shape>/g, (_m, s: string) => arrowSvg(s));
   const aside = /<aside>([\s\S]*?)<\/aside>/.exec(html)?.[1]?.trim() ?? "";
   const title = /<h[12][^>]*>([\s\S]*?)<\/h[12]>/.exec(html)?.[1]?.replace(/<br>/g, " ").replace(/<[^>]+>/g, "") ?? id;
-  notes.push(`## ${i + 1}. ${title}\n\n${aside}\n`);
-  return html.replace(/<aside>/, '<aside class="notes">');
+  // the Slides editor saves line breaks in notes as <br> and &nbsp;
+  notes.push(`## ${i + 1}. ${title}\n\n${aside.replace(/&nbsp;/g, " ").replace(/ *<br\s*\/?> */g, "  \n")}\n`);
+  return html.replace(/<aside>([\s\S]*?)<\/aside>/, (_m, text: string) => `<aside class="notes">${text.replace(/<br\s*\/?>/g, "\n")}</aside>`);
 });
 
 const chartsJs = readFileSync(join(ROOT, "charts.js"), "utf8");
@@ -99,7 +100,7 @@ ${fontLinks}
   section th, section td { padding: 0.35em 0.6em; border-bottom: 1px solid #d8e0e2; text-align: left; }
   aside.notes { display: none; }
   #notes { position: fixed; left: 0; right: 0; bottom: 0; max-height: 30vh; overflow: auto; background: #f4f7f7; color: #0f2838;
-           font: 16px/1.5 'IBM Plex Sans', sans-serif; padding: 12px 20px; display: none; }
+           font: 16px/1.5 'IBM Plex Sans', sans-serif; padding: 12px 20px; display: none; white-space: pre-line; }
   #notes.on { display: block; }
   #count { position: fixed; right: 12px; top: 8px; color: #6a7a84; font: 13px sans-serif; }
 </style>

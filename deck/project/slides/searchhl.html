@@ -1,0 +1,23 @@
+<section id="searchhl" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">Measured · search highlighting off</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">One setting, twelve times the search</h2>
+<div style="flex:1;display:flex;align-items:center">
+<div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">12×</p>
+<p style="font-size:36px;color:#4a5a66">clean capacity, 25 → 300 searches a second</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">18×</p>
+<p style="font-size:36px;color:#4a5a66">faster p95 at 20 searches a second, 687 → 38 ms</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">12×</p>
+<p style="font-size:36px;color:#4a5a66">less CPU at 20 searches a second, 9.5 → 0.8 cores</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">highlightEnabled=false · same results, our template shows no snippets · sidecar Elasticsearch, small index</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>[21:15–22:15 · 1:00 · if behind: skip this slide and say over the cost slide "turn off search highlighting: twelve times the capacity, same results"] One more lever. The thread dumps showed highlighting among the hottest work in Elasticsearch: working out which words to put in bold. So we turned it off on the Search Results widget, one setting, and reran the same ladder. Clean capacity went from 25 to 300 searches a second. At 20 a second, p95 went from 687 to 38 milliseconds and CPU from 9.5 cores to 0.8. What did we lose? Nothing. Same result counts, same titles, same order, 180 bytes off the page, because our compact display template never showed a snippet. We were paying for highlights nobody could see. So look at your template. If it shows no snippets, turn this off today. If it does, you lose the bold terms, and now you know the price of them. If asked: the preference is highlightEnabled. We compared three search terms. Single requests at idle, on, off, on again: 210, 78, 295 milliseconds. At 400 searches a second 1.5 percent were dropped, so 300 is the clean figure. This is the sidecar Elasticsearch on a small index, so your factor will differ. Caching popular search URLs at the edge still applies on top. Numbers in RUNG-RESULTS.md.</aside>
+</section>

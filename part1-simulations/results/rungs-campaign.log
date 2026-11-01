@@ -1,0 +1,89 @@
+== S3 applied; restarting liferay26112
+== up after 22 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (18:56:56)
+== stress S3-ZGC-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (18:58:18)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95      23 ms  liferay  0.8 cores  k6  0.1  heap  1206 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  1.2 cores  k6  0.1  heap   894 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  1.4 cores  k6  0.1  heap   978 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  1.9 cores  k6  0.2  heap  1082 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95      14 ms  liferay  2.8 cores  k6  0.3  heap  1190 MB  ok
+   rate   600/s →   600.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  4.3 cores  k6  0.5  heap  1400 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95      21 ms  liferay  6.5 cores  k6  0.7  heap  1598 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95      25 ms  liferay  9.5 cores  k6  0.9  heap  1922 MB  ok
+   rate  1200/s →  1200.1 it/s  drop   0.0%  err  0.00%  p95      28 ms  liferay 12.5 cores  k6  1.1  heap  2130 MB  ok
+   rate  1500/s →  1420.4 it/s  drop   5.3%  err  0.00%  p95    1943 ms  liferay 17.1 cores  k6  1.6  heap  2856 MB  ok
+   rate  2000/s →  1381.2 it/s  drop  30.9%  err  0.00%  p95    2600 ms  liferay 17.2 cores  k6  1.9  heap  3234 MB  SATURATED
+== saturated at 2000/s — ladder stops
+== done S3-ZGC-pages (19:12:46)
+== S3 applied; restarting liferay26112
+== up after 26 s
+== fragment cacheable flags now: {True: 16}
+== campaign done (19:13:23)
+== ZGC rc=0
+ Container proventeq-fidelity Starting 
+ Container proventeq-fidelity Started 
+== stress R5-static-pages / pages → http://127.0.0.1:8091   steps: 100 200 400 800 1200 2000 4000 8000 16000 25000 30000   (19:13:24)
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.2  heap   553 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.3  heap   650 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.6  heap   650 MB  ok
+   rate   800/s →   800.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.9  heap   650 MB  ok
+   rate  1200/s →  1200.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.2  heap   650 MB  ok
+   rate  2000/s →  2000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  1.6  heap   650 MB  ok
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.9  heap   650 MB  ok
+   rate  8000/s →  8000.2 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  4.0  heap   650 MB  ok
+   rate 16000/s → 16000.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  0.2 cores  k6  8.4  heap   650 MB  ok
+   rate 25000/s → 24764.3 it/s  drop   0.9%  err  0.00%  p95      69 ms  liferay  0.2 cores  k6 13.5  heap   650 MB  ok
+   rate 30000/s → 28701.1 it/s  drop   4.3%  err  0.00%  p95      73 ms  liferay  0.2 cores  k6 15.1  heap   650 MB  ok
+== done R5-static-pages (19:28:11)
+== stress R5-static-pageview / pageview → http://127.0.0.1:8091   steps: 5 10 20 40 80 200 400 1000 2000 4000 8000 10000 12000 15000   (19:28:11)
+   rate     5/s →     5.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.0  heap   650 MB  ok
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.1  heap   650 MB  ok
+   rate    20/s →    20.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.1  heap   650 MB  ok
+   rate    40/s →    40.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.2  heap   650 MB  ok
+   rate    80/s →    80.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.3  heap   650 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  0.7  heap   650 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  1.1  heap   650 MB  ok
+   rate  1000/s →  1000.0 it/s  drop   0.0%  err  0.00%  p95       0 ms  liferay  0.1 cores  k6  2.1  heap   650 MB  ok
+   rate  2000/s →  2000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.1 cores  k6  3.0  heap   650 MB  ok
+   rate  4000/s →  4000.0 it/s  drop   0.0%  err  0.00%  p95       1 ms  liferay  0.2 cores  k6  4.4  heap   650 MB  ok
+   rate  8000/s →  8000.0 it/s  drop   0.0%  err  0.00%  p95      12 ms  liferay  0.2 cores  k6  9.5  heap   650 MB  ok
+   rate 10000/s →  9948.1 it/s  drop   0.5%  err  0.00%  p95      31 ms  liferay  0.2 cores  k6 12.0  heap   650 MB  ok
+   rate 12000/s → 11224.2 it/s  drop   6.4%  err  0.00%  p95      89 ms  liferay  0.2 cores  k6 13.4  heap   650 MB  ok
+   rate 15000/s →  8278.1 it/s  drop  44.8%  err  0.48%  p95     181 ms  liferay  0.2 cores  k6 13.2  heap   650 MB  SATURATED
+== saturated at 15000/s — ladder stops
+== done R5-static-pageview (19:46:42)
+== campaign done (19:46:42)
+== R5 rc=0
+== S0 applied; restarting liferay26112
+== up after 23 s
+== fragment cacheable flags now: {False: 16}
+== restart liferay26112 (19:47:16)
+== stress R1-S0-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (19:48:40)
+   rate    50/s →    50.0 it/s  drop   0.0%  err  0.00%  p95      22 ms  liferay  1.1 cores  k6  0.1  heap   675 MB  ok
+   rate   100/s →   100.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  1.6 cores  k6  0.1  heap   672 MB  ok
+   rate   200/s →   200.0 it/s  drop   0.0%  err  0.00%  p95      17 ms  liferay  2.7 cores  k6  0.1  heap   707 MB  ok
+   rate   300/s →   300.0 it/s  drop   0.0%  err  0.00%  p95      26 ms  liferay  4.8 cores  k6  0.2  heap   764 MB  ok
+   rate   400/s →   400.0 it/s  drop   0.0%  err  0.00%  p95      90 ms  liferay 14.3 cores  k6  0.4  heap   840 MB  ok
+   rate   600/s →   457.9 it/s  drop  23.7%  err  0.01%  p95    7742 ms  liferay 18.7 cores  k6  0.8  heap  2543 MB  SATURATED
+== saturated at 600/s — ladder stops
+== done R1-S0-pages (19:56:29)
+== restart liferay26112 (19:56:29)
+== stress R1-S0-pageview / pageview → http://127.0.0.1:8086   steps: 5 10 20 40 80 120 160 200 300 400 600 800 1000 1500 2000 3000 4000   (19:57:50)
+   rate     5/s →     5.0 it/s  drop   0.0%  err  0.00%  p95       3 ms  liferay  2.1 cores  k6  0.1  heap   691 MB  ok
+   rate    10/s →    10.0 it/s  drop   0.0%  err  0.00%  p95       3 ms  liferay  1.2 cores  k6  0.2  heap   679 MB  ok
+   rate    20/s →    20.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  1.9 cores  k6  0.3  heap   681 MB  ok
+   rate    40/s →    40.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  3.0 cores  k6  0.5  heap   680 MB  ok
+   rate    80/s →    80.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  4.8 cores  k6  0.9  heap   690 MB  ok
+   rate   120/s →   120.0 it/s  drop   0.0%  err  0.00%  p95       2 ms  liferay  6.7 cores  k6  1.4  heap   713 MB  ok
+   rate   160/s →   159.8 it/s  drop   0.1%  err  0.00%  p95       5 ms  liferay 10.2 cores  k6  1.9  heap   744 MB  ok
+   rate   200/s →   199.0 it/s  drop   0.5%  err  0.00%  p95      31 ms  liferay 13.9 cores  k6  2.4  heap   795 MB  ok
+   rate   300/s →   205.0 it/s  drop  25.4%  err  3.29%  p95     887 ms  liferay 14.0 cores  k6  4.8  heap   988 MB  SATURATED
+== saturated at 300/s — ladder stops
+== done R1-S0-pageview (20:09:44)
+== campaign done (20:09:44)
+== R1 rc=0
+== S3 applied; restarting liferay26112
+== up after 24 s
+== fragment cacheable flags now: {True: 16}
+== finished S3 re-applied (20:10:20)

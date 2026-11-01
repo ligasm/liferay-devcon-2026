@@ -1,33 +1,58 @@
-<section id="ladder" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">The ladder</h2>
-<div style="display:flex;flex-direction:column;gap:16px;flex:1;justify-content:space-between">
-<div style="display:flex;align-items:center;gap:40px;background:#0f2838;color:#f4f7f7;border-radius:12px;padding:24px 48px">
-<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">5</p>
-<p style="font-size:44px;font-weight:600;flex:1">Precompute</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">3 ms</p>
-</div>
-<div style="display:flex;align-items:center;gap:40px;background:#1d4a5c;color:#f4f7f7;border-radius:12px;padding:24px 48px">
-<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">4</p>
-<p style="font-size:44px;font-weight:600;flex:1">Edge HTML</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2–3 ms</p>
-</div>
-<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
-<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">3</p>
-<p style="font-size:44px;font-weight:600;flex:1">Edge static</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">2 ms</p>
-</div>
-<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
-<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">2</p>
-<p style="font-size:44px;font-weight:600;flex:1">JVM caches</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">9–21 ms</p>
-</div>
-<div style="display:flex;align-items:center;gap:40px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 48px">
-<p style="font-size:44px;font-weight:700;width:60px;color:#34a1a0">1</p>
-<p style="font-size:44px;font-weight:600;flex:1">Origin render</p>
-<p style="font-size:44px;font-family:'JetBrains Mono', 'Courier New', monospace">14 ms – 1 s</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured p95 · one box, no network round trip · add your CDN's RTT to rungs 3–5</p>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>The frame for the whole talk. Each rung is cheaper per request than the one below it, and each imposes a sharper limitation. Origin render is limited by CPU, always CPU. JVM caches by memory and cluster invalidation. Edge static only ever covers assets. Edge HTML is limited by personalisation and auth safety. Precompute by staleness and cardinality. Part 1 climbs rungs 1 to 4 and measures every step. Part 2 is rung 5. The numbers are measured p95 on one box with no network in between: origin render 14 milliseconds for a stock content page at idle up to about a second for search under load; JVM caches 9 to 21 milliseconds once fragments are Cacheable; edge static, edge HTML and precompute all answer in 2 to 3 milliseconds. On a real CDN add the round trip to the top three. The top rungs do not differ in latency; they differ in what still has to stand behind them: the edge still needs the full origin for every miss and every purge, precompute needs none at request time.</aside>
+<section id="ladder" data-transition="fade" style="display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">The ladder</h2>
+  <div style="display:flex; flex-direction:column; gap:12px; flex:1">
+    <div style="display:flex; flex-direction:row; gap:40px; padding:0 48px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">
+      <p style="flex:1">Same test on every rung: 200 first-visit page views a second</p>
+      <p style="width:190px; text-align:right">p95</p>
+      <p style="width:280px; text-align:right">server CPU</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:40px; align-items:center; padding:12px 48px; background:#0f2838; border-radius:12px">
+      <p style="width:60px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:700; color:#34a1a0">5</p>
+      <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.15; color:#f4f7f7">Precompute</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.2; color:#b9cfd3">S6 · static HTML on nginx</p>
+      </div>
+      <p style="width:190px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#f4f7f7">3 ms</p>
+      <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#f4f7f7">0.1 cores</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:40px; align-items:center; padding:12px 48px; background:#1d4a5c; border-radius:12px">
+      <p style="width:60px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:700; color:#34a1a0">4</p>
+      <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.15; color:#f4f7f7">Edge HTML</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.2; color:#b9cfd3">S3 + S4 · no-store off, Varnish caches guest HTML</p>
+      </div>
+      <p style="width:190px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#f4f7f7">8 ms</p>
+      <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#f4f7f7">0.8 cores</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:40px; align-items:center; padding:12px 48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:12px">
+      <p style="width:60px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:700; color:#34a1a0">3</p>
+      <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.15; color:#0f2838">Edge static</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.2; color:#4a5a66">S3 + Varnish · assets cached, HTML still from Liferay</p>
+      </div>
+      <p style="width:190px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">19 ms</p>
+      <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">1.9 cores</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:40px; align-items:center; padding:12px 48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:12px">
+      <p style="width:60px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:700; color:#34a1a0">2</p>
+      <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.15; color:#0f2838">JVM caches</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.2; color:#4a5a66">S2 · 16 fragments marked Cacheable</p>
+      </div>
+      <p style="width:190px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">37 ms</p>
+      <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">8.2 cores</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:40px; align-items:center; padding:12px 48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:12px">
+      <p style="width:60px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:700; color:#34a1a0">1</p>
+      <div style="flex:1; display:flex; flex-direction:column; gap:2px">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.15; color:#0f2838">Origin render</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.2; color:#4a5a66">S0 · stock, nothing changed</p>
+      </div>
+      <p style="width:190px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">344 ms</p>
+      <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">13 cores</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured · k6 CPU excluded · one box, no network · add your CDN's RTT to rungs 3–5 · rung 5's page is 5 requests, not 56</p>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[2:00–3:15 · 1:15]<br>The frame for the whole talk.<br>Five rungs, one test: 200 first visits a second, the HTML plus every file. On the left the p95 for the whole page view, on the right the CPU of the servers.<br><br>Rung 1, stock Liferay: 344 milliseconds and 13 cores out of 20. It is close to falling over.<br>Rung 2, mark the fragments Cacheable: 37 milliseconds and 8 cores. Nine times faster, and the price is that anything user-specific leaks.<br>Rung 3, cache the assets at the edge: from 8 cores to 2. That surprised us. Most of a first visit was never rendering; it was Liferay serving 55 static files.<br>Rung 4, cache guest HTML as well: 8 milliseconds, under one core, as long as auth stays out of the cache.<br>Rung 5, pre-rendered files: 3 milliseconds and a tenth of a core, at the price of staleness and cardinality.<br><br>All on one box with no network, so add your CDN's round trip to the top three. Then 8 against 3 stops mattering. What differs is what stands behind them: the edge needs Liferay for every miss and purge; a static page needs it only at build time.<br><br>Part 1 climbs to rung 4.<br>Part 2 is rung 5.<br><br>IF ASKED (not spoken)<br>Test. k6 open model, 60 s per rate, same weighted pages, Liferay restarted and warmed before each origin ladder. CPU is the mean of the serving containers; k6 is excluded. One 20-core box, k6 included, so the top rungs are bounded by k6. RUNG-RESULTS.md has every number.<br>Clean capacity, whole page views: 200, 200, 600, 1,200, about 10,000 a second. HTML alone: 400, 1,200 to 1,500, then 24,800 for both edge and static, where k6 is the limit.<br>CPU per page view: 66 ms, 41, 9.5, 4, 0.6.<br>Rung 1, S0. Every guest request enters the JVM, gets a session and is assembled from scratch. browser.cache.disabled=true sends private, no-store. This is close to the knee, so read 344 as about 300: an earlier run gave 269. At 600 pages a second the stock 2.5 GB heap threw OutOfMemoryError.<br>Rung 2, S2. Thread dumps at the 600 a second step: 179 of 261 runnable threads, 69 percent, parsing fragment FreeMarker. FragmentEntryFragmentRenderer returns cached output before any processor runs, keyed by link, locale and experience. No user in the key, hence the leak. S2 also changed heap, Ehcache, Hikari and connector, but a stock run with only Cacheable on matched it. Gains appear only under load: 30 against 25 ms at 80 page views a second, HTML 17 against 17 ms at 100 pages a second. At 400 pages a second, HTML: 90 to 13 ms, 12.4 to 2.1 cores. Single node, so cluster invalidation is untested.<br>Rung 3. S3 plus Varnish with guest HTML passed to Liferay. Liferay falls to 1.3 cores, what HTML alone costs. The 6.9 cores it saved, 84 percent, were static files. This is the worst case, an empty browser cache; repeat visitors fetch fewer. Page weight drops from 2 MB to 625 KB because the VCL compresses assets, Liferay's GZipFilter is off.<br>Rung 4, S3 plus S4. browser.cache.disabled=false removes no-store for guests. Set-Cookie stays, so the VCL strips Cookie in and Set-Cookie out, bypasses on auth cookies, TTL 60 s, grace 1 h. Liferay idles at 0.05 cores.<br>Rung 5, S6. The fidelity build on nginx. A lighter page by design: 4.6 requests and 96 KB against 56 and 533. Sign-in and forms still need the portal.<br>Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC ties G1 at 400 pages a second, costs more CPU at 800 and above, and reached 1,200 against G1's 1,500. One of five ZGC starts died out of memory within a minute on a 6 GB heap; cause unknown. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.<br>One that paid: search highlighting off, on its own slide after the cost slide.</aside>
 </section>

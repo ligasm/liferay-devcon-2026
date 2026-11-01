@@ -120,5 +120,5 @@ against Liferay behind Varnish (S4), on the same box. The results are in
   | server CPU | 0.3 cores | 3.1 cores |
   | page-view p95 | 2 ms | 13 ms |
 
-* **Capacity:** 10,000+ page views/s static (k6-bound), 1,200 through Varnish (its default
-  2,000 threads).
+* **Capacity:** 10,000 page views/s static (k6-bound), 1,200 through Varnish (the box runs out
+  of CPU at 1,500).

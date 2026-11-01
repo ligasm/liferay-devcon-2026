@@ -87,7 +87,7 @@
   const CHARTS = {
     // LAB-RESULTS.md "Load pass": p95 ms per flow, mix at ≈ 120 req/s; one panel per flow
     ...Object.fromEntries([
-      ['content', 'Content page', [49, 35, 21, 21, 2], true],
+      ['content', 'Guest browse', [49, 35, 21, 21, 2], true],
       ['ap', 'Asset Publisher', [76, 55, 34, 36, 2], true],
       ['search', 'Search', [994, 792, 639, 653, 2], true],
       ['signin', 'Sign-in · bypassed', [1106, 992, 890, 921, 537], false],

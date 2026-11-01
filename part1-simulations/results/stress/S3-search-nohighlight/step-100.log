@@ -1,0 +1,9 @@
+
+┌─ stress/S3-search-nohighlight / step-100 ──────────────
+│ requests         5986   99.8 req/s
+│ duration      p50     25ms  p95    182ms  p99    307ms
+│ ttfb          p50     23ms  p95    171ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -1,0 +1,11 @@
+== S3 applied; restarting liferay26112
+== up after 26 s
+== fragment cacheable flags now: {True: 16}
+== restart liferay26112 (17:46:27)
+== stress S3-ZGC-pages / pages → http://127.0.0.1:8086   steps: 50 100 200 300 400 600 800 1000 1200 1500 2000   (17:47:48)
+   rate    50/s →    50.0 it/s  drop   0.0%  err 100.00%  p95       0 ms  liferay  0.0 cores  k6  0.1  heap     0 MB  SATURATED
+== saturated at 50/s — ladder stops
+== done S3-ZGC-pages (17:48:48)
+Error response from daemon: container 568d5cd10a3348fbc1fbe8919818b64a219663fadfd4e10c792958a4c80ae74f is not running
+Error response from daemon: container 568d5cd10a3348fbc1fbe8919818b64a219663fadfd4e10c792958a4c80ae74f is not running
+== finished rc=1 S3 re-applied (17:48:49)

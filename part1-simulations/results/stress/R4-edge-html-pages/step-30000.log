@@ -1,0 +1,10 @@
+time="2026-11-01T18:32:43Z" level=warning msg="Insufficient VUs, reached 3000 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=stress
+
+┌─ stress/R4-edge-html-pages / step-30000 ───────────────
+│ requests      1541562   25651.9 req/s
+│ duration      p50     19ms  p95     65ms  p99     93ms
+│ ttfb          p50     18ms  p95     62ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit      100.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

@@ -17,9 +17,9 @@ last step with < 1 % of iterations dropped, < 1 % errors, and every flow's p95 u
 
 | ladder | clean capacity | p95 there | peak | what ran out |
 |---|---:|---:|---:|---|
-| S0 stock origin · guest pages | **400 req/s** | 118 ms | 419 req/s | CPU: 69 % of busy request threads were **re-parsing fragment FreeMarker templates**. The 2.5 GB heap filled up (2.53 GB old gen, 9 full GCs) |
+| S0 stock origin · guest pages | **400 req/s** | 118 ms | 419 req/s | CPU: at the saturated 600/s step, 69 % of busy request threads were **re-parsing fragment FreeMarker templates**. The 2.5 GB heap filled up (2.53 GB old gen, 9 full GCs) |
 | S3 tuned origin · guest pages | **1,200 req/s** | 28 ms | 1,364 req/s | Host CPU: Liferay 15 cores + k6 4 cores of 20 |
-| S4 Varnish edge · guest pages | **24,800 req/s** | 70 ms | 26,500 req/s | Host CPU (k6 14 cores, Varnish only **2.8**), plus Varnish's default thread limit (2,000) |
+| S4 Varnish edge · guest pages | **24,800 req/s** | 70 ms | 26,500 req/s | Host CPU (k6 14 cores, Varnish only **2.8**). Our 2,000-thread limit on Varnish was also hit; the 2026-11-01 rerun with 5,000 threads reached the same 24,800 |
 | S3 tuned origin · search | **25 searches/s** | 1.1 s | 26 /s | The Elasticsearch sidecar: ≈ 90 % of search CPU |
 | S3 tuned origin · sign-in | **15 sign-ins/s** (74 req/s) | 1.0 s | 17 /s | **PBKDF2 password hashing**: 100 % of busy request threads |
 | S0 stock origin · mix | 100 it/s (113 req/s) | 0.6 s | 113 req/s | search + sign-in |
@@ -62,7 +62,7 @@ sign-ins/s alone need ≈ 6–8 cores, whatever the page tuning.
 * **The limit at 24,800 is the lab, not Varnish.** Varnish used 2.8 cores at 26,500 req/s.
   The limits were:
   * k6 on the same 20-core host (14 cores);
-  * Varnish's default `thread_pool_max`: 2 pools × 1,000 threads, one per connection. k6
+  * the `thread_pool_max` we had set: 2 pools × 1,000 threads, one per connection (Varnish's own default is 5,000 per pool). k6
     held up to 3,000 connections. By the end of the ladder Varnish had turned away 103,714
     connections for lack of a thread (`MAIN.sess_dropped`, counted since Varnish started), and
     hit the thread cap 26,288 times (`MAIN.threads_limited`).
@@ -118,7 +118,8 @@ sign-ins/s alone need ≈ 6–8 cores, whatever the page tuning.
   are dropped, 5 % fail and p95 hits the 10 s timeout.
 * **What to do:**
   * run a real Elasticsearch cluster (the sidecar is not for production);
-  * switch off highlighting where the results template does not show it;
+  * switch off highlighting where the results template does not show it (measured 2026-11-01:
+    25 → 300 searches/s clean, p95 at 20/s 687 → 38 ms, same results; see `RUNG-RESULTS.md`);
   * keep caching popular `?q=` pages at the edge, as S4 does.
 
 ### 5. Plan capacity per flow: the overall p95 hides the flow that fails

@@ -1,0 +1,9 @@
+
+┌─ stress/R5-static-pages / step-8000 ───────────────────
+│ requests       480013   7999.2 req/s
+│ duration      p50      0ms  p95      1ms  p99      4ms
+│ ttfb          p50      0ms  p95      0ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest   0.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────
