@@ -169,8 +169,8 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 - [ ] Set `ANTHROPIC_API_KEY` and confirm current model IDs so the enrichment path runs live once.
 - [ ] Point `.env` at your DXP for one rehearsal.
 - [ ] Prerecord both demos; conference Wi-Fi is where demos die.
-- [ ] Re-run the `www.liferay.com` curl the day before for slide 28. On 2026-11-02 `/` and `/web/guest/home` were cached; `/products` and `/resources` returned `private, no-store`.
-- [ ] Run Demo 1's curl on a stock container and record it, so the cookies read out match the screen.
+- [ ] Re-run the `www.liferay.com` curl the day before for slide 28. On 2026-11-02 guest pages were cached with the header, while `/c/portal/login` returned `private, no-store` (`results/curl-checks-2026-11-02/liferay-com-headers.txt`). It has already changed once.
+- [x] Run Demo 1's curl on a stock container and record it (2026-11-02, `results/curl-checks-2026-11-02/stock-guest-headers.txt`): the cookies and headers match slide 5, which abbreviates `Cache-Control` by leaving off `must-revalidate`.
 - [ ] Test the Cloudflare rule set on a throwaway zone, bypass last: it comes from the docs and has never run live.
 - [ ] Put an OIDC user through the lab edge, to confirm the SSO behaviour read from source.
 - [ ] Re-check AI prices and vendor plans; the dossier's were checked on 2026-11-02.

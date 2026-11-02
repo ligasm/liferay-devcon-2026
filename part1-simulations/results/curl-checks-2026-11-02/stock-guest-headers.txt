@@ -1,0 +1,83 @@
+Fresh container from liferay/dxp:2026.q1.12-lts, no portal-ext.properties, no changes, removed afterwards.
+Session IDs masked.
+
+image: liferay/dxp:2026.q1.12-lts  id: sha256:d14a8adefe2b
+portal-ext: none
+2026-11-02T07:04:41Z
+
+### curl -sSD- -o /dev/null http://localhost:8096/   (no cookies)
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: JSESSIONID=<new value each request>; Path=/; HttpOnly
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: private, no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:41 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:41 GMT; Path=/; HttpOnly
+Liferay-Portal: Liferay Digital Experience Platform
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Mon, 02 Nov 2026 07:04:41 GMT
+
+
+### curl -sSD- -o /dev/null http://localhost:8096/web/guest   (no cookies)
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: JSESSIONID=<new value each request>; Path=/; HttpOnly
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: private, no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Liferay-Portal: Liferay Digital Experience Platform
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Mon, 02 Nov 2026 07:04:44 GMT
+
+
+### curl -sSD- -o /dev/null http://localhost:8096/web/guest/home   (no cookies)
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: JSESSIONID=<new value each request>; Path=/; HttpOnly
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: private, no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Liferay-Portal: Liferay Digital Experience Platform
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Mon, 02 Nov 2026 07:04:44 GMT
+
+
+### second cookie-less GET of / (is a new session minted each time?)
+HTTP/1.1 200 
+Set-Cookie: JSESSIONID=<new value each request>; Path=/; HttpOnly
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: private, no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+
+### final page after redirects, headers of last hop
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: JSESSIONID=<new value each request>; Path=/; HttpOnly
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: private, no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Set-Cookie: GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 02 Nov 2027 07:04:44 GMT; Path=/; HttpOnly
+Liferay-Portal: Liferay Digital Experience Platform
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Mon, 02 Nov 2026 07:04:44 GMT
+
+
+### body checks
+bytes: 80389
+authToken: 1

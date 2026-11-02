@@ -142,7 +142,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.
 
 ## 28. What is it, and can we have it?
 
-[41:15–42:00 · 0:45] Curl www.liferay.com: it returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header. On 2 November /web/guest/home did too, while /products and /resources returned private, no-store, so re-run the curl the day before. The header is in neither master nor shipped 2026.q1.12, and we don't know what sets it or who built it. Two asks to the room and to Liferay: what is it and can customers have it, and publish Core Web Vitals data for Liferay sites. Nobody has, so anyone in this room could be first.
+[41:15–42:00 · 0:45] Curl www.liferay.com: it returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header. On 2 November guest pages across the site did too, while /c/portal/login returned private, no-store, so it looks site-wide. Re-run the curl the day before: it has changed once already. The Age runs to many hours against that max-age of 60, so the edge keeps pages far longer than the header says. The header is in neither master nor shipped 2026.q1.12, and we don't know what sets it or who built it. Two asks to the room and to Liferay: what is it and can customers have it, and publish Core Web Vitals data for Liferay sites. Nobody has, so anyone in this room could be first.
 
 ## 29. Thank you
 

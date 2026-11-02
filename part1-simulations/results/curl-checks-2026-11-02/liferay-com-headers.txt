@@ -1,0 +1,81 @@
+Plain GETs to www.liferay.com, 2026-11-02 about 07:04 UTC. Cookie values masked. One sample per path.
+Re-run the day before the talk; this has already changed once.
+
+### GET https://www.liferay.com/
+HTTP/2 200 
+expires: Sun, 01 Nov 2026 19:55:28 GMT
+cache-control-test: public, max-age=…
+via: 1.1 google, 1.1 varnish, 1.1 varnish
+cache-control: public, max-age=60
+x-lfr-guest-html-cache: 1
+age: 43713
+x-cache: HIT, HIT
+x-cache-hits: 24, 0
+### GET https://www.liferay.com/web/guest/home
+HTTP/2 200 
+expires: Mon, 02 Nov 2026 05:10:38 GMT
+cache-control-test: public, max-age=…
+via: 1.1 google, 1.1 varnish, 1.1 varnish
+cache-control: public, max-age=60
+x-lfr-guest-html-cache: 1
+age: 10403
+x-cache: MISS, HIT
+x-cache-hits: 0, 0
+### GET https://www.liferay.com/capabilities/cdn
+HTTP/2 200 
+expires: Sun, 01 Nov 2026 12:44:37 GMT
+cache-control-test: public, max-age=…
+via: 1.1 google, 1.1 varnish, 1.1 varnish
+cache-control: public, max-age=60
+x-lfr-guest-html-cache: 1
+age: 69564
+x-cache: HIT, HIT
+x-cache-hits: 2, 0
+### GET https://www.liferay.com/products
+HTTP/2 301 
+expires: Mon, 02 Nov 2026 08:04:02 GMT
+cache-control: max-age=…
+cache-control-test: public, max-age=…
+via: 1.1 google, 1.1 varnish, 1.1 varnish
+age: 0
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+### GET https://www.liferay.com/resources
+HTTP/2 301 
+expires: Mon, 02 Nov 2026 08:04:03 GMT
+cache-control: max-age=…
+cache-control-test: public, max-age=…
+via: 1.1 google, 1.1 varnish, 1.1 varnish
+age: 0
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+### GET https://www.liferay.com/c/portal/login
+HTTP/2 200 
+set-cookie: JSESSIONID=…; Path=/; Secure; HttpOnly
+set-cookie: SERVER_ID=…; path=/; HttpOnly; Secure
+cache-control: private, private, no-store, max-age=0
+via: 1.1 google, 1.1 varnish
+x-cache: MISS
+x-cache-hits: 0
+2026-11-02T07:04:04Z
+### GET https://www.liferay.com/products, then its redirect
+location: /platform
+-> https://www.liferay.com/platform
+HTTP/2 200 
+cache-control: public, max-age=60
+x-lfr-guest-html-cache: 1
+age: 106464
+x-cache: HIT, HIT
+### GET https://www.liferay.com/resources, then its redirect
+location: /resource-hub
+-> https://www.liferay.com/resource-hub
+HTTP/2 200 
+cache-control: public, max-age=60
+x-lfr-guest-html-cache: 1
+age: 30456
+x-cache: HIT, MISS
+/de                    200 | cache-control: public, max-age=60 | x-lfr:1 
+/about                 404 | cache-control: public, max-age=3600, stale-while-revalidate=60 |  
+/blog                  301 | cache-control: max-age=3600, public, max-age=3600, stale-while-revalidate=60 |  
+/web/guest/products    404 | cache-control: public, max-age=3600, stale-while-revalidate=60 |  
+/solutions             200 | cache-control: public, max-age=60 | x-lfr:1 

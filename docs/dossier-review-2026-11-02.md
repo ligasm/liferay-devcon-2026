@@ -35,8 +35,8 @@ The crash is a runaway fragment render: one 2,047 MB `byte[]` built by jsoup's `
 
 1. The Cloudflare rule set on a throwaway zone. The order, the expressions and the demo all come from docs.
 2. An OIDC user through the edge. The SSO gap is the biggest safety claim in the talk and it comes from reading source.
-3. The curl on a stock container, recorded, so the cookies read out match the screen.
-4. The `www.liferay.com` curl the day before. The result changed between August and November.
+3. The curl on a stock container: **done 2026-11-02**, `part1-simulations/results/curl-checks-2026-11-02/stock-guest-headers.txt`. Three cookies and three headers, matching the slide.
+4. The `www.liferay.com` curl the day before. Last run 2026-11-02, `curl-checks-2026-11-02/liferay-com-headers.txt`. It changed between August and November, and for `/products` and `/resources` within the same day.
 5. The purge demo only if the module gets built; it is an unbuilt sketch.
 
 ## Not checked
