@@ -67,7 +67,7 @@ const sections = deck.order.map((id, i) => {
   const aside = /<aside>([\s\S]*?)<\/aside>/.exec(html)?.[1]?.trim() ?? "";
   const title = /<h[12][^>]*>([\s\S]*?)<\/h[12]>/.exec(html)?.[1]?.replace(/<br>/g, " ").replace(/<[^>]+>/g, "") ?? id;
   // the Slides editor saves line breaks in notes as <br> and &nbsp;
-  notes.push(`## ${i + 1}. ${title}\n\n${aside.replace(/&nbsp;/g, " ").replace(/ *<br\s*\/?> */g, "  \n")}\n`);
+  notes.push(`## ${i + 1}. ${title}\n\n${aside.replace(/&nbsp;/g, " ").replace(/ *<br\s*\/?>/g, "  \n")}\n`);
   return html.replace(/<aside>([\s\S]*?)<\/aside>/, (_m, text: string) => `<aside class="notes">${text.replace(/<br\s*\/?>/g, "\n")}</aside>`);
 });
 

@@ -5,145 +5,486 @@
 [0:00–0:30 · 0:30]  
 * Introduce yourself and Proventeq.  
 * Shape of the talk:  
-first we squeeze the portal the traditional way and measure every step; then we walk around the wall with a static site that regenerates itself from Liferay.
+   first we squeeze the portal the traditional way and measure every step; then we walk around the wall with a static site that regenerates itself from Liferay.
 
 ## 2. Two halves
 
 [0:30–1:00 · 0:30]  
 * Part 1,  
-hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. One layer changes per stage, and S0 to S4 run the same load test. It ends at a ceiling tuning can't lift.  
+   hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. One layer changes per stage, and S0 to S4 run the same load test. It ends at a ceiling tuning can't lift.  
 * Part 2  
-for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, with an AI orchestrator on a token allowance. Live demo.
+   for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, with an AI orchestrator on a token allowance. Live demo.
 
 ## 3. Stages stack, and each gets the same test
 
-[1:00–2:00 · 1:00] Before any number, how we got them. A self-hosted DXP 2026.q1.12 on Tomcat, one 20-core box, Varnish in front as the local edge, k6 as the load. Stages stack: each one keeps everything before it and changes one layer. S4 is the core of Part 1; S6 is Part 2. Is the test always the same? For the numbers we compare, yes. S0 to S4 ran the same two passes: near idle, and a 70/15/10/5 mix at about 120 requests a second. For the ladder on the next slide we ran one more test on every rung, same pages, same rates, 60 seconds per rate, Liferay restarted and warmed: a whole first visit, the HTML and every file. S5 is measured differently, publish to fresh at the edge, and S6 cannot run sign-in. We only call a difference real when it is bigger than the noise between runs, so 1 against 2 milliseconds is a tie. If asked: scenarios are guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id. Metrics that matter more than latency: edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, publish-to-fresh. k6 shares the box, so its CPU is reported separately and it bounds the top rates. What database? The image defaults, Hypersonic and sidecar Elasticsearch, on a small site: 10 fragment pages, 14 posts, 323 search documents. DB-bound costs are optimistic, so read these as ratios, not capacity.
+[1:00–2:00 · 1:00]  
+* Before any number, how we got them  
+   A self-hosted DXP 2026.q1.12 on Tomcat, one 20-core box, Varnish in front as the local edge, k6 as the load.  
+* Stages stack  
+   Each one keeps everything before it and changes one layer. S4 is the core of Part 1; S6 is Part 2.  
+* The test is the same for the numbers we compare  
+   S0 to S4 ran the same two passes: near idle, and a 70/15/10/5 mix at about 120 requests a second.  
+* The ladder got one more test, on every rung  
+   Same pages, same rates, 60 seconds per rate, Liferay restarted and warmed: a whole first visit, the HTML and every file.  
+* Two exceptions  
+   S5 is measured differently, publish to fresh at the edge, and S6 cannot run sign-in.  
+* A difference counts only above the noise  
+   It must be bigger than the noise between runs, so 1 against 2 milliseconds is a tie.  
+  
+IF ASKED (not spoken)  
+* Which scenarios?  
+   Guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id.  
+* Which metrics matter more than latency?  
+   Edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, publish-to-fresh.  
+* Doesn't k6 share the box?  
+   Yes, so its CPU is reported separately and it bounds the top rates.  
+* What database?  
+   The image defaults, Hypersonic and sidecar Elasticsearch, on a small site: 10 fragment pages, 14 posts, 323 search documents. DB-bound costs are optimistic, so read these as ratios, not capacity.
 
 ## 4. The ladder
 
 [2:00–3:15 · 1:15]  
-The frame for the whole talk.  
-Five rungs, one test: 200 first visits a second, the HTML plus every file. On the left the p95 for the whole page view, on the right the CPU of the servers.  
-  
-Rung 1, stock Liferay: 344 milliseconds and 13 cores out of 20. It is close to falling over.  
-Rung 2, mark the fragments Cacheable: 37 milliseconds and 8 cores. Nine times faster, and the price is that anything user-specific leaks.  
-Rung 3, cache the assets at the edge: from 8 cores to 2. That surprised us. Most of a first visit was never rendering; it was Liferay serving 55 static files.  
-Rung 4, cache guest HTML as well: 8 milliseconds, under one core, as long as auth stays out of the cache.  
-Rung 5, pre-rendered files: 3 milliseconds and a tenth of a core, at the price of staleness and cardinality.  
-  
-All on one box with no network, so add your CDN's round trip to the top three. Then 8 against 3 stops mattering. What differs is what stands behind them: the edge needs Liferay for every miss and purge; a static page needs it only at build time.  
-  
-Part 1 climbs to rung 4.  
-Part 2 is rung 5.  
+* The frame for the whole talk: five rungs, one test  
+   200 first visits a second, the HTML plus every file. Left: p95 for the whole page view. Right: CPU of the servers.  
+* Rung 1, stock Liferay: 344 ms, 13 of 20 cores  
+   Close to falling over.  
+* Rung 2, fragments Cacheable: 37 ms, 8 cores  
+   Nine times faster. The price: anything user-specific leaks.  
+* Rung 3, assets at the edge: 8 cores down to 2  
+   That surprised us. Most of a first visit was never rendering; it was Liferay serving 55 static files.  
+* Rung 4, guest HTML as well: 8 ms, under one core  
+   As long as auth stays out of the cache.  
+* Rung 5, pre-rendered files: 3 ms, a tenth of a core  
+   At the price of staleness and cardinality.  
+* One box, no network: add your CDN's round trip to the top three  
+   Then 8 against 3 stops mattering. What differs is what stands behind them: the edge needs Liferay for every miss and purge; a static page needs it only at build time.  
+* Part 1 climbs to rung 4. Part 2 is rung 5.  
   
 IF ASKED (not spoken)  
-Test. k6 open model, 60 s per rate, same weighted pages, Liferay restarted and warmed before each origin ladder. CPU is the mean of the serving containers; k6 is excluded. One 20-core box, k6 included, so the top rungs are bounded by k6. Hypersonic and sidecar Elasticsearch on a small site, so read these as ratios, not capacity. All numbers: RUNG-RESULTS.md.  
-Clean capacity, whole page views: 200, 200, 600, 1,200, about 10,000 a second. HTML alone: 400, 1,200 to 1,500, then 24,800 for both edge and static, where k6 is the limit.  
-CPU per page view: 66 ms, 41, 9.5, 4, 0.6.  
-Rung 1, S0. Every guest request enters the JVM, gets a session and is assembled from scratch. browser.cache.disabled=true sends private, no-store. This is close to the knee, so read 344 as about 300: an earlier run gave 269. At 600 pages a second stock also crashed, out of memory in a fragment render.  
-Rung 2, S2. Thread dumps at the 600 a second step: 179 of 261 runnable threads, 69 percent, parsing fragment FreeMarker. FragmentEntryFragmentRenderer returns cached output before any processor runs, keyed by link, locale and experience. No user in the key, hence the leak. S2 also changed heap, Ehcache, Hikari and connector. A stock run with Cacheable left on by accident matched it up to 200 pages a second and was then stopped; above that we rest on the thread dumps. Gains appear only under load: 30 against 29 ms at 20 page views a second, 30 against 25 at 80, HTML 17 against 17 ms at 100 pages a second. At 400 pages a second, HTML: 90 to 13 ms, 12.4 to 2.1 cores. Single node, so cluster invalidation is untested.  
-Rung 3. S3 plus Varnish with guest HTML passed to Liferay. Liferay falls to 1.3 cores, what HTML alone costs. The 6.9 cores it saved, 84 percent, were static files. This is the worst case, an empty browser cache; repeat visitors fetch fewer. Page weight drops from 2 MB to 625 KB because the VCL compresses assets, Liferay's GZipFilter is off.  
-Rung 4, S3 plus S4. browser.cache.disabled=false removes no-store for guests. Set-Cookie stays, so the VCL strips Cookie in and Set-Cookie out, bypasses on auth cookies, TTL 60 s, grace 1 h. Liferay idles at 0.05 cores.  
-Rung 5, S6. The fidelity build on nginx. A lighter page by design: 4.6 requests and 96 KB against 56 and 533. Sign-in and forms still need the portal.  
-Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC ties G1 to 800 pages a second, uses a core more at 1,200, and both are clean to 1,200. Crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, from a runaway fragment render (one 2 GB string), trigger unknown, not a GC verdict. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.  
-One that paid: search highlighting off, on its own slide after the cost slide.
+* Test. k6 open model, 60 s per rate, same weighted pages, Liferay restarted and warmed before each origin ladder. CPU is the mean of the serving containers; k6 is excluded. One 20-core box, k6 included, so the top rungs are bounded by k6. Hypersonic and sidecar Elasticsearch on a small site, so read these as ratios, not capacity. All numbers: RUNG-RESULTS.md.  
+* Clean capacity, whole page views: 200, 200, 600, 1,200, about 10,000 a second. HTML alone: 400, 1,200 to 1,500, then 24,800 for both edge and static, where k6 is the limit.  
+* CPU per page view: 66 ms, 41, 9.5, 4, 0.6.  
+* Rung 1, S0. Every guest request enters the JVM, gets a session and is assembled from scratch. browser.cache.disabled=true sends private, no-store. This is close to the knee, so read 344 as about 300: an earlier run gave 269. At 600 pages a second stock also crashed, out of memory in a fragment render.  
+* Rung 2, S2. Thread dumps at the 600 a second step: 179 of 261 runnable threads, 69 percent, parsing fragment FreeMarker. FragmentEntryFragmentRenderer returns cached output before any processor runs, keyed by link, locale and experience. No user in the key, hence the leak. S2 also changed heap, Ehcache, Hikari and connector. A stock run with Cacheable left on by accident matched it up to 200 pages a second and was then stopped; above that we rest on the thread dumps. Gains appear only under load: 30 against 29 ms at 20 page views a second, 30 against 25 at 80, HTML 17 against 17 ms at 100 pages a second. At 400 pages a second, HTML: 90 to 13 ms, 12.4 to 2.1 cores. Single node, so cluster invalidation is untested.  
+* Rung 3. S3 plus Varnish with guest HTML passed to Liferay. Liferay falls to 1.3 cores, what HTML alone costs. The 6.9 cores it saved, 84 percent, were static files. This is the worst case, an empty browser cache; repeat visitors fetch fewer. Page weight drops from 2 MB to 625 KB because the VCL compresses assets, Liferay's GZipFilter is off.  
+* Rung 4, S3 plus S4. browser.cache.disabled=false removes no-store for guests. Set-Cookie stays, so the VCL strips Cookie in and Set-Cookie out, bypasses on auth cookies, TTL 60 s, grace 1 h. Liferay idles at 0.05 cores.  
+* Rung 5, S6. The fidelity build on nginx. A lighter page by design: 4.6 requests and 96 KB against 56 and 533. Sign-in and forms still need the portal.  
+* Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC ties G1 to 800 pages a second, uses a core more at 1,200, and both are clean to 1,200. Crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, from a runaway fragment render (one 2 GB string), trigger unknown, not a GC verdict. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.  
+* One that paid: search highlighting off, slide 17.
 
 ## 5. A stock guest page is uncacheable. Twice.
 
-[3:15–4:15 · 1:00] Live demo here, 30 seconds: curl your own Liferay. Commands: docs/demos/demo1-curl.md. Fallback video: deck/recordings/demo1-curl.mp4. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page, along with Pragma and Expires. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies: JSESSIONID, COOKIE_SUPPORT and GUEST_LANGUAGE_ID. Either the headers or the cookies stop a CDN that follows them from caching the page, unless you override it. session.disabled was last present in 7.4.0-ga1, with no replacement. The usual workaround is stripping the cookie at the edge. And Liferay deleted its own page cache in 2024: in their tests its hit ratio was "always 0, since none of our test URLs are cacheable", and the commit calls it "really useless". The edge is what's left. (CacheFilter, gone at 7.4.3.123; brianchandotcom/liferay-portal PRs 151255 and 151316.) If asked about SERVER_ID: Liferay-hosted sites send it, stock does not, and it is not in the portal source. In our lab: 100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.
+[3:15–4:15 · 1:00]  
+* DEMO, 30 seconds: curl your own Liferay  
+   Commands: docs/demos/demo1-curl.md. Fallback video: deck/recordings/demo1-curl.mp4.  
+* The headers say no-store  
+   It comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page, along with Pragma and Expires.  
+* The cookies, independently, are the second reason  
+   ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies: JSESSIONID, COOKIE_SUPPORT and GUEST_LANGUAGE_ID.  
+* Either one stops a CDN that follows them  
+   Unless you override it. session.disabled was last present in 7.4.0-ga1, with no replacement. The usual workaround is stripping the cookie at the edge.  
+* Liferay deleted its own page cache in 2024  
+   In their tests its hit ratio was "always 0, since none of our test URLs are cacheable", and the commit calls it "really useless". The edge is what's left. (CacheFilter, gone at 7.4.3.123; brianchandotcom/liferay-portal PRs 151255 and 151316.)  
+* Our lab shows the same  
+   100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.  
+  
+IF ASKED (not spoken)  
+* What about SERVER_ID?  
+   Liferay-hosted sites send it, stock does not, and it is not in the portal source.
 
 ## 6. Check the app tier's CPU first
 
-[4:15–5:15 · 1:00 · if behind: cut the login and IdP numbers] Liferay's own benchmark, one node, AMD Epyc, 8 cores, 16 vCPU, 64 GB. 25,000 concurrent users on plain web content, 11,000 on an Asset Publisher page, 93 to 94 percent CPU at the inflection, on a one-server test. The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading. If someone has read the PDF: its summary says 15,000, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table. Bonus fact: native login degrades past about 400 concurrent attempts; with native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design. Caveats: vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views. Our lab agrees: on one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing. Takeaway: check app-tier CPU before you upsize your database.
+[4:15–5:15 · 1:00 · if behind: cut the login and IdP numbers]  
+* Liferay's own benchmark, one node  
+   AMD Epyc, 8 cores, 16 vCPU, 64 GB.  
+* 25,000 users on web content, 11,000 on Asset Publisher  
+   Concurrent users, 93 to 94 percent CPU at the inflection, on a one-server test.  
+* Native login degrades past about 400 concurrent attempts  
+   With native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design.  
+* Caveats  
+   Vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views.  
+* Our lab agrees  
+   On one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing.  
+* Takeaway: check app-tier CPU before you upsize your database  
+  
+IF ASKED (not spoken)  
+* Which server do those CPU columns mean?  
+   The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading.  
+* Doesn't the PDF say 15,000?  
+   Its summary does, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table.
 
 ## 7. Remove the noise first
 
-[5:15–7:45 · 2:30] Small, honest gains. index.on.startup false, session tracker off, Tomcat JSP development false, which is Liferay's advice and which our measured runs did not apply, GZipFilter left off, JDK 21 with G1, and make sure portal-developer.properties is not loaded in production. S1 exists so every later stage measures the real thing. Measured: at 10 requests a second S1 changed nothing measurable; under load the four-page guest browse p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound. Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene. If asked about ZGC: we tested Generational ZGC against G1 and it gave no gain. It tied up to 800 pages a second and used about a core more at 1,200. Two of 40 ZGC starts crashed, but on a runaway fragment render, not on GC: one 2 GB string from jsoup. Stock hit the same stack, G1 at 6 GB has not in 49 starts, and we don't know the trigger.
+[5:15–7:45 · 2:30]  
+* Small, honest gains  
+   S1 exists so every later stage measures the real thing.  
+* index.on.startup=false  
+   Don't reindex the whole search index on every restart. Already the default, but old checklists still list it.  
+* session.tracker.memory.enabled=false  
+   Otherwise every click of every live session stays in heap, purely to fill the Live Sessions admin screen.  
+* Tomcat JSP development=false  
+   Stops re-checking ROOT's JSPs every 4 seconds. This is Liferay's advice, and our measured runs did not apply it.  
+* GZipFilter left off  
+   Compression belongs at the proxy or edge, not in the JVM.  
+* JDK 21 with G1  
+   Remove old CMS flags: a JVM given them refuses to start. We tested ZGC as well, and it gave no gain.  
+* No portal-developer.properties in production  
+   It flips theme.css.fast.load, javascript.fast.load and the minifier to debug values all at once.  
+* Measured: 49 to 35 ms at best  
+   At 10 requests a second S1 changed nothing measurable. Under load the four-page guest browse p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound.  
+* Guest pages are still not cacheable  
+   Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene.  
+  
+IF ASKED (not spoken)  
+* What about ZGC?  
+   We tested Generational ZGC against G1 and it gave no gain. It tied up to 800 pages a second and used about a core more at 1,200. Two of 40 ZGC starts crashed, but on a runaway fragment render, not on GC: one 2 GB string from jsoup. Stock hit the same stack, G1 at 6 GB has not in 49 starts, and we don't know the trigger.
 
 ## 8. Cache the fragments, not the pages
 
-[7:45–11:15 · 3:30 · if behind: cut the Cluster Link internals] Entity and finder cache sizing per hot entity is the usual advice, and on paper the biggest query-elimination lever. DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema. Cluster Link: replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery. Fragment and Web Content template Cacheable checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not. HikariCP: the shipped pool of 180 is already above the deadlock floor of maxThreads plus one, so size it from monitoring, not by a multiple. Hibernate L2 cache does not exist in Liferay; skip it. Measured: at low load it is a tie, 17 against 17 milliseconds at 100 pages a second. Under load the gap opens: at 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores to 2.1. Clean capacity from 400 to 1,200 pages a second. Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates. Our lab could not test entity sizing fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load. Cacheable is the single biggest lever we found for rendering pages. But every request still reaches the JVM.
+[7:45–11:15 · 3:30 · if behind: cut the Cluster Link internals]  
+* Entity and finder cache sizing per hot entity  
+   The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.  
+* On 2025.Q2, rewrite your Ehcache XML  
+   DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema.  
+* Cluster Link: leave replication off  
+   replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery.  
+* Cacheable checkboxes: audit first  
+   Fragment and Web Content template checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not.  
+* HikariCP: size it from monitoring, not by a multiple  
+   The shipped pool of 180 is already above the deadlock floor of maxThreads plus one.  
+* Skip Hibernate L2 cache  
+   It does not exist in Liferay.  
+* Measured: a tie at low load, a big gap under load  
+   17 against 17 milliseconds at 100 pages a second. At 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores to 2.1. Clean capacity from 400 to 1,200 pages a second.  
+* Why it works  
+   Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates.  
+* Cacheable is the single biggest lever we found for rendering pages  
+   But every request still reaches the JVM.
 
 ## 9. Assets aren't slow, but they eat the CPU
 
-[11:15–14:15 · 3:00] cdn.host.https plus cdn.dynamic.resources.enabled covers theme and module JS and CSS, the combo servlet, ES modules and portal images. It does not touch Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Documents and Media has its own Cache Control setting. The first change that makes a guest page describable as cacheable is browser.cache.disabled=false, keeping browser.cache.signed.in.disabled=true. Regenerate Adaptive Media for existing content; lazy-load everything except the LCP image. We did not measure cdn.host itself: there is no CDN in the lab, and rung 3 is Varnish on the same hostname. Measured: S3 changes headers, not milliseconds. Where assets do matter is CPU: on a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3. TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero, and the brochure PDF to public, max-age 86400. The Set-Cookie is still there, which is why the edge must strip it. Gotcha found on 2026.Q1: the D&amp;M Cache Control PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing.
+[11:15–14:15 · 3:00]  
+* cdn.host.https plus cdn.dynamic.resources.enabled  
+   Covers theme and module JS and CSS, the combo servlet, ES modules and portal images. We did not measure cdn.host itself: there is no CDN in the lab, and rung 3 is Varnish on the same hostname.  
+* It does not touch everything  
+   Not Documents and Media, Adaptive Media, portlet resource URLs, or page HTML.  
+* Documents and Media: its own Cache Control setting  
+   Gotcha found on 2026.Q1: the PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing.  
+* browser.cache.disabled=false  
+   The first change that makes a guest page describable as cacheable.  
+* browser.cache.signed.in.disabled=true, keep it  
+   Signed-in pages keep sending private, no-cache, no-store.  
+* Regenerate Adaptive Media for existing content  
+* Lazy-load everything except the LCP image  
+* Measured: S3 changes headers, not milliseconds  
+   TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero, and the brochure PDF to public, max-age 86400.  
+* Where assets do matter is CPU  
+   On a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3.  
+* Set-Cookie is still there  
+   Which is why the edge must strip it.
 
 ## 10. Two rules, bypass first
 
-[14:15–15:00 · 0:45] The core of Part 1. Rule 1: bypass when any auth cookie is present, COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD. Rule 2, for anonymous GETs: strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass. Show the VCL in matrix/varnish/default.vcl. Bypass comes first here because return pass ends evaluation. Cloudflare is the reverse: the last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone. SSO warning: an SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.
+[14:15–15:00 · 0:45]  
+* The core of Part 1  
+   Show the VCL in matrix/varnish/default.vcl.  
+* Rule 1: bypass on any auth signal  
+   COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD.  
+* Rule 2: anonymous GETs get cached  
+   Strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass.  
+* Bypass comes first in Varnish  
+   Because return pass ends evaluation.  
+* Cloudflare is the reverse  
+   The last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone.  
+* SSO warning  
+   An SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.
 
 ## 11. Get rule 1 wrong and it's a data breach.
 
-[15:00–15:45 · 0:45] Do not skip this. One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too. We reproduced the mechanism in the lab: an OIDC user holds none of the bypass cookies, and on a Varnish model of these rules the next anonymous visitor got their name, email and authToken. Our own VCL stayed clean because it strips Cookie before the origin. Password logins are covered; SSO logins are not. Cloudflare's own Cache Everything docs say visitors may receive information not intended for them. Defence in depth: origin keeps Cache-Control private on signed-in responses, though a Cloudflare override TTL ignores it, browser TTL stays bypass even when edge TTL is long, and nothing on a public page may need authToken. Optional 45-second demo on a throwaway zone with a fake user.
+[15:00–15:45 · 0:45 · do not skip this]  
+* What goes wrong  
+   One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too.  
+* We reproduced the mechanism in the lab  
+   An OIDC user holds none of the bypass cookies, and on a Varnish model of these rules the next anonymous visitor got their name, email and authToken. Our own VCL stayed clean because it strips Cookie before the origin.  
+* Password logins are covered; SSO logins are not  
+* Cloudflare warns about it too  
+   Its own Cache Everything docs say visitors may receive information not intended for them.  
+* Defence in depth  
+   Origin keeps Cache-Control private on signed-in responses, though a Cloudflare override TTL ignores it, browser TTL stays bypass even when edge TTL is long, and nothing on a public page may need authToken.  
+* Optional 45-second demo  
+   On a throwaway zone with a fake user.
 
 ## 12. S4 result: guest traffic at the edge
 
-[15:45–17:45 · 2:00, including the 90-second demo] Demo: Varnish in front of the same Liferay, the same mix at about 120 requests a second. Measured, not mocked: the guest browse journey, four pages, p95 went from 49 milliseconds at S0, 21 at S3, to 2 behind Varnish, minus 96 percent overall. The whole mix went from 521 to 6 milliseconds. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses; the 4,902 passes are sign-in, the APIs and /c/ URLs. The number that matters most is the third one: sign-in stays at 0 percent edge hit and its signed-in page stays private, no-cache, no-store. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. The real run found a bug the mock never could: the login redirect page was cached with its Set-Cookie stripped, so every login through the edge failed with 403. Never cache the login portlet's pages. Commands: docs/demos/demo2-varnish.md. Fallback video: deck/recordings/demo2-varnish.mp4. The demo runs the mix for only 30 seconds, so its numbers differ: the video shows 8 milliseconds for the mix, 3 for guest browse and 96 requests a second. The slide's numbers are the full campaign.
+[15:45–17:45 · 2:00, including the 90-second demo]  
+* DEMO: Varnish in front of the same Liferay  
+   Commands: docs/demos/demo2-varnish.md. Fallback video: deck/recordings/demo2-varnish.mp4. The demo runs the mix for only 30 seconds, so its numbers differ: the video shows 8 milliseconds for the mix, 3 for guest browse and 96 requests a second. The slide's numbers are the full campaign, the same mix at about 120 requests a second.  
+* Guest browse: 49 to 21 to 2 milliseconds  
+   Measured, not mocked: the four-page journey's p95 at S0, S3 and behind Varnish, minus 96 percent overall. The whole mix went from 521 to 6 milliseconds.  
+* Varnish counted 18,656 hits and 16 misses  
+   Across the whole S4 campaign. The 4,902 passes are sign-in, the APIs and /c/ URLs.  
+* The number that matters most: sign-in stays at 0 percent edge hit  
+   Its signed-in page stays private, no-cache, no-store. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds.  
+* Never cache the login portlet's pages  
+   The real run found a bug the mock never could: the login redirect page was cached with its Set-Cookie stripped, so every login through the edge failed with 403.
 
 ## 13. The edge is the step that counts
 
-[17:45–18:30 · 0:45] Same mix at every stage, about 120 requests a second, p95 per flow on a log scale. S0 to S3 is the traditional tuning: the four-page guest browse goes from 49 to 21 milliseconds, a 2.3 times gain, search from about a second to 650 milliseconds. Real, but linear. S4 puts Varnish in front and every guest flow drops to 2 milliseconds: guest browse, Asset Publisher and search alike, because the VCL caches the normalised query string. The fourth panel is sign-in. It never leaves the origin, that is rule 1 holding, and it only gets faster at S4 because the origin has spare CPU: Liferay went from about 10 cores to 1.9 under the same load. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses.
+[17:45–18:30 · 0:45]  
+* How to read the chart  
+   Same mix at every stage, about 120 requests a second, p95 per flow on a log scale.  
+* S0 to S3, traditional tuning: real, but linear  
+   The four-page guest browse goes from 49 to 21 milliseconds, a 2.3 times gain, search from about a second to 650 milliseconds.  
+* S4: every guest flow drops to 2 milliseconds  
+   Guest browse, Asset Publisher and search alike, because the VCL caches the normalised query string. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses.  
+* Fourth panel, sign-in: it never leaves the origin  
+   That is rule 1 holding. It only gets faster at S4 because the origin has spare CPU: Liferay went from about 10 cores to 1.9 under the same load.
 
 ## 14. How far each stage goes
 
-[18:30–19:15 · 0:45] Then we stopped being polite and stepped the rate up until each configuration broke. Clean capacity means under one percent dropped, under one percent errors, every flow's p95 under two seconds. Stock Liferay: 400 guest pages a second. At 600 it has fallen over, and the thread dumps there say why: 69 percent of busy request threads were re-parsing fragment FreeMarker templates. Mark the fragments Cacheable and tune the rest: 1,200 a second, limited by the host's CPU. That held in all four runs; 1,500 stayed clean in two of the four, so 1,200 is the number we trust. Put Varnish in front: 24,800 a second, and that is the lab's limit, not Varnish's. k6 needed 14 of the 20 cores, Varnish used 2.8, and Liferay sat at 0.2 cores creating no sessions. Raising our 2,000-thread limit on Varnish to 5,000 changed nothing, and static nginx stopped at the same number, so the limit is k6. Twenty times the tuned origin, sixty times stock.
+[18:30–19:15 · 0:45]  
+* We stepped the rate up until each configuration broke  
+   Clean capacity means under one percent dropped, under one percent errors, every flow's p95 under two seconds.  
+* Stock Liferay: 400 guest pages a second  
+   At 600 it has fallen over, and the thread dumps there say why: 69 percent of busy request threads were re-parsing fragment FreeMarker templates.  
+* Fragments Cacheable plus the rest tuned: 1,200 a second  
+   Limited by the host's CPU. That held in all four runs; 1,500 stayed clean in two of the four, so 1,200 is the number we trust.  
+* Varnish in front: 24,800 a second, the lab's limit, not Varnish's  
+   k6 needed 14 of the 20 cores, Varnish used 2.8, and Liferay sat at 0.2 cores creating no sessions. Raising our 2,000-thread limit on Varnish to 5,000 changed nothing, and static nginx stopped at the same number, so the limit is k6.  
+* Twenty times the tuned origin, sixty times stock
 
 ## 15. Purge by tag, not by URL
 
-[19:15–20:15 · 1:00] A ModelListener on JournalArticle, Layout and BlogsEntry fires a purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version. That is the design: the module in matrix/S5-edge-purge is an unbuilt sketch, with Varnish and Cloudflare purgers. It must also purge when content stops being approved, or takedowns stay cached until the TTL. k6/publish-to-fresh.js measures publish to fresh-at-edge in milliseconds. Measured: PATCH a News title while polling origin and edge every 250 milliseconds. TTL alone, 60 seconds: the edge served the old title for 55.7 seconds. A BAN sent by script right after the publish, which is what the listener would send: fresh within one 250 millisecond poll, with a 17 to 19 millisecond gap between the origin and edge requests, over three runs. Say what is missing: Publications has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found, and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects. Classic web content still needs Java.
+[19:15–20:15 · 1:00]  
+* The design: a ModelListener purges after commit  
+   On JournalArticle, Layout and BlogsEntry it fires a purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version.  
+* It is only a design  
+   The module in matrix/S5-edge-purge is an unbuilt sketch, with Varnish and Cloudflare purgers.  
+* Also purge when content stops being approved  
+   Or takedowns stay cached until the TTL.  
+* How we measured  
+   k6/publish-to-fresh.js measures publish to fresh-at-edge in milliseconds: PATCH a News title while polling origin and edge every 250 milliseconds.  
+* TTL alone, 60 seconds: old title for 55.7 seconds  
+* A BAN right after the publish: fresh within one poll  
+   Sent by script, which is what the listener would send: fresh within one 250 millisecond poll, with a 17 to 19 millisecond gap between the origin and edge requests, over three runs.  
+* Say what is missing: classic web content still needs Java  
+   Publications has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found, and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects.
 
 ## 16. One sign-in costs a hundred page renders
 
-[20:15–21:15 · 1:00 · if behind: skip this slide and say its one line on the wall slide] Divide the container's CPU by the rate and you get the price list. A guest page from the tuned origin costs about 9 milliseconds of CPU; from Varnish about a tenth of a millisecond. A search costs 350 to 500, about fifty HTML pages, and 90 percent of it is Elasticsearch. A sign-in, the four requests from form to signed-in page, costs 650 milliseconds to over a second, about a hundred HTML pages, and against a whole first visit, the ladder's page view, about twenty. The thread dumps show 100 percent of busy threads in PBKDF2 password hashing, which is slow on purpose. That is why the mixed workload behind Varnish tops out at 400 journeys a second while guest pages alone reach 24,800: three percent sign-ins eat the origin. The tuned origin peaks at 25 searches and 15 sign-ins a second. The edge cannot touch sign-ins, but one setting moves search a lot, and that is the next slide.
+[20:15–21:15 · 1:00 · if behind: skip this slide and say its one line on the wall slide]  
+* The price list  
+   Divide the container's CPU by the rate.  
+* Guest page: about 9 milliseconds of CPU  
+   From the tuned origin; from Varnish about a tenth of a millisecond.  
+* Search: about fifty HTML pages  
+   It costs 350 to 500 milliseconds, and 90 percent of it is Elasticsearch.  
+* Sign-in: about a hundred HTML pages  
+   The four requests from form to signed-in page cost 650 milliseconds to over a second; against a whole first visit, the ladder's page view, about twenty. The thread dumps show 100 percent of busy threads in PBKDF2 password hashing, which is slow on purpose.  
+* Three percent sign-ins eat the origin  
+   That is why the mixed workload behind Varnish tops out at 400 journeys a second while guest pages alone reach 24,800. The tuned origin peaks at 25 searches and 15 sign-ins a second.  
+* Bridge to the next slide  
+   The edge cannot touch sign-ins, but one setting moves search a lot.
 
 ## 17. One setting, twelve times the search
 
-[21:15–22:15 · 1:00 · if behind: skip this slide and say over the cost slide "turn off search highlighting: twelve times the capacity, same results"] One more lever. The thread dumps showed highlighting among the hottest work in Elasticsearch: working out which words to put in bold. So we turned it off on the Search Results widget, one setting, and reran the same ladder. Clean capacity went from 25 to 300 searches a second. At 20 a second, p95 went from 687 to 38 milliseconds and CPU from 9.5 cores to 0.8. What did we lose? Nothing. Same result counts, same titles, same order, 180 bytes off the page, because our compact display template never showed a snippet. We were paying for highlights nobody could see. So look at your template. If it shows no snippets, turn this off today. If it does, you lose the bold terms and, from reading the source, probably the text around the match too, so test it. If asked: the preference is highlightEnabled. We compared three search terms. Single requests at idle, on, off, on again: 210, 78, 295 milliseconds. At 400 searches a second 1.5 percent were dropped, so 300 is the clean figure. This is the sidecar Elasticsearch on a small index, so your factor will differ. Caching popular search URLs at the edge still applies on top. Numbers in RUNG-RESULTS.md.
+[21:15–22:15 · 1:00 · if behind: skip this slide and say over the cost slide "turn off search highlighting: twelve times the capacity, same results"]  
+* Turn highlighting off on the Search Results widget  
+   One setting. The thread dumps showed highlighting among the hottest work in Elasticsearch: working out which words to put in bold.  
+* Clean capacity went from 25 to 300 searches a second  
+   Same ladder, rerun. At 20 a second, p95 went from 687 to 38 milliseconds and CPU from 9.5 cores to 0.8.  
+* What did we lose? Nothing  
+   Same result counts, same titles, same order, 180 bytes off the page, because our compact display template never showed a snippet. We were paying for highlights nobody could see.  
+* Look at your template  
+   If it shows no snippets, turn this off today. If it does, you lose the bold terms and, from reading the source, probably the text around the match too, so test it.  
+  
+IF ASKED (not spoken)  
+* Which preference?  
+   highlightEnabled.  
+* How did you compare?  
+   Three search terms. Single requests at idle, on, off, on again: 210, 78, 295 milliseconds. At 400 searches a second 1.5 percent were dropped, so 300 is the clean figure. Numbers in RUNG-RESULTS.md.  
+* Will I get twelve times?  
+   This is the sidecar Elasticsearch on a small index, so your factor will differ. Caching popular search URLs at the edge still applies on top.
 
 ## 18. The edge makes the fast path fast.
 
-[22:15–24:15 · 2:00] The wall. Be blunt about the limits we just imposed: locale must be in the URL or the cache serves the wrong language; personalisation moves to late hydration; forms and action URLs must leave guest pages; every publish needs a purge; a cold or purged page still costs a full JVM render, in our lab 15 to 50 milliseconds for a simple page and about a second for search under load, with a stampede on the popular ones; sign-in never leaves the origin, and it capped the edge mix at 400 journeys a second; search reaches the origin for every query the edge has not seen; and the origin still runs 24/7 at full size for the misses. For marketing, docs, community and catalogue sites, the honest question is: why is there a JVM in the request path at all?
+[22:15–24:15 · 2:00]  
+* The wall: be blunt about the limits we just imposed  
+* Locale must be in the URL  
+   Or the cache serves the wrong language.  
+* Personalisation moves to late hydration  
+* Forms and action URLs must leave guest pages  
+* Every publish needs a purge  
+* A cold or purged page still costs a full JVM render  
+   In our lab 15 to 50 milliseconds for a simple page and about a second for search under load, with a stampede on the popular ones.  
+* Sign-in never leaves the origin  
+   It capped the edge mix at 400 journeys a second.  
+* Search reaches the origin for every query the edge has not seen  
+* The origin still runs 24/7 at full size  
+   For the misses.  
+* The honest question: why is there a JVM in the request path at all?  
+   For marketing, docs, community and catalogue sites.
 
 ## 19. Don't render it at all.
 
-[24:15–24:45 · 0:30] Pivot. For content-heavy, mostly anonymous sites: keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, with an AI orchestrator in charge of the regeneration and on a strict token budget. The backdrop is the idea: a wall of pages rendered once, ahead of time.
+[24:15–24:45 · 0:30]  
+* Pivot: for content-heavy, mostly anonymous sites  
+   Keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, with an AI orchestrator in charge of the regeneration and on a strict token budget.  
+* The backdrop is the idea  
+   A wall of pages rendered once, ahead of time.
 
 ## 20. Draw the line by cardinality
 
-[24:45–25:45 · 1:00] Scope first, or this sounds like "throw away your portal". Precompute when the output space is small and the read-to-write ratio is high. Render live when output is genuinely per user. Islands and late hydration let you draw that line inside a page instead of per page. Everything editors love stays in Liferay: page editor, workflow, permissions, Objects, translations. What leaves is the request path.
+[24:45–25:45 · 1:00]  
+* Scope first  
+   Or this sounds like "throw away your portal".  
+* Precompute when the output space is small and the read-to-write ratio is high  
+* Render live when output is genuinely per user  
+* Islands and late hydration  
+   They let you draw that line inside a page instead of per page.  
+* What leaves is the request path  
+   Everything editors love stays in Liferay: page editor, workflow, permissions, Objects, translations.
 
 ## 21. Authored in Liferay, served as files
 
-[25:45–27:15 · 1:30] The pipeline: plain JavaScript modules on Node. Fetch pulls a delta from Headless Delivery with filter dateModified gt lastRun. Plan diffs content hashes and writes a small plan.json. The AI orchestrator reads only that plan: nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget. Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index. The report lists exactly which URLs and cache tags to purge. Triggered by a Liferay webhook or Object Action, or a timer every 15 minutes.
+[25:45–27:15 · 1:30]  
+* The pipeline: plain JavaScript modules on Node  
+* Fetch  
+   Pulls a delta from Headless Delivery with filter dateModified gt lastRun.  
+* Plan  
+   Diffs content hashes and writes a small plan.json.  
+* The AI orchestrator reads only that plan  
+   Nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget.  
+* Build  
+   Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index.  
+* Report  
+   Lists exactly which URLs and cache tags to purge.  
+* Trigger  
+   A Liferay webhook or Object Action, or a timer every 15 minutes.
 
 ## 22. Live demo against liferay.dev
 
-[27:15–31:15 · 4:00] Commands: docs/demos/demo3-regenerate.md. Fallback video: deck/recordings/demo3-regenerate.mp4. Step 1: node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API: 136 pages in about 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds; 3.5 MB. Step 2: run it again with no flags: nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check. Most cycles cost nothing. Step 3: edit one post, rerun: plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page. Step 4: link checker, zero broken of about 4,020 internal links; anything the static site doesn't own links back to the portal.
+[27:15–31:15 · 4:00]  
+* DEMO  
+   Commands: docs/demos/demo3-regenerate.md. Fallback video: deck/recordings/demo3-regenerate.mp4.  
+* Step 1, first build: 136 pages, 3.5 MB  
+   node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API. About 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds.  
+* Step 2, run it again: most cycles cost nothing  
+   No flags. Nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check.  
+* Step 3, edit one post and rerun: four URLs to purge  
+   Plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page.  
+* Step 4, link checker: zero broken  
+   Of about 4,020 internal links; anything the static site doesn't own links back to the portal.
 
 ## 23. Same post, two deliveries
 
-[31:15–32:15 · 1:00] curl both, the same blog post on liferay.dev, measured 2026-11-02. The portal's page is 202 kB with 35 script tags and an authToken in the body. The static page is 23 kB, two scripts, no authToken, and headers Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.
+[31:15–32:15 · 1:00]  
+* curl both  
+   The same blog post on liferay.dev, measured 2026-11-02.  
+* Portal: 202 kB, 35 script tags  
+   And an authToken in the body.  
+* Static: 23 kB, two scripts  
+   No authToken.  
+* The static headers  
+   Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.
 
 ## 24. Static wins on the page, not the HTML
 
-[32:15–34:15 · 2:00 · if behind: skip this slide and say "HTML is a tie, the page is twelve times the requests" over the previous slide] Part 1 ended with Varnish in front of Liferay. So is static worth it, if the edge already caches the HTML? We ran the same guests against both, on the same box, on the same day. For the HTML alone it's a tie: both about 25,000 requests a second at a p95 around 70 milliseconds, and in both cases the limit was the load generator. nginx used 1.1 cores, Varnish 2.6, because Liferay's HTML is four times bigger. The difference is the page around the HTML. A first visit to a Liferay page is 56 requests: on the home page 41 JavaScript files and 8 stylesheets. The static page is four or five: the HTML, one stylesheet, the images. At the same 1,000 page views a second that is 12 times the requests, five and a half times the bytes, ten times the edge CPU, and a p95 of 13 against 2 milliseconds for the whole page view, on loopback, before a single network round trip. Pushed until it breaks, the Varnish setup is clean at 1,200 page views a second and fails at 1,500, with the box out of CPU: k6 on 10 cores, Varnish on 4.4. Static stayed clean to 10,000, and there the limit was k6 again. So neither figure is a server limit: Varnish was serving 67,000 requests a second and nginx 46,000. The eightfold gap is page size on a shared box. One finding on the way: our VCL stored CSS and JS uncompressed, 1.9 MB per page view, because Liferay's GZip filter was off and the asset branch never set do_gzip. Check that your edge compresses the assets, not just the HTML.
+[32:15–34:15 · 2:00 · if behind: skip this slide and say "HTML is a tie, the page is twelve times the requests" over the previous slide]  
+* The question: is static worth it, if the edge already caches the HTML?  
+   Part 1 ended with Varnish in front of Liferay. We ran the same guests against both, on the same box, on the same day.  
+* HTML alone is a tie  
+   Both about 25,000 requests a second at a p95 around 70 milliseconds, and in both cases the limit was the load generator. nginx used 1.1 cores, Varnish 2.6, because Liferay's HTML is four times bigger.  
+* The difference is the page around the HTML  
+   A first visit to a Liferay page is 56 requests: on the home page 41 JavaScript files and 8 stylesheets. The static page is four or five: the HTML, one stylesheet, the images.  
+* At 1,000 page views a second: 12 times the requests  
+   Five and a half times the bytes, ten times the edge CPU, and a p95 of 13 against 2 milliseconds for the whole page view, on loopback, before a single network round trip.  
+* Pushed until it breaks: 1,200 against 10,000 page views a second  
+   The Varnish setup is clean at 1,200 and fails at 1,500, with the box out of CPU: k6 on 10 cores, Varnish on 4.4. Static stayed clean to 10,000, and there the limit was k6 again.  
+* Neither figure is a server limit  
+   Varnish was serving 67,000 requests a second and nginx 46,000. The eightfold gap is page size on a shared box.  
+* Check that your edge compresses the assets, not just the HTML  
+   A finding on the way: our VCL stored CSS and JS uncompressed, 1.9 MB per page view, because Liferay's GZip filter was off and the asset branch never set do_gzip.
 
 ## 25. tokens
 
-[34:15–37:15 · 3:00] The token-efficiency story. Six mechanisms: plan before model, so no change means no model and no build; hash only the fields that matter, a comment counter ticking is not a change; extraction rules asked once per page layout and cached forever; enrichment keyed by content hash; batching eight posts per call on a cheap model with prompt caching on the system block; and a hard budget with a ledger of every call's tokens and cost. Dry run: about 12 to 16 thousand tokens for 80 posts, roughly three cents, once. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.
+[34:15–37:15 · 3:00]  
+* The token-efficiency story: six mechanisms  
+* 1. Plan before model  
+   No change means no model and no build.  
+* 2. Hash only the fields that matter  
+   A comment counter ticking is not a change.  
+* 3. Extraction rules asked once per page layout  
+   And cached forever.  
+* 4. Enrichment keyed by content hash  
+* 5. Batching  
+   Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.  
+* 6. A hard budget  
+   With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.  
+* Dry run: roughly three cents, once  
+   About 12 to 16 thousand tokens for 80 posts.
 
 ## 26. What you give up
 
-[37:15–40:15 · 3:00] The honest ledger. Search relevance and facets become a Pagefind index built at build time, fully static; link advanced search back to the portal. Comments, forms and ratings become islands posting to Objects or the Headless API, plus a "comment in the portal" link. Sign-in state comes from a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies. Preview and workflow stay in the portal; the static site only sees published content, live within the timer interval or instantly via webhook. Pages that are portlets in disguise are flagged as thin pages and link back. And yes, it's a second stack, but it's a timer, a script and a folder of files. Real story: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list. Your pipeline will meet a broken API; design for it.
+[37:15–40:15 · 3:00]  
+* The honest ledger  
+* Search relevance and facets  
+   Become a Pagefind index built at build time, fully static; link advanced search back to the portal.  
+* Comments, forms and ratings  
+   Become islands posting to Objects or the Headless API, plus a "comment in the portal" link.  
+* Sign-in state  
+   Comes from a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies.  
+* Preview and workflow stay in the portal  
+   The static site only sees published content, live within the timer interval or instantly via webhook.  
+* Portlets in disguise  
+   Flagged as thin pages, and they link back.  
+* Yes, it's a second stack  
+   But it's a timer, a script and a folder of files.  
+* Your pipeline will meet a broken API; design for it  
+   Real story: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list.
 
 ## 27. Pages and AI: the same move
 
-[40:15–41:15 · 1:00] The closing idea. Static generation and AI cost control are the same engineering move: take expensive, repeatable work off the request path, do it at publish time, cache the result, invalidate by event, serve stale on failure, and keep an escape hatch for the genuinely dynamic: islands for pages, a rate-limited live call for AI. Liferay already does this internally for semantic search: documents are embedded at index time, only the query is embedded live, and exact repeats of it are cached per node for about 10 minutes. The market prices it too: batch inference is half price for accepting a 24-hour window. The counter-argument: precompute trades freshness for cost, and fails on cardinality. Content times locale times segment times device can explode.
+[40:15–41:15 · 1:00]  
+* The closing idea: static generation and AI cost control are the same engineering move  
+   Take expensive, repeatable work off the request path, do it at publish time, cache the result, invalidate by event, serve stale on failure.  
+* Keep an escape hatch for the genuinely dynamic  
+   Islands for pages, a rate-limited live call for AI.  
+* Liferay already does this internally for semantic search  
+   Documents are embedded at index time, only the query is embedded live, and exact repeats of it are cached per node for about 10 minutes.  
+* The market prices it too  
+   Batch inference is half price for accepting a 24-hour window.  
+* The counter-argument: precompute trades freshness for cost, and fails on cardinality  
+   Content times locale times segment times device can explode.
 
 ## 28. What is it, and can we have it?
 
-[41:15–42:00 · 0:45] Curl www.liferay.com: it returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header. On 2 November guest pages across the site did too, while /c/portal/login returned private, no-store, so it looks site-wide. Re-run the curl the day before: it has changed once already. The Age runs to many hours against that max-age of 60, so the edge keeps pages far longer than the header says. The header is in neither master nor shipped 2026.q1.12, and we don't know what sets it or who built it. Two asks to the room and to Liferay: what is it and can customers have it, and publish Core Web Vitals data for Liferay sites. Nobody has, so anyone in this room could be first.
+[41:15–42:00 · 0:45]  
+* Before the talk: re-run the curl the day before  
+   It has changed once already.  
+* Curl www.liferay.com  
+   It returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header.  
+* It looks site-wide  
+   On 2 November guest pages across the site did too, while /c/portal/login returned private, no-store.  
+* The edge keeps pages far longer than the header says  
+   The Age runs to many hours against that max-age of 60.  
+* We don't know what it is  
+   The header is in neither master nor shipped 2026.q1.12, and we don't know what sets it or who built it.  
+* Ask 1, to the room and to Liferay: what is it, and can customers have it?  
+* Ask 2: publish Core Web Vitals data for Liferay sites  
+   Nobody has, so anyone in this room could be first.
 
 ## 29. Thank you
 
-[42:00–45:00 · thanks until 42:15, then Q&amp;A] Questions. Prepared answers: Why not a Cloudflare APO equivalent? There is no Liferay analogue; Liferay PaaS is Google Cloud CDN, which a KB article says is limited to one hour by default with no out-of-the-box way to change it, and SaaS is fixed to USE_ORIGIN_HEADERS, so origin headers are the only lever. Why Astro? Static by default, islands, fast builds; Next.js ISR is the alternative for on-demand revalidation. Structured content? Wired by contentStructureId; test it on your own DXP. Model cost if AI is on everywhere? Show the ledger; the budget caps it.
+[42:00–45:00 · thanks until 42:15, then Q&amp;A]  
+* Thank you, then questions  
+  
+PREPARED ANSWERS  
+* Why not a Cloudflare APO equivalent?  
+   There is no Liferay analogue; Liferay PaaS is Google Cloud CDN, which a KB article says is limited to one hour by default with no out-of-the-box way to change it, and SaaS is fixed to USE_ORIGIN_HEADERS, so origin headers are the only lever.  
+* Why Astro?  
+   Static by default, islands, fast builds; Next.js ISR is the alternative for on-demand revalidation.  
+* Structured content?  
+   Wired by contentStructureId; test it on your own DXP.  
+* Model cost if AI is on everywhere?  
+   Show the ledger; the budget caps it.
