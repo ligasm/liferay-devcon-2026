@@ -99,7 +99,7 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 **Order depends on the edge.** In this VCL the bypass comes first, because `return (pass)` ends evaluation. In Cloudflare Cache Rules it's the reverse: the last matching rule wins, so the bypass goes **last**, and the cache rule repeats the auth-cookie exclusions (vendor docs, not tested on a live zone).
 
-**SSO caveat:** `COMPANY_ID` and `ID` are written only by password-style login. SSO auto-login (OIDC, SAML) only sets session attributes, so an SSO user can be signed in with none of these cookies (read from `master`, not run). Our VCL strips `Cookie` before the origin, so that user sees a guest page rather than leaking. A Cloudflare override TTL has no such protection.
+**SSO caveat:** `COMPANY_ID` and `ID` are written only by password-style login. SSO auto-login (OIDC, SAML) only sets session attributes, so an SSO user can be signed in with none of these cookies (measured with OIDC, 2026-11-02; SAML read from `master`, not run). Our VCL strips `Cookie` before the origin, so that user sees a guest page rather than leaking (measured). A Cloudflare override TTL has no such protection: in a Varnish model of those rules, the next anonymous visitor got the user's name, email and `authToken`. Cloudflare itself is untested.
 
 **The breach slide (do not skip):** one wrong character in the bypass is a data breach, not a bug. Defence in depth: origin keeps `private` on signed-in responses, though a Cloudflare override TTL ignores it; browser TTL stays bypass; nothing on a public page may need `authToken`.
 
@@ -172,5 +172,5 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 - [ ] Re-run the `www.liferay.com` curl the day before for slide 28. On 2026-11-02 guest pages were cached with the header, while `/c/portal/login` returned `private, no-store` (`results/curl-checks-2026-11-02/liferay-com-headers.txt`). It has already changed once.
 - [x] Run Demo 1's curl on a stock container and record it (2026-11-02, `results/curl-checks-2026-11-02/stock-guest-headers.txt`): the cookies and headers match slide 5, which abbreviates `Cache-Control` by leaving off `must-revalidate`.
 - [ ] Test the Cloudflare rule set on a throwaway zone, bypass last: it comes from the docs and has never run live.
-- [ ] Put an OIDC user through the lab edge, to confirm the SSO behaviour read from source.
+- [x] Put an OIDC user through the lab edge (2026-11-02, `part1-simulations/results/oidc-check-2026-11-02/`).
 - [ ] Re-check AI prices and vendor plans; the dossier's were checked on 2026-11-02.

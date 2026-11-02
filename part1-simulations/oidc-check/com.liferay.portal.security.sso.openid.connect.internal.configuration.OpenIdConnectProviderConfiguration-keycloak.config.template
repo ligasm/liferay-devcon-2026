@@ -1,0 +1,5 @@
+providerName="keycloak"
+openIdConnectClientId="liferay"
+openIdConnectClientSecret="@OIDC_CLIENT_SECRET@"
+discoveryEndpoint="http://@KEYCLOAK_IP@:8080/realms/lab/.well-known/openid-configuration"
+scopes="openid email profile"

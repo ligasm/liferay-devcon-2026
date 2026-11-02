@@ -98,7 +98,7 @@ The minimum safe pattern is a **two-rule pair, with the bypass last**. In Cloudf
 1. **Cache-everything** for guest HTML, with an explicit Edge TTL override, query-string allow-list (Enterprise only; plans checked 2026-11-02, re-check before presenting), `Vary: Accept-Encoding` only, and the same auth-cookie exclusions as the bypass.
 2. **Bypass** cache when any Liferay auth cookie is present (`COMPANY_ID`, `ID`, `USER_UUID`, `REMEMBER_ME`, `LOGIN`, `PASSWORD`). Never key the bypass on `JSESSIONID`: every guest has one.
 
-**SSO caveat.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies, and the rule pair does not see them. Read from master source, not run. Options, all untested: (a) a marker cookie set from `login.events.post`; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking; (c) no override TTL on SSO sites.
+**SSO caveat.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies, and the rule pair does not see them. Measured with OIDC in the lab (2026-11-02); SAML and token auto-login are read from master source, not run. Options: (a) a marker cookie set from `login.events.post`, untested; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking, tested with OIDC on Varnish; (c) no override TTL on SSO sites, untested.
 
 The cache rule is what strips `Set-Cookie` — which is exactly why the bypass and the exclusions have to be right. Keep `browser.cache.signed.in.disabled=true`: it protects browsers and any cache that honours it. It does **not** protect you at Cloudflare under the cache rule, because *Ignore cache-control header* ignores it. Browser TTL stays at *bypass* even when edge TTL is long. Full expressions in **Part 02 §6.3**, which adds an assets rule between the two.
 
@@ -2119,7 +2119,7 @@ Properties for CDN work:
 ```
 → Eligible for cache, Edge TTL = use cache-control header if present, Browser TTL = respect origin. Set D&M Cache Control to `public` (§2.2): AM responses use the same customizer, so files Guest cannot view keep `private` and stay out of the cache. Not tested on a live zone.
 
-The cookie list is the one the tested VCL uses (`part1-simulations/matrix/varnish/default.vcl`). **SSO caveat:** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Read from master source, not run. Options, all untested: a marker cookie set from `login.events.post`; removing `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking; no override TTL on SSO sites (this rule sets none).
+The cookie list is the one the tested VCL uses (`part1-simulations/matrix/varnish/default.vcl`). **SSO caveat:** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Measured with OIDC in the lab (2026-11-02, Part 02 §6.2); SAML and token auto-login are read from master source, not run. Options, untested unless noted: a marker cookie set from `login.events.post`; removing `Cookie` before the origin fetch (tested with OIDC on Varnish), as our VCL does, so the SSO user sees a guest page rather than leaking; no override TTL on SSO sites (this rule sets none).
 
 ### 2.4 Signed URLs vs public access
 
@@ -2705,7 +2705,7 @@ APO is not a generic feature; it's a Worker plus a CMS plugin that (a) knows whi
 | Cache by device type | Cache key `cache_by_device_type` — all plans |
 | Serve stale while revalidating | `stale-while-revalidate` from origin (§4.7) |
 
-**SSO caveat on the cookie bypass:** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Read from master source, not run. Options, all untested: (a) a marker cookie set from `login.events.post`; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking; (c) no override TTL on SSO sites.
+**SSO caveat on the cookie bypass:** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Measured with OIDC in the lab (2026-11-02); SAML and token auto-login are read from master source, not run. Options: (a) a marker cookie set from `login.events.post`, untested; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking, tested with OIDC on Varnish; (c) no override TTL on SSO sites, untested.
 
 One APO sub-feature *is* directly reusable: **Cache by Device Type** is documented under the APO namespace but is available as a plain cache-key option on all plans ([cache-device-type](https://developers.cloudflare.com/automatic-platform-optimization/reference/cache-device-type/)). Useful if your Liferay theme does server-side device branching (some legacy themes still do).
 
@@ -2988,13 +2988,27 @@ Classify them carefully — this table is the heart of the section:
 
 > 🔴 **This is the single most important correction to make in the talk.** The widespread advice "bypass cache when `JSESSIONID` is present" is *wrong for Liferay*: it wrecks your hit ratio. **`JSESSIONID` cannot tell you who is signed in, because Liferay issues it to everybody. `COMPANY_ID`/`ID` are only a partial signal: they are written by password-style login (`AuthenticatedSessionManagerUtil.login`), not by SSO auto-login. An OIDC or SAML user can be signed in with neither cookie. Never ship the override-TTL rule on an SSO site without a signal that covers SSO.**
 
-**The SSO gap.** The bypass list used in §6.3 is `COMPANY_ID`, `ID`, `USER_UUID`, `REMEMBER_ME`, `LOGIN`, `PASSWORD`, the list the tested VCL uses (`part1-simulations/matrix/varnish/default.vcl`). `COMPANY_ID` and `ID` are written only by password-style login. `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Read from master source, not run. `session.enable.persistent.cookies=false` (default `true`) has the same effect on password logins: the cookies are not written and login still proceeds. The MFA login path was not traced, so `COMPANY_ID`/`ID` under MFA are `[UNVERIFIED]`.
+**The SSO gap.** The bypass list used in §6.3 is `COMPANY_ID`, `ID`, `USER_UUID`, `REMEMBER_ME`, `LOGIN`, `PASSWORD`, the list the tested VCL uses (`part1-simulations/matrix/varnish/default.vcl`). `COMPANY_ID` and `ID` are written only by password-style login. `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Measured with OIDC, below; SAML and token auto-login are read from master source, not run. `session.enable.persistent.cookies=false` (default `true`) has the same effect on password logins: the cookies are not written and login still proceeds. The MFA login path was not traced, so `COMPANY_ID`/`ID` under MFA are `[UNVERIFIED]`.
 
-Options, all untested, none recommended here as proven:
+**Measured on 2026-11-02** with Keycloak, Liferay's shipped OIDC module and a real browser (`part1-simulations/results/oidc-check-2026-11-02/`, S3 lab, Hypersonic):
 
-- (a) A marker cookie set from `login.events.post`, which `MainServlet._loginUser` fires for auto-login too, and bypass on it.
-- (b) Remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking. On Cloudflare that would be a Request Header Transform Rule on guest-cacheable requests. Cloudflare runs those before Cache Rules, but whether Cache Rules then see the original cookie needs a test.
-- (c) No override TTL on SSO sites. This alone gives low hit rates, since the documented `Set-Cookie` behaviour is *"A cache `MISS` will be returned every time"*.
+| Visitor and path | Result |
+|---|---|
+| OIDC login, three times, direct and through Varnish | Holds `JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID`. No bypass cookie |
+| Password login (control) | The same plus `COMPANY_ID` and `ID` |
+| SSO user at the origin, public page | Signed in, `private, no-cache, no-store, must-revalidate`, with name, email and user ID in the HTML |
+| SSO user through our VCL, public page | Looks signed out. No `Cookie` reaches the origin, and a guest sharing that object gets a clean page |
+| SSO user through our VCL, `/group/` page | Signed in, not cached |
+| **Model edge: SSO user, then an anonymous visitor** | **`HIT`: the visitor gets the signed-in page, with name, email, user ID and that session's `authToken`** |
+| Model edge: password user, then an anonymous visitor (control) | `BYPASS`, then a clean guest page |
+
+The model edge is Varnish set up like the Cloudflare rules: same bypass list, cookies forwarded on a miss, override TTL. It is not Cloudflare. It proves the mechanism; that Cloudflare behaves this way still comes from its docs and needs a throwaway zone.
+
+Options, none recommended here as proven:
+
+- (a) A marker cookie set from `login.events.post`, which `MainServlet._loginUser` fires for auto-login too, and bypass on it. Untested.
+- (b) Remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking. Tested on Varnish with OIDC, above. The price is that SSO users look signed out on every public page, and what it does to a member-only page under `/web/` is untested. On Cloudflare that would be a Request Header Transform Rule on guest-cacheable requests. Cloudflare runs those before Cache Rules, but whether Cache Rules then see the original cookie needs a test.
+- (c) No override TTL on SSO sites. Untested. This alone gives low hit rates, since the documented `Set-Cookie` behaviour is *"A cache `MISS` will be returned every time"*.
 
 ### 6.3 Safe rule patterns for Cloudflare
 
@@ -3092,7 +3106,7 @@ Notes on each clause:
 
 - **Guest:** a public page matches the guest HTML rule only. It is cached for 60 s with `Set-Cookie` stripped and not kept in the browser. A guest who has picked up `JSESSIONID` still matches, because that cookie is not on the list. The sign-in path is bypassed at `/c/`, at the login portlet URL and at the POST, so its cookies reach the browser.
 - **Password user:** `COMPANY_ID` and `ID` arrive on the login response. From then on the guest HTML rule does not match, and the bypass rule, being last, wins over the assets rule. Nothing they request is cached. The cost is that their assets also come from the origin. With `session.enable.persistent.cookies=false` this user behaves like the SSO user below, and MFA logins are `[UNVERIFIED]` (§6.2).
-- **SSO user: not safe.** They carry `JSESSIONID` and none of the listed cookies, so their GET of a public page matches the guest HTML rule and not the bypass rule. Cloudflare forwards their cookies on a miss, Liferay renders the signed-in page with `private, no-cache, no-store, must-revalidate`, and *"Ignore cache-control header"* caches it for everyone for 60 s. On a cache hit they get whatever is cached. The tested VCL does not leak here, because it removes `Cookie` before the backend fetch; the user looks signed out on public pages instead. These rules have no such step. On the assets rule, only the origin's headers stand between this user and the shared cache.
+- **SSO user: not safe.** They carry `JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID` and none of the listed cookies (measured with OIDC), so their GET of a public page matches the guest HTML rule and not the bypass rule. Cloudflare forwards their cookies on a miss, Liferay renders the signed-in page with `private, no-cache, no-store, must-revalidate`, and *"Ignore cache-control header"* caches it for everyone for 60 s. A Varnish model of this reproduced the leak (§6.2); Cloudflare itself is untested. On a cache hit they get whatever is cached. The tested VCL does not leak here, because it removes `Cookie` before the backend fetch; the user looks signed out on public pages instead. These rules have no such step. On the assets rule, only the origin's headers stand between this user and the shared cache.
 
 ### 6.4 Defence in depth — do not rely on one rule
 
@@ -3793,7 +3807,7 @@ The session still gets created at origin (you pay the memory), but the *client* 
 - cached pages never give the visitor a session identity, and the next request still hashes to the shared object because anonymous cookies are dropped;
 - users with a Liferay auth cookie are unaffected, because requests carrying `COMPANY_ID`, `ID`, `USER_UUID`, `REMEMBER_ME`, `LOGIN` or `PASSWORD` bypass the cache. Never key on `JSESSIONID`: guests have it.
 
-**SSO caveat.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies, holding only `JSESSIONID`, which this rule discards. Read from master source, not run `[UNVERIFIED]`. Options, all untested: (a) a marker cookie set from `login.events.post`; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking; (c) no override TTL on SSO sites.
+**SSO caveat.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies, holding only `JSESSIONID`, `COOKIE_SUPPORT` and `GUEST_LANGUAGE_ID`, which this rule discards. Measured with OIDC in the lab (2026-11-02); SAML and token auto-login are read from master source, not run. Options: (a) a marker cookie set from `login.events.post`, untested; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking, tested with OIDC on Varnish; (c) no override TTL on SSO sites, untested.
 
 Varnish: use the tested VCL, `part1-simulations/matrix/varnish/default.vcl`. These are the lines that matter, excerpted from it (the "money line" comment is added here):
 
@@ -4399,7 +4413,7 @@ Derive the origin-request-reduction figure from your own numbers (the lab's are 
 | 19 | Static export / SSG (S1/S2) | 🟢 Low–High | Very High | High | Case by case (§8) |
 | 20 | `auth.token.check.enabled=false` | 🔴 Negative | Trivial | **Severe** | **Never** |
 
-**SSO caveat on row 3.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Read from master source, not run. Options, all untested: (a) a marker cookie set from `login.events.post`; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking; (c) no override TTL on SSO sites.
+**SSO caveat on row 3.** `COMPANY_ID` and `ID` are written only by password-style login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login) only sets session attributes, so an SSO user can be signed in with none of these cookies. Measured with OIDC in the lab (2026-11-02); SAML and token auto-login are read from master source, not run. Options: (a) a marker cookie set from `login.events.post`, untested; (b) remove `Cookie` before the origin fetch, as our VCL does, so the SSO user sees a guest page rather than leaking, tested with OIDC on Varnish; (c) no override TTL on SSO sites, untested.
 
 ---
 
@@ -5179,6 +5193,7 @@ Thread pool guidance, verbatim: initial recommendation is **"50 threads"** with 
     <param-name>mappedFile</param-name>
     <param-value>false</param-value>
 </init-param>
+<load-on-startup>3</load-on-startup>
 ```
 `development=false` stops Jasper re-checking ROOT's JSPs every 4 s. Module JSPs already run with it off (Liferay's own `JspServlet`). Liferay's docs print `mappedFile`, but Jasper reads `mappedfile`, so the documented spelling is ignored; use `mappedfile` if you want the effect. Read from source and the shipped jar, not run; the lab's `matrix/local/apply-stage.sh` never touches `conf/web.xml`, so the measured S1 runs tested neither setting. **Not measured; trivial effort.**
 
@@ -5240,6 +5255,8 @@ jdbc.default.minimumIdle=10
 jdbc.default.registerMbeans=true
 ```
 > *"Configure the pool size slightly larger than the thread pool size"* — to account for **nested transactions**.
+
+*"As of Liferay 7.4, HikariCP is the only supported connection pool. Support has ended for other connection pools such as C3P0, DBCP, and Tomcat."* Check for an old pool config before you upgrade.
 
 **The old contradiction is gone.** The 2023 7.4 Deployment Checklist said *"roughly 30 to 40 percent of the thread pool size"* (with `maximumPoolSize=85`). Its replacement, the Go Live Checklist 2026.Q1, says *"greater than or equal to the thread pool size"*, in line with Tuning Liferay's *"slightly larger than the thread pool size"*.
 
@@ -6115,7 +6132,7 @@ UX note, verbatim: *"users will see the most critical parts of the page instantl
 
 **2. Varnish Edgestash/Xbody + ESI** — same shape, server-side, no frontend rewrite (A5d); Edgestash and Xbody are Varnish Enterprise only. **[3P]**
 
-**3. Liferay-native, guests only**: cache guest pages at the reverse proxy; custom-element CX can add anonymous dynamic parts through `/o/headless-delivery`. **[JUDGEMENT]** Signed-in users bypass the cache in our VCL, which keys on Liferay's auth cookies (an SSO login may not set them; read from master source, not run), so this does not speed up personalized pages. Sharing one shell with signed-in users is untested **[UNVERIFIED]**.
+**3. Liferay-native, guests only**: cache guest pages at the reverse proxy; custom-element CX can add anonymous dynamic parts through `/o/headless-delivery`. **[JUDGEMENT]** Signed-in users bypass the cache in our VCL, which keys on Liferay's auth cookies (an OIDC login did not set them in the lab), so this does not speed up personalized pages. Sharing one shell with signed-in users is untested **[UNVERIFIED]**.
 
 ### Impact-vs-effort summary for Part A **[JUDGEMENT]**
 

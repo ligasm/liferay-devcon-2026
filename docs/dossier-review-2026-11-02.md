@@ -4,7 +4,7 @@ A full fact-check of `docs/liferay-performance-dossier.md`, section by section. 
 
 **Evidence used:** Liferay `master` from GitHub (commit `2dd40813f`, 2026-11-01), GitHub tags for older versions, the shipped `liferay/dxp:2026.q1.12-lts` image, current vendor docs, plain GETs to live sites, and the raw lab data. Local source under `/data/git/liferay/` was not used because it is outdated.
 
-**Limits:** a claim marked "read from source" was not run. Nothing ran against a live Cloudflare zone, a Liferay instance or an SSO login. Prices and vendor plans are as of 2026-11-02.
+**Limits:** a claim marked "read from source" was not run. During the review nothing ran against a live Cloudflare zone, a Liferay instance or an SSO login. The OIDC check came afterwards (see "Tests to run before the talk"). Prices and vendor plans are as of 2026-11-02.
 
 ## Changes made after the review
 
@@ -34,7 +34,7 @@ The crash is a runaway fragment render: one 2,047 MB `byte[]` built by jsoup's `
 ## Tests to run before the talk
 
 1. The Cloudflare rule set on a throwaway zone. The order, the expressions and the demo all come from docs.
-2. An OIDC user through the edge. The SSO gap is the biggest safety claim in the talk and it comes from reading source.
+2. An OIDC user through the edge: **done 2026-11-02**, `part1-simulations/results/oidc-check-2026-11-02/`. The source reading holds: no bypass cookies, and our VCL stays clean. A Varnish model of the Cloudflare rules leaks the signed-in page to the next anonymous visitor. SAML and Cloudflare itself remain untested.
 3. The curl on a stock container: **done 2026-11-02**, `part1-simulations/results/curl-checks-2026-11-02/stock-guest-headers.txt`. Three cookies and three headers, matching the slide.
 4. The `www.liferay.com` curl the day before. Last run 2026-11-02, `curl-checks-2026-11-02/liferay-com-headers.txt`. It changed between August and November, and for `/products` and `/resources` within the same day.
 5. The purge demo only if the module gets built; it is an unbuilt sketch.
@@ -123,7 +123,7 @@ Items each validator could not check, as listed in its report. Do not treat them
 - L3223 other observations (uncached page, hashed asset, combo, DL asset): not re-fetched.
 - MFA login path (`multi-factor-authentication-web` `LoginMVCActionCommand:101-123`): did not trace whether it ends in `AuthenticatedSessionManagerUtil.login`, so `COMPANY_ID`/`ID` under MFA are unknown.
 - Live behaviour of all rules on a real Cloudflare zone: no zone, and credentials are out of scope.
-- End-to-end OIDC or SAML login against the lab: no containers may be started.
+- End-to-end SAML login against the lab. OIDC was run afterwards (see above).
 - L3099 Integrated CDN slide wording and L3094 "Frontend Caching" toggle: not checked.
 - Non-Vulcan `/o/` servlets' `Cache-Control` values.
 - Content of Sources beyond sampled pages: a 200 is not proof the page still says what the dossier cites.

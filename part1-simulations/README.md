@@ -19,6 +19,7 @@ part1-simulations/
 ├── stress-campaign.sh         every ladder in STRESS-RESULTS.md (S3, S4, S0, refinements, light edge)
 ├── zgc-repeat.sh              repeated ZGC starts, to test the out-of-memory crash (RUNG-RESULTS.md finding 5)
 ├── cold-burst.sh              G1 and ZGC cold starts under 200 pages/s, same crash, no warm-up
+├── oidc-check/                real OIDC login through the edge: which cookies, and does the page leak
 ├── static-vs-edge.sh          every ladder in STATIC-VS-EDGE.md (static nginx vs Varnish, HTML and page views)
 ├── capture_pageview.py        Chromium net log → k6/data/pageview-*.json (what a first visit fetches)
 ├── static_vs_edge_report.py   results/stress/S6-static-*, S4-edge-page* → STATIC-VS-EDGE.steps.md

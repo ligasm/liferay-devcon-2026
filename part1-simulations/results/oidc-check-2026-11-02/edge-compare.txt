@@ -1,0 +1,83 @@
+##### A. Origin
+--- guest
+    http://127.0.0.1:8086/web/proventeq/home
+    HTTP/1.1 200 |
+    set-cookie: JSESSIONID COOKIE_SUPPORT GUEST_LANGUAGE_ID 
+    bytes=109353 signedIn=false userId=20099 name='' email='' logoutLink=0
+--- SSO user
+    http://127.0.0.1:8086/web/proventeq/home
+    HTTP/1.1 200 |Cache-Control: private, no-cache, no-store, must-revalidate|
+    set-cookie: 
+    bytes=77298 signedIn=true userId=90831 name='Ssocanary Leaktest' email='sso.canary@example.com' logoutLink=1
+--- password user (control)
+    http://127.0.0.1:8086/web/proventeq/home
+    HTTP/1.1 200 |Cache-Control: private, no-cache, no-store, must-revalidate|
+    set-cookie: 
+    bytes=165362 signedIn=true userId=20132 name='Test Test' email='test@liferay.com' logoutLink=0
+
+##### B. Repo VCL (matrix/varnish/default.vcl), URL not yet in cache
+--- SSO user, first request
+    http://127.0.0.1:6081/web/proventeq/home?oidc=b1793606119
+    HTTP/1.1 200 OK|Cache-Control: no-cache, must-revalidate, max-age=0|X-Cache: MISS|
+    set-cookie: 
+    bytes=109540 signedIn=false userId=20099 name='' email='' logoutLink=0
+--- guest with the same GUEST_LANGUAGE_ID
+    http://127.0.0.1:6081/web/proventeq/home?oidc=b1793606119
+    HTTP/1.1 200 OK|Cache-Control: no-cache, must-revalidate, max-age=0|X-Cache: HIT|
+    set-cookie: 
+    bytes=109540 signedIn=false userId=20099 name='' email='' logoutLink=0
+--- guest without cookies
+    http://127.0.0.1:6081/web/proventeq/home?oidc=b1793606119
+    HTTP/1.1 200 OK|Cache-Control: no-cache, must-revalidate, max-age=0|X-Cache: MISS|
+    set-cookie: 
+    bytes=109540 signedIn=false userId=20099 name='' email='' logoutLink=0
+--- password user (control)
+    http://127.0.0.1:6081/web/proventeq/home?oidc=b1793606119
+    HTTP/1.1 200 OK|Cache-Control: private, no-cache, no-store, must-revalidate|X-Cache: BYPASS|
+    set-cookie: 
+    bytes=165665 signedIn=true userId=20132 name='Test Test' email='test@liferay.com' logoutLink=0
+--- Cookie sent to the origin on those cache misses (varnishlog; no BereqHeader line means none)
+--  BereqURL       /web/proventeq/home?oidc=…
+--  BereqURL       /web/proventeq/home?oidc=…
+--  BereqURL       /web/proventeq/home?oidc=…
+--  BereqHeader    Cookie: COOKIE_SUPPORT=…; GUEST_LANGUAGE_ID=…; JSESSIONID=…; COMPANY_ID=…; ID=…
+
+##### C. /group through the repo VCL
+--- SSO user
+    http://127.0.0.1:6081/group/guest/~/control_panel/manage
+    HTTP/1.1 200 OK|Cache-Control: private, no-cache, no-store, must-revalidate|X-Cache: MISS|
+    set-cookie: 
+    bytes=76751 signedIn=true userId=90831 name='Ssocanary Leaktest' email='sso.canary@example.com' logoutLink=1
+--- SSO user again
+    http://127.0.0.1:6081/group/guest/~/control_panel/manage
+    HTTP/1.1 200 OK|Cache-Control: private, no-cache, no-store, must-revalidate|X-Cache: MISS|
+    set-cookie: 
+    bytes=76751 signedIn=true userId=90831 name='Ssocanary Leaktest' email='sso.canary@example.com' logoutLink=1
+--- guest
+    http://127.0.0.1:6081/group/guest/~/control_panel/manage
+    HTTP/1.1 404 Not Found|X-Cache: MISS|
+    set-cookie: JSESSIONID COOKIE_SUPPORT GUEST_LANGUAGE_ID 
+    bytes=79147 signedIn=false userId=20099 name='' email='' logoutLink=0
+
+##### D. MODEL (model-cookie-forwarding.vcl): cookies forwarded, override TTL, same bypass list. NOT Cloudflare.
+--- SSO user, first request
+    http://127.0.0.1:6082/web/proventeq/home?oidc=d1793606119
+    HTTP/1.1 200 OK|X-Cache: MISS|
+    set-cookie: 
+    bytes=77716 signedIn=true userId=90831 name='Ssocanary Leaktest' email='sso.canary@example.com' logoutLink=1
+--- guest without cookies, same URL
+    http://127.0.0.1:6082/web/proventeq/home?oidc=d1793606119
+    HTTP/1.1 200 OK|X-Cache: HIT|
+    set-cookie: 
+    bytes=77716 signedIn=true userId=90831 name='Ssocanary Leaktest' email='sso.canary@example.com' logoutLink=1
+    authToken hash: SSO session at origin=af5fdda010, page served to guest=af5fdda010, a real guest session=848b96e501
+--- password user (control), first request
+    http://127.0.0.1:6082/web/proventeq/home?oidc=e1793606119
+    HTTP/1.1 200 OK|Cache-Control: private, no-cache, no-store, must-revalidate|X-Cache: MISS|X-Bypass: auth-cookie|
+    set-cookie: 
+    bytes=165665 signedIn=true userId=20132 name='Test Test' email='test@liferay.com' logoutLink=0
+--- guest without cookies, same URL
+    http://127.0.0.1:6082/web/proventeq/home?oidc=e1793606119
+    HTTP/1.1 200 OK|X-Cache: MISS|
+    set-cookie: 
+    bytes=109540 signedIn=false userId=20099 name='' email='' logoutLink=0

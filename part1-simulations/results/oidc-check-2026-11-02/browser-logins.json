@@ -1,0 +1,80 @@
+[
+ {
+  "tag": "sso-origin",
+  "afterLogin": {
+   "signedIn": true,
+   "userId": "90831",
+   "name": "Ssocanary Leaktest"
+  },
+  "publicPage": {
+   "signedIn": true,
+   "userId": "90831",
+   "name": "Ssocanary Leaktest"
+  },
+  "groupPage": {
+   "signedIn": true,
+   "userId": "90831",
+   "name": "Ssocanary Leaktest"
+  },
+  "setCookieSeen": [
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "JSESSIONID"
+  ],
+  "cookiesHeld": [
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "JSESSIONID"
+  ]
+ },
+ {
+  "tag": "sso-varnish",
+  "afterLogin": {
+   "signedIn": true,
+   "userId": "90831",
+   "name": "Ssocanary Leaktest"
+  },
+  "publicPage": {
+   "signedIn": false,
+   "userId": "20099",
+   "name": ""
+  },
+  "groupPage": {
+   "signedIn": true,
+   "userId": "90831",
+   "name": "Ssocanary Leaktest"
+  },
+  "setCookieSeen": [
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "JSESSIONID"
+  ],
+  "cookiesHeld": [
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "JSESSIONID"
+  ]
+ },
+ {
+  "tag": "password",
+  "publicPage": {
+   "signedIn": true,
+   "userId": "20132",
+   "name": "Test Test"
+  },
+  "setCookieSeen": [
+   "COMPANY_ID",
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "ID",
+   "JSESSIONID"
+  ],
+  "cookiesHeld": [
+   "COMPANY_ID",
+   "COOKIE_SUPPORT",
+   "GUEST_LANGUAGE_ID",
+   "ID",
+   "JSESSIONID"
+  ]
+ }
+]

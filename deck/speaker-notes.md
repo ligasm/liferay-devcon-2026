@@ -74,7 +74,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.
 
 ## 11. Get rule 1 wrong and it's a data breach.
 
-[15:00–15:45 · 0:45] Do not skip this. One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too. Cloudflare's own Cache Everything docs say visitors may receive information not intended for them. Defence in depth: origin keeps Cache-Control private on signed-in responses, though a Cloudflare override TTL ignores it, browser TTL stays bypass even when edge TTL is long, and nothing on a public page may need authToken. Optional 45-second demo on a throwaway zone with a fake user.
+[15:00–15:45 · 0:45] Do not skip this. One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too. We reproduced the mechanism in the lab: an OIDC user holds none of the bypass cookies, and on a Varnish model of these rules the next anonymous visitor got their name, email and authToken. Our own VCL stayed clean because it strips Cookie before the origin. Password logins are covered; SSO logins are not. Cloudflare's own Cache Everything docs say visitors may receive information not intended for them. Defence in depth: origin keeps Cache-Control private on signed-in responses, though a Cloudflare override TTL ignores it, browser TTL stays bypass even when edge TTL is long, and nothing on a public page may need authToken. Optional 45-second demo on a throwaway zone with a fake user.
 
 ## 12. S4 result: guest traffic at the edge
 

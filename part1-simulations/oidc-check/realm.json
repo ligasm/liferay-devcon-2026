@@ -1,0 +1,27 @@
+{
+  "realm": "lab",
+  "enabled": true,
+  "sslRequired": "none",
+  "clients": [
+    {
+      "clientId": "liferay",
+      "secret": "${OIDC_CLIENT_SECRET}",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "sso.canary",
+      "enabled": true,
+      "email": "sso.canary@example.com",
+      "emailVerified": true,
+      "firstName": "Ssocanary",
+      "lastName": "Leaktest",
+      "credentials": [{ "type": "password", "value": "${OIDC_USER_PASSWORD}", "temporary": false }]
+    }
+  ]
+}

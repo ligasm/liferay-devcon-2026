@@ -13,7 +13,7 @@ vcl 4.1;
 #   4. Bypass when a Liferay AUTH cookie is present — COMPANY_ID, ID, USER_UUID,
 #      REMEMBER_ME, LOGIN, PASSWORD. NOT JSESSIONID: Liferay mints JSESSIONID for
 #      every visitor, so keying on it gives a 0 % hit ratio. SSO logins set none of
-#      these (read from source): step 5 removes Cookie, so an SSO user looks signed
+#      these (measured with OIDC, ../../oidc-check): step 5 removes Cookie, so an SSO user looks signed
 #      out on public pages rather than leaking.
 #   5. Anonymous GET: strip Cookie on the way in (keep GUEST_LANGUAGE_ID as a
 #      hash key), normalise the query string, hash.

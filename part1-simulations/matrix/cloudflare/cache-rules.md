@@ -19,15 +19,18 @@ on a throwaway zone first.
 > login (`AuthenticatedSessionManagerUtil.login`). `AutoLoginFilter` (OIDC, SAML, token auto-login)
 > only sets session attributes, so an SSO user can be signed in with none of the cookies below. Their
 > GET of a public page matches the guest HTML rule, Cloudflare forwards their cookies on a miss, and
-> the override TTL caches their signed-in page for everyone. Read from `master` source, not run. The
-> VCL doesn't leak here, because it removes `Cookie` before the backend fetch; these rules have no
-> such step. Options, all untested: (a) a marker cookie set from `login.events.post`, added to both
-> rules; (b) a Request Header Transform Rule that removes `Cookie` on guest-cacheable requests; (c) no
-> override TTL on SSO sites, which gives low hit rates.
+> the override TTL caches their signed-in page for everyone. The cookies were measured with OIDC, and a
+> Varnish model of these rules leaked the page to the next anonymous visitor (`../../oidc-check/`);
+> Cloudflare itself is untested. The VCL doesn't leak here, because it removes `Cookie` before the
+> backend fetch (also measured); these rules have no such step. Options, all untested here: (a) a marker
+> cookie set from `login.events.post`, added to both rules; (b) a Request Header Transform Rule that
+> removes `Cookie` on guest-cacheable requests; (c) no override TTL on SSO sites, which gives low hit
+> rates.
 
 `browser.cache.signed.in.disabled=true` is worth keeping, but it does not protect you under the guest
 HTML rule: *Ignore cache-control header* ignores it. Add a canary to a synthetic monitor: a signed-in
-page must contain `/c/portal/logout`, and an anonymous fetch of a public page must not.
+page must contain `isSignedIn: () => true`, and an anonymous fetch of a public page must not. Don't use
+`/c/portal/logout`: `test@liferay.com`'s signed-in page in the lab doesn't contain it.
 
 ## Rule 1 of 3 — Cache guest HTML
 
