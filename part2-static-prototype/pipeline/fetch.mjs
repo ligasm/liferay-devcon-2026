@@ -111,6 +111,7 @@ export async function fetchAll(flags = {}) {
   const full = !!flags.full || !state.lastRun;
   const since = full ? null : new Date(Date.parse(state.lastRun) - config.deltaOverlapMs).toISOString();
   const max = Number(flags['max-items'] ?? config.maxItems);
+  if (Number.isNaN(max)) throw new Error(`--max-items must be a number, got "${flags['max-items']}"`);
   const startedAt = nowIso();
   const t0 = Date.now();
 

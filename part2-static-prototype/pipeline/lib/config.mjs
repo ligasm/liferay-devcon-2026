@@ -6,19 +6,29 @@ import { fileURLToPath } from 'node:url';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-// Tiny .env loader (no dependency): KEY=value lines, '#' comments, no expansion.
+// Tiny .env loader (no dependency): KEY=value lines, no expansion. A '#' starts a comment on its own line or
+// after whitespace, so `KEY=#main` keeps its value; quote a value that has ' #' in it.
 // ENV_FILE=.env.local-proventeq selects another file; variables already in the environment always win.
+function dotEnvValue(raw) {
+  const quoted = raw.match(/^\s*(["'])(.*?)\1(\s+#.*)?$/);
+  return quoted ? quoted[2] : raw.replace(/\s+#.*$/, '').trim();
+}
 function loadDotEnv(file = path.resolve(ROOT, process.env.ENV_FILE || '.env')) {
   if (!fs.existsSync(file)) return;
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/i);
-    if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=(.*?)\s*$/i);
+    if (m && process.env[m[1]] === undefined) process.env[m[1]] = dotEnvValue(m[2]);
   }
 }
 loadDotEnv();
 
 const env = (k, d) => (process.env[k] === undefined || process.env[k] === '' ? d : process.env[k]);
-const num = (k, d) => Number(env(k, d));
+// NaN must never get through: fetch.mjs would trim the whole mirror, and the AI budget check would never trip.
+const num = (k, d) => {
+  const n = Number(env(k, d));
+  if (Number.isNaN(n)) throw new Error(`${k} must be a number, got "${env(k, d)}"`);
+  return n;
+};
 const bool = (k, d = false) => ['1', 'true', 'yes'].includes(String(env(k, d)).toLowerCase());
 
 // Where mutable state lives. Defaults keep the original layout; set CONTENT_DIR / DIST_DIR / REPORTS_DIR
