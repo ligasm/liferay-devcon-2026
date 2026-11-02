@@ -10,12 +10,14 @@ Talk materials for the 45-minute session by **Miroslav Ligas, Solution Architect
 liferay-devcon-2026/
 ├── docs/
 │   ├── talk-outline-45min.md          minute-by-minute run sheet, mapped to the slide numbers
-│   └── liferay-performance-dossier.md the research: platform caching, CDN/Cloudflare, aggressive
+│   ├── liferay-performance-dossier.md the research: platform caching, CDN/Cloudflare, aggressive
 │                                       guest-page caching, front-end/infra, static generation + AI
 │                                       (fact-checked; corrections listed in section 6)
+│   └── demos/                         copy-paste commands for each of the three demos
 ├── deck/
 │   ├── index.html                     standalone deck — open in a browser, works offline except fonts
 │   ├── speaker-notes.md               the script, one section per slide
+│   ├── recordings/                    one fallback video per demo, with the scripts that made them
 │   ├── build.ts                       bun build.ts → regenerates index.html + speaker-notes.md
 │   ├── project/                       source of truth: deck.json + slides/<id>.html (Claude Slides format)
 │   ├── assets/                        speaker photo, Proventeq logo, four generated backdrops

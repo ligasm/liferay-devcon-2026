@@ -52,7 +52,7 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 **Slides:** 5 a stock guest page on the wire · 6 check the app tier's CPU first
 
-**Demo 1 (30 s, zero risk):** `curl -sSD- -o /dev/null https://<your-liferay>/` — read out the cache-killing headers and the three cookies (`JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID` on stock 2026.q1.12; Liferay-hosted sites also send `SERVER_ID`, which is not in the portal). "This is what every CDN on earth sees when it looks at a stock Liferay: *do not cache me*."
+**Demo 1 (30 s, zero risk, commands in `docs/demos/demo1-curl.md`):** `curl -sSD- -o /dev/null https://<your-liferay>/` — read out the cache-killing headers and the three cookies (`JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID` on stock 2026.q1.12; Liferay-hosted sites also send `SERVER_ID`, which is not in the portal). "This is what every CDN on earth sees when it looks at a stock Liferay: *do not cache me*."
 
 **Say:** `browser.cache.disabled=true` → `ServicePreAction` emits `Cache-Control: private, no-cache, no-store, must-revalidate`, `Pragma` and `Expires`. Independently, `ServicePreAction` calls `getSession()` unconditionally — there is no supported way to not create a guest session; `session.disabled` was last present in 7.4.0-ga1. Both facts from source (dossier 03 §2–3). The usual workaround is stripping the cookie at the edge. "And Liferay deleted its own page cache in 2024. In their tests its hit ratio was 'always 0, since none of our test URLs are cacheable', and the commit calls it 'really useless'. The edge is what's left." (`CacheFilter`, gone at `7.4.3.123-ga123`, 27 June 2024; `brianchandotcom/liferay-portal` PRs #151255, which disabled it, and #151316, which removed it.)
 
@@ -88,7 +88,7 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 **Slides:** 10 two rules, bypass first (true of VCL) · 11 **the breach** · 12 S4 result · 13 the edge is the step that counts (p95 per stage) · 14 how far each stage goes (capacity) · 15 S5 purge by tag · 16 one sign-in costs a hundred HTML page renders · 17 one setting, twelve times the search
 
-**Demo 2 (90 s, prerecord a fallback):** `docker compose up` Varnish in front of the same Liferay (`part1-simulations/matrix/varnish/`), `./run.sh S4-edge-varnish mix`, open `results/SUMMARY.md` and the p95 chart. Measured (`part1-simulations/results/LAB-RESULTS.md`): guest browse journey p95 under load 49 → 21 → 2 ms (S0 → S3 → S4), the mix 521 → 6 ms, 18,656 hits / 16 misses at Varnish across the S4 campaign, Liferay CPU 10.1 → 1.9 cores, and **sign-in stays at 0% edge hit** — the bypass works. Capacity (`STRESS-RESULTS.md`, `RUNG-RESULTS.md`): 400 → 1,200 → 24,800 guest pages/s clean, the last bounded by k6 (static nginx stops at the same number); a sign-in costs ≈ 100 HTML pages of CPU, a search ≈ 50; against a whole first visit, the ladder's page view, a sign-in is about twenty. ZGC gave no gain on the 6 GB heap; stay on G1. If asked about crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, a runaway fragment render (one 2 GB string from jsoup), trigger unknown, not a GC verdict.
+**Demo 2 (90 s, commands in `docs/demos/demo2-varnish.md`, fallback in `deck/recordings/`):** `docker compose up` Varnish in front of the same Liferay (`part1-simulations/matrix/varnish/`), `./run.sh S4-edge-varnish mix`, open `results/SUMMARY.md` and the p95 chart. Measured (`part1-simulations/results/LAB-RESULTS.md`): guest browse journey p95 under load 49 → 21 → 2 ms (S0 → S3 → S4), the mix 521 → 6 ms, 18,656 hits / 16 misses at Varnish across the S4 campaign, Liferay CPU 10.1 → 1.9 cores, and **sign-in stays at 0% edge hit** — the bypass works. Capacity (`STRESS-RESULTS.md`, `RUNG-RESULTS.md`): 400 → 1,200 → 24,800 guest pages/s clean, the last bounded by k6 (static nginx stops at the same number); a sign-in costs ≈ 100 HTML pages of CPU, a search ≈ 50; against a whole first visit, the ladder's page view, a sign-in is about twenty. ZGC gave no gain on the 6 GB heap; stay on G1. If asked about crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, a runaway fragment render (one 2 GB string from jsoup), trigger unknown, not a GC verdict.
 
 **Search highlighting off (slide 17, 1:00):** `highlightEnabled=false` on the Search Results widget. Same results in the same order on the three terms compared, because our compact template shows no snippets. If yours does, you lose the bold terms and, from reading the source, probably the text around the match too. Test it. 25 → 300 searches/s clean, p95 at 20/s 687 → 38 ms, CPU 9.5 → 0.8 cores. Sidecar Elasticsearch on a small index, so the factor will differ elsewhere.
 
@@ -121,16 +121,16 @@ Locale must be in the URL; personalisation moves to late hydration; forms and `A
 
 Precompute when the output space is small and read:write is high; render live when output is per-user. Everything editors love stays in Liferay; what leaves is the request path.
 
-## 2.2 Demo — 27:15–34:15 · *prerecord a fallback*
+## 2.2 Demo — 27:15–34:15 · *commands in `docs/demos/demo3-regenerate.md`, fallback in `deck/recordings/`*
 
 **Slides:** 22 live demo · 23 same post, two deliveries · 24 static wins on the page, not the HTML
 
-1. `node pipeline/regenerate.mjs --full --no-ai --max-items 80` → 132 pages in ~10–19 s, 3.3 MB.
+1. `node pipeline/regenerate.mjs --full --no-ai --max-items 80` → 136 pages in ~11–36 s, 3.5 MB.
 2. Run again → "nothing changed → skip build (0 tokens)" in ~0.1 s offline / 2–3 s live.
-3. Side by side: **11 kB, 2 scripts, no `authToken`** vs **120 kB, 34 scripts**.
-4. Edit one post → plan `+0 ~1 -0`, rebuild ~3 s, purge list = that post + home + blog list + its category page.
+3. Side by side, the same post: **23 kB, 2 scripts, no `authToken`** vs **202 kB, 35 scripts**.
+4. Edit one post → plan `+0 ~1 -0`, done in ~1.5 s, purge list = that post + home + blog list + its category page.
 5. `--dry-run --full --offline` → ≈12–16k tokens ≈ $0.03 for the whole catalogue, once; lower `AI_BUDGET_TOKENS` and fallbacks kick in.
-6. `node tools/check-links.mjs` → 0 broken of ~3,850 links.
+6. `node tools/check-links.mjs` → 0 broken of ~4,020 links.
 7. Measured against Varnish (`part1-simulations/results/STATIC-VS-EDGE.md`), same box, same k6: HTML alone is a tie at ≈ 25,000 req/s, k6-bound for both. A whole first-visit page view is 56 requests through Varnish vs 4–5 static; at 1,000 page views/s that is 12× the requests, 5.5× the bytes, ≈ 10× the edge CPU, p95 13 vs 2 ms. Capacity: 1,200 page views/s (the box runs out at 1,500) vs 10,000 (k6), so both are limited by the box or k6, not the server: 67,000 vs 46,000 req/s. Found on the way: the S4 VCL never gzipped CSS/JS (1.9 MB per page view, fixed).
 
 *Cut if behind:* slide 24; say "HTML is a tie, the page is twelve times the requests" over slide 23.
@@ -168,7 +168,7 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 - [ ] Confirm items marked `UNVERIFIED` in `part1-simulations/matrix/`.
 - [ ] Set `ANTHROPIC_API_KEY` and confirm current model IDs so the enrichment path runs live once.
 - [ ] Point `.env` at your DXP for one rehearsal.
-- [ ] Prerecord both demos; conference Wi-Fi is where demos die.
+- [x] Prerecord the demos; conference Wi-Fi is where demos die (2026-11-02, `deck/recordings/`, commands in `docs/demos/`).
 - [ ] Re-run the `www.liferay.com` curl the day before for slide 28. On 2026-11-02 guest pages were cached with the header, while `/c/portal/login` returned `private, no-store` (`results/curl-checks-2026-11-02/liferay-com-headers.txt`). It has already changed once.
 - [x] Run Demo 1's curl on a stock container and record it (2026-11-02, `results/curl-checks-2026-11-02/stock-guest-headers.txt`): the cookies and headers match slide 5, which abbreviates `Cache-Control` by leaving off `must-revalidate`.
 - [ ] Test the Cloudflare rule set on a throwaway zone, bypass last: it comes from the docs and has never run live.

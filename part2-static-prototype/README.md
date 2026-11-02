@@ -146,8 +146,8 @@ not seen before get their own extraction rule on first sight.
 1. **The portal is the editor** (30 s) — show a blog post in liferay.dev, then
    `content/raw/blog/<id>.json`: same data, from Headless Delivery.
 2. **First cycle** (60 s) — `node pipeline/regenerate.mjs --full --no-ai --max-items 80`.
-   Watch the log: fetch 10 s, plan `+175`, orchestrate 0.3 s, Astro 2.8 s, 132 pages,
-   3.2 MB, 0 broken links. Open `reports/latest` — the purge list, the AI table (0 tokens).
+   Watch the log: fetch 10 s, plan `+175`, orchestrate 0.1 s, Astro and Pagefind 1.3 s, 136 pages,
+   3.5 MB, 0 broken links. Open `reports/latest` — the purge list, the AI table (0 tokens).
 3. **Nothing changed** (20 s) — run it again with no flags: "nothing changed → skip build"
    in about a second. *This is the normal case, hundreds of times a day.*
 4. **What would the model have done?** (60 s) — `--dry-run --full --offline`: two
@@ -161,7 +161,7 @@ not seen before get their own extraction rule on first sight.
 6. **Serve it** (30 s) — `node tools/serve.mjs dist`, `curl -sSD- localhost:4321/blog/...`:
    `Cache-Control: public, max-age=60, s-maxage=300, stale-while-revalidate=3600`,
    `Cache-Tag: blog,post-126723763`. View source: no `authToken`, no portal scripts,
-   one 12 kB page instead of 120 kB and 34 scripts.
+   one 23 kB page instead of 202 kB and 35 scripts.
 7. **Close** (30 s) — the "Sign in" island: static HTML for everyone, one fetch to
    `my-user-account` for the people who are logged in.
 

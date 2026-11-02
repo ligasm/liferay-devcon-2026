@@ -204,7 +204,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.</
 <p style="font-size:32px;color:#eab000">set-cookie: GUEST_LANGUAGE_ID=en_US</p>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[3:15–4:15 · 1:00] Live demo here, 30 seconds: curl your own Liferay. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page, along with Pragma and Expires. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies: JSESSIONID, COOKIE_SUPPORT and GUEST_LANGUAGE_ID. Either the headers or the cookies stop a CDN that follows them from caching the page, unless you override it. session.disabled was last present in 7.4.0-ga1, with no replacement. The usual workaround is stripping the cookie at the edge. And Liferay deleted its own page cache in 2024: in their tests its hit ratio was "always 0, since none of our test URLs are cacheable", and the commit calls it "really useless". The edge is what's left. (CacheFilter, gone at 7.4.3.123; brianchandotcom/liferay-portal PRs 151255 and 151316.) If asked about SERVER_ID: Liferay-hosted sites send it, stock does not, and it is not in the portal source. In our lab: 100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.</aside>
+<aside class="notes">[3:15–4:15 · 1:00] Live demo here, 30 seconds: curl your own Liferay. Commands: docs/demos/demo1-curl.md. Fallback video: deck/recordings/demo1-curl.mp4. The no-store header comes from browser.cache.disabled=true, which is the default; ServicePreAction emits it on every guest page, along with Pragma and Expires. Independently, ServicePreAction calls getSession() unconditionally, so the first anonymous request gets three cookies: JSESSIONID, COOKIE_SUPPORT and GUEST_LANGUAGE_ID. Either the headers or the cookies stop a CDN that follows them from caching the page, unless you override it. session.disabled was last present in 7.4.0-ga1, with no replacement. The usual workaround is stripping the cookie at the edge. And Liferay deleted its own page cache in 2024: in their tests its hit ratio was "always 0, since none of our test URLs are cacheable", and the commit calls it "really useless". The edge is what's left. (CacheFilter, gone at 7.4.3.123; brianchandotcom/liferay-portal PRs 151255 and 151316.) If asked about SERVER_ID: Liferay-hosted sites send it, stock does not, and it is not in the portal source. In our lab: 100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.</aside>
 </section>
 
 <section id="benchmark" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -337,7 +337,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.</
 </div>
 <p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured · S0 → S4, mix at ≈ 120 req/s · Liferay CPU 10.1 → 1.9 cores at S3 → S4 · LAB-RESULTS.md</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[15:45–17:45 · 2:00, including the 90-second demo] Demo: Varnish in front of the same Liferay, the same mix at about 120 requests a second. Measured, not mocked: the guest browse journey, four pages, p95 went from 49 milliseconds at S0, 21 at S3, to 2 behind Varnish, minus 96 percent overall. The whole mix went from 521 to 6 milliseconds. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses; the 4,902 passes are sign-in, the APIs and /c/ URLs. The number that matters most is the third one: sign-in stays at 0 percent edge hit and its signed-in page stays private, no-cache, no-store. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. The real run found a bug the mock never could: the login redirect page was cached with its Set-Cookie stripped, so every login through the edge failed with 403. Never cache the login portlet's pages.</aside>
+<aside class="notes">[15:45–17:45 · 2:00, including the 90-second demo] Demo: Varnish in front of the same Liferay, the same mix at about 120 requests a second. Measured, not mocked: the guest browse journey, four pages, p95 went from 49 milliseconds at S0, 21 at S3, to 2 behind Varnish, minus 96 percent overall. The whole mix went from 521 to 6 milliseconds. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses; the 4,902 passes are sign-in, the APIs and /c/ URLs. The number that matters most is the third one: sign-in stays at 0 percent edge hit and its signed-in page stays private, no-cache, no-store. A signed-in flow that still reaches the origin every time is the proof that rule 1 holds. The real run found a bug the mock never could: the login redirect page was cached with its Set-Cookie stripped, so every login through the edge failed with 403. Never cache the login portlet's pages. Commands: docs/demos/demo2-varnish.md. Fallback video: deck/recordings/demo2-varnish.mp4. The demo runs the mix for only 30 seconds, so its numbers differ: the video shows 8 milliseconds for the mix, 3 for guest browse and 96 requests a second. The slide's numbers are the full campaign.</aside>
 </section>
 
 <section id="stages" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -522,7 +522,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.</
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
 <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">132</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">136</p>
 <p style="font-size:36px;color:#4a5a66">pages, full build</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
@@ -537,7 +537,7 @@ One that paid: search highlighting off, on its own slide after the cost slide.</
 <p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ node pipeline/regenerate.mjs</p>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[27:15–31:15 · 4:00] Prerecord a fallback. Step 1: node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API: 132 pages in about 10 to 19 seconds, most of it fetch; Astro plus Pagefind 3 to 7 seconds; 3.4 MB. Step 2: run it again with no flags: nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check. Most cycles cost nothing. Step 3: edit one post, rerun: plan says one changed, rebuild in about 3 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page. Step 4: link checker, zero broken of about 3,850 internal links; anything the static site doesn't own links back to the portal.</aside>
+<aside class="notes">[27:15–31:15 · 4:00] Commands: docs/demos/demo3-regenerate.md. Fallback video: deck/recordings/demo3-regenerate.mp4. Step 1: node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API: 136 pages in about 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds; 3.5 MB. Step 2: run it again with no flags: nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check. Most cycles cost nothing. Step 3: edit one post, rerun: plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page. Step 4: link checker, zero broken of about 4,020 internal links; anything the static site doesn't own links back to the portal.</aside>
 </section>
 
 <section id="sidebyside" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -545,17 +545,17 @@ One that paid: search highlighting off, on its own slide after the cost slide.</
 <div style="display:flex;gap:32px;flex:1">
 <div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
 <p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4a5a66">Portal render</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#4a5a66">120 kB</p>
-<p style="font-size:40px;color:#4a5a66">34 scripts</p>
+<p style="font-size:144px;font-weight:700;line-height:1;color:#4a5a66">202 kB</p>
+<p style="font-size:40px;color:#4a5a66">35 scripts</p>
 </div>
 <div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
 <p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Static</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#f4f7f7">11 kB</p>
+<p style="font-size:144px;font-weight:700;line-height:1;color:#f4f7f7">23 kB</p>
 <p style="font-size:40px;color:#b9cfd3">2 scripts</p>
 </div>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[31:15–32:15 · 1:00] curl both. The portal's rendered page for a liferay.dev content page is about 120 kB with 34 script tags and an authToken in the body. The static post is 10.9 kB, two small inline module scripts, no authToken, and headers Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.</aside>
+<aside class="notes">[31:15–32:15 · 1:00] curl both, the same blog post on liferay.dev, measured 2026-11-02. The portal's page is 202 kB with 35 script tags and an authToken in the body. The static page is 23 kB, two scripts, no authToken, and headers Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.</aside>
 </section>
 
 <section id="staticvsedge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
