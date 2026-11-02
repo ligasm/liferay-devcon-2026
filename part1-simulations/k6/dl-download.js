@@ -8,14 +8,15 @@
  *   edge_hit           Rate    did the file come from the edge?
  *   cache_control_private       does D&M still send `Cache-Control: private`?
  *
- * Out of the box Liferay streams every D&M file with `Cache-Control: private`
- * (ServletResponseUtil default), so no shared cache may store it — even for a
- * guest-visible image. S3 turns on "Documents and Media → Cache Control"
- * (Public, max-age) for guest-visible files; you should see `edge_hit` go from
- * 0 % to ~100 % and cache_control_private from 100 % to 0 % at S4.
+ * Out of the box, a guest-visible D&M file gets `must-revalidate, max-age=600` from
+ * CacheControlFileEntryHttpHeaderCustomizer, and a file Guest can't view keeps
+ * `private` (read from source; S0 measured cache_control_private at 0 %). S3 turns
+ * on "Documents and Media → Cache Control" (Public, max-age) for guest-visible files;
+ * you should see `edge_hit` go from 0 % to ~100 % at S4.
  *
- * Liferay's benchmark reference for this flow: 95 % of 100 KB downloads in
- * 5.96 ms at 11,500 concurrent users (origin only, no CDN).
+ * Liferay's benchmark reference for this flow: 5.96 ms mean (σ 10.9) for 100 KB
+ * downloads at 11,500 concurrent users (origin only, no CDN). The study's prose
+ * calls this the 95th percentile; its Table 3 labels it the mean.
  *
  * Env: DL_URL (default /documents/guest/0/sample.pdf — set it to a real
  * /documents/<groupId>/<folderId>/<file>/<uuid> URL from your site), VUS|RATE, DURATION

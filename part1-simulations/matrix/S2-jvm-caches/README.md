@@ -10,7 +10,7 @@
 | **Page fragment "Cacheable"** | UI: Site Builder → Fragments → fragment → Actions → *Mark as Cacheable* | — (per fragment, not a file) |
 | **Web content template "Cacheable"** | UI: Web Content → Templates → template → *Cacheable* checkbox | — (per DDM template) |
 
-The two checkboxes are the highest-leverage, lowest-effort items in this stage,
+The fragment flag is the measured gain in this stage; the template checkbox was not measured. Both are low effort,
 and they are deliberately not files: caching a fragment or template that renders
 anything user- or segment-specific serves the first requester's output to
 everyone (the `JournalContent` cache key has no user/role/segment). Cache the
@@ -27,5 +27,5 @@ Run the same scenarios as S1 and look at:
 
 * `headless-api/headless_by_id` p95 (entity cache) vs `headless_list` (Elasticsearch — should not move).
 * `asset-publisher/ap_page` vs `content_page` — the gap narrows a little, it does not close (that needs S4).
-* JMX `org.ehcache:type=CacheStatistics` hit ratio and `com.zaxxer.hikari` `PendingThreads` during the run.
+* JMX `org.ehcache:type=CacheStatistics` hit ratio and `com.zaxxer.hikari` `ThreadsAwaitingConnection` during the run.
 * p99 with `GC=g1` vs `GC=zgc` on the `mix` scenario.

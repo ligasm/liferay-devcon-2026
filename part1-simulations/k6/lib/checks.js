@@ -119,7 +119,7 @@ export function guestHeaders(extra = {}) {
 
 /**
  * k6 keeps a cookie jar per VU, so after the first response every request of
- * that VU would carry JSESSIONID/COOKIE_SUPPORT/SERVER_ID — exactly what a
+ * that VU would carry JSESSIONID/COOKIE_SUPPORT/GUEST_LANGUAGE_ID — exactly what a
  * naive edge rule ("bypass when a cookie is present") keys on. Anonymous
  * scenarios call this before every page view so each request looks like a
  * brand-new visitor. guest-browse-sticky.js deliberately does NOT call it.

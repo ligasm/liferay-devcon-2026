@@ -97,7 +97,7 @@ node pipeline/regenerate.mjs                                  # delta: "no chang
 node pipeline/regenerate.mjs --dry-run --full --offline       # prints the prompts + token estimate, no key needed
 node tools/serve.mjs dist       # http://localhost:4321 with the generated Cache-Control / Cache-Tag headers
 node tools/check-links.mjs dist # internal link checker (0 broken expected)
-node pipeline/webhook.mjs       # POST /hooks/liferay (X-Webhook-Secret) → debounced cycle; GET /healthz
+node pipeline/webhook.mjs       # POST /hooks/liferay (x-api-key) → debounced cycle; GET /healthz
 ```
 
 Flags: `--full` (ignore state) · `--no-ai` · `--dry-run` · `--offline` (use `content/raw` only) ·

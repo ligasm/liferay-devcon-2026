@@ -1,8 +1,12 @@
 <!-- S1 — Hygiene: $CATALINA_HOME/conf/web.xml, the "jsp" servlet.
-     development=false  → stop checking JSP timestamps on every request
-     mappedFile=false   → stop generating one out.write() per JSP source line
-     Both recommended by Liferay's "Tuning Liferay" page and the 7.4 Deployment
-     Checklist. Restart Tomcat and clear work/ after changing. -->
+     development=false  → stop re-checking ROOT's JSPs every 4 s (module JSPs already
+                          run with it off, in Liferay's own JspServlet)
+     mappedfile=false   → stop generating one out.write() per JSP source line
+     Recommended by Liferay's "Tuning Liferay" page, which prints `mappedFile`. Jasper
+     reads the lowercase `mappedfile`, so the documented spelling is ignored (read from
+     source and the shipped jar, not run).
+     matrix/local/apply-stage.sh does not apply this file, so the measured S1 runs did
+     not test either setting. Restart Tomcat and clear work/ after changing. -->
 <servlet>
     <servlet-name>jsp</servlet-name>
     <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -15,7 +19,7 @@
         <param-value>false</param-value>
     </init-param>
     <init-param>
-        <param-name>mappedFile</param-name>
+        <param-name>mappedfile</param-name>
         <param-value>false</param-value>
     </init-param>
     <init-param>

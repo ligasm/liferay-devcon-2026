@@ -1,5 +1,5 @@
 <section id="s4rules" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S4 Edge HTML</p>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S4 Edge HTML · in Varnish</p>
 <h2 style="font-size:72px;font-weight:600;line-height:1.1">Two rules, bypass first</h2>
 <div style="display:flex;gap:32px;flex:1">
 <div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
@@ -12,5 +12,5 @@
 </div>
 </div>
 <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[14:15–15:00 · 0:45] The core of Part 1. Rule 1: bypass when any auth cookie is present, COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD. Rule 2, for anonymous GETs: strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass. Show the VCL in matrix/varnish/default.vcl. Cloudflare equivalent: a bypass-on-cookie cache rule above a cache-everything rule with Edge TTL override and a custom cache key; it is in matrix/cloudflare/cache-rules.md.</aside>
+<aside>[14:15–15:00 · 0:45] The core of Part 1. Rule 1: bypass when any auth cookie is present, COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD. Rule 2, for anonymous GETs: strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass. Show the VCL in matrix/varnish/default.vcl. Bypass comes first here because return pass ends evaluation. Cloudflare is the reverse: the last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone. SSO warning: an SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.</aside>
 </section>

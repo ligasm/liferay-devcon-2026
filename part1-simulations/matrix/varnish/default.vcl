@@ -11,8 +11,10 @@ vcl 4.1;
 #   2. Only GET/HEAD are cacheable; everything else is passed to Liferay.
 #   3. Never cache portal actions, APIs, control panel, CSRF-tokened URLs.
 #   4. Bypass when a Liferay AUTH cookie is present — COMPANY_ID, ID, USER_UUID,
-#      REMEMBER_ME, LOGIN. NOT JSESSIONID: Liferay mints JSESSIONID for every
-#      visitor, keying on it gives a 0 % hit ratio and no safety.
+#      REMEMBER_ME, LOGIN, PASSWORD. NOT JSESSIONID: Liferay mints JSESSIONID for
+#      every visitor, so keying on it gives a 0 % hit ratio. SSO logins set none of
+#      these (read from source): step 5 removes Cookie, so an SSO user looks signed
+#      out on public pages rather than leaking.
 #   5. Anonymous GET: strip Cookie on the way in (keep GUEST_LANGUAGE_ID as a
 #      hash key), normalise the query string, hash.
 #   6. Backend response for anonymous requests: strip Set-Cookie, TTL from
@@ -125,12 +127,6 @@ sub vcl_recv {
         set req.http.X-Bypass = "auth-cookie";
         return (pass);
     }
-    # LFR_SESSION_STATE_<userId> is written by Liferay's session JS. UNVERIFIED
-    # whether anonymous visitors receive it for the default user id — if they
-    # do, keying on it would tank the guest hit ratio. Measure with the
-    # guest-browse-sticky scenario before enabling this clause.
-    # if (req.http.Cookie ~ "(^|;\s*)LFR_SESSION_STATE_") { return (pass); }
-
     # ---- 5. anonymous GET: shareable object ---------------------------------------
     # Static, versioned assets: no cookie at all, cache hard.
     if (req.url ~ "^/o/" ||
@@ -147,7 +143,7 @@ sub vcl_recv {
             return (pass);
         }
         # Guest HTML: keep only GUEST_LANGUAGE_ID (as a hash key), drop the rest
-        # (JSESSIONID, COOKIE_SUPPORT, SERVER_ID, LFR_SESSION_STATE_*, analytics…).
+        # (JSESSIONID, COOKIE_SUPPORT, analytics…).
         if (req.http.Cookie ~ "(^|;\s*)GUEST_LANGUAGE_ID=") {
             set req.http.X-Guest-Language = regsub(req.http.Cookie, "^.*?(^|;\s*)GUEST_LANGUAGE_ID=([^;]*).*$", "\2");
         }

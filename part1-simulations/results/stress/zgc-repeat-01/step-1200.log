@@ -1,0 +1,9 @@
+
+┌─ stress/zgc-repeat-01 / step-1200 ─────────────────────
+│ requests        72001   1197.7 req/s
+│ duration      p50     13ms  p95    156ms  p99    266ms
+│ ttfb          p50     10ms  p95    141ms
+│ errors          0.0%   checks passed 100.0%
+│ edge hit        0.0%   set-cookie on guest 100.0%   cache-control private   0.0%
+│ thresholds    all passed
+└──────────────────────────────────────────────────────────────────────

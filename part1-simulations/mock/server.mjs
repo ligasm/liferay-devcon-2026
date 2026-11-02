@@ -15,7 +15,7 @@
  *   GET  /o/**, /combo?…              → tiny JS/CSS with immutable cache headers
  *
  * Two modes (env MODE):
- *   origin (default) — behaves like stock Liferay: JSESSIONID/COOKIE_SUPPORT/SERVER_ID
+ *   origin (default) — behaves like stock Liferay: JSESSIONID/COOKIE_SUPPORT/GUEST_LANGUAGE_ID
  *                      cookies on every anonymous page, and
  *                      Cache-Control: private, no-cache, no-store, must-revalidate
  *   edge             — behaves like Varnish/Cloudflare in front of Liferay for
@@ -70,7 +70,7 @@ function guestCookies() {
   return [
     `JSESSIONID=${randomBytes(16).toString('hex').toUpperCase()}; Path=/; HttpOnly`,
     'COOKIE_SUPPORT=true; Max-Age=31536000; Path=/; HttpOnly',
-    `SERVER_ID=${randomBytes(8).toString('hex')}; Path=/; HttpOnly`,
+    'GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Path=/; HttpOnly',
   ];
 }
 

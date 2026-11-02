@@ -2,7 +2,7 @@
  * guest-browse-sticky.js — the RETURNING anonymous visitor.
  *
  * Identical journey to guest-browse.js, but the VU keeps its cookie jar: after
- * the first page Liferay's JSESSIONID / COOKIE_SUPPORT / SERVER_ID (and
+ * the first page Liferay's JSESSIONID / COOKIE_SUPPORT / GUEST_LANGUAGE_ID (and
  * GUEST_LANGUAGE_ID) ride along on every request, exactly like a real browser.
  *
  * Why a separate variant? Because the classic edge rule "bypass the cache when

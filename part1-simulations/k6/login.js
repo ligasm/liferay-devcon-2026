@@ -24,7 +24,7 @@
  *
  * Executor: constant-arrival-rate — the open model matters here. Liferay's own
  * 7.4 benchmark saw the NATIVE login provider degrade past ~400 concurrent
- * login attempts (1,185 ms at threshold, 92 % app-tier CPU), because password
+ * login attempts (68 % CPU at 400 users), because password
  * hashing (PBKDF2/bcrypt) is deliberately expensive; offloading auth to a
  * dedicated IdP took the same hardware to 19,000 virtual users. Keep RATE modest
  * (default 2/s) — every successful login also creates a server-side session.

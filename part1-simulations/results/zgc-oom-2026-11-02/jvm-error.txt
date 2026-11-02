@@ -1,0 +1,4 @@
+java.lang.OutOfMemoryError: Requested array size exceeds VM limit
+Dumping heap to /opt/liferay/logs/java_pid27.hprof ...
+Heap dump file created [3101530108 bytes in 2.265 secs]
+Terminating due to java.lang.OutOfMemoryError: Requested array size exceeds VM limit

@@ -128,12 +128,6 @@ sub vcl_recv {
         set req.http.X-Bypass = "auth-cookie";
         return (pass);
     }
-    # LFR_SESSION_STATE_<userId> is written by Liferay's session JS. UNVERIFIED
-    # whether anonymous visitors receive it for the default user id — if they
-    # do, keying on it would tank the guest hit ratio. Measure with the
-    # guest-browse-sticky scenario before enabling this clause.
-    # if (req.http.Cookie ~ "(^|;\s*)LFR_SESSION_STATE_") { return (pass); }
-
     # ---- 5. anonymous GET: shareable object ---------------------------------------
     # Static, versioned assets: no cookie at all, cache hard.
     if (req.url ~ "^/o/" ||
@@ -146,7 +140,7 @@ sub vcl_recv {
     }
     else {
         # Guest HTML: keep only GUEST_LANGUAGE_ID (as a hash key), drop the rest
-        # (JSESSIONID, COOKIE_SUPPORT, SERVER_ID, LFR_SESSION_STATE_*, analytics…).
+        # (JSESSIONID, COOKIE_SUPPORT, analytics…).
         if (req.http.Cookie ~ "(^|;\s*)GUEST_LANGUAGE_ID=") {
             set req.http.X-Guest-Language = regsub(req.http.Cookie, "^.*?(^|;\s*)GUEST_LANGUAGE_ID=([^;]*).*$", "\2");
         }

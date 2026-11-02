@@ -85,7 +85,10 @@ export const config = {
   purgeCmd: env('PURGE_CMD', ''),
   webhookPort: num('WEBHOOK_PORT', 8787),
   webhookSecret: env('WEBHOOK_SECRET', ''),
-  webhookDebounceMs: num('WEBHOOK_DEBOUNCE_MS', 20000),
+  webhookDebounceMs: num('WEBHOOK_DEBOUNCE_MS', 30000),
+  // Deltas look back this far, because dateModified filters go through the search index and an
+  // item committed just before lastRun may not be indexed yet. Refetching is safe: plan.mjs hashes.
+  deltaOverlapMs: num('DELTA_OVERLAP_MS', 300000),
 
   // --- Paths ----------------------------------------------------------------
   dirs: {

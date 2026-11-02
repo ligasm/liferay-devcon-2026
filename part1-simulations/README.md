@@ -17,6 +17,8 @@ part1-simulations/
 ├── campaign.sh, run-stage.sh  one stage of the lab ladder (standard pass + load pass)
 ├── stress.sh                  capacity ladder: ./stress.sh <label> pages|search|login|mix|pageview <rate …>
 ├── stress-campaign.sh         every ladder in STRESS-RESULTS.md (S3, S4, S0, refinements, light edge)
+├── zgc-repeat.sh              repeated ZGC starts, to test the out-of-memory crash (RUNG-RESULTS.md finding 5)
+├── cold-burst.sh              G1 and ZGC cold starts under 200 pages/s, same crash, no warm-up
 ├── static-vs-edge.sh          every ladder in STATIC-VS-EDGE.md (static nginx vs Varnish, HTML and page views)
 ├── capture_pageview.py        Chromium net log → k6/data/pageview-*.json (what a first visit fetches)
 ├── static_vs_edge_report.py   results/stress/S6-static-*, S4-edge-page* → STATIC-VS-EDGE.steps.md
@@ -210,8 +212,7 @@ values from learn.liferay.com "Tuning Liferay"; the D&M Cache Control UI path.
 Not verified (marked `UNVERIFIED — check learn.liferay.com` in the files): the
 OSGi PID/keys for D&M Cache Control, `${liferay.home}` expansion in
 `cluster.link.channel.properties.*`, the exact JGroups protocol list for your
-bundled JGroups version, G1 sub-flags, the counter pool property names, whether
-guests receive `LFR_SESSION_STATE_*`, and the module-entity Ehcache aliases
-beyond the ones shipped in `liferay-multi-vm.xml`. The Varnish VCL and the Java
-sketch were reviewed but not compiled here (no Varnish/JDK in the build
-environment) — run `varnishd -C -f default.vcl` once before the talk.
+bundled JGroups version, G1 sub-flags, the counter pool property names, and the
+module-entity Ehcache aliases beyond the ones shipped in `liferay-multi-vm.xml`. Both
+Varnish VCL files compile on Varnish 7.6 (`varnishd -C`, 2026-11-02). The Java purge
+module is a sketch: it has not been compiled or run.

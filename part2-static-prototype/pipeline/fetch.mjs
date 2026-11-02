@@ -94,6 +94,8 @@ async function fetchSitePages({ full }) {
   log(`page: listed ${items.length}, downloaded ${rendered} rendered page(s)`);
 }
 
+// headless-delivery's /navigation-menus is deprecated from 2026.Q1 (moved to headless-admin-site);
+// Learn says existing integrations keep working.
 async function fetchNavMenus() {
   const { items } = await listAll('/navigation-menus');
   const known = new Set(loadRaw('nav').map((n) => n.id));
@@ -107,7 +109,7 @@ export async function fetchAll(flags = {}) {
   KINDS.forEach((k) => fs.mkdirSync(rawDir(k), { recursive: true }));
   const state = readJson(config.files.state, { lastRun: null, runCount: 0, items: {} });
   const full = !!flags.full || !state.lastRun;
-  const since = full ? null : state.lastRun;
+  const since = full ? null : new Date(Date.parse(state.lastRun) - config.deltaOverlapMs).toISOString();
   const max = Number(flags['max-items'] ?? config.maxItems);
   const startedAt = nowIso();
   const t0 = Date.now();

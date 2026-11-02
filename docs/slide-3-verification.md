@@ -532,7 +532,7 @@ Only the header and two rows change.
 | 235 | `liferay-web.xml` "declares 44 filters" | 43 at master and 2026.q3.0 today. No CacheFilter, so the point stands. |
 | 4750 | `GZipFilter=false` presented as a compression-placement choice | Add the actual reason: BREACH (LPE-16413, 7.0 Fix Pack 46). The dossier never mentions BREACH in this sense. |
 | 4478 | Advice "stale by 10+ years" | Only parallel rendering (2015) is that old. GZip 2018, Strip 2019, minifier 2020, CMS 2020, CacheFilter 2024. |
-| 4504 | "paying runtime CPU for nothing"; trade-off "none" | `true` still compresses CSS. LPD-45984 removed the JS path in Jan 2025 (2025.Q2). |
+| 4504 | "paying runtime CPU for nothing"; trade-off "none" | `true` still compresses CSS. LPD-45984 removed the JS path in Jan 2025 (gone in 2025.q1.13-lts, still present in 2024.q4.2). |
 | 4723 | Parallel rendering "removed" with LPS-57880 as context | Add LPS-58748 (2015 hard-disable, thread-safety reason) and LPS-110359 (2020 removal). |
 | 4724 | "Rendering is sequential" | Serial on the server, unless `render-weight` is below 1 with `ajaxable=true`, which is AJAX rendered in parallel. |
 | 5057, 5449, 5583 | "CMS was removed in JDK 15" | Removed in **JDK 14** (JEP 363). The flag is fatal from JDK 15. |

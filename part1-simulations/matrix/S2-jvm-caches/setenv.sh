@@ -3,11 +3,9 @@
 #
 # G1 (JDK 21 default): predictable, well understood, right for 4–16 GB heaps.
 # Generational ZGC (JDK 21+, -XX:+UseZGC -XX:+ZGenerational): sub-millisecond
-# pauses independent of heap size; costs ~10–15 % throughput and more RAM.
-# Non-generational ZGC was a poor fit for Liferay's allocation rate; the
-# generational mode is the first ZGC worth trying for a latency-sensitive portal.
-# Liferay's only JDK 21 GC guidance is a KB article marked "Legacy": "start
-# testing with G1's default settings". So: measure. This stage is where you run
+# pauses per JEP 439. In our lab (6 GB heap, about 600 MB live) it gave no gain over G1:
+# see results/RUNG-RESULTS.md. Large heaps are untested. Liferay's Go Live Checklist
+# 2026.Q1 says "G1 should be the default choice for Liferay DXP". So: measure. This stage is where you run
 # the same k6 mix against both and put the p99 side by side.
 #
 # NOTE: on JDK 23+ ZGC is generational by default and -XX:+ZGenerational is
@@ -41,7 +39,7 @@ DIAG_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$CATALINA_BASE/logs 
  -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8099 \
  -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
 # JMX is how you SEE the caches: org.ehcache:type=CacheStatistics,* (hit ratio,
-# evictions) and com.zaxxer.hikari:type=Pool (*) (ActiveConnections, PendingThreads).
+# evictions) and com.zaxxer.hikari:type=Pool (*) (ActiveConnections, ThreadsAwaitingConnection).
 # Bind JMX to localhost / secure it before exposing on a real network.
 
 # JGroups (Cluster Link over TCP + JDBC_PING, see jgroups/jdbc_ping.xml)
