@@ -25,6 +25,8 @@ const BLOBS: Record<string, string> = {
   "92409000d05f018b363b9d3c7f3c166a": "assets/wall.jpg",
   "d13a5b9a6c5993d14dd563cfbc600104": "assets/pages.jpg",
   "daae0f910dac30168a6b7fb4555047fe": "assets/tokens.jpg",
+  "dc55e3855bdf3b85353837bef5e3e5c8": "assets/post-liferay.jpg",
+  "fb62ebce9b003c1baa2367d7644387c2": "assets/post-static.jpg",
   // chart fallbacks (bun render-fallbacks.ts); re-upload to the artifact when they change
   "3667191d17718d39f03467a17bd6d7ef": "assets/charts/stages-content.png",
   "32b20ebbae09c9b60f17c8d847b9ccd7": "assets/charts/stages-ap.png",

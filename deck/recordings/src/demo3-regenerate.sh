@@ -1,40 +1,50 @@
 #!/usr/bin/env bash
-# Part 2 demo (slides 22-23). Run from a copy of part2-static-prototype with no .env and clean state:
-# content/raw, content/build, content/state.json, content/plan.json and dist/ removed.
-# Needs network for liferay.dev. The edit in step 4 touches the local mirror, because liferay.dev isn't ours to edit.
+# Part 2 demo (slides 22-23). Run docs/demos/demo3-regenerate.sh prepare first, and cleanup afterwards:
+# this really changes a post in the lab Liferay on :8086 and rebuilds the static site on :8091.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+WORK=/tmp/devcon-demo3
+ID=37565
+POST=/web/proventeq/blog/-/blogs/copilot-readiness-five-checks
+API=http://127.0.0.1:8086/o/headless-delivery/v1.0/blog-postings/$ID
+PORTAL=http://localhost:8086$POST
+STATIC=http://localhost:8091$POST
+export ENV_FILE=.env.local-proventeq CONTENT_DIR=$WORK/content REPORTS_DIR=$WORK/reports
+cd "$REPO/part2-static-prototype"
 unset ANTHROPIC_API_KEY
-POST=setting-up-glowroot-as-central-collector-liferay
-ID=121975600
+
+auth() { ( source "$REPO/part2-static-prototype/.env.local-proventeq"; echo "$LIFERAY_USER:$LIFERAY_PASSWORD" ); }
+regenerate() { node fidelity/regenerate.mjs "$@" 2>&1 | grep -E 'plan:|done in' | sed 's/ | AI units.*//'; }
+change_title() {
+	curl -sS -o /dev/null -w 'Liferay answered %{http_code}\n' -u "$(auth)" -X PATCH -H 'Content-Type: application/json' \
+		-d "$(python3 -c 'import json,sys; print(json.dumps({"headline": sys.argv[1]}))' "$1")" "$API"
+}
+title_of() { curl -sSL "$1" | grep -o '<title>[^<]*' | sed 's/<title>//; s/ - Proventeq.*//'; }
+stats() { curl -sSL "$1" -o "$WORK/page"; echo "$(wc -c < "$WORK/page") bytes, $(grep -o '<script' "$WORK/page" | wc -l) scripts, $(grep -c authToken "$WORK/page") authToken"; }
+
 clear
-say '1. First build, from the public Headless API on liferay.dev'
-run 'node pipeline/regenerate.mjs --full --no-ai --max-items 80 2>&1 | grep -vE "├─|directory:" | cut -c1-108'
-sleep 6
+say '1. First build, from the APIs of our own Liferay'
+run 'regenerate --full'
+sleep 5
 say '2. Run it again. Nothing changed'
-run 'node pipeline/regenerate.mjs 2>&1 | cut -c1-108'
-sleep 6
-node tools/serve.mjs dist >/dev/null 2>&1 &
-SERVE=$!
-sleep 1
+run 'regenerate'
+sleep 5
 say '3. One post, two deliveries: bytes, script tags, authToken'
-stats() { curl -sSL "$1" -o /tmp/demo3-page.$$; echo "$(wc -c < /tmp/demo3-page.$$) bytes, $(grep -o '<script' /tmp/demo3-page.$$ | wc -l) scripts, $(grep -c authToken /tmp/demo3-page.$$) authToken"; rm -f /tmp/demo3-page.$$; }
-run "stats https://liferay.dev/b/$POST"
+run 'stats $PORTAL'
 sleep 2
-run "stats http://localhost:4321/blog/$POST/"
-sleep 2
-run "curl -sSD- -o /dev/null http://localhost:4321/blog/$POST/ | grep -iE '^(cache-control|cache-tag):'"
-sleep 8
-say '4. Edit one post in the local mirror and rerun'
-run "sed -i -E '0,/\"headline\": *\"/s//&[EDITED] /' content/raw/blog/$ID.json"
-run 'node pipeline/regenerate.mjs --offline --no-ai 2>&1 | grep -E "plan:|build:|done in" | cut -c1-108'
+run 'stats $STATIC'
+sleep 6
+say '4. Change the post in Liferay, then regenerate'
+run 'change_title "Six checks to run before switching on Microsoft 365 Copilot"'
+run 'regenerate'
 sleep 3
-run "sed -n '/CDN purge/,\$p' \"\$(ls -t reports/*.md | head -1)\" | cut -c1-108"
-sleep 8
-say '5. What would the model cost for the whole catalogue? No key, no calls'
-run 'node pipeline/regenerate.mjs --dry-run --full --offline 2>&1 | grep -E "plan:|orchestrated" | cut -c1-108'
-run "grep -E 'calls:' \"\$(ls -t reports/*.md | head -1)\""
+run 'cat $WORK/reports/purge.txt | cut -c1-108'
 sleep 7
+say '5. Both now show the new title'
+run 'title_of $PORTAL'
+sleep 2
+run 'title_of $STATIC'
+sleep 6
 say '6. Check every internal link'
-run 'node tools/check-links.mjs dist'
+run 'node tools/check-links.mjs dist-fidelity'
 hold 6
-kill $SERVE 2>/dev/null

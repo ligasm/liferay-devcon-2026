@@ -23,7 +23,7 @@ liferay-devcon-2026/
 │   ├── assets/                        speaker photo, Proventeq logo, four generated backdrops
 │   └── art/gen_art.py                 generator for the backdrops (seed 7 → byte-identical images)
 ├── part1-simulations/                 k6 (JavaScript) load-test suite, bash runners and the S0–S6 config matrix
-└── part2-static-prototype/            Liferay Headless → Astro static site, AI orchestrator on a budget
+└── part2-static-prototype/            same-look static site from Liferay's APIs; Astro pipeline with an AI orchestrator on a budget
 ```
 
 ## Presenting

@@ -8,15 +8,14 @@
 #   ./lab.sh lighthouse-off    remove the front and the valve: restarts Liferay at S3
 #
 # The demo scripts need some of this stopped first. Their prepare steps do that: demo 1
-# recreates the stock Liferay, demo 2 removes Varnish, demo 3 stops the site on :4321.
+# recreates the stock Liferay, demo 2 removes Varnish, demo 3 rebuilds the site on :8091.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 P1="$REPO/part1-simulations"
 P2="$REPO/part2-static-prototype"
 VARNISH="$P1/matrix/varnish"
 FRONT="$P1/lighthouse/front"
-SITE=/tmp/devcon-lab-site
-POST=setting-up-glowroot-as-central-collector-liferay
+POST=/web/proventeq/blog/-/blogs/copilot-readiness-five-checks
 
 warn() { printf '\033[33m%s\033[0m\n' "$*" >&2; }
 exists() { docker inspect "$1" >/dev/null 2>&1; }
@@ -57,26 +56,6 @@ start_stock_liferay() {
 	wait_for http://localhost:8096/
 }
 
-# Its own copy, so that demo 3's clean-up and its [EDITED] post never touch this site.
-start_demo_site() {
-	if curl -s -o /dev/null --max-time 2 http://localhost:4321/; then
-		echo 'Up: http://localhost:4321/'
-		return 0
-	fi
-	if [ ! -d "$SITE/dist" ]; then
-		echo 'Building the liferay.dev static site, which takes up to a minute'
-		rm -rf "$SITE"
-		rsync -a --exclude '/dist*' --exclude '/content-proventeq' --exclude '/reports-proventeq' --exclude '/.env' "$P2/" "$SITE/"
-		rm -rf "$SITE"/content/raw "$SITE"/content/build "$SITE"/content/state.json "$SITE"/content/plan.json "$SITE"/reports/*.md
-		(cd "$SITE" && env -u ANTHROPIC_API_KEY node pipeline/regenerate.mjs --full --no-ai --max-items 80 >/dev/null 2>&1) || {
-			rm -rf "$SITE/dist"
-			die "Couldn't build the liferay.dev static site. Check the network."
-		}
-	fi
-	(cd "$SITE" && exec setsid nohup node tools/serve.mjs dist >/dev/null 2>&1 </dev/null) &
-	wait_for http://localhost:4321/
-}
-
 # Prints one line per link. A line that isn't 200 is the one to look at.
 check() {
 	local code
@@ -101,8 +80,8 @@ status() {
 
 	printf '\n\033[1;36mDemos\033[0m\n'
 	check 'Demo 1: stock Liferay' http://localhost:8096/
-	check 'Demo 3: portal version' "https://liferay.dev/b/$POST"
-	check 'Demo 3: static version' "http://localhost:4321/blog/$POST/"
+	check 'Demo 3: Liferay version' "http://localhost:8086$POST"
+	check 'Demo 3: static version' "http://localhost:8091$POST"
 
 	local stage
 	stage=$(docker exec liferay26112 sh -c 'head -1 /opt/liferay/portal-ext.properties' 2>/dev/null | grep -oE 'apply-stage.sh S[0-9]' | cut -d' ' -f2) || true
@@ -111,12 +90,12 @@ status() {
 }
 
 up() {
-	need docker curl rsync node
+	need docker curl
 	local f failed=0
 	for f in start_lab_liferay start_varnish \
 		"start_static proventeq-fidelity dist-fidelity $P2/fidelity/docker-compose.yml http://localhost:8091/web/proventeq/home" \
 		"start_static proventeq-static dist-proventeq $P1/matrix/S6-static/local/docker-compose.yml http://localhost:8090/" \
-		start_stock_liferay start_demo_site; do
+		start_stock_liferay; do
 		# A resource that won't start shouldn't hold back the others.
 		( $f ) || { warn "Failed: $f"; failed=1; }
 	done
@@ -126,7 +105,6 @@ up() {
 
 down() {
 	[ -z "$(docker ps -aq -f name=^lighthouse-front$)" ] || docker rm -f lighthouse-front >/dev/null
-	pkill -f '^node tools/serve.mjs dist' 2>/dev/null || true
 	local c
 	for c in liferay-varnish proventeq-fidelity proventeq-static demo-stock-liferay liferay26112; do
 		if [ -n "$(docker ps -q -f name=^$c$)" ]; then docker stop "$c" >/dev/null && echo "Stopped $c"; fi

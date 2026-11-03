@@ -11,7 +11,8 @@ Verified end-to-end against the public `liferay.dev` site (anonymous, no key nee
 
 > **Same look as the portal:** [`fidelity/`](fidelity/README.md) is a second generator. It renders
 > the site from Headless Delivery's page definitions, the fragment templates and the theme CSS,
-> so the static pages match Liferay's pixel for pixel (`node fidelity/build.mjs`). The pipeline
+> so the static pages match Liferay's pixel for pixel (`node fidelity/build.mjs`, or
+> `node fidelity/regenerate.mjs` to rebuild only on change and list the pages to purge). The pipeline
 > below instead takes rendered page bodies and puts them into its own Astro layout.
 
 ## Architecture

@@ -3,7 +3,8 @@
 ## 1. Making Liferay blazing fast
 
 [0:00–0:30 · 0:30]  
-* Introduce yourself and Proventeq.  
+* Introduce yourself and Proventeq.  UK partner  
+* importance of speed and size for AGI  
 
 
 ## 2. Two halves
@@ -14,7 +15,7 @@
 * Part 1,  
    hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. It ends at a ceiling tuning can't lift.  
 * Part 2  
-   for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, with an AI orchestrator on a token allowance. Live demo.
+   for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, and looking the same as the original. Demo.
 
 ## 3. The ladder
 
@@ -344,7 +345,7 @@ IF ASKED (not spoken)
 
 [24:15–24:45 · 0:30]  
 * Pivot: for content-heavy, mostly anonymous sites  
-   Keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, with an AI orchestrator in charge of the regeneration and on a strict token budget.  
+   Keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, that looks the same as the original.  
 * The backdrop is the idea  
    A wall of pages rendered once, ahead of time.
 
@@ -363,66 +364,80 @@ IF ASKED (not spoken)
 ## 21. Authored in Liferay, served as files
 
 [25:45–27:15 · 1:30]  
-* The pipeline: plain JavaScript modules on Node  
+* One command, plain JavaScript on Node  
+   node fidelity/regenerate.mjs.  
 * Fetch  
    Pulls a delta from Headless Delivery with filter dateModified gt lastRun.  
 * Plan  
-   Diffs content hashes and writes a small plan.json.  
-* The AI orchestrator reads only that plan  
-   Nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget.  
+   Diffs content hashes. Nothing changed means exit, with no build.  
 * Build  
-   Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index.  
-* Report  
-   Lists exactly which URLs and cache tags to purge.  
+   Liferay as a headless CMS: page definitions, fragment templates, theme CSS and content, all from its APIs, rendered to the same markup and CSS as static HTML. That's why it looks the same.  
+* Diff  
+   It compares the old and new HTML, so the purge list is exactly the pages that changed.  
 * Trigger  
-   A Liferay webhook or Object Action, or a timer every 15 minutes.
+   A webhook or a timer runs that command.  
+  
+IF ASKED (not spoken)  
+* Is the purge wired to a CDN?  
+   Not in the demo: it writes the list. The lab has no CDN.  
+* Is the webhook wired up?  
+   The repo's receiver, pipeline/webhook.mjs, runs the Astro pipeline, so it needs pointing at this command. Not tested with this one.
 
-## 22. Live demo against liferay.dev
+## 22. Regenerated from our own Liferay
 
 [27:15–31:15 · 4:00]  
-* DEMO  
-   Commands: docs/demos/demo3-regenerate.md. Fallback video: deck/recordings/demo3-regenerate.mp4.  
-* Step 1, first build: 136 pages, 3.5 MB  
-   node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API. About 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds.  
-* Step 2, run it again: most cycles cost nothing  
-   No flags. Nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check.  
-* Step 3, one post both ways: 202 kB against 23 kB  
-   The portal has 35 scripts and an authToken; the static page has 2 scripts and none. The next slide recaps this.  
-* Step 4, edit one post and rerun: four URLs to purge  
-   Plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page.  
-* Step 5, estimate the model cost for the whole catalogue: about three cents  
-   A dry run, with no key and no calls. The tokens slide explains how.  
+* PLAY THE VIDEO, 1:31  
+   deck/recordings/demo3-regenerate.mp4. Commands: docs/demos/demo3-regenerate.md.  
+* Step 1, first build: 76 pages in about 13 seconds  
+   From the APIs of our own Liferay, and about half of that is fetching.  
+* Step 2, run it again: about 3 seconds, no build  
+   Nothing changed, so nothing is built.  
+* Step 3, one post both ways: 123 kB against 28 kB  
+   Liferay's HTML has 25 scripts and an authToken; the static page has 1 script and none. The next slide shows the two pages.  
+* Step 4, change the post in Liferay: 7 URLs to purge  
+   A real edit through Liferay's API. About 9 seconds. The list is the post, its two neighbours that link to it, its list page, its two tag pages and search.  
+* Step 5, both show the new title  
 * Step 6, link checker: zero broken  
-   Of about 4,020 internal links; anything the static site doesn't own links back to the portal.
+   Of 2,043 internal links.  
+* OPTIONAL, live change  
+   With docs/demos/lab.sh up running: docs/demos/demo3-regenerate.sh change "Your title", then refresh both tabs. Finish with demo3-regenerate.sh restore.
 
 ## 23. Same post, two deliveries
 
 [31:15–32:15 · 1:00]  
-* Recap of step 3: the same post, both ways  
-   The same blog post on liferay.dev, measured 2026-11-02.  
-* Portal: 202 kB, 35 script tags  
-   And an authToken in the body.  
-* Static: 23 kB, two scripts  
-   No authToken.  
-* The static headers  
-   Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.
+* The point: you can't tell them apart  
+   The same post, after the edit, from Liferay and from a file. Same page height, 4,887 pixels at this width.  
+* Liferay: 123 kB, 25 script tags  
+   And an authToken in the body. The browser fetches about 100 files.  
+* Static: 28 kB, one script  
+   No authToken. The browser fetches about 7 files.  
+* The one difference you can see: the date  
+   Liferay prints "17 seconds ago", which a static file can't keep true, so it prints the date.  
+  
+IF ASKED (not spoken)  
+* How closely did you compare?  
+   On the 8 fragment pages, every element: position, size, font, colour, margins, padding and display, with 0 differences across 1,782 elements. On News and Blog, the widget elements selector by selector. Details: part2-static-prototype/fidelity/README.md.  
+* Which Liferay config?  
+   S3, the same lab as the load tests.
 
 ## 24. tokens
 
 [32:15–35:15 · 3:00]  
+* Where AI fits  
+   The build you just saw called no model, because the structure comes from Liferay's APIs. AI is for what's left: missing descriptions, tags and a review. We measured this with the repo's Astro pipeline on liferay.dev's public posts.  
 * The token-efficiency story: six mechanisms  
 * 1. Plan before model  
    No change means no model and no build.  
 * 2. Hash only the fields that matter  
    A comment counter ticking is not a change.  
 * 3. Extraction rules asked once per page layout  
-   And cached forever.  
+   And cached forever. Only the Astro pipeline needs them.  
 * 4. Enrichment keyed by content hash  
 * 5. Batching  
    Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.  
 * 6. A hard budget  
    With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.  
-* The dry run you saw: roughly three cents, once  
+* A dry run: roughly three cents, once  
    About 12 to 16 thousand tokens for 80 posts.
 
 ## 25. Static wins on the page, not the HTML
@@ -448,19 +463,19 @@ IF ASKED (not spoken)
 [37:15–40:15 · 3:00]  
 * The honest ledger  
 * Search relevance and facets  
-   Become a Pagefind index built at build time, fully static; link advanced search back to the portal.  
+   Become a static index searched in the browser. Same layout; result counts equal or within 2 on six terms, but the ranking differs.  
 * Comments, forms and ratings  
-   Become islands posting to Objects or the Headless API, plus a "comment in the portal" link.  
+   The generator leaves them out: the contact form is only markup. The design is islands posting to Objects or the Headless API; we did not build that.  
 * Sign-in state  
-   Comes from a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies.  
+   Here Sign in just links back to the portal. The design is a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies; also not built.  
 * Preview and workflow stay in the portal  
    The static site only sees published content, live within the timer interval or instantly via webhook.  
-* Portlets in disguise  
-   Flagged as thin pages, and they link back.  
+* Same look only for what it supports  
+   The Classic theme, and the FreeMarker and widgets this site uses. Anything else fails the build and names what it hit, rather than rendering wrongly. That is why we built it on our own site.  
 * Yes, it's a second stack  
    But it's a timer, a script and a folder of files.  
 * Your pipeline will meet a broken API; design for it  
-   Real story: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list.
+   Real story, from testing on liferay.dev: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list.
 
 ## 27. Pages and AI: the same move
 
@@ -501,8 +516,8 @@ IF ASKED (not spoken)
 PREPARED ANSWERS  
 * Why not a Cloudflare APO equivalent?  
    There is no Liferay analogue; Liferay PaaS is Google Cloud CDN, which a KB article says is limited to one hour by default with no out-of-the-box way to change it, and SaaS is fixed to USE_ORIGIN_HEADERS, so origin headers are the only lever.  
-* Why Astro?  
-   Static by default, islands, fast builds; Next.js ISR is the alternative for on-demand revalidation.  
+* Why not Astro?  
+   It's in the repo too, as pipeline/. It runs on any site but uses its own layout, so it does not look like the original. It's also where the AI step lives.  
 * Structured content?  
    Wired by contentStructureId; test it on your own DXP.  
 * Model cost if AI is on everywhere?  

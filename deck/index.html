@@ -45,7 +45,8 @@
     <img src="assets/proventeq-logo.png" alt="Proventeq" style="width:252px; height:62px; object-fit:contain">
   </div>
   <aside class="notes">[0:00–0:30 · 0:30]&nbsp;
-* Introduce yourself and Proventeq.&nbsp;
+* Introduce yourself and Proventeq.&nbsp; UK partner
+* importance of speed and size for AGI
 </aside>
 </section>
 
@@ -68,7 +69,7 @@
 * Part 1, &nbsp;
 &nbsp;&nbsp;&nbsp;hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. It ends at a ceiling tuning can't lift.&nbsp;
 * Part 2 &nbsp;
-&nbsp;&nbsp;&nbsp;for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, with an AI orchestrator on a token allowance. Live demo.</aside>
+&nbsp;&nbsp;&nbsp;for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, and looking the same as the original. Demo.</aside>
 </section>
 
 <section id="ladder" data-transition="fade" style="display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px; background:#f4f7f7">
@@ -688,7 +689,7 @@ IF ASKED (not spoken)
 <h2 style="font-size:120px;font-weight:700;line-height:1.05;width:900px;color:#0f2838">Don't render it at all.</h2>
 <aside class="notes">[24:15–24:45 · 0:30]
 * Pivot: for content-heavy, mostly anonymous sites
-&nbsp;&nbsp;&nbsp;Keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, with an AI orchestrator in charge of the regeneration and on a strict token budget.
+&nbsp;&nbsp;&nbsp;Keep authoring in Liferay, serve plain HTML generated from Liferay's data, regenerated automatically, that looks the same as the original.
 * The backdrop is the idea
 &nbsp;&nbsp;&nbsp;A wall of pages rendered once, ahead of time.</aside>
 </section>
@@ -742,18 +743,18 @@ IF ASKED (not spoken)
 </div>
 <svg width="48" height="24" viewBox="0 0 48 24" style="flex:none"><polygon points="0,7.199999999999999 28.799999999999997,7.199999999999999 28.799999999999997,0 48,12 28.799999999999997,24 28.799999999999997,16.8 0,16.8" fill="#34a1a0"/></svg>
 <div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600;color:#34a1a0">AI</h3>
-<p style="font-size:26px;color:#b9cfd3">decides</p>
+<h3 style="font-size:44px;font-weight:600;color:#34a1a0">Build</h3>
+<p style="font-size:26px;color:#b9cfd3">same look</p>
 </div>
 <svg width="48" height="24" viewBox="0 0 48 24" style="flex:none"><polygon points="0,7.199999999999999 28.799999999999997,7.199999999999999 28.799999999999997,0 48,12 28.799999999999997,24 28.799999999999997,16.8 0,16.8" fill="#34a1a0"/></svg>
 <div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Astro</h3>
-<p style="font-size:26px;color:#4a5a66">static build</p>
+<h3 style="font-size:44px;font-weight:600">Diff</h3>
+<p style="font-size:26px;color:#4a5a66">pages changed</p>
 </div>
 <svg width="48" height="24" viewBox="0 0 48 24" style="flex:none"><polygon points="0,7.199999999999999 28.799999999999997,7.199999999999999 28.799999999999997,0 48,12 28.799999999999997,24 28.799999999999997,16.8 0,16.8" fill="#34a1a0"/></svg>
 <div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
 <h3 style="font-size:44px;font-weight:600">CDN</h3>
-<p style="font-size:26px;color:#4a5a66">tag purge</p>
+<p style="font-size:26px;color:#4a5a66">purge those</p>
 </div>
 </div>
 <div style="display:flex;gap:24px;justify-content:center">
@@ -763,103 +764,118 @@ IF ASKED (not spoken)
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
 <aside class="notes">[25:45–27:15 · 1:30]
-* The pipeline: plain JavaScript modules on Node
+* One command, plain JavaScript on Node
+&nbsp;&nbsp;&nbsp;node fidelity/regenerate.mjs.
 * Fetch
 &nbsp;&nbsp;&nbsp;Pulls a delta from Headless Delivery with filter dateModified gt lastRun.
 * Plan
-&nbsp;&nbsp;&nbsp;Diffs content hashes and writes a small plan.json.
-* The AI orchestrator reads only that plan
-&nbsp;&nbsp;&nbsp;Nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget.
+&nbsp;&nbsp;&nbsp;Diffs content hashes. Nothing changed means exit, with no build.
 * Build
-&nbsp;&nbsp;&nbsp;Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index.
-* Report
-&nbsp;&nbsp;&nbsp;Lists exactly which URLs and cache tags to purge.
+&nbsp;&nbsp;&nbsp;Liferay as a headless CMS: page definitions, fragment templates, theme CSS and content, all from its APIs, rendered to the same markup and CSS as static HTML. That's why it looks the same.
+* Diff
+&nbsp;&nbsp;&nbsp;It compares the old and new HTML, so the purge list is exactly the pages that changed.
 * Trigger
-&nbsp;&nbsp;&nbsp;A Liferay webhook or Object Action, or a timer every 15 minutes.</aside>
+&nbsp;&nbsp;&nbsp;A webhook or a timer runs that command.
+
+IF ASKED (not spoken)
+* Is the purge wired to a CDN?
+&nbsp;&nbsp;&nbsp;Not in the demo: it writes the list. The lab has no CDN.
+* Is the webhook wired up?
+&nbsp;&nbsp;&nbsp;The repo's receiver, pipeline/webhook.mjs, runs the Astro pipeline, so it needs pointing at this command. Not tested with this one.</aside>
 </section>
 
 <section id="demo" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Live demo against liferay.dev</h2>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Regenerated from our own Liferay</h2>
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
 <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">136</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">76</p>
 <p style="font-size:36px;color:#4a5a66">pages, full build</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">~2s</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">~3s</p>
 <p style="font-size:36px;color:#4a5a66">when nothing changed</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">4</p>
-<p style="font-size:36px;color:#4a5a66">URLs purged per edit</p>
+<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">7</p>
+<p style="font-size:36px;color:#4a5a66">URLs purged for this edit</p>
 </div>
 </div>
-<p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ node pipeline/regenerate.mjs</p>
+<p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ node fidelity/regenerate.mjs</p>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
 <aside class="notes">[27:15–31:15 · 4:00]
-* DEMO
-&nbsp;&nbsp;&nbsp;Commands: docs/demos/demo3-regenerate.md. Fallback video: deck/recordings/demo3-regenerate.mp4.
-* Step 1, first build: 136 pages, 3.5 MB
-&nbsp;&nbsp;&nbsp;node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API. About 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds.
-* Step 2, run it again: most cycles cost nothing
-&nbsp;&nbsp;&nbsp;No flags. Nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check.
-* Step 3, one post both ways: 202 kB against 23 kB
-&nbsp;&nbsp;&nbsp;The portal has 35 scripts and an authToken; the static page has 2 scripts and none. The next slide recaps this.
-* Step 4, edit one post and rerun: four URLs to purge
-&nbsp;&nbsp;&nbsp;Plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page.
-* Step 5, estimate the model cost for the whole catalogue: about three cents
-&nbsp;&nbsp;&nbsp;A dry run, with no key and no calls. The tokens slide explains how.
+* PLAY THE VIDEO, 1:31
+&nbsp;&nbsp;&nbsp;deck/recordings/demo3-regenerate.mp4. Commands: docs/demos/demo3-regenerate.md.
+* Step 1, first build: 76 pages in about 13 seconds
+&nbsp;&nbsp;&nbsp;From the APIs of our own Liferay, and about half of that is fetching.
+* Step 2, run it again: about 3 seconds, no build
+&nbsp;&nbsp;&nbsp;Nothing changed, so nothing is built.
+* Step 3, one post both ways: 123 kB against 28 kB
+&nbsp;&nbsp;&nbsp;Liferay's HTML has 25 scripts and an authToken; the static page has 1 script and none. The next slide shows the two pages.
+* Step 4, change the post in Liferay: 7 URLs to purge
+&nbsp;&nbsp;&nbsp;A real edit through Liferay's API. About 9 seconds. The list is the post, its two neighbours that link to it, its list page, its two tag pages and search.
+* Step 5, both show the new title
 * Step 6, link checker: zero broken
-&nbsp;&nbsp;&nbsp;Of about 4,020 internal links; anything the static site doesn't own links back to the portal.</aside>
+&nbsp;&nbsp;&nbsp;Of 2,043 internal links.
+* OPTIONAL, live change
+&nbsp;&nbsp;&nbsp;With docs/demos/lab.sh up running: docs/demos/demo3-regenerate.sh change "Your title", then refresh both tabs. Finish with demo3-regenerate.sh restore.</aside>
 </section>
 
-<section id="sidebyside" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<section id="sidebyside" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <h2 style="font-size:72px;font-weight:600;line-height:1.1">Same post, two deliveries</h2>
 <div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4a5a66">Portal render</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#4a5a66">202 kB</p>
-<p style="font-size:40px;color:#4a5a66">35 scripts</p>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:16px;align-items:center">
+<p style="align-self:flex-start;font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4a5a66">Liferay</p>
+<img src="assets/post-liferay.jpg" alt="The blog post rendered by Liferay" style="width:680px;height:478px;object-fit:contain;border-radius:8px">
+<p style="align-self:flex-start;font-size:44px;font-weight:700;color:#4a5a66">123 kB <span style="font-size:32px;font-weight:400;color:#4a5a66">25 scripts</span></p>
 </div>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Static</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#f4f7f7">23 kB</p>
-<p style="font-size:40px;color:#b9cfd3">2 scripts</p>
+<div style="flex:1;background:#0f2838;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:16px;align-items:center">
+<p style="align-self:flex-start;font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Static</p>
+<img src="assets/post-static.jpg" alt="The same blog post as a static file, looking the same" style="width:680px;height:478px;object-fit:contain;border-radius:8px">
+<p style="align-self:flex-start;font-size:44px;font-weight:700;color:#f4f7f7">28 kB <span style="font-size:32px;font-weight:400;color:#b9cfd3">1 script</span></p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured · the HTML of one post, after the edit · only the date line differs</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
 <aside class="notes">[31:15–32:15 · 1:00]
-* Recap of step 3: the same post, both ways
-&nbsp;&nbsp;&nbsp;The same blog post on liferay.dev, measured 2026-11-02.
-* Portal: 202 kB, 35 script tags
-&nbsp;&nbsp;&nbsp;And an authToken in the body.
-* Static: 23 kB, two scripts
-&nbsp;&nbsp;&nbsp;No authToken.
-* The static headers
-&nbsp;&nbsp;&nbsp;Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.</aside>
+* The point: you can't tell them apart
+&nbsp;&nbsp;&nbsp;The same post, after the edit, from Liferay and from a file. Same page height, 4,887 pixels at this width.
+* Liferay: 123 kB, 25 script tags
+&nbsp;&nbsp;&nbsp;And an authToken in the body. The browser fetches about 100 files.
+* Static: 28 kB, one script
+&nbsp;&nbsp;&nbsp;No authToken. The browser fetches about 7 files.
+* The one difference you can see: the date
+&nbsp;&nbsp;&nbsp;Liferay prints "17 seconds ago", which a static file can't keep true, so it prints the date.
+
+IF ASKED (not spoken)
+* How closely did you compare?
+&nbsp;&nbsp;&nbsp;On the 8 fragment pages, every element: position, size, font, colour, margins, padding and display, with 0 differences across 1,782 elements. On News and Blog, the widget elements selector by selector. Details: part2-static-prototype/fidelity/README.md.
+* Which Liferay config?
+&nbsp;&nbsp;&nbsp;S3, the same lab as the load tests.</aside>
 </section>
 
 <section id="tokens" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
 <img src="assets/tokens.jpg" alt="" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">AI in charge, on an allowance</p>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">AI, if you want it, on an allowance</p>
 <p style="font-size:240px;font-weight:700;line-height:1;font-family:'JetBrains Mono', 'Courier New', monospace">$0.03</p>
-<p style="font-size:44px;color:#b9cfd3;width:900px">for the whole catalogue. Once.</p>
+<p style="font-size:44px;color:#b9cfd3;width:900px">for 80 liferay.dev posts. Once.</p>
 <aside class="notes">[32:15–35:15 · 3:00]
+* Where AI fits
+&nbsp;&nbsp;&nbsp;The build you just saw called no model, because the structure comes from Liferay's APIs. AI is for what's left: missing descriptions, tags and a review. We measured this with the repo's Astro pipeline on liferay.dev's public posts.
 * The token-efficiency story: six mechanisms
 * 1. Plan before model
 &nbsp;&nbsp;&nbsp;No change means no model and no build.
 * 2. Hash only the fields that matter
 &nbsp;&nbsp;&nbsp;A comment counter ticking is not a change.
 * 3. Extraction rules asked once per page layout
-&nbsp;&nbsp;&nbsp;And cached forever.
+&nbsp;&nbsp;&nbsp;And cached forever. Only the Astro pipeline needs them.
 * 4. Enrichment keyed by content hash
 * 5. Batching
 &nbsp;&nbsp;&nbsp;Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.
 * 6. A hard budget
 &nbsp;&nbsp;&nbsp;With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.
-* The dry run you saw: roughly three cents, once
+* A dry run: roughly three cents, once
 &nbsp;&nbsp;&nbsp;About 12 to 16 thousand tokens for 80 posts.</aside>
 </section>
 
@@ -908,28 +924,29 @@ IF ASKED (not spoken)
 <h2 style="font-size:72px;font-weight:600;line-height:1.1">What you give up</h2>
 <table style="font-size:36px;font-family:'IBM Plex Sans', Arial, sans-serif;color:#0f2838;border:1px solid #d8e0e2">
 <tr style="background:#0f2838;color:#f4f7f7"><th style="width:45%;text-align:left">Lost</th><th style="width:55%;text-align:left">Instead</th></tr>
-<tr style="background:#ffffff"><td>Portal search</td><td>Pagefind, built at build time</td></tr>
+<tr style="background:#ffffff"><td>Portal search</td><td>Static index, searched in the browser</td></tr>
 <tr><td>Comments, forms</td><td>Islands → Headless API</td></tr>
 <tr style="background:#ffffff"><td>Sign-in state</td><td>Late-hydration island</td></tr>
 <tr><td>Preview, workflow</td><td>Stay in the portal</td></tr>
+<tr style="background:#ffffff"><td>Any theme, any widget</td><td>Only what the generator supports</td></tr>
 </table>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
 <aside class="notes">[37:15–40:15 · 3:00]
 * The honest ledger
 * Search relevance and facets
-&nbsp;&nbsp;&nbsp;Become a Pagefind index built at build time, fully static; link advanced search back to the portal.
+&nbsp;&nbsp;&nbsp;Become a static index searched in the browser. Same layout; result counts equal or within 2 on six terms, but the ranking differs.
 * Comments, forms and ratings
-&nbsp;&nbsp;&nbsp;Become islands posting to Objects or the Headless API, plus a "comment in the portal" link.
+&nbsp;&nbsp;&nbsp;The generator leaves them out: the contact form is only markup. The design is islands posting to Objects or the Headless API; we did not build that.
 * Sign-in state
-&nbsp;&nbsp;&nbsp;Comes from a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies.
+&nbsp;&nbsp;&nbsp;Here Sign in just links back to the portal. The design is a late-hydration island calling my-user-account, which needs same-origin or CORS with SameSite None cookies; also not built.
 * Preview and workflow stay in the portal
 &nbsp;&nbsp;&nbsp;The static site only sees published content, live within the timer interval or instantly via webhook.
-* Portlets in disguise
-&nbsp;&nbsp;&nbsp;Flagged as thin pages, and they link back.
+* Same look only for what it supports
+&nbsp;&nbsp;&nbsp;The Classic theme, and the FreeMarker and widgets this site uses. Anything else fails the build and names what it hit, rather than rendering wrongly. That is why we built it on our own site.
 * Yes, it's a second stack
 &nbsp;&nbsp;&nbsp;But it's a timer, a script and a folder of files.
 * Your pipeline will meet a broken API; design for it
-&nbsp;&nbsp;&nbsp;Real story: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list.</aside>
+&nbsp;&nbsp;&nbsp;Real story, from testing on liferay.dev: the site-pages listing returned HTTP 500 on liferay.dev all day while per-page fetches worked; the fetcher fell back to a seed list.</aside>
 </section>
 
 <section id="isomorphism" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -994,8 +1011,8 @@ IF ASKED (not spoken)
 PREPARED ANSWERS
 * Why not a Cloudflare APO equivalent?
 &nbsp;&nbsp;&nbsp;There is no Liferay analogue; Liferay PaaS is Google Cloud CDN, which a KB article says is limited to one hour by default with no out-of-the-box way to change it, and SaaS is fixed to USE_ORIGIN_HEADERS, so origin headers are the only lever.
-* Why Astro?
-&nbsp;&nbsp;&nbsp;Static by default, islands, fast builds; Next.js ISR is the alternative for on-demand revalidation.
+* Why not Astro?
+&nbsp;&nbsp;&nbsp;It's in the repo too, as pipeline/. It runs on any site but uses its own layout, so it does not look like the original. It's also where the AI step lives.
 * Structured content?
 &nbsp;&nbsp;&nbsp;Wired by contentStructureId; test it on your own DXP.
 * Model cost if AI is on everywhere?

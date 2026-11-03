@@ -12,7 +12,7 @@ Companion material in this repository:
 | Evidence | Research dossier, one file in 6 parts, re-checked on 2026-11-02 against Liferay `master`, shipped 2026.q1.12, vendor docs and the raw lab data | `docs/liferay-performance-dossier.md` |
 | Slides | 29-slide deck, speaker notes, generated art, measured charts (Chart.js, PNG fallbacks) | `deck/` |
 | Part 1 demos | k6 scenarios (JavaScript), S0–S6 config matrix, Varnish VCL, Cloudflare rules, purge listener, shell runners, Python summariser + charts | `part1-simulations/` |
-| Part 2 demo | Astro static site from Liferay Headless, delta regeneration, AI orchestrator with budget, webhook + timers — JavaScript modules on Node | `part2-static-prototype/` |
+| Part 2 demo | Same-look static site from Liferay's APIs (`fidelity/`), delta regeneration and purge list; an Astro pipeline with an AI orchestrator on a budget, webhook + timers (`pipeline/`) — JavaScript modules on Node | `part2-static-prototype/` |
 
 Languages: k6 scenarios are JavaScript, the Part 1 runners are shell and Python, the Part 2 pipeline is `.mjs` on Node, and only `deck/build.ts` and `part0-base-site/build.ts` use Bun. The Java `ModelListener` sketch, the Varnish VCL and the Tomcat `setenv.sh` fragments run inside Liferay, Varnish and Tomcat.
 
@@ -113,7 +113,7 @@ Locale must be in the URL; personalisation moves to late hydration; forms and `A
 
 ---
 
-# PART 2 — A static site that regenerates itself, with AI in charge (24:15–40:15)
+# PART 2 — A static site that looks the same and regenerates itself (24:15–40:15)
 
 ## 2.1 The idea — 24:15–27:15
 
@@ -125,18 +125,22 @@ Precompute when the output space is small and read:write is high; render live wh
 
 **Slides:** 22 live demo · 23 same post, two deliveries
 
-1. `node pipeline/regenerate.mjs --full --no-ai --max-items 80` → 136 pages in ~11–36 s, 3.5 MB.
-2. Run again → "nothing changed → skip build (0 tokens)" in ~0.1 s offline / 2–3 s live.
-3. Side by side, the same post: **23 kB, 2 scripts, no `authToken`** vs **202 kB, 35 scripts**.
-4. Edit one post → plan `+0 ~1 -0`, done in ~1.5 s, purge list = that post + home + blog list + its category page.
-5. `--dry-run --full --offline` → ≈12–16k tokens ≈ $0.03 for the whole catalogue, once; lower `AI_BUDGET_TOKENS` and fallbacks kick in.
-6. `node tools/check-links.mjs` → 0 broken of ~4,020 links.
+Play `deck/recordings/demo3-regenerate.mp4` (1:31). Against the lab Liferay on `:8086` and the static site on `:8091`, with no network:
+
+1. `node fidelity/regenerate.mjs --full` → 76 pages in ~13 s.
+2. Run again → `plan: +0 ~0 -0`, "nothing changed, build skipped" in ~3 s.
+3. The same post both ways: **123 kB, 25 scripts, an `authToken`** vs **28 kB, 1 script, none**. The pages look the same; only the date line differs.
+4. A real edit through Liferay's API → `plan: +0 ~1 -0`, ~9 s, 7 URLs to purge: the post, its two neighbours, its list page, two tag pages, search.
+5. Both now show the new title.
+6. `node tools/check-links.mjs dist-fidelity` → 0 broken of 2,043 links.
+
+Optional live change: `docs/demos/demo3-regenerate.sh change "Your title"`, then refresh both tabs.
 
 ## 2.3 Token efficiency — 32:15–35:15
 
 **Slide:** 24 ($0.03)
 
-Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
+The same-look build calls no model. AI is for missing descriptions, tags and a review, measured with the Astro pipeline on 80 liferay.dev posts. Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
 
 ## 2.4 Static against the edge — 35:15–37:15
 
@@ -150,7 +154,7 @@ Measured against Varnish (`part1-simulations/results/STATIC-VS-EDGE.md`), same b
 
 **Slide:** 26
 
-Search → Pagefind; comments/forms → islands to the Headless API; sign-in state → late-hydration island; preview/workflow → stays in the portal. Resilience story: the site-pages listing returned HTTP 500 on liferay.dev all day; the fetcher fell back to a seed list.
+Search → a static index in the browser; comments/forms and sign-in state → left out or linked to the portal (islands are the design, not built); preview/workflow → stays in the portal; same look only for the theme, FreeMarker and widgets the generator supports. Resilience story: the site-pages listing returned HTTP 500 on liferay.dev all day; the fetcher fell back to a seed list.
 
 ---
 
@@ -162,7 +166,7 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 
 ## Q&A — 42:15–45:00
 
-"Why not Cloudflare APO?" (no Liferay analogue; PaaS = Google Cloud CDN, 1 h TTL; SaaS = `USE_ORIGIN_HEADERS`) · "Why Astro?" (static by default, islands; Next ISR is the alternative) · "Structured content?" (wired by `contentStructureId`; test on your DXP) · "Model cost if AI is on everywhere?" (show the ledger; the budget caps it).
+"Why not Cloudflare APO?" (no Liferay analogue; PaaS = Google Cloud CDN, 1 h TTL; SaaS = `USE_ORIGIN_HEADERS`) · "Why not Astro?" (it's in the repo as `pipeline/`: any site, but its own layout, and it's where the AI step lives) · "Structured content?" (wired by `contentStructureId`; test on your DXP) · "Model cost if AI is on everywhere?" (show the ledger; the budget caps it).
 
 ---
 

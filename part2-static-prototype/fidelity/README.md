@@ -23,6 +23,12 @@ open http://127.0.0.1:8091/web/proventeq/home
 node tools/check-links.mjs dist-fidelity                   # 76 pages, 0 broken links
 ```
 
+To rebuild only when something changed, and get the list of pages to purge:
+
+```sh
+ENV_FILE=.env.local-proventeq node fidelity/regenerate.mjs   # reports/purge.txt under REPORTS_DIR
+```
+
 ## Where each piece comes from
 
 | what | API | rendered by |

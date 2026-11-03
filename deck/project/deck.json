@@ -7,7 +7,7 @@
   "sections": {
     "open": {"description": "Cold open: the two halves, the five-layer ladder, and how we measured.", "start": "cover"},
     "part1": {"description": "Part 1: traditional optimisation, measured stage by stage up to guest HTML at the edge.", "start": "wire"},
-    "part2": {"description": "Part 2: a static site generated from Liferay that regenerates itself, with an AI orchestrator on a budget.", "start": "part2"},
+    "part2": {"description": "Part 2: a static site that looks the same as the original, generated from Liferay and regenerated on change.", "start": "part2"},
     "close": {"description": "Close: precompute as the one idea, and the ask.", "start": "isomorphism"}
   },
   "faces": {

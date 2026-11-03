@@ -1,17 +1,18 @@
-<section id="sidebyside" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<section id="sidebyside" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <h2 style="font-size:72px;font-weight:600;line-height:1.1">Same post, two deliveries</h2>
 <div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4a5a66">Portal render</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#4a5a66">202 kB</p>
-<p style="font-size:40px;color:#4a5a66">35 scripts</p>
+<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:16px;align-items:center">
+<p style="align-self:flex-start;font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4a5a66">Liferay</p>
+<img src="/_blob/dc55e3855bdf3b85353837bef5e3e5c8" alt="The blog post rendered by Liferay" style="width:680px;height:478px;object-fit:contain;border-radius:8px">
+<p style="align-self:flex-start;font-size:44px;font-weight:700;color:#4a5a66">123 kB <span style="font-size:32px;font-weight:400;color:#4a5a66">25 scripts</span></p>
 </div>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Static</p>
-<p style="font-size:144px;font-weight:700;line-height:1;color:#f4f7f7">23 kB</p>
-<p style="font-size:40px;color:#b9cfd3">2 scripts</p>
+<div style="flex:1;background:#0f2838;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:16px;align-items:center">
+<p style="align-self:flex-start;font-size:28px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Static</p>
+<img src="/_blob/fb62ebce9b003c1baa2367d7644387c2" alt="The same blog post as a static file, looking the same" style="width:680px;height:478px;object-fit:contain;border-radius:8px">
+<p style="align-self:flex-start;font-size:44px;font-weight:700;color:#f4f7f7">28 kB <span style="font-size:32px;font-weight:400;color:#b9cfd3">1 script</span></p>
 </div>
 </div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured · the HTML of one post, after the edit · only the date line differs</p>
 <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[31:15–32:15 · 1:00]<br>* Recap of step 3: the same post, both ways<br>&nbsp;&nbsp;&nbsp;The same blog post on liferay.dev, measured 2026-11-02.<br>* Portal: 202 kB, 35 script tags<br>&nbsp;&nbsp;&nbsp;And an authToken in the body.<br>* Static: 23 kB, two scripts<br>&nbsp;&nbsp;&nbsp;No authToken.<br>* The static headers<br>&nbsp;&nbsp;&nbsp;Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.</aside>
+<aside>[31:15–32:15 · 1:00]<br>* The point: you can't tell them apart<br>&nbsp;&nbsp;&nbsp;The same post, after the edit, from Liferay and from a file. Same page height, 4,887 pixels at this width.<br>* Liferay: 123 kB, 25 script tags<br>&nbsp;&nbsp;&nbsp;And an authToken in the body. The browser fetches about 100 files.<br>* Static: 28 kB, one script<br>&nbsp;&nbsp;&nbsp;No authToken. The browser fetches about 7 files.<br>* The one difference you can see: the date<br>&nbsp;&nbsp;&nbsp;Liferay prints "17 seconds ago", which a static file can't keep true, so it prints the date.<br><br>IF ASKED (not spoken)<br>* How closely did you compare?<br>&nbsp;&nbsp;&nbsp;On the 8 fragment pages, every element: position, size, font, colour, margins, padding and display, with 0 differences across 1,782 elements. On News and Blog, the widget elements selector by selector. Details: part2-static-prototype/fidelity/README.md.<br>* Which Liferay config?<br>&nbsp;&nbsp;&nbsp;S3, the same lab as the load tests.</aside>
 </section>

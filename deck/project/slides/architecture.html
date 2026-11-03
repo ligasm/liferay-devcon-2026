@@ -13,18 +13,18 @@
 </div>
 <x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
 <div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600;color:#34a1a0">AI</h3>
-<p style="font-size:26px;color:#b9cfd3">decides</p>
+<h3 style="font-size:44px;font-weight:600;color:#34a1a0">Build</h3>
+<p style="font-size:26px;color:#b9cfd3">same look</p>
 </div>
 <x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
 <div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Astro</h3>
-<p style="font-size:26px;color:#4a5a66">static build</p>
+<h3 style="font-size:44px;font-weight:600">Diff</h3>
+<p style="font-size:26px;color:#4a5a66">pages changed</p>
 </div>
 <x-shape kind="arrow-right" style="background:#34a1a0;width:48px;height:24px"></x-shape>
 <div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:64px 28px;display:flex;flex-direction:column;gap:12px">
 <h3 style="font-size:44px;font-weight:600">CDN</h3>
-<p style="font-size:26px;color:#4a5a66">tag purge</p>
+<p style="font-size:26px;color:#4a5a66">purge those</p>
 </div>
 </div>
 <div style="display:flex;gap:24px;justify-content:center">
@@ -33,5 +33,5 @@
 </div>
 </div>
 <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[25:45–27:15 · 1:30]<br>* The pipeline: plain JavaScript modules on Node<br>* Fetch<br>&nbsp;&nbsp;&nbsp;Pulls a delta from Headless Delivery with filter dateModified gt lastRun.<br>* Plan<br>&nbsp;&nbsp;&nbsp;Diffs content hashes and writes a small plan.json.<br>* The AI orchestrator reads only that plan<br>&nbsp;&nbsp;&nbsp;Nothing changed means exit with zero tokens and no build; a never-seen page layout means ask the smart model once for an extraction rule and cache it forever; a post missing a description means a cheap model, batched, hash-cached, under a hard budget.<br>* Build<br>&nbsp;&nbsp;&nbsp;Deterministic transforms do the bulk work. Astro builds static HTML plus a Pagefind search index.<br>* Report<br>&nbsp;&nbsp;&nbsp;Lists exactly which URLs and cache tags to purge.<br>* Trigger<br>&nbsp;&nbsp;&nbsp;A Liferay webhook or Object Action, or a timer every 15 minutes.</aside>
+<aside>[25:45–27:15 · 1:30]<br>* One command, plain JavaScript on Node<br>&nbsp;&nbsp;&nbsp;node fidelity/regenerate.mjs.<br>* Fetch<br>&nbsp;&nbsp;&nbsp;Pulls a delta from Headless Delivery with filter dateModified gt lastRun.<br>* Plan<br>&nbsp;&nbsp;&nbsp;Diffs content hashes. Nothing changed means exit, with no build.<br>* Build<br>&nbsp;&nbsp;&nbsp;Liferay as a headless CMS: page definitions, fragment templates, theme CSS and content, all from its APIs, rendered to the same markup and CSS as static HTML. That's why it looks the same.<br>* Diff<br>&nbsp;&nbsp;&nbsp;It compares the old and new HTML, so the purge list is exactly the pages that changed.<br>* Trigger<br>&nbsp;&nbsp;&nbsp;A webhook or a timer runs that command.<br><br>IF ASKED (not spoken)<br>* Is the purge wired to a CDN?<br>&nbsp;&nbsp;&nbsp;Not in the demo: it writes the list. The lab has no CDN.<br>* Is the webhook wired up?<br>&nbsp;&nbsp;&nbsp;The repo's receiver, pipeline/webhook.mjs, runs the Astro pipeline, so it needs pointing at this command. Not tested with this one.</aside>
 </section>
