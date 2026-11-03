@@ -1,0 +1,10 @@
+# TLS + HTTP/2 in front of the lab: :9443 Varnish, :9444 static nginx.
+# Host networking, so that no Docker proxy sits between the front and the targets.
+services:
+  front:
+    image: nginx:1.27-alpine
+    container_name: lighthouse-front
+    network_mode: host
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
