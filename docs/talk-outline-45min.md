@@ -20,11 +20,9 @@ Timing below assumes 45 min including 2:45 of Q&A. Sections with a "cut if behin
 
 ---
 
-## Cold open — 0:00–3:15 · *the method, then the frame for the whole talk*
+## Cold open — 0:00–3:15 · *the frame for the whole talk, then the method*
 
-**Slides:** 1 title · 2 two halves · 3 stages stack, each gets the same test · 4 the ladder
-
-**The method** (1:00–2:00): one DXP 2026.q1.12 on one 20-core box, Varnish as the local edge, k6 as the load. Stages stack, each changes one layer. S0–S4 run the same two passes (near idle, and the 70/15/10/5 mix at ≈ 120 req/s). The ladder comes from one more test run on every rung: same pages, same rates, 60 s per rate, a whole first visit. S5 is measured as publish-to-fresh; S6 has no sign-in. A gap only counts when it beats the noise between runs: 1 vs 2 ms is a tie.
+**Slides:** 1 title · 2 two halves · 3 the ladder · 4 stages stack, one layer at a time
 
 **The ladder** — the frame for the whole talk:
 
@@ -41,6 +39,8 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 **If asked what database:** DXP 2026.q1.12 on the image defaults, Hypersonic and sidecar Elasticsearch, a small site (10 fragment pages, 14 posts, 323 search documents). DB-bound costs are optimistic, so read these as ratios, not capacity.
 
 "Part 1 climbs rungs 1–4 and measures every step. Part 2 is what you do when rung 4 isn't enough."
+
+**The method** (2:15–3:15): one DXP 2026.q1.12 on one 20-core box, Varnish as the local edge, k6 as the load. Stages stack, each changes one layer. S0–S4 run the same two passes (near idle, and the 70/15/10/5 mix at ≈ 120 req/s). The ladder comes from one more test run on every rung: same pages, same rates, 60 s per rate, a whole first visit. S5 is measured as publish-to-fresh; S6 has no sign-in. A gap only counts when it beats the noise between runs: 1 vs 2 ms is a tie.
 
 *Cut if behind:* nothing — this is the frame.
 
@@ -60,13 +60,13 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 *Cut if behind:* the login/IdP numbers.
 
-## 1.2 S1 Hygiene — 5:15–7:45
+## 1.2 S1 Hygiene — 5:15–7:00
 
 **Slide:** 7
 
 `portal-developer.properties` verified absent, `index.on.startup=false`, `session.tracker.memory.enabled=false`, filters left off, JDK 21 `setenv.sh` with G1. (Tomcat JSP `development=false` is Liferay's advice too, but `apply-stage.sh` never touches `conf/web.xml`, so the measured runs did not include it. Liferay's docs print `mappedFile`; Jasper reads `mappedfile`.) Small, honest gains — "this is the floor, not the win." The point of S1 is credibility: remove the noise so later stages measure the real thing.
 
-## 1.3 S2 JVM caches — 7:45–11:15
+## 1.3 S2 JVM caches — 7:00–10:30
 
 **Slide:** 8
 
@@ -78,13 +78,13 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 *Cut if behind:* Cluster Link internals.
 
-## 1.4 S3 Front-end delivery — 11:15–14:15
+## 1.4 S3 Front-end delivery — 10:30–12:45
 
 **Slide:** 9
 
 `cdn.host.https` + `cdn.dynamic.resources.enabled=true` → theme/module JS/CSS, combo, ES modules, portal images. **Not** Documents & Media, Adaptive Media, portlet resource URLs or HTML. `browser.cache.disabled=false` with `browser.cache.signed.in.disabled=true` **kept**. Rung 3 (Varnish caches assets, HTML passes): Liferay falls to what HTML alone costs. We did not measure `cdn.host.*`; there is no CDN in the lab. "Assets aren't slow, but they eat the CPU": page latency stays flat, yet on a first visit static files were 84 % of Liferay's CPU, and caching them took 200 page views/s from 8.2 to 1.9 cores and clean capacity from 200 to 600 (`RUNG-RESULTS.md`).
 
-## 1.5 S4 Guest HTML at the edge — 14:15–22:15 · *the core of Part 1*
+## 1.5 S4 Guest HTML at the edge — 12:45–22:15 · *the core of Part 1*
 
 **Slides:** 10 two rules, bypass first (true of VCL) · 11 **the breach** · 12 S4 result · 13 the edge is the step that counts (p95 per stage) · 14 how far each stage goes (capacity) · 15 S5 purge by tag · 16 one sign-in costs a hundred HTML page renders · 17 one setting, twelve times the search
 
@@ -121,9 +121,9 @@ Locale must be in the URL; personalisation moves to late hydration; forms and `A
 
 Precompute when the output space is small and read:write is high; render live when output is per-user. Everything editors love stays in Liferay; what leaves is the request path.
 
-## 2.2 Demo — 27:15–34:15 · *commands in `docs/demos/demo3-regenerate.md`, fallback in `deck/recordings/`*
+## 2.2 Demo — 27:15–32:15 · *commands in `docs/demos/demo3-regenerate.md`, fallback in `deck/recordings/`*
 
-**Slides:** 22 live demo · 23 same post, two deliveries · 24 static wins on the page, not the HTML
+**Slides:** 22 live demo · 23 same post, two deliveries
 
 1. `node pipeline/regenerate.mjs --full --no-ai --max-items 80` → 136 pages in ~11–36 s, 3.5 MB.
 2. Run again → "nothing changed → skip build (0 tokens)" in ~0.1 s offline / 2–3 s live.
@@ -131,17 +131,22 @@ Precompute when the output space is small and read:write is high; render live wh
 4. Edit one post → plan `+0 ~1 -0`, done in ~1.5 s, purge list = that post + home + blog list + its category page.
 5. `--dry-run --full --offline` → ≈12–16k tokens ≈ $0.03 for the whole catalogue, once; lower `AI_BUDGET_TOKENS` and fallbacks kick in.
 6. `node tools/check-links.mjs` → 0 broken of ~4,020 links.
-7. Measured against Varnish (`part1-simulations/results/STATIC-VS-EDGE.md`), same box, same k6: HTML alone is a tie at ≈ 25,000 req/s, k6-bound for both. A whole first-visit page view is 56 requests through Varnish vs 4–5 static; at 1,000 page views/s that is 12× the requests, 5.5× the bytes, ≈ 10× the edge CPU, p95 13 vs 2 ms. Capacity: 1,200 page views/s (the box runs out at 1,500) vs 10,000 (k6), so both are limited by the box or k6, not the server: 67,000 vs 46,000 req/s. Found on the way: the S4 VCL never gzipped CSS/JS (1.9 MB per page view, fixed).
 
-*Cut if behind:* slide 24; say "HTML is a tie, the page is twelve times the requests" over slide 23.
+## 2.3 Token efficiency — 32:15–35:15
 
-## 2.3 Token efficiency — 34:15–37:15
-
-**Slide:** 25 ($0.03)
+**Slide:** 24 ($0.03)
 
 Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
 
-## 2.4 What you give up — 37:15–40:15
+## 2.4 Static against the edge — 35:15–37:15
+
+**Slide:** 25 static wins on the page, not the HTML
+
+Measured against Varnish (`part1-simulations/results/STATIC-VS-EDGE.md`), same box, same k6: HTML alone is a tie at ≈ 25,000 req/s, k6-bound for both. A whole first-visit page view is 56 requests through Varnish vs 4–5 static; at 1,000 page views/s that is 12× the requests, 5.5× the bytes, ≈ 10× the edge CPU, p95 13 vs 2 ms. Capacity: 1,200 page views/s (the box runs out at 1,500) vs 10,000 (k6), so both are limited by the box or k6, not the server: 67,000 vs 46,000 req/s. Found on the way: the S4 VCL never gzipped CSS/JS (1.9 MB per page view, fixed).
+
+*Cut if behind:* slide 25; say "HTML is a tie, the page is twelve times the requests" before slide 26.
+
+## 2.5 What you give up — 37:15–40:15
 
 **Slide:** 26
 

@@ -4,46 +4,21 @@
 
 [0:00–0:30 · 0:30]  
 * Introduce yourself and Proventeq.  
-* Shape of the talk:  
-   first we squeeze the portal the traditional way and measure every step; then we walk around the wall with a static site that regenerates itself from Liferay.
+
 
 ## 2. Two halves
 
 [0:30–1:00 · 0:30]  
+* Shape of the talk:  
+   first we squeeze the portal the traditional way and measure every step; then we walk around the wall with a static site that regenerates itself from Liferay.  
 * Part 1,  
-   hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. One layer changes per stage, and S0 to S4 run the same load test. It ends at a ceiling tuning can't lift.  
+   hygiene, JVM caches, front-end delivery, guest HTML at the edge, purge on publish. It ends at a ceiling tuning can't lift.  
 * Part 2  
    for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, with an AI orchestrator on a token allowance. Live demo.
 
-## 3. Stages stack, and each gets the same test
+## 3. The ladder
 
-[1:00–2:00 · 1:00]  
-* Before any number, how we got them  
-   A self-hosted DXP 2026.q1.12 on Tomcat, one 20-core box, Varnish in front as the local edge, k6 as the load.  
-* Stages stack  
-   Each one keeps everything before it and changes one layer. S4 is the core of Part 1; S6 is Part 2.  
-* The test is the same for the numbers we compare  
-   S0 to S4 ran the same two passes: near idle, and a 70/15/10/5 mix at about 120 requests a second.  
-* The ladder got one more test, on every rung  
-   Same pages, same rates, 60 seconds per rate, Liferay restarted and warmed: a whole first visit, the HTML and every file.  
-* Two exceptions  
-   S5 is measured differently, publish to fresh at the edge, and S6 cannot run sign-in.  
-* A difference counts only above the noise  
-   It must be bigger than the noise between runs, so 1 against 2 milliseconds is a tie.  
-  
-IF ASKED (not spoken)  
-* Which scenarios?  
-   Guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id.  
-* Which metrics matter more than latency?  
-   Edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, publish-to-fresh.  
-* Doesn't k6 share the box?  
-   Yes, so its CPU is reported separately and it bounds the top rates.  
-* What database?  
-   The image defaults, Hypersonic and sidecar Elasticsearch, on a small site: 10 fragment pages, 14 posts, 323 search documents. DB-bound costs are optimistic, so read these as ratios, not capacity.
-
-## 4. The ladder
-
-[2:00–3:15 · 1:15]  
+[1:00–2:15 · 1:15]  
 * The frame for the whole talk: five rungs, one test  
    200 first visits a second, the HTML plus every file. Left: p95 for the whole page view. Right: CPU of the servers.  
 * Rung 1, stock Liferay: 344 ms, 13 of 20 cores  
@@ -72,6 +47,42 @@ IF ASKED (not spoken)
 * Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC ties G1 to 800 pages a second, uses a core more at 1,200, and both are clean to 1,200. Crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, from a runaway fragment render (one 2 GB string), trigger unknown, not a GC verdict. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.  
 * One that paid: search highlighting off, slide 17.
 
+## 4. Stages stack, one layer at a time
+
+[2:15–3:15 · 1:00]  
+* Here's how we got those numbers.  
+   One self-hosted DXP 2026.q1.12 on Tomcat, on a single 20-core box, with Varnish as the local edge and k6 as the load.  
+* The stages stack.  
+   Each one keeps everything before it and changes one layer. S4 is the core of Part 1, and S6 is Part 2.  
+* S0 to S4 ran the same two passes  
+   One near idle, and one under a mixed load of about 120 requests a second.  
+* Every rung of the ladder also got a harder test  
+   A first visit with an empty browser cache, the HTML and every file, at rising rates.  
+* There are two exceptions.  
+   S5 measures how fast a publish reaches the edge, and S6 has no sign-in, because static files have no server behind them.  
+* A difference only counts if it's bigger than the noise between runs  
+   So 1 against 2 milliseconds is a tie.  
+  
+IF ASKED (not spoken)  
+* What's in the mix?  
+   70% guest browsing, 15% search, 10% Asset Publisher and 5% sign-in, counted in journeys, not requests.  
+* Why about 120 requests a second?  
+   We asked for more, but k6's VU limit held it there. The shape was the same at every stage, so the comparison holds, but it's a light load.  
+* Can I compare the ladder's p95 with the mix's?  
+   No. The ladder times a whole page view, and the mix times each request.  
+* Is S6's 2-millisecond search real?  
+   No. That's only the static page shell, so it doesn't run a search.  
+* Is the S5 purge time from the real module?  
+   No. The test script sent the purge, because the Java listener is only a sketch, so it measures Varnish rather than the module.  
+* Which scenarios?  
+   Guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id.  
+* Which metrics matter more than latency?  
+   Edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, publish-to-fresh.  
+* Doesn't k6 share the box?  
+   Yes, so its CPU is reported separately and it bounds the top rates.  
+* What database?  
+   The image defaults, Hypersonic and sidecar Elasticsearch, on a small site: 10 fragment pages, 14 posts, 323 search documents. DB-bound costs are optimistic, so read these as ratios, not capacity.
+
 ## 5. A stock guest page is uncacheable. Twice.
 
 [3:15–4:15 · 1:00]  
@@ -87,6 +98,8 @@ IF ASKED (not spoken)
    In their tests its hit ratio was "always 0, since none of our test URLs are cacheable", and the commit calls it "really useless". The edge is what's left. (CacheFilter, gone at 7.4.3.123; brianchandotcom/liferay-portal PRs 151255 and 151316.)  
 * Our lab shows the same  
    100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.  
+* Bridge to the next slide  
+   So a stock page can't be cached. How much can the portal take without a cache? Liferay's own benchmark says CPU runs out first.  
   
 IF ASKED (not spoken)  
 * What about SERVER_ID?  
@@ -115,7 +128,7 @@ IF ASKED (not spoken)
 
 ## 7. Remove the noise first
 
-[5:15–7:45 · 2:30]  
+[5:15–7:00 · 1:45]  
 * Small, honest gains  
    S1 exists so every later stage measures the real thing.  
 * index.on.startup=false  
@@ -141,7 +154,7 @@ IF ASKED (not spoken)
 
 ## 8. Cache the fragments, not the pages
 
-[7:45–11:15 · 3:30 · if behind: cut the Cluster Link internals]  
+[7:00–10:30 · 3:30 · if behind: cut the Cluster Link internals]  
 * Entity and finder cache sizing per hot entity  
    The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.  
 * On 2025.Q2, rewrite your Ehcache XML  
@@ -163,7 +176,7 @@ IF ASKED (not spoken)
 
 ## 9. Assets aren't slow, but they eat the CPU
 
-[11:15–14:15 · 3:00]  
+[10:30–12:45 · 2:15]  
 * cdn.host.https plus cdn.dynamic.resources.enabled  
    Covers theme and module JS and CSS, the combo servlet, ES modules and portal images. We did not measure cdn.host itself: there is no CDN in the lab, and rung 3 is Varnish on the same hostname.  
 * It does not touch everything  
@@ -185,7 +198,7 @@ IF ASKED (not spoken)
 
 ## 10. Two rules, bypass first
 
-[14:15–15:00 · 0:45]  
+[12:45–14:15 · 1:30]  
 * The core of Part 1  
    Show the VCL in matrix/varnish/default.vcl.  
 * Rule 1: bypass on any auth signal  
@@ -201,7 +214,7 @@ IF ASKED (not spoken)
 
 ## 11. Get rule 1 wrong and it's a data breach.
 
-[15:00–15:45 · 0:45 · do not skip this]  
+[14:15–15:30 · 1:15 · do not skip this]  
 * What goes wrong  
    One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too.  
 * We reproduced the mechanism in the lab  
@@ -216,7 +229,7 @@ IF ASKED (not spoken)
 
 ## 12. S4 result: guest traffic at the edge
 
-[15:45–17:45 · 2:00, including the 90-second demo]  
+[15:30–17:30 · 2:00, including the 90-second demo]  
 * DEMO: Varnish in front of the same Liferay  
    Commands: docs/demos/demo2-varnish.md. Fallback video: deck/recordings/demo2-varnish.mp4. The demo runs the mix for only 30 seconds, so its numbers differ: the video shows 8 milliseconds for the mix, 3 for guest browse and 96 requests a second. The slide's numbers are the full campaign, the same mix at about 120 requests a second.  
 * Guest browse: 49 to 21 to 2 milliseconds  
@@ -230,19 +243,19 @@ IF ASKED (not spoken)
 
 ## 13. The edge is the step that counts
 
-[17:45–18:30 · 0:45]  
+[17:30–18:15 · 0:45]  
 * How to read the chart  
    Same mix at every stage, about 120 requests a second, p95 per flow on a log scale.  
 * S0 to S3, traditional tuning: real, but linear  
-   The four-page guest browse goes from 49 to 21 milliseconds, a 2.3 times gain, search from about a second to 650 milliseconds.  
+   The four-page guest browse gains 2.3 times, and search goes from about a second to 650 milliseconds.  
 * S4: every guest flow drops to 2 milliseconds  
-   Guest browse, Asset Publisher and search alike, because the VCL caches the normalised query string. Across the whole S4 campaign Varnish counted 18,656 hits and 16 misses.  
-* Fourth panel, sign-in: it never leaves the origin  
-   That is rule 1 holding. It only gets faster at S4 because the origin has spare CPU: Liferay went from about 10 cores to 1.9 under the same load.
+   Guest browse, Asset Publisher and search alike, because the VCL caches the normalised query string.  
+* Fourth panel: sign-in gets faster only because the origin has spare CPU  
+   Liferay went from about 10 cores to 1.9 under the same load.
 
 ## 14. How far each stage goes
 
-[18:30–19:15 · 0:45]  
+[18:15–19:15 · 1:00]  
 * We stepped the rate up until each configuration broke  
    Clean capacity means under one percent dropped, under one percent errors, every flow's p95 under two seconds.  
 * Stock Liferay: 400 guest pages a second  
@@ -297,6 +310,8 @@ IF ASKED (not spoken)
    Same result counts, same titles, same order, 180 bytes off the page, because our compact display template never showed a snippet. We were paying for highlights nobody could see.  
 * Look at your template  
    If it shows no snippets, turn this off today. If it does, you lose the bold terms and, from reading the source, probably the text around the match too, so test it.  
+* Bridge to the next slide  
+   That fixes search. Sign-in we can't fix, and the edge can't touch it.  
   
 IF ASKED (not spoken)  
 * Which preference?  
@@ -371,15 +386,19 @@ IF ASKED (not spoken)
    node pipeline/regenerate.mjs --full --no-ai --max-items 80 against liferay.dev's public Headless API. About 11 to 36 seconds, nearly all of it fetch; Astro plus Pagefind about 1.3 seconds.  
 * Step 2, run it again: most cycles cost nothing  
    No flags. Nothing changed, skip build, zero tokens, 0.1 seconds offline, 2 to 3 seconds with the live delta check.  
-* Step 3, edit one post and rerun: four URLs to purge  
+* Step 3, one post both ways: 202 kB against 23 kB  
+   The portal has 35 scripts and an authToken; the static page has 2 scripts and none. The next slide recaps this.  
+* Step 4, edit one post and rerun: four URLs to purge  
    Plan says one changed, done in about 1.5 seconds, the report lists only that post, and the purge list is that post, the home page, the blog list and its category page.  
-* Step 4, link checker: zero broken  
+* Step 5, estimate the model cost for the whole catalogue: about three cents  
+   A dry run, with no key and no calls. The tokens slide explains how.  
+* Step 6, link checker: zero broken  
    Of about 4,020 internal links; anything the static site doesn't own links back to the portal.
 
 ## 23. Same post, two deliveries
 
 [31:15–32:15 · 1:00]  
-* curl both  
+* Recap of step 3: the same post, both ways  
    The same blog post on liferay.dev, measured 2026-11-02.  
 * Portal: 202 kB, 35 script tags  
    And an authToken in the body.  
@@ -388,9 +407,27 @@ IF ASKED (not spoken)
 * The static headers  
    Cache-Control public, max-age 60, s-maxage 300, stale-while-revalidate 3600, plus a Cache-Tag per page for surgical purges.
 
-## 24. Static wins on the page, not the HTML
+## 24. tokens
 
-[32:15–34:15 · 2:00 · if behind: skip this slide and say "HTML is a tie, the page is twelve times the requests" over the previous slide]  
+[32:15–35:15 · 3:00]  
+* The token-efficiency story: six mechanisms  
+* 1. Plan before model  
+   No change means no model and no build.  
+* 2. Hash only the fields that matter  
+   A comment counter ticking is not a change.  
+* 3. Extraction rules asked once per page layout  
+   And cached forever.  
+* 4. Enrichment keyed by content hash  
+* 5. Batching  
+   Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.  
+* 6. A hard budget  
+   With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.  
+* The dry run you saw: roughly three cents, once  
+   About 12 to 16 thousand tokens for 80 posts.
+
+## 25. Static wins on the page, not the HTML
+
+[35:15–37:15 · 2:00 · if behind: skip this slide and say "HTML is a tie, the page is twelve times the requests" before the next slide]  
 * The question: is static worth it, if the edge already caches the HTML?  
    Part 1 ended with Varnish in front of Liferay. We ran the same guests against both, on the same box, on the same day.  
 * HTML alone is a tie  
@@ -405,24 +442,6 @@ IF ASKED (not spoken)
    Varnish was serving 67,000 requests a second and nginx 46,000. The eightfold gap is page size on a shared box.  
 * Check that your edge compresses the assets, not just the HTML  
    A finding on the way: our VCL stored CSS and JS uncompressed, 1.9 MB per page view, because Liferay's GZip filter was off and the asset branch never set do_gzip.
-
-## 25. tokens
-
-[34:15–37:15 · 3:00]  
-* The token-efficiency story: six mechanisms  
-* 1. Plan before model  
-   No change means no model and no build.  
-* 2. Hash only the fields that matter  
-   A comment counter ticking is not a change.  
-* 3. Extraction rules asked once per page layout  
-   And cached forever.  
-* 4. Enrichment keyed by content hash  
-* 5. Batching  
-   Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.  
-* 6. A hard budget  
-   With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.  
-* Dry run: roughly three cents, once  
-   About 12 to 16 thousand tokens for 80 posts.
 
 ## 26. What you give up
 
