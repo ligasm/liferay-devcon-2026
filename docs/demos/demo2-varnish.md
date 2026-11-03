@@ -2,6 +2,10 @@
 
 Slide 12, 90 seconds. Fallback video: `deck/recordings/demo2-varnish.mp4`.
 
+To run these commands from a script, one Enter at a time: `docs/demos/demo2-varnish.sh prepare`, then
+`docs/demos/demo2-varnish.sh`, then `docs/demos/demo2-varnish.sh cleanup`. Each rehearsal needs a new `prepare`, because
+the demo needs a cold cache and Varnish stopped.
+
 The demo runs from a copy of `part1-simulations`, so the committed results aren't overwritten. Run everything in
 one terminal, because the steps share the variables set in the preparation.
 

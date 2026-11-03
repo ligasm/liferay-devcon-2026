@@ -2,6 +2,10 @@
 
 Slides 22 and 23, 5 minutes in total. Fallback video: `deck/recordings/demo3-regenerate.mp4`.
 
+To run these commands from a script, one Enter at a time: `docs/demos/demo3-regenerate.sh prepare`, then
+`docs/demos/demo3-regenerate.sh`, then `docs/demos/demo3-regenerate.sh cleanup`. Each rehearsal needs a new `prepare`, because
+the demo starts from a clean build.
+
 The demo needs network access to liferay.dev. It runs from a copy of `part2-static-prototype`, so the committed
 content isn't overwritten, and it makes no paid model calls. Run everything in one terminal.
 

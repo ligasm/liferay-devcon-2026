@@ -2,6 +2,9 @@
 
 Slide 5, 30 seconds. Fallback video: `deck/recordings/demo1-curl.mp4`.
 
+To run these commands from a script, one Enter at a time: `docs/demos/demo1-curl.sh prepare`, then
+`docs/demos/demo1-curl.sh`, then `docs/demos/demo1-curl.sh cleanup`.
+
 ## Before the talk
 
 Start a fresh container with no config. The loop returns when Liferay answers, which takes a few minutes.
