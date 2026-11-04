@@ -1,24 +1,24 @@
-<section id="s2" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S2 JVM caches</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Cache the fragments, not the pages</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">2025.Q2</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Ehcache 2 → 3</h3>
-<p style="font-size:32px;color:#4a5a66">Rewrite your XML</p>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cluster Link</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Invalidates</h3>
-<p style="font-size:32px;color:#4a5a66">Never replicate</p>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cacheable</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Audit first</h3>
-<p style="font-size:32px;color:#4a5a66">Or leak user data</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured at 400 pages/s: p95 90 → 13 ms, Liferay 12.4 → 2.1 cores · stock at 600/s: 69 % of busy threads re-parsing fragments</p>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[7:00–10:30 · 3:30 · if behind: cut the Cluster Link internals]<br>* Entity and finder cache sizing per hot entity<br>&nbsp;&nbsp;&nbsp;The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.<br>* On 2025.Q2, rewrite your Ehcache XML<br>&nbsp;&nbsp;&nbsp;DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema.<br>* Cluster Link: leave replication off<br>&nbsp;&nbsp;&nbsp;replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery.<br>* Cacheable checkboxes: audit first<br>&nbsp;&nbsp;&nbsp;Fragment and Web Content template checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not.<br>* HikariCP: size it from monitoring, not by a multiple<br>&nbsp;&nbsp;&nbsp;The shipped pool of 180 is already above the deadlock floor of maxThreads plus one.<br>* Skip Hibernate L2 cache<br>&nbsp;&nbsp;&nbsp;It does not exist in Liferay.<br>* Measured: a tie at low load, a big gap under load<br>&nbsp;&nbsp;&nbsp;17 against 17 milliseconds at 100 pages a second. At 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores to 2.1. Clean capacity from 400 to 1,200 pages a second.<br>* Why it works<br>&nbsp;&nbsp;&nbsp;Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates.<br>* Cacheable is the single biggest lever we found for rendering pages<br>&nbsp;&nbsp;&nbsp;But every request still reaches the JVM.</aside>
+<section id="s2" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S2 JVM caches</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Cache the fragments, not the pages</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">2025.Q2</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Ehcache 2 → 3</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Rewrite your XML</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">Cluster Link</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Invalidates</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Never replicate</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">Cacheable</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Audit first</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Or leak user data</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured at 400 pages/s: p95 90 → 13 ms, Liferay 12.4 → 2.1 cores · stock at 600/s: 69 % of busy threads re-parsing fragments</p>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[6:00–9:30 · 3:30 · if behind: cut the Cluster Link internals]<br>* Entity and finder cache sizing per hot entity<br>&nbsp;&nbsp;&nbsp;The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.<br>* On 2025.Q2, rewrite your Ehcache XML<br>&nbsp;&nbsp;&nbsp;DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema.<br><br>* Cluster Link: leave replication off<br>&nbsp;&nbsp;&nbsp;replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery.<br><br>* Cacheable checkboxes: audit first<br>&nbsp;&nbsp;&nbsp;Fragment and Web Content template checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not.<br><br>* HikariCP: size it from monitoring, not by a multiple<br>&nbsp;&nbsp;&nbsp;The shipped pool of 180 is already above the deadlock floor of maxThreads plus one.<br>* Skip Hibernate L2 cache<br>&nbsp;&nbsp;&nbsp;It does not exist in Liferay.<br><br>* Measured: a tie at low load, a big gap under load<br>&nbsp;&nbsp;&nbsp;17 against 17 milliseconds at 100 pages a second. At 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores&nbsp;<br>to 2.1. Clean capacity from 400 to 1,200 pages a second.<br><br>* Why it works<br>&nbsp;&nbsp;&nbsp;Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates.<br><br>* Cacheable is the single biggest lever we found for rendering pages<br>&nbsp;&nbsp;&nbsp;But every request still reaches the JVM.<br>* Bridge to the next slide<br>&nbsp;&nbsp;&nbsp;To stop that, something has to cache in front of Liferay. Start with the easy part: the files.</aside>
 </section>

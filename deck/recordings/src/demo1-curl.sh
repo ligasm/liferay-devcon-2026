@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Demo 1 (slide 5). Needs a fresh, unmodified container:
+# Demo 1 (slide 8). Needs a fresh, unmodified container:
 #   docker run -d --name demo-stock-liferay -p 8096:8080 liferay/dxp:2026.q1.12-lts
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 clear

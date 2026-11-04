@@ -72,6 +72,48 @@
 &nbsp;&nbsp;&nbsp;for content-heavy sites, editors keep Liferay but visitors get plain HTML generated from the Headless API, rebuilt on change, and looking the same as the original. Demo.</aside>
 </section>
 
+<section id="benchmark" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Check the app tier's CPU first</h2>
+  <div style="display:flex; flex-direction:row; align-items:center; flex:1">
+    <div style="display:grid; gap:48px; grid-template-columns:1fr 1fr 1fr; flex:1">
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">25k</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">users · web content</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">11k</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">users · Asset Publisher</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #34a1a0">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#34a1a0">93%</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">CPU at the inflection</p>
+      </div>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[1:00–2:00 · 1:00 · if behind: cut the login and IdP numbers]
+* Start with what Liferay itself claims: its own benchmark, one node
+&nbsp;&nbsp;&nbsp;AMD Epyc, 16 vCPU, 64 GB.
+* 25,000 users on web content, 11,000 on Asset Publisher
+&nbsp;&nbsp;&nbsp;Concurrent users, 93 to 94 percent CPU at the inflection, on a one-server test.
+* Native login degrades past about 400 concurrent attempts
+&nbsp;&nbsp;&nbsp;With native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design.
+* Caveats
+&nbsp;&nbsp;&nbsp;Vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views.
+* Takeaway: check app-tier CPU before you upsize your database
+* Bridge to the next slide
+&nbsp;&nbsp;&nbsp;That's what Liferay claims. Here's what we measured.
+
+IF ASKED (not spoken)
+* Does your lab agree?
+&nbsp;&nbsp;&nbsp;Yes. On one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing.
+* Which server do those CPU columns mean?
+&nbsp;&nbsp;&nbsp;The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading.
+* Doesn't the PDF say 15,000?
+&nbsp;&nbsp;&nbsp;Its summary does, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table.</aside>
+</section>
+
 <section id="ladder" data-transition="fade" style="display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px; background:#f4f7f7">
   <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">The ladder</h2>
   <div style="display:flex; flex-direction:column; gap:12px; flex:1">
@@ -126,9 +168,9 @@
       <p style="width:280px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; color:#0f2838">13 cores</p>
     </div>
   </div>
-  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured · k6 CPU excluded · one box, no network · add your CDN's RTT to rungs 3–5 · rung 5's page is 5 requests, not 56</p>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured · k6 CPU excluded · one 20-core box, no network · add your CDN's RTT to rungs 3–5 · rung 5's page is 5 requests, not 56</p>
   <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
-  <aside class="notes">[1:00–2:15 · 1:15]
+  <aside class="notes">[2:00–4:15 · 2:15]
 * The frame for the whole talk: five rungs, one test
 &nbsp;&nbsp;&nbsp;200 first visits a second, the HTML plus every file. Left: p95 for the whole page view. Right: CPU of the servers.
 * Rung 1, stock Liferay: 344 ms, 13 of 20 cores
@@ -143,91 +185,167 @@
 &nbsp;&nbsp;&nbsp;At the price of staleness and cardinality.
 * One box, no network: add your CDN's round trip to the top three
 &nbsp;&nbsp;&nbsp;Then 8 against 3 stops mattering. What differs is what stands behind them: the edge needs Liferay for every miss and purge; a static page needs it only at build time.
+* How we measured
+&nbsp;&nbsp;&nbsp;One self-hosted DXP 2026.q1.12 on Tomcat, a single 20-core box, Varnish as the local edge, k6 as the load. S0 to S4 also ran two passes for the stage numbers: near idle, and a mix at about 120 requests a second.
+* Stages stack
+&nbsp;&nbsp;&nbsp;Each keeps everything before it and changes one layer. A difference only counts above the noise between runs, so 1 against 2 milliseconds is a tie.
 * Part 1 climbs to rung 4. Part 2 is rung 5.
 
 IF ASKED (not spoken)
-* Test. k6 open model, 60 s per rate, same weighted pages, Liferay restarted and warmed before each origin ladder. CPU is the mean of the serving containers; k6 is excluded. One 20-core box, k6 included, so the top rungs are bounded by k6. Hypersonic and sidecar Elasticsearch on a small site, so read these as ratios, not capacity. All numbers: RUNG-RESULTS.md.
+* Test. k6 open model, 60 s per rate, same weighted pages, Liferay restarted and warmed before each origin ladder. CPU is the mean of the serving containers. k6 is excluded but shares the box, so it bounds the top rungs. Hypersonic and sidecar Elasticsearch on a small site. Read these as ratios, not capacity. All numbers: RUNG-RESULTS.md.
 * Clean capacity, whole page views: 200, 200, 600, 1,200, about 10,000 a second. HTML alone: 400, 1,200 to 1,500, then 24,800 for both edge and static, where k6 is the limit.
 * CPU per page view: 66 ms, 41, 9.5, 4, 0.6.
-* Rung 1, S0. Every guest request enters the JVM, gets a session and is assembled from scratch. browser.cache.disabled=true sends private, no-store. This is close to the knee, so read 344 as about 300: an earlier run gave 269. At 600 pages a second stock also crashed, out of memory in a fragment render.
-* Rung 2, S2. Thread dumps at the 600 a second step: 179 of 261 runnable threads, 69 percent, parsing fragment FreeMarker. FragmentEntryFragmentRenderer returns cached output before any processor runs, keyed by link, locale and experience. No user in the key, hence the leak. S2 also changed heap, Ehcache, Hikari and connector. A stock run with Cacheable left on by accident matched it up to 200 pages a second and was then stopped; above that we rest on the thread dumps. Gains appear only under load: 30 against 29 ms at 20 page views a second, 30 against 25 at 80, HTML 17 against 17 ms at 100 pages a second. At 400 pages a second, HTML: 90 to 13 ms, 12.4 to 2.1 cores. Single node, so cluster invalidation is untested.
-* Rung 3. S3 plus Varnish with guest HTML passed to Liferay. Liferay falls to 1.3 cores, what HTML alone costs. The 6.9 cores it saved, 84 percent, were static files. This is the worst case, an empty browser cache; repeat visitors fetch fewer. Page weight drops from 2 MB to 625 KB because the VCL compresses assets, Liferay's GZipFilter is off.
-* Rung 4, S3 plus S4. browser.cache.disabled=false removes no-store for guests. Set-Cookie stays, so the VCL strips Cookie in and Set-Cookie out, bypasses on auth cookies, TTL 60 s, grace 1 h. Liferay idles at 0.05 cores.
-* Rung 5, S6. The fidelity build on nginx. A lighter page by design: 4.6 requests and 96 KB against 56 and 533. Sign-in and forms still need the portal.
-* Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC ties G1 to 800 pages a second, uses a core more at 1,200, and both are clean to 1,200. Crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, from a runaway fragment render (one 2 GB string), trigger unknown, not a GC verdict. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.
-* One that paid: search highlighting off, slide 17.</aside>
+* Rung 1, S0. Every guest request enters the JVM, gets a session and is assembled from scratch. This is close to the knee, so read 344 as about 300: an earlier run gave 269. At 600 pages a second stock also crashed, out of memory in a fragment render.
+* Rung 2, S2. Fragment FreeMarker took 69 percent of runnable threads at the 600 a second step. Cached output is keyed by link, locale and experience: no user in the key, hence the leak. S2 also changed heap, Ehcache, Hikari and connector. Single node, so cluster invalidation is untested.
+* Rung 3. S3 plus Varnish with guest HTML passed to Liferay. Liferay falls to 1.3 cores; the 6.9 it saved, 84 percent, were static files. Worst case: an empty browser cache. Page weight drops from 2 MB to 625 KB because the VCL compresses assets.
+* Rung 4, S3 plus S4. no-store is off for guests; the VCL strips cookies, bypasses on auth cookies, TTL 60 s, grace 1 h. Liferay idles at 0.05 cores.
+* Rung 5, S6. The fidelity build on nginx. A lighter page by design: 4.6 requests and 96 KB against 56 and 533.
+* Tried, no gain. S3 alone ties S2 for HTML. Generational ZGC: see the S1 slide. Same config varied 2.1 to 3.0 cores between runs at 400 pages a second, so we ignore gaps smaller than that.
+* One that paid: search highlighting off, slide 17.
+* Stage exceptions. S5 measures publish to fresh at the edge. S6 has no sign-in, and its 2 ms search is only the static shell.
+* The mix. 70% guest browsing, 15% search, 10% Asset Publisher, 5% sign-in, in journeys. k6's VU limit held it to about 120 requests a second, at every stage.
+* Ladder p95 is a whole page view and mix p95 is each request, so they don't compare.</aside>
 </section>
 
-<section id="rig" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
-  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Stages stack, one layer at a time</h2>
-  <div style="display:grid; gap:24px; grid-template-columns:1fr 1fr 1fr 1fr; grid-template-rows:1fr 1fr; flex:1">
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S0</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">Baseline</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S1</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">Hygiene</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S2</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">JVM caches</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S3</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">Front-end</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#0f2838; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S4</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#f4f7f7">Edge HTML</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#34a1a0">S5</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">Purge</p>
-    </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; padding:36px; background:#34a1a0; border-radius:16px">
-      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:700; line-height:1; color:#0f2838">S6</p>
-      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; font-weight:600; color:#0f2838">Static</p>
-    </div>
-    <div style="display:flex; flex-direction:row; align-items:center; justify-content:center">
-      <svg xmlns="http://www.w3.org/2000/svg" aria-label="Layered pyramid: five layers from origin render at the base to precompute at the top" viewBox="0 0 300 240" style="width:300px; height:240px"><polygon points="150,10 175.5,50 124.5,50" fill="#34a1a0"/><polygon points="120.7,56 179.3,56 204.7,96 95.3,96" fill="#0f2838"/><polygon points="91.5,102 208.5,102 234,142 66,142" fill="#1d4a5c"/><polygon points="62.2,148 237.8,148 263.2,188 36.8,188" fill="#b9cfd3"/><polygon points="33,194 267,194 292.5,234 7.5,234" fill="#d8e0e2"/></svg>
-    </div>
+<section id="s1" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S1 Hygiene</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Remove the noise first</h2>
+  <div style="display:flex; flex-direction:column; gap:12px; padding:48px 56px; background:#0f2838; border-radius:16px">
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; white-space:pre; color:#b9cfd3">index.on.startup=false<span style="color:#7f9aa3">                 # default</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#b9cfd3">session.tracker.memory.enabled=false</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#b9cfd3">JSP development=false</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; white-space:pre; color:#b9cfd3">GZipFilter=false<span style="color:#7f9aa3">                       # default, compress at the edge</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; white-space:pre; color:#b9cfd3">-XX:+UseG1GC<span style="color:#7f9aa3">                           # JDK 21 default, with 2+ CPUs</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#eab000">no portal-developer.properties</p>
   </div>
-  <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#4a5a66">k6 · same pages and rates · Varnish · DXP 2026.q1.12, Hypersonic · 20-core box</p>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured under load: guest browse p95 49 → 35 ms · Set-Cookie and no-store still on 100 % of guest pages</p>
   <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
-  <aside class="notes">[2:15–3:15 · 1:00]
-* Here's how we got those numbers.
-&nbsp;&nbsp;&nbsp;One self-hosted DXP 2026.q1.12 on Tomcat, on a single 20-core box, with Varnish as the local edge and k6 as the load.
-* The stages stack.
-&nbsp;&nbsp;&nbsp;Each one keeps everything before it and changes one layer. S4 is the core of Part 1, and S6 is Part 2.
-* S0 to S4 ran the same two passes
-&nbsp;&nbsp;&nbsp;One near idle, and one under a mixed load of about 120 requests a second.
-* Every rung of the ladder also got a harder test
-&nbsp;&nbsp;&nbsp;A first visit with an empty browser cache, the HTML and every file, at rising rates.
-* There are two exceptions.
-&nbsp;&nbsp;&nbsp;S5 measures how fast a publish reaches the edge, and S6 has no sign-in, because static files have no server behind them.
-* A difference only counts if it's bigger than the noise between runs
-&nbsp;&nbsp;&nbsp;So 1 against 2 milliseconds is a tie.
+  <aside class="notes">[4:15–6:00 · 1:45]
+* Small, honest gains
+&nbsp;&nbsp;&nbsp;S1 exists so every later stage measures the real thing.
+* index.on.startup=false - is default&nbsp;
+&nbsp;&nbsp;&nbsp;Don't reindex the whole search index on every restart. Already the default, but old checklists still list it.
+* session.tracker.memory.enabled=false
+&nbsp;&nbsp;&nbsp;Otherwise every click of every live session stays in heap, purely to fill the Live Sessions admin screen.
+* Tomcat JSP development=false
+&nbsp;&nbsp;&nbsp;Stops re-checking ROOT's JSPs every 4 seconds. This is Liferay's advice, and our measured runs did not apply it.
+* GZipFilter left off
+&nbsp;&nbsp;&nbsp;Already the default. Compression belongs at the proxy or edge, not in the JVM.
+* JDK 21 with G1
+&nbsp;&nbsp;&nbsp;Already the default, but set it explicitly: give JDK 21 a single CPU and it silently picks Serial instead. Remove old CMS flags: a JVM given them refuses to start. We tested ZGC as well, and it gave no gain.
+* No portal-developer.properties in production
+&nbsp;&nbsp;&nbsp;It flips theme.css.fast.load, javascript.fast.load and the minifier to debug values all at once.
+* Measured: 49 to 35 ms at best
+&nbsp;&nbsp;&nbsp;At 10 requests a second S1 changed nothing measurable. Under load the four-page guest browse p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound.
+* Guest pages are still not cacheable
+&nbsp;&nbsp;&nbsp;Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene.
 
 IF ASKED (not spoken)
-* What's in the mix?
-&nbsp;&nbsp;&nbsp;70% guest browsing, 15% search, 10% Asset Publisher and 5% sign-in, counted in journeys, not requests.
-* Why about 120 requests a second?
-&nbsp;&nbsp;&nbsp;We asked for more, but k6's VU limit held it there. The shape was the same at every stage, so the comparison holds, but it's a light load.
-* Can I compare the ladder's p95 with the mix's?
-&nbsp;&nbsp;&nbsp;No. The ladder times a whole page view, and the mix times each request.
-* Is S6's 2-millisecond search real?
-&nbsp;&nbsp;&nbsp;No. That's only the static page shell, so it doesn't run a search.
-* Is the S5 purge time from the real module?
-&nbsp;&nbsp;&nbsp;No. The test script sent the purge, because the Java listener is only a sketch, so it measures Varnish rather than the module.
-* Which scenarios?
-&nbsp;&nbsp;&nbsp;Guest browse, a sticky-session variant, Asset Publisher versus plain page, search, real form login, document download, Headless list versus get-by-id.
-* Which metrics matter more than latency?
-&nbsp;&nbsp;&nbsp;Edge hit ratio, set-cookie on guest requests, cache-control private, TTFB, publish-to-fresh.
-* Doesn't k6 share the box?
-&nbsp;&nbsp;&nbsp;Yes, so its CPU is reported separately and it bounds the top rates.
-* What database?
-&nbsp;&nbsp;&nbsp;The image defaults, Hypersonic and sidecar Elasticsearch, on a small site: 10 fragment pages, 14 posts, 323 search documents. DB-bound costs are optimistic, so read these as ratios, not capacity.</aside>
+* What about ZGC?
+&nbsp;&nbsp;&nbsp;We tested Generational ZGC against G1 and it gave no gain. It tied up to 800 pages a second and used about a core more at 1,200. Two of 40 ZGC starts crashed, but on a runaway fragment render, not on GC: one 2 GB string from jsoup. Stock hit the same stack, G1 at 6 GB has not in 49 starts, and we don't know the trigger.</aside>
+</section>
+
+<section id="s2" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S2 JVM caches</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Cache the fragments, not the pages</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">2025.Q2</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Ehcache 2 → 3</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Rewrite your XML</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">Cluster Link</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Invalidates</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Never replicate</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:16px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#34a1a0">Cacheable</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; line-height:1.2; color:#0f2838">Audit first</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; color:#4a5a66">Or leak user data</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured at 400 pages/s: p95 90 → 13 ms, Liferay 12.4 → 2.1 cores · stock at 600/s: 69 % of busy threads re-parsing fragments</p>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[6:00–9:30 · 3:30 · if behind: cut the Cluster Link internals]
+* Entity and finder cache sizing per hot entity
+&nbsp;&nbsp;&nbsp;The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.
+* On 2025.Q2, rewrite your Ehcache XML
+&nbsp;&nbsp;&nbsp;DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema.
+
+* Cluster Link: leave replication off
+&nbsp;&nbsp;&nbsp;replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery.
+
+* Cacheable checkboxes: audit first
+&nbsp;&nbsp;&nbsp;Fragment and Web Content template checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not.
+
+* HikariCP: size it from monitoring, not by a multiple
+&nbsp;&nbsp;&nbsp;The shipped pool of 180 is already above the deadlock floor of maxThreads plus one.
+* Skip Hibernate L2 cache
+&nbsp;&nbsp;&nbsp;It does not exist in Liferay.
+
+* Measured: a tie at low load, a big gap under load
+&nbsp;&nbsp;&nbsp;17 against 17 milliseconds at 100 pages a second. At 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores&nbsp;
+to 2.1. Clean capacity from 400 to 1,200 pages a second.
+
+* Why it works
+&nbsp;&nbsp;&nbsp;Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates.
+
+* Cacheable is the single biggest lever we found for rendering pages
+&nbsp;&nbsp;&nbsp;But every request still reaches the JVM.
+* Bridge to the next slide
+&nbsp;&nbsp;&nbsp;To stop that, something has to cache in front of Liferay. Start with the easy part: the files.</aside>
+</section>
+
+<section id="s3" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S3 Front-end delivery</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Assets aren't slow, but they eat the CPU</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">cdn.host rewrites</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; line-height:1.6; color:#4a5a66">
+        <li>Theme JS / CSS</li>
+        <li>Module bundles</li>
+        <li>Portal images</li>
+      </ul>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1; padding:48px; background:#0f2838; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#f4f7f7">It doesn't touch</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; line-height:1.6; color:#b9cfd3">
+        <li>Documents &amp; Media</li>
+        <li>Adaptive Media</li>
+      </ul>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; line-height:1.3; color:#eab000">Permission removed: Liferay 404, edge still 200</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured: static files 84 % of Liferay's CPU on a first visit · cdn.host rewrote 0 of 2 Adaptive Media URLs</p>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[9:30–11:00 · 1:30 · if behind: cut the Documents and Media setting]
+* cdn.host.https plus cdn.dynamic.resources.enabled
+&nbsp;&nbsp;&nbsp;Covers theme and module JS and CSS, the combo servlet, ES modules and portal images.
+* It does not touch everything
+&nbsp;&nbsp;&nbsp;Not Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Liferay's docs don't spell this out for images, so we tested it: with cdn.host on, 15 of 16 theme and module files moved to the CDN host, and 0 of 2 Adaptive Media URLs did.
+
+* But a CDN that proxies your host still caches them
+&nbsp;&nbsp;&nbsp;Those URLs stay on your own host, so they go through the CDN anyway. On Varnish, a public Adaptive Media image was a hit on the second request.
+* Removing permission doesn't remove a cached image
+&nbsp;&nbsp;&nbsp;The URL doesn't change. We removed guest access: Liferay returned 404, and the edge still returned the image.
+
+* Documents and Media: its own Cache Control setting
+&nbsp;&nbsp;&nbsp;Gotcha found on 2026.Q1: the PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing. With it, the brochure PDF went to public, max-age 86400.
+
+* Where assets do matter is CPU
+&nbsp;&nbsp;&nbsp;Page latency stays flat, but on a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3.
+* Bridge to the next slide
+&nbsp;&nbsp;&nbsp;That's the files. Can the page itself be cached? Ask a stock page.
+
+IF ASKED (not spoken)
+* Did you test on a real CDN?
+&nbsp;&nbsp;&nbsp;No. Varnish stood in for it, and rung 3 is Varnish on the same hostname. The rewrite check ran on a temporary Liferay with cdn.host set at startup. Cloudflare is untested.
+* Does a purge remove the image?
+&nbsp;&nbsp;&nbsp;We didn't test that. Our VCL gives these URLs a 365-day TTL because they carry a timestamp.
+* What else helps?
+&nbsp;&nbsp;&nbsp;Regenerate Adaptive Media for existing content, and lazy-load everything except the LCP image. Neither was measured.</aside>
 </section>
 
 <section id="wire" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -240,7 +358,7 @@ IF ASKED (not spoken)
 <p style="font-size:32px;color:#eab000">set-cookie: GUEST_LANGUAGE_ID=en_US</p>
 </div>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[3:15–4:15 · 1:00]
+<aside class="notes">[11:00–12:00 · 1:00]
 * DEMO, 30 seconds: curl your own Liferay
 &nbsp;&nbsp;&nbsp;Commands: docs/demos/demo1-curl.md. Fallback video: deck/recordings/demo1-curl.mp4.
 * The headers say no-store
@@ -254,208 +372,85 @@ IF ASKED (not spoken)
 * Our lab shows the same
 &nbsp;&nbsp;&nbsp;100 percent of guest responses at S0 to S2 carried Set-Cookie and private, no-store, and every cookie-less guest request created a server session with a 15-minute timeout.
 * Bridge to the next slide
-&nbsp;&nbsp;&nbsp;So a stock page can't be cached. How much can the portal take without a cache? Liferay's own benchmark says CPU runs out first.
+&nbsp;&nbsp;&nbsp;So a stock page can't be cached, for two reasons. A setting fixes the first. The second needs the edge.
 
 IF ASKED (not spoken)
 * What about SERVER_ID?
 &nbsp;&nbsp;&nbsp;Liferay-hosted sites send it, stock does not, and it is not in the portal source.</aside>
 </section>
 
-<section id="benchmark" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Check the app tier's CPU first</h2>
-<div style="flex:1;display:flex;align-items:center">
-<div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">25k</p>
-<p style="font-size:36px;color:#4a5a66">users · web content</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">11k</p>
-<p style="font-size:36px;color:#4a5a66">users · Asset Publisher</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">93%</p>
-<p style="font-size:36px;color:#4a5a66">CPU at the inflection</p>
-</div>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[4:15–5:15 · 1:00 · if behind: cut the login and IdP numbers]
-* Liferay's own benchmark, one node
-&nbsp;&nbsp;&nbsp;AMD Epyc, 8 cores, 16 vCPU, 64 GB.
-* 25,000 users on web content, 11,000 on Asset Publisher
-&nbsp;&nbsp;&nbsp;Concurrent users, 93 to 94 percent CPU at the inflection, on a one-server test.
-* Native login degrades past about 400 concurrent attempts
-&nbsp;&nbsp;&nbsp;With native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design.
-* Caveats
-&nbsp;&nbsp;&nbsp;Vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views.
-* Our lab agrees
-&nbsp;&nbsp;&nbsp;On one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing.
-* Takeaway: check app-tier CPU before you upsize your database
-
-IF ASKED (not spoken)
-* Which server do those CPU columns mean?
-&nbsp;&nbsp;&nbsp;The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading.
-* Doesn't the PDF say 15,000?
-&nbsp;&nbsp;&nbsp;Its summary does, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table.</aside>
-</section>
-
-<section id="s1" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S1 Hygiene</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Remove the noise first</h2>
-<div style="background:#0f2838;border-radius:16px;padding:48px 56px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;color:#b9cfd3">
-<p style="font-size:32px">index.on.startup=false</p>
-<p style="font-size:32px">session.tracker.memory.enabled=false</p>
-<p style="font-size:32px">JSP development=false</p>
-<p style="font-size:32px;color:#eab000">no portal-developer.properties</p>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured under load: guest browse p95 49 → 35 ms · Set-Cookie and no-store still on 100 % of guest pages</p>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[5:15–7:00 · 1:45]
-* Small, honest gains
-&nbsp;&nbsp;&nbsp;S1 exists so every later stage measures the real thing.
-* index.on.startup=false
-&nbsp;&nbsp;&nbsp;Don't reindex the whole search index on every restart. Already the default, but old checklists still list it.
-* session.tracker.memory.enabled=false
-&nbsp;&nbsp;&nbsp;Otherwise every click of every live session stays in heap, purely to fill the Live Sessions admin screen.
-* Tomcat JSP development=false
-&nbsp;&nbsp;&nbsp;Stops re-checking ROOT's JSPs every 4 seconds. This is Liferay's advice, and our measured runs did not apply it.
-* GZipFilter left off
-&nbsp;&nbsp;&nbsp;Compression belongs at the proxy or edge, not in the JVM.
-* JDK 21 with G1
-&nbsp;&nbsp;&nbsp;Remove old CMS flags: a JVM given them refuses to start. We tested ZGC as well, and it gave no gain.
-* No portal-developer.properties in production
-&nbsp;&nbsp;&nbsp;It flips theme.css.fast.load, javascript.fast.load and the minifier to debug values all at once.
-* Measured: 49 to 35 ms at best
-&nbsp;&nbsp;&nbsp;At 10 requests a second S1 changed nothing measurable. Under load the four-page guest browse p95 went from 49 to 35 milliseconds, but that includes a clean restart and the heap going from 2.5 to 4 GB, so treat it as an upper bound.
-* Guest pages are still not cacheable
-&nbsp;&nbsp;&nbsp;Edge hit still zero, Set-Cookie and no-store on 100 percent of guest pages. Files in matrix/S1-hygiene.
-
-IF ASKED (not spoken)
-* What about ZGC?
-&nbsp;&nbsp;&nbsp;We tested Generational ZGC against G1 and it gave no gain. It tied up to 800 pages a second and used about a core more at 1,200. Two of 40 ZGC starts crashed, but on a runaway fragment render, not on GC: one 2 GB string from jsoup. Stock hit the same stack, G1 at 6 GB has not in 49 starts, and we don't know the trigger.</aside>
-</section>
-
-<section id="s2" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S2 JVM caches</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Cache the fragments, not the pages</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">2025.Q2</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Ehcache 2 → 3</h3>
-<p style="font-size:32px;color:#4a5a66">Rewrite your XML</p>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cluster Link</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Invalidates</h3>
-<p style="font-size:32px;color:#4a5a66">Never replicate</p>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#34a1a0">Cacheable</p>
-<h3 style="font-size:44px;font-weight:600;line-height:1.2">Audit first</h3>
-<p style="font-size:32px;color:#4a5a66">Or leak user data</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured at 400 pages/s: p95 90 → 13 ms, Liferay 12.4 → 2.1 cores · stock at 600/s: 69 % of busy threads re-parsing fragments</p>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[7:00–10:30 · 3:30 · if behind: cut the Cluster Link internals]
-* Entity and finder cache sizing per hot entity
-&nbsp;&nbsp;&nbsp;The usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly, on in-process Hypersonic and not isolated: headless by-id stayed at 8 milliseconds, and the Asset Publisher page stayed about 30 at idle, though it went from 55 to 34 under load.
-* On 2025.Q2, rewrite your Ehcache XML
-&nbsp;&nbsp;&nbsp;DXP 2025.Q2 moved from Ehcache 2.10.6 to 3.10.8, LPD-40485: your 7.4 liferay-multi-vm.xml must be rewritten for the 3.x schema.
-* Cluster Link: leave replication off
-&nbsp;&nbsp;&nbsp;replicatePutsViaCopy is false by default; a PUT carries a null value and the receiver removes the entry. Turning replication on is almost always wrong. Use JDBC_PING for cloud discovery.
-* Cacheable checkboxes: audit first
-&nbsp;&nbsp;&nbsp;Fragment and Web Content template checkboxes are high impact, but a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. The fragment flag is what we measured; the template flag we did not.
-* HikariCP: size it from monitoring, not by a multiple
-&nbsp;&nbsp;&nbsp;The shipped pool of 180 is already above the deadlock floor of maxThreads plus one.
-* Skip Hibernate L2 cache
-&nbsp;&nbsp;&nbsp;It does not exist in Liferay.
-* Measured: a tie at low load, a big gap under load
-&nbsp;&nbsp;&nbsp;17 against 17 milliseconds at 100 pages a second. At 400 pages a second, HTML p95 from 90 to 13 milliseconds and Liferay from 12.4 cores to 2.1. Clean capacity from 400 to 1,200 pages a second.
-* Why it works
-&nbsp;&nbsp;&nbsp;Thread dumps of stock Liferay at its saturated 600 a second step showed 69 percent of busy request threads re-parsing fragment FreeMarker templates.
-* Cacheable is the single biggest lever we found for rendering pages
-&nbsp;&nbsp;&nbsp;But every request still reaches the JVM.</aside>
-</section>
-
-<section id="s3" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<section id="s3html" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
 <p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S3 Front-end delivery</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Assets aren't slow, but they eat the CPU</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
-<h3 style="font-size:44px;font-weight:600">cdn.host rewrites</h3>
-<ul style="font-size:36px;line-height:1.6;color:#4a5a66">
-<li>Theme JS / CSS</li>
-<li>Module bundles</li>
-<li>Portal images</li>
-</ul>
-</div>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
-<h3 style="font-size:44px;font-weight:600">It doesn't touch</h3>
-<ul style="font-size:36px;line-height:1.6;color:#b9cfd3">
-<li>Documents &amp; Media</li>
-<li>Adaptive Media</li>
-<li><span style="color:#eab000">Page HTML</span></li>
-</ul>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Make the page cacheable</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:36px;font-weight:600">Stock</h3>
+<div style="background:#0f2838;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#eab000">
+<p>cache-control: private, no-cache, no-store</p>
+<p>pragma: no-cache</p>
+<p>set-cookie: JSESSIONID=…</p>
+<p>set-cookie: COOKIE_SUPPORT=true</p>
+<p>set-cookie: GUEST_LANGUAGE_ID=en_US</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: TTFB flat · guest HTML private, no-store 100 % → 0 % · D&amp;M public, max-age=86400 · Set-Cookie still sent</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:36px;font-weight:600">browser.cache.disabled=false</h3>
+<div style="background:#0f2838;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#eab000">
+<p style="color:#5fc9c8">no cache-control</p>
+<p style="color:#5fc9c8">no pragma</p>
+<p>set-cookie: JSESSIONID=…</p>
+<p>set-cookie: COOKIE_SUPPORT=true</p>
+<p>set-cookie: GUEST_LANGUAGE_ID=en_US</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: TTFB flat · guest HTML private, no-store 100 % → 0 % · signed-in pages keep no-store · Set-Cookie still sent</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[10:30–12:45 · 2:15]
-* cdn.host.https plus cdn.dynamic.resources.enabled
-&nbsp;&nbsp;&nbsp;Covers theme and module JS and CSS, the combo servlet, ES modules and portal images. We did not measure cdn.host itself: there is no CDN in the lab, and rung 3 is Varnish on the same hostname.
-* It does not touch everything
-&nbsp;&nbsp;&nbsp;Not Documents and Media, Adaptive Media, portlet resource URLs, or page HTML.
-* Documents and Media: its own Cache Control setting
-&nbsp;&nbsp;&nbsp;Gotcha found on 2026.Q1: the PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing.
+<aside class="notes">[12:00–12:45 · 0:45]
 * browser.cache.disabled=false
-&nbsp;&nbsp;&nbsp;The first change that makes a guest page describable as cacheable.
+&nbsp;&nbsp;&nbsp;That removes the first reason: it is the first change that makes a guest page describable as cacheable.
 * browser.cache.signed.in.disabled=true, keep it
 &nbsp;&nbsp;&nbsp;Signed-in pages keep sending private, no-cache, no-store.
-* Regenerate Adaptive Media for existing content
-* Lazy-load everything except the LCP image
 * Measured: S3 changes headers, not milliseconds
-&nbsp;&nbsp;&nbsp;TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero, and the brochure PDF to public, max-age 86400.
-* Where assets do matter is CPU
-&nbsp;&nbsp;&nbsp;On a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3.
+&nbsp;&nbsp;&nbsp;TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero.
 * Set-Cookie is still there
-&nbsp;&nbsp;&nbsp;Which is why the edge must strip it.</aside>
+&nbsp;&nbsp;&nbsp;That's the second reason, and why the edge must strip it.</aside>
 </section>
 
-<section id="s4rules" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S4 Edge HTML · in Varnish</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Two rules, bypass first</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:96px;font-weight:700;line-height:1;color:#eab000">1</p>
-<h3 style="font-size:52px;font-weight:600;line-height:1.15">Auth cookie?<br>Pass to origin.</h3>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:96px;font-weight:700;line-height:1;color:#34a1a0">2</p>
-<h3 style="font-size:52px;font-weight:600;line-height:1.15">Everything else:<br>strip cookies, cache.</h3>
-</div>
-</div>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[12:45–14:15 · 1:30]
+<section id="s4rules" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S4 Edge HTML · in Varnish</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Two rules, bypass first</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#0f2838; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1; color:#eab000">1</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; line-height:1.15; color:#f4f7f7">Auth cookie?<br>Pass to origin.</h3>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1; color:#34a1a0">2</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; line-height:1.15; color:#0f2838">Everything else:<br>strip cookies, cache.</h3>
+    </div>
+  </div>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[12:45–14:15 · 1:30]
 * The core of Part 1
 &nbsp;&nbsp;&nbsp;Show the VCL in matrix/varnish/default.vcl.
 * Rule 1: bypass on any auth signal
 &nbsp;&nbsp;&nbsp;COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD.
 * Rule 2: anonymous GETs get cached
 &nbsp;&nbsp;&nbsp;Strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass.
+
 * Bypass comes first in Varnish
 &nbsp;&nbsp;&nbsp;Because return pass ends evaluation.
 * Cloudflare is the reverse
 &nbsp;&nbsp;&nbsp;The last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone.
+
 * SSO warning
 &nbsp;&nbsp;&nbsp;An SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.</aside>
 </section>
 
-<section id="breach" data-transition="fade" style="background:#eab000;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<h2 style="font-size:112px;font-weight:700;line-height:1.05;width:1500px">Get rule 1 wrong and it's a data breach.</h2>
-<aside class="notes">[14:15–15:30 · 1:15 · do not skip this]
+<section id="breach" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; justify-content:center; padding:128px; background:#eab000">
+  <h2 style="width:1500px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:112px; font-weight:700; line-height:1.05; color:#0f2838">Get rule 1 wrong and it's a data breach.</h2>
+  <aside class="notes">[14:15–15:30 · 1:15 · do not skip this]
 * What goes wrong
 &nbsp;&nbsp;&nbsp;One anonymous visitor gets a page cached from a signed-in render: a name in the user bar, a live p_auth token, somebody's dashboard. Every visitor after them gets it too.
 * We reproduced the mechanism in the lab
@@ -463,10 +458,9 @@ IF ASKED (not spoken)
 * Password logins are covered; SSO logins are not
 * Cloudflare warns about it too
 &nbsp;&nbsp;&nbsp;Its own Cache Everything docs say visitors may receive information not intended for them.
-* Defence in depth
-&nbsp;&nbsp;&nbsp;Origin keeps Cache-Control private on signed-in responses, though a Cloudflare override TTL ignores it, browser TTL stays bypass even when edge TTL is long, and nothing on a public page may need authToken.
-* Optional 45-second demo
-&nbsp;&nbsp;&nbsp;On a throwaway zone with a fake user.</aside>
+* What the other settings don't do
+&nbsp;&nbsp;&nbsp;Keep browser.cache.signed.in.disabled=true, but a Cloudflare override TTL ignores it, so it protects browsers, not the edge. Keep browser TTL on bypass, so someone who signs in doesn't keep seeing the guest page. And nothing on a public page should need authToken, because a cached page gives every visitor the same token.
+</aside>
 </section>
 
 <section id="s4results" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -557,41 +551,58 @@ IF ASKED (not spoken)
 * Twenty times the tuned origin, sixty times stock</aside>
 </section>
 
-<section id="s5purge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S5 Purge on publish</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Purge by tag, not by URL</h2>
-<div style="display:flex;align-items:center;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Publish</h3>
-<p style="font-size:28px;color:#4a5a66">in Liferay</p>
-</div>
-<svg width="72" height="36" viewBox="0 0 72 36" style="flex:none"><polygon points="0,10.8 43.2,10.8 43.2,0 72,18 43.2,36 43.2,25.2 0,25.2" fill="#34a1a0"/></svg>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">ModelListener</h3>
-<p style="font-size:28px;color:#4a5a66">after commit</p>
-</div>
-<svg width="72" height="36" viewBox="0 0 72 36" style="flex:none"><polygon points="0,10.8 43.2,10.8 43.2,0 72,18 43.2,36 43.2,25.2 0,25.2" fill="#34a1a0"/></svg>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Purge</h3>
-<p style="font-size:28px;color:#b9cfd3;font-family:'JetBrains Mono', 'Courier New', monospace">Surrogate-Key</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: publish → fresh at the edge 55.7 s on TTL alone · within one 250 ms poll with a ban sent by script</p>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[19:15–20:15 · 1:00]
-* The design: a ModelListener purges after commit
-&nbsp;&nbsp;&nbsp;On JournalArticle, Layout and BlogsEntry it fires a purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version.
-* It is only a design
-&nbsp;&nbsp;&nbsp;The module in matrix/S5-edge-purge is an unbuilt sketch, with Varnish and Cloudflare purgers.
-* Also purge when content stops being approved
-&nbsp;&nbsp;&nbsp;Or takedowns stay cached until the TTL.
-* How we measured
-&nbsp;&nbsp;&nbsp;k6/publish-to-fresh.js measures publish to fresh-at-edge in milliseconds: PATCH a News title while polling origin and edge every 250 milliseconds.
-* TTL alone, 60 seconds: old title for 55.7 seconds
-* A BAN right after the publish: fresh within one poll
-&nbsp;&nbsp;&nbsp;Sent by script, which is what the listener would send: fresh within one 250 millisecond poll, with a 17 to 19 millisecond gap between the origin and edge requests, over three runs.
-* Say what is missing: classic web content still needs Java
-&nbsp;&nbsp;&nbsp;Publications has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found, and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects.</aside>
+<section id="s5purge" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S5 Purge on publish</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Don't wait for the TTL</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; align-items:center; flex:1">
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">Publish</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">in Liferay</p>
+    </div>
+    <svg width="72" height="36" viewBox="0 0 72 36" style="flex:none"><polygon points="0,10.8 43.2,10.8 43.2,0 72,18 43.2,36 43.2,25.2 0,25.2" fill="#34a1a0"/></svg>
+    <div style="display:flex; flex-direction:column; gap:32px; flex:1.6; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">Object Action</h3>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">Objects · webhook, no Java</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">ModelListener</h3>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">Web Content · Java, after commit</p>
+      </div>
+    </div>
+    <svg width="72" height="36" viewBox="0 0 72 36" style="flex:none"><polygon points="0,10.8 43.2,10.8 43.2,0 72,18 43.2,36 43.2,25.2 0,25.2" fill="#34a1a0"/></svg>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:48px; background:#0f2838; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#f4f7f7">Purge</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#b9cfd3">by URL</p>
+    </div>
+  </div>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" id="e2-147nvys" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[19:15–20:15 · 1:00]
+* The problem caching brings: the edge doesn't know anything changed
+&nbsp;&nbsp;&nbsp;Until the TTL runs out, visitors keep getting the old page.
+* So don't wait for the TTL if you can
+&nbsp;&nbsp;&nbsp;Purge when the content changes.
+* What needs a purge
+&nbsp;&nbsp;&nbsp;Publishing or updating content. Taking it down, or the takedown stays online. Editing a page. And removing a permission: we saw Liferay return 404 while the edge still returned the image.
+* Objects: an Object Action, no Java
+&nbsp;&nbsp;&nbsp;On After Update, type Webhook. A small receiver still has to turn that call into the purge.
+* The catch with the webhook: it isn't after commit
+&nbsp;&nbsp;&nbsp;From the source, not run: it is sent inside the update. So answer at once and purge a moment later, or the edge can re-cache the old version.
+* Classic content: a ModelListener, in Java
+&nbsp;&nbsp;&nbsp;Object Actions can't fire from JournalArticle or Layout. A listener can purge after the transaction commits, via TransactionCommitCallbackUtil.
+* Say it plainly: we haven't built either one
+
+IF ASKED (not spoken)
+* Did you measure a purge?
+&nbsp;&nbsp;&nbsp;Only by script. On a 60 second TTL the old title stayed for 55.7 seconds. With a ban of that page's URL right after the publish, it was fresh within one 250 millisecond poll, over three runs. k6/publish-to-fresh.js.
+* What about the new CMS?
+&nbsp;&nbsp;&nbsp;Web Content is in maintenance mode and the new CMS is built on objects. Whether Object Actions fire on CMS content, we haven't tested.
+* What about Publications?
+&nbsp;&nbsp;&nbsp;It has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found.
+* What about purging by tag?
+&nbsp;&nbsp;&nbsp;Liferay doesn't send tags, and we didn't build that.
+* Which pages do you purge when an article changes?
+&nbsp;&nbsp;&nbsp;Liferay doesn't tell you, and we didn't solve that at the edge: our ban named the one page we polled. Part 2's build does work out that list.</aside>
 </section>
 
 <section id="cost" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -660,25 +671,48 @@ IF ASKED (not spoken)
 &nbsp;&nbsp;&nbsp;This is the sidecar Elasticsearch on a small index, so your factor will differ. Caching popular search URLs at the edge still applies on top.</aside>
 </section>
 
-<section id="wall" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
-<img src="assets/wall.jpg" alt="" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
-<div style="position:absolute;left:0;top:0;width:1920px;height:1080px;background:linear-gradient(90deg, rgba(8,22,33,0.85) 0%, rgba(8,22,33,0.55) 60%, rgba(8,22,33,0.2) 100%)"></div>
-<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px">The edge makes the fast path fast.</h2>
-<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px;color:#34a1a0">It doesn't make the slow path cheap.</h2>
-<aside class="notes">[22:15–24:15 · 2:00]
+<section id="wall" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; justify-content:center; padding:128px; background:#0f2838">
+  <img src="assets/wall.jpg" alt="" style="position:absolute; top:0; left:0; width:1920px; height:1080px">
+  <div style="position:absolute; top:0; left:0; width:1920px; height:1080px; display:flex; flex-direction:column; background:linear-gradient(90deg, #081621d9 0%, #0816218c 60%, #08162133 100%)">
+  </div>
+  <div style="display:flex; flex-direction:row; gap:96px; align-items:center">
+    <div style="display:flex; flex-direction:column; gap:48px; flex:1.8">
+      <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1.1; color:#f4f7f7">A cached page is fast.</h2>
+      <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1.1; color:#34a1a0">Everything else still needs Liferay.</h2>
+    </div>
+    <ul style="flex:1; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; line-height:1.5; color:#f4f7f7">
+      <li>Locale</li>
+      <li>Personalisation</li>
+      <li>Forms</li>
+      <li>Purge</li>
+      <li>Misses</li>
+      <li>Sign-in</li>
+      <li>Search</li>
+      <li>24/7</li>
+    </ul>
+  </div>
+  <aside class="notes">[22:15–24:15 · 2:00]
 * The wall: be blunt about the limits we just imposed
+
 * Locale must be in the URL
 &nbsp;&nbsp;&nbsp;Or the cache serves the wrong language.
+
 * Personalisation moves to late hydration
+
 * Forms and action URLs must leave guest pages
+
 * Every publish needs a purge
+
 * A cold or purged page still costs a full JVM render
-&nbsp;&nbsp;&nbsp;In our lab 15 to 50 milliseconds for a simple page and about a second for search under load, with a stampede on the popular ones.
+
 * Sign-in never leaves the origin
 &nbsp;&nbsp;&nbsp;It capped the edge mix at 400 journeys a second.
+
 * Search reaches the origin for every query the edge has not seen
+
 * The origin still runs 24/7 at full size
 &nbsp;&nbsp;&nbsp;For the misses.
+
 * The honest question: why is there a JVM in the request path at all?
 &nbsp;&nbsp;&nbsp;For marketing, docs, community and catalogue sites.</aside>
 </section>
@@ -694,36 +728,39 @@ IF ASKED (not spoken)
 &nbsp;&nbsp;&nbsp;A wall of pages rendered once, ahead of time.</aside>
 </section>
 
-<section id="boundary" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Draw the line by cardinality</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<h3 style="font-size:52px;font-weight:600;color:#34a1a0">Precompute</h3>
-<ul style="font-size:40px;line-height:1.6;color:#f4f7f7">
-<li>Marketing</li>
-<li>Docs</li>
-<li>Blogs</li>
-<li>Catalogues</li>
-</ul>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<h3 style="font-size:52px;font-weight:600;color:#4a5a66">Render live</h3>
-<ul style="font-size:40px;line-height:1.6;color:#4a5a66">
-<li>Intranets</li>
-<li>Dashboards</li>
-<li>Checkout</li>
-<li>Anything per-user</li>
-</ul>
-</div>
-</div>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[24:45–25:45 · 1:00]
+<section id="boundary" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Draw the line by cardinality</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#0f2838; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; color:#34a1a0">Precompute</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:40px; line-height:1.6; color:#f4f7f7">
+        <li>Marketing</li>
+        <li>Docs</li>
+        <li>Blogs</li>
+        <li>Catalogues</li>
+      </ul>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; color:#4a5a66">Render live</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:40px; line-height:1.6; color:#4a5a66">
+        <li>Intranets</li>
+        <li>Dashboards</li>
+        <li>Checkout</li>
+        <li>Anything per-user</li>
+      </ul>
+    </div>
+  </div>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[24:45–25:45 · 1:00]
 * Scope first
-&nbsp;&nbsp;&nbsp;Or this sounds like "throw away your portal".
+&nbsp;
 * Precompute when the output space is small and the read-to-write ratio is high
+
 * Render live when output is genuinely per user
+
 * Islands and late hydration
 &nbsp;&nbsp;&nbsp;They let you draw that line inside a page instead of per page.
+
 * What leaves is the request path
 &nbsp;&nbsp;&nbsp;Everything editors love stays in Liferay: page editor, workflow, permissions, Objects, translations.</aside>
 </section>
@@ -784,27 +821,26 @@ IF ASKED (not spoken)
 &nbsp;&nbsp;&nbsp;The repo's receiver, pipeline/webhook.mjs, runs the Astro pipeline, so it needs pointing at this command. Not tested with this one.</aside>
 </section>
 
-<section id="demo" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Regenerated from our own Liferay</h2>
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
-<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">76</p>
-<p style="font-size:36px;color:#4a5a66">pages, full build</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">~3s</p>
-<p style="font-size:36px;color:#4a5a66">when nothing changed</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">7</p>
-<p style="font-size:36px;color:#4a5a66">URLs purged for this edit</p>
-</div>
-</div>
-<p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ node fidelity/regenerate.mjs</p>
-</div>
-<img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside class="notes">[27:15–31:15 · 4:00]
+<section id="demo" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Regenerated from our own Liferay</h2>
+  <div style="display:flex; flex-direction:column; gap:64px; justify-content:center; flex:1">
+    <div style="display:grid; gap:48px; grid-template-columns:1fr 1fr 1fr">
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">76</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">pages, full build</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">~3s</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">when nothing changed</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #34a1a0">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#34a1a0">7</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">URLs purged for this edit</p>
+      </div>
+    </div>
+  </div>
+  <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside class="notes">[27:15–31:15 · 4:00]
 * PLAY THE VIDEO, 1:31
 &nbsp;&nbsp;&nbsp;deck/recordings/demo3-regenerate.mp4. Commands: docs/demos/demo3-regenerate.md.
 * Step 1, first build: 76 pages in about 13 seconds
@@ -857,13 +893,17 @@ IF ASKED (not spoken)
 
 <section id="tokens" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
 <img src="assets/tokens.jpg" alt="" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">AI, if you want it, on an allowance</p>
-<p style="font-size:240px;font-weight:700;line-height:1;font-family:'JetBrains Mono', 'Courier New', monospace">$0.03</p>
-<p style="font-size:44px;color:#b9cfd3;width:900px">for 80 liferay.dev posts. Once.</p>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">You don't need AI at runtime</p>
+<p style="font-size:240px;font-weight:700;line-height:1;font-family:'JetBrains Mono', 'Courier New', monospace">0 tokens</p>
+<p style="font-size:44px;color:#b9cfd3;width:1400px">to regenerate the site. AI is optional, on an allowance.</p>
 <aside class="notes">[32:15–35:15 · 3:00]
-* Where AI fits
-&nbsp;&nbsp;&nbsp;The build you just saw called no model, because the structure comes from Liferay's APIs. AI is for what's left: missing descriptions, tags and a review. We measured this with the repo's Astro pipeline on liferay.dev's public posts.
-* The token-efficiency story: six mechanisms
+* You don't need AI at runtime
+&nbsp;&nbsp;&nbsp;The build you just saw called no model, because the structure comes from Liferay's APIs. Regenerating the site costs zero tokens.
+* Where AI did help: writing the generator
+&nbsp;&nbsp;&nbsp;Claude helped write the code, once. Then we checked the result against Liferay, element by element.
+* If you want AI for content, it's optional
+&nbsp;&nbsp;&nbsp;The repo's Astro pipeline can fill in missing descriptions and tags and review a build. It's a different site, with its own layout, so it doesn't look like the original.
+* If you do use it, keep it on an allowance: six mechanisms
 * 1. Plan before model
 &nbsp;&nbsp;&nbsp;No change means no model and no build.
 * 2. Hash only the fields that matter
@@ -875,8 +915,8 @@ IF ASKED (not spoken)
 &nbsp;&nbsp;&nbsp;Eight posts per call on a cheap model with prompt caching on the system block. Gotcha: minimum cacheable prompt is 4,096 tokens on the cheap model, so short prompts silently don't cache.
 * 6. A hard budget
 &nbsp;&nbsp;&nbsp;With a ledger of every call's tokens and cost. Lower AI_BUDGET_TOKENS and the batches are skipped, deterministic fallbacks used, and the report flags it.
-* A dry run: roughly three cents, once
-&nbsp;&nbsp;&nbsp;About 12 to 16 thousand tokens for 80 posts.</aside>
+* What it would cost: an estimate, not a bill
+&nbsp;&nbsp;&nbsp;A dry run on 80 liferay.dev posts estimated about 12 to 16 thousand tokens, roughly three cents, once. The runs we kept called no model and used the fallbacks.</aside>
 </section>
 
 <section id="staticvsedge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -950,46 +990,85 @@ IF ASKED (not spoken)
 </section>
 
 <section id="isomorphism" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Pages and AI: the same move</h2>
-<table style="font-size:36px;font-family:'IBM Plex Sans', Arial, sans-serif;color:#0f2838;border:1px solid #d8e0e2">
-<tr style="background:#0f2838;color:#f4f7f7"><th style="width:28%;text-align:left"></th><th style="width:36%;text-align:left">Static pages</th><th style="width:36%;text-align:left">AI features</th></tr>
-<tr style="background:#ffffff"><td>Expensive</td><td>Render</td><td>Inference</td></tr>
-<tr><td>Do it at</td><td>Publish</td><td>Publish</td></tr>
-<tr style="background:#ffffff"><td>Invalidate</td><td>Tag purge</td><td>Content hash</td></tr>
-<tr><td>Per request</td><td><b>≈ 0</b></td><td><b>≈ 0</b></td></tr>
-</table>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Four things to take home</h2>
+<div style="display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center">
+<div style="display:flex;flex-direction:row;gap:40px;align-items:center;padding:20px 48px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px">
+<p style="width:60px;font-size:44px;font-weight:700;color:#34a1a0">1</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:44px;font-weight:600;line-height:1.15">Mark fragments Cacheable</p>
+<p style="font-size:28px;line-height:1.2;color:#4a5a66">Audit first, or leak user data</p>
+</div>
+<p style="width:480px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px">344 → 37 ms</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:center;padding:20px 48px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px">
+<p style="width:60px;font-size:44px;font-weight:700;color:#34a1a0">2</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:44px;font-weight:600;line-height:1.15">Cache at the edge</p>
+<p style="font-size:28px;line-height:1.2;color:#4a5a66">Keep auth out, purge on change</p>
+</div>
+<p style="width:480px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px">8 ms, under 1 core</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:center;padding:20px 48px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px">
+<p style="width:60px;font-size:44px;font-weight:700;color:#34a1a0">3</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:44px;font-weight:600;line-height:1.15">Don't render it at all</p>
+<p style="font-size:28px;line-height:1.2;color:#4a5a66">For content sites, and you give up portal search and forms</p>
+</div>
+<p style="width:480px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px">3 ms, 0.1 cores</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:center;padding:20px 48px;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px">
+<p style="width:60px;font-size:44px;font-weight:700;color:#34a1a0">4</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:44px;font-weight:600;line-height:1.15">Skip AI at runtime</p>
+<p style="font-size:28px;line-height:1.2;color:#4a5a66">Add it only if you want it, on an allowance</p>
+</div>
+<p style="width:480px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px">0 tokens</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: 200 first-visit page views a second · one 20-core box, no network</p>
 <img src="assets/proventeq-logo.png" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
 <aside class="notes">[40:15–41:15 · 1:00]
-* The closing idea: static generation and AI cost control are the same engineering move
-&nbsp;&nbsp;&nbsp;Take expensive, repeatable work off the request path, do it at publish time, cache the result, invalidate by event, serve stale on failure.
-* Keep an escape hatch for the genuinely dynamic
-&nbsp;&nbsp;&nbsp;Islands for pages, a rate-limited live call for AI.
-* Liferay already does this internally for semantic search
-&nbsp;&nbsp;&nbsp;Documents are embedded at index time, only the query is embedded live, and exact repeats of it are cached per node for about 10 minutes.
-* The market prices it too
-&nbsp;&nbsp;&nbsp;Batch inference is half price for accepting a 24-hour window.
-* The counter-argument: precompute trades freshness for cost, and fails on cardinality
-&nbsp;&nbsp;&nbsp;Content times locale times segment times device can explode.</aside>
+* Start where most of you can start tomorrow
+&nbsp;&nbsp;&nbsp;Mark your fragments Cacheable, after an audit. It took us from 344 to 37 milliseconds.
+* Then let the edge answer guests
+&nbsp;&nbsp;&nbsp;8 milliseconds and under one core, as long as auth stays out of the cache and you purge when content changes.
+* If it's a content site, ask why it renders at all
+&nbsp;&nbsp;&nbsp;3 milliseconds and a tenth of a core, and you give up portal search and forms.
+* You don't need AI at runtime
+&nbsp;&nbsp;&nbsp;It's optional, on an allowance.
+* One idea connects all of them
+&nbsp;&nbsp;&nbsp;Do the expensive work before the request.
+* Bridge to the next slide
+&nbsp;&nbsp;&nbsp;You'd be in good company: Liferay's own website caches aggressively too.
+
+IF ASKED (not spoken)
+* Is this idea used elsewhere?
+&nbsp;&nbsp;&nbsp;Liferay's semantic search embeds documents at index time and only the query live, with exact repeats cached per node for about 10 minutes. Batch inference is half price for accepting a 24-hour window.
+* Isn't precompute a trade-off?
+&nbsp;&nbsp;&nbsp;Yes. It trades freshness for cost, and it fails on cardinality: content times locale times segment times device can explode.
+* What about what's truly dynamic?
+&nbsp;&nbsp;&nbsp;Keep an escape hatch: islands for pages, a rate-limited live call for AI.</aside>
 </section>
 
 <section id="ask" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">www.liferay.com already does this</p>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">www.liferay.com</p>
 <p style="font-size:64px;font-family:'JetBrains Mono', 'Courier New', monospace;color:#eab000">x-lfr-guest-html-cache: 1</p>
-<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px">What is it, and can we have it?</h2>
+<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px">Liferay caches aggressively too.</h2>
 <aside class="notes">[41:15–42:00 · 0:45]
-* Before the talk: re-run the curl the day before
-&nbsp;&nbsp;&nbsp;It has changed once already.
 * Curl www.liferay.com
 &nbsp;&nbsp;&nbsp;It returns cache-control public max-age 60, an Age of hours, via Varnish, and this undocumented header.
 * It looks site-wide
-&nbsp;&nbsp;&nbsp;On 2 November guest pages across the site did too, while /c/portal/login returned private, no-store.
+&nbsp;&nbsp;&nbsp;On 4 November guest pages across the site did too, while /c/portal/login returned private, no-store.
 * The edge keeps pages far longer than the header says
 &nbsp;&nbsp;&nbsp;The Age runs to many hours against that max-age of 60.
-* We don't know what it is
-&nbsp;&nbsp;&nbsp;The header is in neither master nor shipped 2026.q1.12, and we don't know what sets it or who built it.
-* Ask 1, to the room and to Liferay: what is it, and can customers have it?
-* Ask 2: publish Core Web Vitals data for Liferay sites
-&nbsp;&nbsp;&nbsp;Nobody has, so anyone in this room could be first.</aside>
+* It isn't a product feature
+&nbsp;&nbsp;&nbsp;The header is in neither master nor shipped 2026.q1.12.
+* One ask: publish Core Web Vitals data for Liferay sites
+&nbsp;&nbsp;&nbsp;Nobody has, so anyone in this room could be first.
+
+IF ASKED (not spoken)
+* What is it?
+&nbsp;&nbsp;&nbsp;The team who run liferay.com told me it's a custom caching solution built on nginx. The headers don't show nginx, only the Google and Varnish layers in front.</aside>
 </section>
 
 <section id="close" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">

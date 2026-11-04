@@ -115,11 +115,12 @@ on the origin and on the edge every 250 ms (`matrix/local/s5-publish.sh ttl|purg
 | variant | origin_to_edge_ms |
 |---|---:|
 | no purge (TTL 60 s) | **55,655** (1 run) |
-| BAN right after the publish (emulates the S5 listener) | **17 / 18 / 19** (3 runs; the poll interval of 250 ms is the resolution) |
+| BAN of the polled page's URL right after the publish | **17 / 18 / 19** (3 runs; the poll interval of 250 ms is the resolution) |
 
 The S5 Java listener (`S5-edge-purge/src`) is a sketch that needs a Liferay workspace
-build. The purge variant therefore sends the BAN that listener would send after commit,
-so it measures the edge mechanics, not the module.
+build. The purge variant therefore sends a BAN by script, matching the polled page's URL
+(`X-Ban-Url`), not the tag ban the listener sketch would send. It measures the edge
+mechanics, not the module, and it doesn't test tags.
 
 ## Findings
 

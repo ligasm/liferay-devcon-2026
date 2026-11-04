@@ -6,7 +6,7 @@ to run each demo yourself are in `docs/demos/`.
 
 | Video | Slide | Length | What it shows |
 |---|---|---|---|
-| `demo1-curl.mp4` | 5 | 0:31 | `curl` of a fresh `liferay/dxp:2026.q1.12-lts` container with no config: `no-store` and three cookies |
+| `demo1-curl.mp4` | 8 | 0:31 | `curl` of a fresh `liferay/dxp:2026.q1.12-lts` container with no config: `no-store` and three cookies |
 | `demo2-varnish.mp4` | 12 | 1:33 | `docker compose up` Varnish in front of the S3 lab, MISS then HIT, the mix through the edge, Varnish counters, p95 table, sign-in at 0 % edge hit |
 | `demo3-regenerate.mp4` | 22–23 | 1:31 | First build from the lab Liferay, no-change run, one post two ways, a real edit and its purge list, both showing the new title, link check |
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Demo 1, slide 5: a stock guest page is uncacheable. Same commands as demo1-curl.md.
+# Demo 1, slide 8: a stock guest page is uncacheable. Same commands as demo1-curl.md.
 #
 #   ./demo1-curl.sh prepare    before the talk: start a fresh Liferay, which takes a few minutes
 #   ./demo1-curl.sh            on stage: show each command, press Enter to run it

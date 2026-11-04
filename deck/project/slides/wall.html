@@ -1,7 +1,22 @@
-<section id="wall" data-transition="fade" style="background:#0f2838;color:#f4f7f7;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
-<img src="/_blob/92409000d05f018b363b9d3c7f3c166a" alt="" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
-<div style="position:absolute;left:0;top:0;width:1920px;height:1080px;background:linear-gradient(90deg, rgba(8,22,33,0.85) 0%, rgba(8,22,33,0.55) 60%, rgba(8,22,33,0.2) 100%)"></div>
-<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px">The edge makes the fast path fast.</h2>
-<h2 style="font-size:96px;font-weight:700;line-height:1.1;width:1500px;color:#34a1a0">It doesn't make the slow path cheap.</h2>
-<aside>[22:15–24:15 · 2:00]<br>* The wall: be blunt about the limits we just imposed<br>* Locale must be in the URL<br>&nbsp;&nbsp;&nbsp;Or the cache serves the wrong language.<br>* Personalisation moves to late hydration<br>* Forms and action URLs must leave guest pages<br>* Every publish needs a purge<br>* A cold or purged page still costs a full JVM render<br>&nbsp;&nbsp;&nbsp;In our lab 15 to 50 milliseconds for a simple page and about a second for search under load, with a stampede on the popular ones.<br>* Sign-in never leaves the origin<br>&nbsp;&nbsp;&nbsp;It capped the edge mix at 400 journeys a second.<br>* Search reaches the origin for every query the edge has not seen<br>* The origin still runs 24/7 at full size<br>&nbsp;&nbsp;&nbsp;For the misses.<br>* The honest question: why is there a JVM in the request path at all?<br>&nbsp;&nbsp;&nbsp;For marketing, docs, community and catalogue sites.</aside>
+<section id="wall" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; justify-content:center; padding:128px; background:#0f2838">
+  <img src="/_blob/92409000d05f018b363b9d3c7f3c166a" alt="" style="position:absolute; top:0; left:0; width:1920px; height:1080px">
+  <div style="position:absolute; top:0; left:0; width:1920px; height:1080px; display:flex; flex-direction:column; background:linear-gradient(90deg, #081621d9 0%, #0816218c 60%, #08162133 100%)">
+  </div>
+  <div style="display:flex; flex-direction:row; gap:96px; align-items:center">
+    <div style="display:flex; flex-direction:column; gap:48px; flex:1.8">
+      <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1.1; color:#f4f7f7">A cached page is fast.</h2>
+      <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1.1; color:#34a1a0">Everything else still needs Liferay.</h2>
+    </div>
+    <ul style="flex:1; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; line-height:1.5; color:#f4f7f7">
+      <li>Locale</li>
+      <li>Personalisation</li>
+      <li>Forms</li>
+      <li>Purge</li>
+      <li>Misses</li>
+      <li>Sign-in</li>
+      <li>Search</li>
+      <li>24/7</li>
+    </ul>
+  </div>
+  <aside>[22:15–24:15 · 2:00]<br>* The wall: be blunt about the limits we just imposed<br><br>* Locale must be in the URL<br>&nbsp;&nbsp;&nbsp;Or the cache serves the wrong language.<br><br>* Personalisation moves to late hydration<br><br>* Forms and action URLs must leave guest pages<br><br>* Every publish needs a purge<br><br>* A cold or purged page still costs a full JVM render<br><br>* Sign-in never leaves the origin<br>&nbsp;&nbsp;&nbsp;It capped the edge mix at 400 journeys a second.<br><br>* Search reaches the origin for every query the edge has not seen<br><br>* The origin still runs 24/7 at full size<br>&nbsp;&nbsp;&nbsp;For the misses.<br><br>* The honest question: why is there a JVM in the request path at all?<br>&nbsp;&nbsp;&nbsp;For marketing, docs, community and catalogue sites.</aside>
 </section>

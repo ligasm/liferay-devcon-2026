@@ -1,0 +1,29 @@
+<section id="s3html" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S3 Front-end delivery</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Make the page cacheable</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:36px;font-weight:600">Stock</h3>
+<div style="background:#0f2838;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#eab000">
+<p>cache-control: private, no-cache, no-store</p>
+<p>pragma: no-cache</p>
+<p>set-cookie: JSESSIONID=…</p>
+<p>set-cookie: COOKIE_SUPPORT=true</p>
+<p>set-cookie: GUEST_LANGUAGE_ID=en_US</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:36px;font-weight:600">browser.cache.disabled=false</h3>
+<div style="background:#0f2838;border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#eab000">
+<p style="color:#5fc9c8">no cache-control</p>
+<p style="color:#5fc9c8">no pragma</p>
+<p>set-cookie: JSESSIONID=…</p>
+<p>set-cookie: COOKIE_SUPPORT=true</p>
+<p>set-cookie: GUEST_LANGUAGE_ID=en_US</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: TTFB flat · guest HTML private, no-store 100 % → 0 % · signed-in pages keep no-store · Set-Cookie still sent</p>
+<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
+<aside>[12:00–12:45 · 0:45]<br>* browser.cache.disabled=false<br>&nbsp;&nbsp;&nbsp;That removes the first reason: it is the first change that makes a guest page describable as cacheable.<br>* browser.cache.signed.in.disabled=true, keep it<br>&nbsp;&nbsp;&nbsp;Signed-in pages keep sending private, no-cache, no-store.<br>* Measured: S3 changes headers, not milliseconds<br>&nbsp;&nbsp;&nbsp;TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero.<br>* Set-Cookie is still there<br>&nbsp;&nbsp;&nbsp;That's the second reason, and why the edge must strip it.</aside>
+</section>

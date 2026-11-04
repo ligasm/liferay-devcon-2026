@@ -20,9 +20,11 @@ Timing below assumes 45 min including 2:45 of Q&A. Sections with a "cut if behin
 
 ---
 
-## Cold open — 0:00–3:15 · *the frame for the whole talk, then the method*
+## Cold open — 0:00–4:15 · *Liferay's own claim, then the frame for the whole talk and the method*
 
-**Slides:** 1 title · 2 two halves · 3 the ladder · 4 stages stack, one layer at a time
+**Slides:** 1 title · 2 two halves · 3 check the app tier's CPU first · 4 the ladder
+
+**Where the time goes** — Liferay's own 2024.Q2 benchmark study: one 8-core node, 25,000 concurrent users on plain web content, **11,000** on an Asset Publisher page (the study's summary says 15,000, its Table 2 marks 11,000 and shows a 6.2 s 2σ response at 15,000), 93–94% CPU at the inflection (the study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading). Native login degrades past ~400 concurrent attempts; with password encryption disabled, the study's stand-in for a dedicated IdP, it reaches 19,000. "Check app-tier CPU before you upsize your database." (dossier 04 §9, corrected figures.)
 
 **The ladder** — the frame for the whole talk:
 
@@ -40,35 +42,23 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 "Part 1 climbs rungs 1–4 and measures every step. Part 2 is what you do when rung 4 isn't enough."
 
-**The method** (2:15–3:15): one DXP 2026.q1.12 on one 20-core box, Varnish as the local edge, k6 as the load. Stages stack, each changes one layer. S0–S4 run the same two passes (near idle, and the 70/15/10/5 mix at ≈ 120 req/s). The ladder comes from one more test run on every rung: same pages, same rates, 60 s per rate, a whole first visit. S5 is measured as publish-to-fresh; S6 has no sign-in. A gap only counts when it beats the noise between runs: 1 vs 2 ms is a tie.
+**How it was measured** (said on the ladder slide): one DXP 2026.q1.12 on one 20-core box, Varnish as the local edge, k6 as the load. Stages stack, each changes one layer. S0–S4 run the same two passes (near idle, and the 70/15/10/5 mix at ≈ 120 req/s). The ladder comes from one more test run on every rung: same pages, same rates, 60 s per rate, a whole first visit. S5 is measured as publish-to-fresh; S6 has no sign-in. A gap only counts when it beats the noise between runs: 1 vs 2 ms is a tie.
 
-*Cut if behind:* nothing — this is the frame.
+*Cut if behind:* on slide 3, the login/IdP numbers. Nothing on the ladder: it is the frame.
 
 ---
 
-# PART 1 — Traditional optimisation, measured (3:15–24:15)
+# PART 1 — Traditional optimisation, measured (4:15–24:15)
 
-## 1.1 The baseline — 3:15–5:15
+## 1.1 S1 Hygiene — 4:15–6:00
 
-**Slides:** 5 a stock guest page on the wire · 6 check the app tier's CPU first
+**Slide:** 5
 
-**Demo 1 (30 s, zero risk, commands in `docs/demos/demo1-curl.md`):** `curl -sSD- -o /dev/null https://<your-liferay>/` — read out the cache-killing headers and the three cookies (`JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID` on stock 2026.q1.12; Liferay-hosted sites also send `SERVER_ID`, which is not in the portal). "This is what every CDN on earth sees when it looks at a stock Liferay: *do not cache me*."
+`portal-developer.properties` verified absent, `index.on.startup=false`, `session.tracker.memory.enabled=false`, filters left off (`GZipFilter=false` is the default; compress at the edge), JDK 21 `setenv.sh` with G1 set explicitly (it's the default, but with a single CPU the JVM silently picks Serial; checked on the lab's JDK 21). (Tomcat JSP `development=false` is Liferay's advice too, but `apply-stage.sh` never touches `conf/web.xml`, so the measured runs did not include it. Liferay's docs print `mappedFile`; Jasper reads `mappedfile`.) Small, honest gains — "this is the floor, not the win." The point of S1 is credibility: remove the noise so later stages measure the real thing.
 
-**Say:** `browser.cache.disabled=true` → `ServicePreAction` emits `Cache-Control: private, no-cache, no-store, must-revalidate`, `Pragma` and `Expires`. Independently, `ServicePreAction` calls `getSession()` unconditionally — there is no supported way to not create a guest session; `session.disabled` was last present in 7.4.0-ga1. Both facts from source (dossier 03 §2–3). The usual workaround is stripping the cookie at the edge. "And Liferay deleted its own page cache in 2024. In their tests its hit ratio was 'always 0, since none of our test URLs are cacheable', and the commit calls it 'really useless'. The edge is what's left." (`CacheFilter`, gone at `7.4.3.123-ga123`, 27 June 2024; `brianchandotcom/liferay-portal` PRs #151255, which disabled it, and #151316, which removed it.)
+## 1.2 S2 JVM caches — 6:00–9:30
 
-**Where the time goes** — Liferay's own 2024.Q2 benchmark study: one 8-core node, 25,000 concurrent users on plain web content, **11,000** on an Asset Publisher page (the study's summary says 15,000, its Table 2 marks 11,000 and shows a 6.2 s 2σ response at 15,000), 93–94% CPU at the inflection (the study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading). Native login degrades past ~400 concurrent attempts; with password encryption disabled, the study's stand-in for a dedicated IdP, it reaches 19,000. "Check app-tier CPU before you upsize your database." (dossier 04 §9, corrected figures.)
-
-*Cut if behind:* the login/IdP numbers.
-
-## 1.2 S1 Hygiene — 5:15–7:00
-
-**Slide:** 7
-
-`portal-developer.properties` verified absent, `index.on.startup=false`, `session.tracker.memory.enabled=false`, filters left off, JDK 21 `setenv.sh` with G1. (Tomcat JSP `development=false` is Liferay's advice too, but `apply-stage.sh` never touches `conf/web.xml`, so the measured runs did not include it. Liferay's docs print `mappedFile`; Jasper reads `mappedfile`.) Small, honest gains — "this is the floor, not the win." The point of S1 is credibility: remove the noise so later stages measure the real thing.
-
-## 1.3 S2 JVM caches — 7:00–10:30
-
-**Slide:** 8
+**Slide:** 6
 
 - **Entity + finder cache sizing per hot entity** — the usual advice, and on paper the biggest query-elimination lever. Our lab could not test it fairly: 10 req/s on in-process Hypersonic, not isolated from the rest of S2. The measured gain came from fragments ("Cache the fragments, not the pages"). **DXP 2025.Q2 moved to Ehcache 3.10.8 (LPD-40485); your 7.4 `liferay-multi-vm.xml` must be rewritten to the 3.x schema.**
 - **Fragment `Cacheable` and Web Content template `Cacheable`** — the fragment flag is measured; the template flag is not. The data-leak trap: a cacheable template that renders anything user-specific leaks it to every viewer who passes the article's VIEW check. Audit before ticking.
@@ -78,15 +68,29 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 *Cut if behind:* Cluster Link internals.
 
-## 1.4 S3 Front-end delivery — 10:30–12:45
+## 1.3 S3 Front-end delivery: assets — 9:30–11:00
+
+**Slide:** 7
+
+`cdn.host.https` + `cdn.dynamic.resources.enabled=true` → theme/module JS/CSS, combo, ES modules, portal images. **Not** Documents & Media, Adaptive Media, portlet resource URLs or HTML. Liferay's docs don't spell this out for images, so it was tested on a temporary Liferay with `cdn.host` set at startup: 15 of 16 theme and module URLs moved to the CDN host, 0 of 2 Adaptive Media URLs did. A CDN proxying the host still caches those images, and removing permission doesn't remove a cached one: Liferay returned 404, Varnish still returned the image (`part1-simulations/results/ADAPTIVE-MEDIA-CDN.md`). No real CDN was used; Varnish stood in for it. Rung 3 (Varnish caches assets, HTML passes): Liferay falls to what HTML alone costs. "Assets aren't slow, but they eat the CPU": page latency stays flat, yet on a first visit static files were 84 % of Liferay's CPU, and caching them took 200 page views/s from 8.2 to 1.9 cores and clean capacity from 200 to 600 (`RUNG-RESULTS.md`).
+
+## 1.4 The baseline — 11:00–12:00 · *why a stock page can't be cached, just before the fix*
+
+**Slide:** 8 a stock guest page on the wire
+
+**Demo 1 (30 s, zero risk, commands in `docs/demos/demo1-curl.md`):** `curl -sSD- -o /dev/null https://<your-liferay>/` — read out the cache-killing headers and the three cookies (`JSESSIONID`, `COOKIE_SUPPORT`, `GUEST_LANGUAGE_ID` on stock 2026.q1.12; Liferay-hosted sites also send `SERVER_ID`, which is not in the portal). "This is what every CDN on earth sees when it looks at a stock Liferay: *do not cache me*."
+
+**Say:** `browser.cache.disabled=true` → `ServicePreAction` emits `Cache-Control: private, no-cache, no-store, must-revalidate`, `Pragma` and `Expires`. Independently, `ServicePreAction` calls `getSession()` unconditionally — there is no supported way to not create a guest session; `session.disabled` was last present in 7.4.0-ga1. Both facts from source (dossier 03 §2–3). The usual workaround is stripping the cookie at the edge. "And Liferay deleted its own page cache in 2024. In their tests its hit ratio was 'always 0, since none of our test URLs are cacheable', and the commit calls it 'really useless'. The edge is what's left." (`CacheFilter`, gone at `7.4.3.123-ga123`, 27 June 2024; `brianchandotcom/liferay-portal` PRs #151255, which disabled it, and #151316, which removed it.)
+
+## 1.5 S3 Front-end delivery: the page — 12:00–12:45
 
 **Slide:** 9
 
-`cdn.host.https` + `cdn.dynamic.resources.enabled=true` → theme/module JS/CSS, combo, ES modules, portal images. **Not** Documents & Media, Adaptive Media, portlet resource URLs or HTML. `browser.cache.disabled=false` with `browser.cache.signed.in.disabled=true` **kept**. Rung 3 (Varnish caches assets, HTML passes): Liferay falls to what HTML alone costs. We did not measure `cdn.host.*`; there is no CDN in the lab. "Assets aren't slow, but they eat the CPU": page latency stays flat, yet on a first visit static files were 84 % of Liferay's CPU, and caching them took 200 page views/s from 8.2 to 1.9 cores and clean capacity from 200 to 600 (`RUNG-RESULTS.md`).
+`browser.cache.disabled=false` with `browser.cache.signed.in.disabled=true` **kept**. Stock sends `private, no-cache, no-store`; with the setting, guest pages send no `Cache-Control` at all. TTFB stays flat, and guest HTML goes from 100 % `private, no-store` to 0 %. Set-Cookie is still sent: that's the second reason, and why the edge must strip it.
 
-## 1.5 S4 Guest HTML at the edge — 12:45–22:15 · *the core of Part 1*
+## 1.6 S4 Guest HTML at the edge — 12:45–22:15 · *the core of Part 1*
 
-**Slides:** 10 two rules, bypass first (true of VCL) · 11 **the breach** · 12 S4 result · 13 the edge is the step that counts (p95 per stage) · 14 how far each stage goes (capacity) · 15 S5 purge by tag · 16 one sign-in costs a hundred HTML page renders · 17 one setting, twelve times the search
+**Slides:** 10 two rules, bypass first (true of VCL) · 11 **the breach** · 12 S4 result · 13 the edge is the step that counts (p95 per stage) · 14 how far each stage goes (capacity) · 15 S5 purge on publish · 16 one sign-in costs a hundred HTML page renders · 17 one setting, twelve times the search
 
 **Demo 2 (90 s, commands in `docs/demos/demo2-varnish.md`, fallback in `deck/recordings/`):** `docker compose up` Varnish in front of the same Liferay (`part1-simulations/matrix/varnish/`), `./run.sh S4-edge-varnish mix`, open `results/SUMMARY.md` and the p95 chart. Measured (`part1-simulations/results/LAB-RESULTS.md`): guest browse journey p95 under load 49 → 21 → 2 ms (S0 → S3 → S4), the mix 521 → 6 ms, 18,656 hits / 16 misses at Varnish across the S4 campaign, Liferay CPU 10.1 → 1.9 cores, and **sign-in stays at 0% edge hit** — the bypass works. Capacity (`STRESS-RESULTS.md`, `RUNG-RESULTS.md`): 400 → 1,200 → 24,800 guest pages/s clean, the last bounded by k6 (static nginx stops at the same number); a sign-in costs ≈ 100 HTML pages of CPU, a search ≈ 50; against a whole first visit, the ladder's page view, a sign-in is about twenty. ZGC gave no gain on the 6 GB heap; stay on G1. If asked about crashes: stock 3 of 13 starts, ZGC 2 of 40, G1 0 of 49, a runaway fragment render (one 2 GB string from jsoup), trigger unknown, not a GC verdict.
 
@@ -101,15 +105,15 @@ Same test on every rung: 200 first-visit page views a second, HTML plus every fi
 
 **SSO caveat:** `COMPANY_ID` and `ID` are written only by password-style login. SSO auto-login (OIDC, SAML) only sets session attributes, so an SSO user can be signed in with none of these cookies (measured with OIDC, 2026-11-02; SAML read from `master`, not run). Our VCL strips `Cookie` before the origin, so that user sees a guest page rather than leaking (measured). A Cloudflare override TTL has no such protection: in a Varnish model of those rules, the next anonymous visitor got the user's name, email and `authToken`. Cloudflare itself is untested.
 
-**The breach slide (do not skip):** one wrong character in the bypass is a data breach, not a bug. Defence in depth: origin keeps `private` on signed-in responses, though a Cloudflare override TTL ignores it; browser TTL stays bypass; nothing on a public page may need `authToken`.
+**The breach slide (do not skip):** one wrong character in the bypass is a data breach, not a bug. What the other settings don't do: keep `browser.cache.signed.in.disabled=true`, but a Cloudflare override TTL ignores it, so it protects browsers, not the edge; keep browser TTL on bypass, so someone who signs in doesn't keep seeing the guest page; and nothing on a public page should need `authToken`, because a cached page gives every visitor the same token.
 
-**S5:** `ModelListener` → purge by `Surrogate-Key` after commit is the design; the listener is an unbuilt sketch. `k6/publish-to-fresh.js` measures publish→fresh-at-edge: 55.7 s on the 60 s TTL alone, fresh within one 250 ms poll (gap 17–19 ms) with a BAN sent by script right after the publish, not yet the listener and not a soft purge. Publications has a public SPI, `CTEventListener.onAfterPublish`, but no Learn page. Object Actions can't fire from `JournalArticle`/`Layout`. Listeners run on the writing node only, so there is no "cluster storm".
+**S5:** the slide has no numbers and is a prompt to talk about the problem caching brings: the edge doesn't know anything changed, so don't wait for the TTL if you can. What needs a purge: publishing or updating content, taking it down, editing a page, removing a permission. The trigger depends on where the content lives. For Objects, an Object Action (On After Update, Webhook) needs no Java, but a small receiver has to turn the POST into the purge call, and from master source the webhook is sent inside the update, not after commit, so the receiver should answer at once and purge a moment later (not run). For classic content, `ModelListener` → purge after commit. Purging by tag is left out: Liferay doesn't send tags and we didn't build that. Both are designs: the listener is an unbuilt sketch and no Object Action has been wired to a purge. Whether Object Actions fire on the new CMS's content is untested. If asked, `k6/publish-to-fresh.js` measures publish→fresh-at-edge: 55.7 s on the 60 s TTL alone, fresh within one 250 ms poll (gap 17–19 ms) with a BAN of the polled page's URL sent by script right after the publish, not yet the listener and not a soft purge. Publications has a public SPI, `CTEventListener.onAfterPublish`, but no Learn page. Object Actions can't fire from `JournalArticle`/`Layout`. Listeners run on the writing node only, so there is no "cluster storm".
 
-## 1.6 The wall — 22:15–24:15
+## 1.7 The wall — 22:15–24:15
 
 **Slide:** 18
 
-Locale must be in the URL; personalisation moves to late hydration; forms and `ActionURL`s must leave guest pages; every publish needs a purge; a cold page still costs a full JVM render; the origin still runs 24/7 for the misses. **"The edge makes the fast path fast. It doesn't make the slow path cheap."**
+Locale must be in the URL; personalisation moves to late hydration; forms and `ActionURL`s must leave guest pages; every publish needs a purge; a cold page still costs a full JVM render; the origin still runs 24/7 for the misses. **"A cached page is fast. Everything else still needs Liferay."**
 
 ---
 
@@ -138,9 +142,9 @@ Optional live change: `docs/demos/demo3-regenerate.sh change "Your title"`, then
 
 ## 2.3 Token efficiency — 32:15–35:15
 
-**Slide:** 24 ($0.03)
+**Slide:** 24 (0 tokens)
 
-The same-look build calls no model. AI is for missing descriptions, tags and a review, measured with the Astro pipeline on 80 liferay.dev posts. Plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
+You don't need AI at runtime: the same-look build calls no model, so regenerating costs zero tokens. AI helped write the generator, once. AI for content is optional: the separate Astro pipeline can fill in missing descriptions and tags and review a build, but it has its own layout. A dry run on 80 liferay.dev posts estimated about 12 to 16 thousand tokens, roughly $0.03; the runs we kept called no model and used the fallbacks. If you use it, keep it on an allowance: plan before model · hash only the fields that matter · rules cached per layout · content-hash AI cache · batching + cheap model + prompt caching (min cacheable prompt 4,096 tokens on the cheap model) · hard budget + ledger.
 
 ## 2.4 Static against the edge — 35:15–37:15
 
@@ -160,9 +164,9 @@ Search → a static index in the browser; comments/forms and sign-in state → l
 
 ## Close — 40:15–42:15
 
-**Slides:** 27 pages and AI: the same move · 28 what is it, and can we have it? · 29 thank you
+**Slides:** 27 four things to take home · 28 Liferay caches aggressively too · 29 thank you
 
-Static pages and AI cost control are the same architecture: expensive op → do it at publish time → cache → invalidate by event → marginal cost ≈ 0. Then the ask: `www.liferay.com` answers guests with `public, max-age=60` and `x-lfr-guest-html-cache: 1`, a header found in neither `master` nor shipped 2026.q1.12. Ask what it is and whether customers can have it, and ask for published Core Web Vitals. Also worth naming: `master` now has `StaticSiteExporter` (LPD-105480) behind a flag that is off by default, not in 2026.q1.12 or 2026.q3.1.
+The wrap-up, with the ladder's numbers: mark fragments Cacheable after an audit (344 → 37 ms); cache at the edge, keeping auth out and purging on change (8 ms, under 1 core); don't render content sites at all, giving up portal search and forms (3 ms, 0.1 cores); skip AI at runtime (0 tokens). One idea connects them: do the expensive work before the request. Then Liferay's own site: `www.liferay.com` answers guests with `public, max-age=60`, an `Age` of hours and `x-lfr-guest-html-cache: 1`, a header found in neither `master` nor shipped 2026.q1.12. It caches aggressively too; the team who run it told the speaker it's a custom caching solution built on nginx (not visible in the headers). One ask: publish Core Web Vitals. Also worth naming: `master` now has `StaticSiteExporter` (LPD-105480) behind a flag that is off by default, not in 2026.q1.12 or 2026.q3.1.
 
 ## Q&A — 42:15–45:00
 
@@ -179,7 +183,7 @@ Static pages and AI cost control are the same architecture: expensive op → do 
 - [ ] Point `.env` at your DXP for one rehearsal.
 - [x] Prerecord the demos; conference Wi-Fi is where demos die (2026-11-02, `deck/recordings/`, commands in `docs/demos/`).
 - [ ] Re-run the `www.liferay.com` curl the day before for slide 28. On 2026-11-02 guest pages were cached with the header, while `/c/portal/login` returned `private, no-store` (`results/curl-checks-2026-11-02/liferay-com-headers.txt`). It has already changed once.
-- [x] Run Demo 1's curl on a stock container and record it (2026-11-02, `results/curl-checks-2026-11-02/stock-guest-headers.txt`): the cookies and headers match slide 5, which abbreviates `Cache-Control` by leaving off `must-revalidate`.
+- [x] Run Demo 1's curl on a stock container and record it (2026-11-02, `results/curl-checks-2026-11-02/stock-guest-headers.txt`): the cookies and headers match slide 8, which abbreviates `Cache-Control` by leaving off `must-revalidate`.
 - [ ] Test the Cloudflare rule set on a throwaway zone, bypass last: it comes from the docs and has never run live.
 - [x] Put an OIDC user through the lab edge (2026-11-02, `part1-simulations/results/oidc-check-2026-11-02/`).
 - [ ] Re-check AI prices and vendor plans; the dossier's were checked on 2026-11-02.

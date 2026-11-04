@@ -1,6 +1,6 @@
 # Demo 1: a stock guest page is uncacheable
 
-Slide 5, 30 seconds. Fallback video: `deck/recordings/demo1-curl.mp4`.
+Slide 8, 30 seconds. Fallback video: `deck/recordings/demo1-curl.mp4`.
 
 To run these commands from a script, one Enter at a time: `docs/demos/demo1-curl.sh prepare`, then
 `docs/demos/demo1-curl.sh`, then `docs/demos/demo1-curl.sh cleanup`.

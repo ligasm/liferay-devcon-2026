@@ -1,25 +1,25 @@
-<section id="s3" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S3 Front-end delivery</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Assets aren't slow, but they eat the CPU</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
-<h3 style="font-size:44px;font-weight:600">cdn.host rewrites</h3>
-<ul style="font-size:36px;line-height:1.6;color:#4a5a66">
-<li>Theme JS / CSS</li>
-<li>Module bundles</li>
-<li>Portal images</li>
-</ul>
-</div>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:20px">
-<h3 style="font-size:44px;font-weight:600">It doesn't touch</h3>
-<ul style="font-size:36px;line-height:1.6;color:#b9cfd3">
-<li>Documents &amp; Media</li>
-<li>Adaptive Media</li>
-<li><span style="color:#eab000">Page HTML</span></li>
-</ul>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: TTFB flat · guest HTML private, no-store 100 % → 0 % · D&amp;M public, max-age=86400 · Set-Cookie still sent</p>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[10:30–12:45 · 2:15]<br>* cdn.host.https plus cdn.dynamic.resources.enabled<br>&nbsp;&nbsp;&nbsp;Covers theme and module JS and CSS, the combo servlet, ES modules and portal images. We did not measure cdn.host itself: there is no CDN in the lab, and rung 3 is Varnish on the same hostname.<br>* It does not touch everything<br>&nbsp;&nbsp;&nbsp;Not Documents and Media, Adaptive Media, portlet resource URLs, or page HTML.<br>* Documents and Media: its own Cache Control setting<br>&nbsp;&nbsp;&nbsp;Gotcha found on 2026.Q1: the PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing.<br>* browser.cache.disabled=false<br>&nbsp;&nbsp;&nbsp;The first change that makes a guest page describable as cacheable.<br>* browser.cache.signed.in.disabled=true, keep it<br>&nbsp;&nbsp;&nbsp;Signed-in pages keep sending private, no-cache, no-store.<br>* Regenerate Adaptive Media for existing content<br>* Lazy-load everything except the LCP image<br>* Measured: S3 changes headers, not milliseconds<br>&nbsp;&nbsp;&nbsp;TTFB stayed flat, but guest HTML went from 100 percent private, no-store to zero, and the brochure PDF to public, max-age 86400.<br>* Where assets do matter is CPU<br>&nbsp;&nbsp;&nbsp;On a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3.<br>* Set-Cookie is still there<br>&nbsp;&nbsp;&nbsp;Which is why the edge must strip it.</aside>
+<section id="s3" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S3 Front-end delivery</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Assets aren't slow, but they eat the CPU</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">cdn.host rewrites</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; line-height:1.6; color:#4a5a66">
+        <li>Theme JS / CSS</li>
+        <li>Module bundles</li>
+        <li>Portal images</li>
+      </ul>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1; padding:48px; background:#0f2838; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#f4f7f7">It doesn't touch</h3>
+      <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; line-height:1.6; color:#b9cfd3">
+        <li>Documents &amp; Media</li>
+        <li>Adaptive Media</li>
+      </ul>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:32px; line-height:1.3; color:#eab000">Permission removed: Liferay 404, edge still 200</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Measured: static files 84 % of Liferay's CPU on a first visit · cdn.host rewrote 0 of 2 Adaptive Media URLs</p>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[9:30–11:00 · 1:30 · if behind: cut the Documents and Media setting]<br>* cdn.host.https plus cdn.dynamic.resources.enabled<br>&nbsp;&nbsp;&nbsp;Covers theme and module JS and CSS, the combo servlet, ES modules and portal images.<br>* It does not touch everything<br>&nbsp;&nbsp;&nbsp;Not Documents and Media, Adaptive Media, portlet resource URLs, or page HTML. Liferay's docs don't spell this out for images, so we tested it: with cdn.host on, 15 of 16 theme and module files moved to the CDN host, and 0 of 2 Adaptive Media URLs did.<br><br>* But a CDN that proxies your host still caches them<br>&nbsp;&nbsp;&nbsp;Those URLs stay on your own host, so they go through the CDN anyway. On Varnish, a public Adaptive Media image was a hit on the second request.<br>* Removing permission doesn't remove a cached image<br>&nbsp;&nbsp;&nbsp;The URL doesn't change. We removed guest access: Liferay returned 404, and the edge still returned the image.<br><br>* Documents and Media: its own Cache Control setting<br>&nbsp;&nbsp;&nbsp;Gotcha found on 2026.Q1: the PID is com.liferay.document.library.web.internal.configuration.CacheControlConfiguration; the old PID silently does nothing. With it, the brochure PDF went to public, max-age 86400.<br><br>* Where assets do matter is CPU<br>&nbsp;&nbsp;&nbsp;Page latency stays flat, but on a first visit static files were 84 percent of Liferay's CPU until the edge cached them, which is rung 3.<br>* Bridge to the next slide<br>&nbsp;&nbsp;&nbsp;That's the files. Can the page itself be cached? Ask a stock page.<br><br>IF ASKED (not spoken)<br>* Did you test on a real CDN?<br>&nbsp;&nbsp;&nbsp;No. Varnish stood in for it, and rung 3 is Varnish on the same hostname. The rewrite check ran on a temporary Liferay with cdn.host set at startup. Cloudflare is untested.<br>* Does a purge remove the image?<br>&nbsp;&nbsp;&nbsp;We didn't test that. Our VCL gives these URLs a 365-day TTL because they carry a timestamp.<br>* What else helps?<br>&nbsp;&nbsp;&nbsp;Regenerate Adaptive Media for existing content, and lazy-load everything except the LCP image. Neither was measured.</aside>
 </section>

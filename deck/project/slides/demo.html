@@ -1,22 +1,21 @@
-<section id="demo" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Regenerated from our own Liferay</h2>
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:64px">
-<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">76</p>
-<p style="font-size:36px;color:#4a5a66">pages, full build</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">~3s</p>
-<p style="font-size:36px;color:#4a5a66">when nothing changed</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">7</p>
-<p style="font-size:36px;color:#4a5a66">URLs purged for this edit</p>
-</div>
-</div>
-<p style="font-size:36px;color:#0f2838;font-family:'JetBrains Mono', 'Courier New', monospace;background:#ffffff;border:1px solid #d8e0e2;border-radius:12px;padding:24px 40px">$ node fidelity/regenerate.mjs</p>
-</div>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[27:15–31:15 · 4:00]<br>* PLAY THE VIDEO, 1:31<br>&nbsp;&nbsp;&nbsp;deck/recordings/demo3-regenerate.mp4. Commands: docs/demos/demo3-regenerate.md.<br>* Step 1, first build: 76 pages in about 13 seconds<br>&nbsp;&nbsp;&nbsp;From the APIs of our own Liferay, and about half of that is fetching.<br>* Step 2, run it again: about 3 seconds, no build<br>&nbsp;&nbsp;&nbsp;Nothing changed, so nothing is built.<br>* Step 3, one post both ways: 123 kB against 28 kB<br>&nbsp;&nbsp;&nbsp;Liferay's HTML has 25 scripts and an authToken; the static page has 1 script and none. The next slide shows the two pages.<br>* Step 4, change the post in Liferay: 7 URLs to purge<br>&nbsp;&nbsp;&nbsp;A real edit through Liferay's API. About 9 seconds. The list is the post, its two neighbours that link to it, its list page, its two tag pages and search.<br>* Step 5, both show the new title<br>* Step 6, link checker: zero broken<br>&nbsp;&nbsp;&nbsp;Of 2,043 internal links.<br>* OPTIONAL, live change<br>&nbsp;&nbsp;&nbsp;With docs/demos/lab.sh up running: docs/demos/demo3-regenerate.sh change "Your title", then refresh both tabs. Finish with demo3-regenerate.sh restore.</aside>
+<section id="demo" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Regenerated from our own Liferay</h2>
+  <div style="display:flex; flex-direction:column; gap:64px; justify-content:center; flex:1">
+    <div style="display:grid; gap:48px; grid-template-columns:1fr 1fr 1fr">
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">76</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">pages, full build</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">~3s</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">when nothing changed</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #34a1a0">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#34a1a0">7</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">URLs purged for this edit</p>
+      </div>
+    </div>
+  </div>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[27:15–31:15 · 4:00]<br>* PLAY THE VIDEO, 1:31<br>&nbsp;&nbsp;&nbsp;deck/recordings/demo3-regenerate.mp4. Commands: docs/demos/demo3-regenerate.md.<br>* Step 1, first build: 76 pages in about 13 seconds<br>&nbsp;&nbsp;&nbsp;From the APIs of our own Liferay, and about half of that is fetching.<br>* Step 2, run it again: about 3 seconds, no build<br>&nbsp;&nbsp;&nbsp;Nothing changed, so nothing is built.<br>* Step 3, one post both ways: 123 kB against 28 kB<br>&nbsp;&nbsp;&nbsp;Liferay's HTML has 25 scripts and an authToken; the static page has 1 script and none. The next slide shows the two pages.<br>* Step 4, change the post in Liferay: 7 URLs to purge<br>&nbsp;&nbsp;&nbsp;A real edit through Liferay's API. About 9 seconds. The list is the post, its two neighbours that link to it, its list page, its two tag pages and search.<br>* Step 5, both show the new title<br>* Step 6, link checker: zero broken<br>&nbsp;&nbsp;&nbsp;Of 2,043 internal links.<br>* OPTIONAL, live change<br>&nbsp;&nbsp;&nbsp;With docs/demos/lab.sh up running: docs/demos/demo3-regenerate.sh change "Your title", then refresh both tabs. Finish with demo3-regenerate.sh restore.</aside>
 </section>

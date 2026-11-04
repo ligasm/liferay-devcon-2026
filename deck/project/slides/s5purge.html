@@ -1,23 +1,28 @@
-<section id="s5purge" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S5 Purge on publish</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Purge by tag, not by URL</h2>
-<div style="display:flex;align-items:center;gap:32px;flex:1">
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Publish</h3>
-<p style="font-size:28px;color:#4a5a66">in Liferay</p>
-</div>
-<x-shape kind="arrow-right" style="background:#34a1a0;width:72px;height:36px"></x-shape>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">ModelListener</h3>
-<p style="font-size:28px;color:#4a5a66">after commit</p>
-</div>
-<x-shape kind="arrow-right" style="background:#34a1a0;width:72px;height:36px"></x-shape>
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:48px;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:44px;font-weight:600">Purge</h3>
-<p style="font-size:28px;color:#b9cfd3;font-family:'JetBrains Mono', 'Courier New', monospace">Surrogate-Key</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Measured: publish → fresh at the edge 55.7 s on TTL alone · within one 250 ms poll with a ban sent by script</p>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[19:15–20:15 · 1:00]<br>* The design: a ModelListener purges after commit<br>&nbsp;&nbsp;&nbsp;On JournalArticle, Layout and BlogsEntry it fires a purge by Surrogate-Key after the transaction commits, via TransactionCommitCallbackUtil, so the edge never re-caches the old version.<br>* It is only a design<br>&nbsp;&nbsp;&nbsp;The module in matrix/S5-edge-purge is an unbuilt sketch, with Varnish and Cloudflare purgers.<br>* Also purge when content stops being approved<br>&nbsp;&nbsp;&nbsp;Or takedowns stay cached until the TTL.<br>* How we measured<br>&nbsp;&nbsp;&nbsp;k6/publish-to-fresh.js measures publish to fresh-at-edge in milliseconds: PATCH a News title while polling origin and edge every 250 milliseconds.<br>* TTL alone, 60 seconds: old title for 55.7 seconds<br>* A BAN right after the publish: fresh within one poll<br>&nbsp;&nbsp;&nbsp;Sent by script, which is what the listener would send: fresh within one 250 millisecond poll, with a 17 to 19 millisecond gap between the origin and edge requests, over three runs.<br>* Say what is missing: classic web content still needs Java<br>&nbsp;&nbsp;&nbsp;Publications has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found, and Object Actions and webhooks cannot fire from JournalArticle or Layout, only from Objects.</aside>
+<section id="s5purge" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S5 Purge on publish</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Don't wait for the TTL</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; align-items:center; flex:1">
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">Publish</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">in Liferay</p>
+    </div>
+    <x-shape kind="arrow-right" style="width:72px; height:36px; background:#34a1a0"></x-shape>
+    <div style="display:flex; flex-direction:column; gap:32px; flex:1.6; padding:48px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">Object Action</h3>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">Objects · webhook, no Java</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#0f2838">ModelListener</h3>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#4a5a66">Web Content · Java, after commit</p>
+      </div>
+    </div>
+    <x-shape kind="arrow-right" style="width:72px; height:36px; background:#34a1a0"></x-shape>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:48px; background:#0f2838; border-radius:16px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:44px; font-weight:600; color:#f4f7f7">Purge</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#b9cfd3">by URL</p>
+    </div>
+  </div>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" id="e2-147nvys" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[19:15–20:15 · 1:00]<br>* The problem caching brings: the edge doesn't know anything changed<br>&nbsp;&nbsp;&nbsp;Until the TTL runs out, visitors keep getting the old page.<br>* So don't wait for the TTL if you can<br>&nbsp;&nbsp;&nbsp;Purge when the content changes.<br>* What needs a purge<br>&nbsp;&nbsp;&nbsp;Publishing or updating content. Taking it down, or the takedown stays online. Editing a page. And removing a permission: we saw Liferay return 404 while the edge still returned the image.<br>* Objects: an Object Action, no Java<br>&nbsp;&nbsp;&nbsp;On After Update, type Webhook. A small receiver still has to turn that call into the purge.<br>* The catch with the webhook: it isn't after commit<br>&nbsp;&nbsp;&nbsp;From the source, not run: it is sent inside the update. So answer at once and purge a moment later, or the edge can re-cache the old version.<br>* Classic content: a ModelListener, in Java<br>&nbsp;&nbsp;&nbsp;Object Actions can't fire from JournalArticle or Layout. A listener can purge after the transaction commits, via TransactionCommitCallbackUtil.<br>* Say it plainly: we haven't built either one<br><br>IF ASKED (not spoken)<br>* Did you measure a purge?<br>&nbsp;&nbsp;&nbsp;Only by script. On a 60 second TTL the old title stayed for 55.7 seconds. With a ban of that page's URL right after the publish, it was fresh within one 250 millisecond poll, over three runs. k6/publish-to-fresh.js.<br>* What about the new CMS?<br>&nbsp;&nbsp;&nbsp;Web Content is in maintenance mode and the new CMS is built on objects. Whether Object Actions fire on CMS content, we haven't tested.<br>* What about Publications?<br>&nbsp;&nbsp;&nbsp;It has a public SPI, CTEventListener.onAfterPublish, but no Learn page that we found.<br>* What about purging by tag?<br>&nbsp;&nbsp;&nbsp;Liferay doesn't send tags, and we didn't build that.<br>* Which pages do you purge when an article changes?<br>&nbsp;&nbsp;&nbsp;Liferay doesn't tell you, and we didn't solve that at the edge: our ban named the one page we polled. Part 2's build does work out that list.</aside>
 </section>

@@ -1,22 +1,22 @@
-<section id="benchmark" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Check the app tier's CPU first</h2>
-<div style="flex:1;display:flex;align-items:center">
-<div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">25k</p>
-<p style="font-size:36px;color:#4a5a66">users · web content</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #0f2838;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#0f2838">11k</p>
-<p style="font-size:36px;color:#4a5a66">users · Asset Publisher</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:24px;border-top:6px solid #34a1a0;padding:40px 0 0 0">
-<p style="font-size:160px;font-weight:700;line-height:1;white-space:nowrap;color:#34a1a0">93%</p>
-<p style="font-size:36px;color:#4a5a66">CPU at the inflection</p>
-</div>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[4:15–5:15 · 1:00 · if behind: cut the login and IdP numbers]<br>* Liferay's own benchmark, one node<br>&nbsp;&nbsp;&nbsp;AMD Epyc, 8 cores, 16 vCPU, 64 GB.<br>* 25,000 users on web content, 11,000 on Asset Publisher<br>&nbsp;&nbsp;&nbsp;Concurrent users, 93 to 94 percent CPU at the inflection, on a one-server test.<br>* Native login degrades past about 400 concurrent attempts<br>&nbsp;&nbsp;&nbsp;With native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design.<br>* Caveats<br>&nbsp;&nbsp;&nbsp;Vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views.<br>* Our lab agrees<br>&nbsp;&nbsp;&nbsp;On one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing.<br>* Takeaway: check app-tier CPU before you upsize your database<br><br>IF ASKED (not spoken)<br>* Which server do those CPU columns mean?<br>&nbsp;&nbsp;&nbsp;The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading.<br>* Doesn't the PDF say 15,000?<br>&nbsp;&nbsp;&nbsp;Its summary does, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table.</aside>
+<section id="benchmark" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Check the app tier's CPU first</h2>
+  <div style="display:flex; flex-direction:row; align-items:center; flex:1">
+    <div style="display:grid; gap:48px; grid-template-columns:1fr 1fr 1fr; flex:1">
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">25k</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">users · web content</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #0f2838">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#0f2838">11k</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">users · Asset Publisher</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px; padding:40px 0 0; border-top:6px solid #34a1a0">
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; white-space:nowrap; color:#34a1a0">93%</p>
+        <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:36px; color:#4a5a66">CPU at the inflection</p>
+      </div>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6a7a84">Liferay DXP Performance Benchmark Study · one 8-core node, DXP 2024.Q2</p>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[1:00–2:00 · 1:00 · if behind: cut the login and IdP numbers]<br>* Start with what Liferay itself claims: its own benchmark, one node<br>&nbsp;&nbsp;&nbsp;AMD Epyc, 16 vCPU, 64 GB.<br>* 25,000 users on web content, 11,000 on Asset Publisher<br>&nbsp;&nbsp;&nbsp;Concurrent users, 93 to 94 percent CPU at the inflection, on a one-server test.<br>* Native login degrades past about 400 concurrent attempts<br>&nbsp;&nbsp;&nbsp;With native password encryption turned off, which is how the study simulates a dedicated IdP, it reached 19,000, because password hashing is CPU by design.<br>* Caveats<br>&nbsp;&nbsp;&nbsp;Vendor-published, the PDF says 7.4 but tested DXP 2024.Q2, and these are simulated users holding an open HTTP session, with no transaction rate given for page views.<br>* Takeaway: check app-tier CPU before you upsize your database<br>* Bridge to the next slide<br>&nbsp;&nbsp;&nbsp;That's what Liferay claims. Here's what we measured.<br><br>IF ASKED (not spoken)<br>* Does your lab agree?<br>&nbsp;&nbsp;&nbsp;Yes. On one 20-core box the tuned origin saturated on CPU at 1,200 guest pages a second, and sign-in topped out at 15 a second with 100 percent of busy threads in PBKDF2 password hashing.<br>* Which server do those CPU columns mean?<br>&nbsp;&nbsp;&nbsp;The study doesn't name the server in those columns and gives no database CPU; the app server is the natural reading.<br>* Doesn't the PDF say 15,000?<br>&nbsp;&nbsp;&nbsp;Its summary does, but its own Table 2 marks 11,000 as the inflection point and shows a 6.2 second 2-sigma response at 15,000, so we use the table.</aside>
 </section>

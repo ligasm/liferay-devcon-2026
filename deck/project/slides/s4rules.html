@@ -1,16 +1,16 @@
-<section id="s4rules" data-transition="fade" style="background:#f4f7f7;color:#0f2838;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#34a1a0">S4 Edge HTML · in Varnish</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Two rules, bypass first</h2>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#0f2838;color:#f4f7f7;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:96px;font-weight:700;line-height:1;color:#eab000">1</p>
-<h3 style="font-size:52px;font-weight:600;line-height:1.15">Auth cookie?<br>Pass to origin.</h3>
-</div>
-<div style="flex:1;background:#ffffff;border:1px solid #d8e0e2;border-radius:16px;padding:56px;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:96px;font-weight:700;line-height:1;color:#34a1a0">2</p>
-<h3 style="font-size:52px;font-weight:600;line-height:1.15">Everything else:<br>strip cookies, cache.</h3>
-</div>
-</div>
-<img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute;right:128px;bottom:64px;width:98px;height:24px;object-fit:contain">
-<aside>[12:45–14:15 · 1:30]<br>* The core of Part 1<br>&nbsp;&nbsp;&nbsp;Show the VCL in matrix/varnish/default.vcl.<br>* Rule 1: bypass on any auth signal<br>&nbsp;&nbsp;&nbsp;COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD.<br>* Rule 2: anonymous GETs get cached<br>&nbsp;&nbsp;&nbsp;Strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass.<br>* Bypass comes first in Varnish<br>&nbsp;&nbsp;&nbsp;Because return pass ends evaluation.<br>* Cloudflare is the reverse<br>&nbsp;&nbsp;&nbsp;The last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone.<br>* SSO warning<br>&nbsp;&nbsp;&nbsp;An SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.</aside>
+<section id="s4rules" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#f4f7f7">
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#34a1a0">S4 Edge HTML · in Varnish</p>
+  <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#0f2838">Two rules, bypass first</h2>
+  <div style="display:flex; flex-direction:row; gap:32px; flex:1">
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#0f2838; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1; color:#eab000">1</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; line-height:1.15; color:#f4f7f7">Auth cookie?<br>Pass to origin.</h3>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:56px; background:#ffffff; border:1px solid #d8e0e2; border-radius:16px">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:96px; font-weight:700; line-height:1; color:#34a1a0">2</p>
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:52px; font-weight:600; line-height:1.15; color:#0f2838">Everything else:<br>strip cookies, cache.</h3>
+    </div>
+  </div>
+  <img src="/_blob/1070ed81b1eff62e532caab3aebcde9a" alt="Proventeq" style="position:absolute; right:128px; bottom:64px; width:98px; height:24px; object-fit:contain">
+  <aside>[12:45–14:15 · 1:30]<br>* The core of Part 1<br>&nbsp;&nbsp;&nbsp;Show the VCL in matrix/varnish/default.vcl.<br>* Rule 1: bypass on any auth signal<br>&nbsp;&nbsp;&nbsp;COMPANY_ID, ID, USER_UUID, REMEMBER_ME, LOGIN, PASSWORD or an Authorization header, or the method is not GET or HEAD.<br>* Rule 2: anonymous GETs get cached<br>&nbsp;&nbsp;&nbsp;Strip Cookie on the way in and Set-Cookie on the way out, drop utm, fbclid, gclid and _gl and sort the query, Vary on Accept-Encoding only, TTL from origin with a one-hour grace for stale-while-revalidate, browser TTL bypass.<br><br>* Bypass comes first in Varnish<br>&nbsp;&nbsp;&nbsp;Because return pass ends evaluation.<br>* Cloudflare is the reverse<br>&nbsp;&nbsp;&nbsp;The last matching rule wins, so the bypass goes last and the cache rule repeats the cookie exclusions; matrix/cloudflare/cache-rules.md, from the docs, never run on a live zone.<br><br>* SSO warning<br>&nbsp;&nbsp;&nbsp;An SSO login sets none of these cookies, read from source, not run. Our VCL strips Cookie before the origin, so that user just looks signed out; a Cloudflare override has no such protection.</aside>
 </section>
