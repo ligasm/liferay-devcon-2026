@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # Demo 3, slides 22 and 23: generate a static site from local Liferay, change a post, regenerate. Same commands as demo3-regenerate.md.
 #
-#   ./demo3-regenerate.sh prepare            before the talk: start Liferay and :8091, clear the build state
-#   ./demo3-regenerate.sh                    show each command, press Enter to run it
+#   ./demo3-regenerate.sh                    run the demo in stages, press Enter to start each one:
+#                                              1 prepare, 2 first generation, 3 generate again with nothing changed,
+#                                              4 change the post and make your own changes in Liferay, 5 generate again
+#   ./demo3-regenerate.sh prepare            only stage 1, to start Liferay and :8091 before the talk
 #   ./demo3-regenerate.sh change "A title"   retitle the post in Liferay and regenerate, as often as you like
 #   ./demo3-regenerate.sh restore            put the original title back and regenerate
 #   ./demo3-regenerate.sh cleanup            restore, then remove the build state
 #
 # AUTO=1 runs without waiting for Enter, for a rehearsal.
-# Each rehearsal needs a new prepare, because the demo starts from a clean build.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 VIDEO=demo3-regenerate
 WORK=/tmp/devcon-demo3
@@ -49,38 +50,72 @@ demo_prepare() {
 	[ -n "$original" ] || original=$(current_title)
 	echo "$original" > "$WORK/original-title"
 	change_title "$original"
-	echo 'Ready. Now run this script with no arguments.'
+	echo 'Ready.'
+}
+
+stage() { heading "Stage $1 of 5: $2"; pause '[Enter to start] '; }
+# Run a command without its own Enter: within a stage, the commands follow each other.
+step() { AUTO=1 run "$1"; }
+
+# Generate, then show what changed. Without a change there is no build, so there is nothing to purge.
+generate_and_show() {
+	rm -f "$WORK/reports/purge.txt"
+	step "regenerate ${1:-}"
+	if [ -s "$WORK/reports/purge.txt" ]; then
+		step 'cat $WORK/reports/purge.txt'
+	else
+		echo 'No pages to purge.'
+	fi
+	step 'title_of $PORTAL'
+	step 'title_of $STATIC'
 }
 
 demo_run() {
-	[ ! -f "$WORK/content/state.json" ] || die "A build already exists in $WORK. Run: $0 prepare"
-	[ -f "$WORK/original-title" ] || die "Not prepared. Run: $0 prepare"
-	need curl node python3
+	need docker curl node python3
 
-	heading 'First build, from the APIs of our own Liferay'
-	run 'regenerate --full'
+	stage 1 'Prepare: start Liferay and the static site, clear the last build'
+	demo_prepare
 
-	heading 'Run it again. Nothing changed'
-	run 'regenerate'
+	stage 2 'First generation, from the APIs of our own Liferay'
+	step 'regenerate --full'
+	links
 
+	stage 3 'Generate again. Nothing changed'
+	step 'regenerate'
 	heading 'One post, two deliveries: bytes, script tags, authToken'
-	run 'stats $PORTAL'
-	run 'stats $STATIC'
+	step 'stats $PORTAL'
+	step 'stats $STATIC'
 
-	heading 'Change the post in Liferay, then regenerate'
-	run 'change_title "Six checks to run before switching on Microsoft 365 Copilot"'
-	run 'regenerate'
-	run 'cat $WORK/reports/purge.txt'
+	stage 4 'Change the post in Liferay'
+	step 'change_title "Six checks to run before switching on Microsoft 365 Copilot"'
+	heading 'Now make your own changes in Liferay'
+	echo "Picked up: edits to published blog posts, web content, documents and pages."
+	echo "Use [f] at the end of stage 5 for anything else: fragment templates, the theme, menus, or something you deleted."
+	echo "Sign in: http://localhost:8086/c/portal/login"
+	links
+	pause '[Enter when you have finished] '
 
-	heading 'Both now show the new title'
-	run 'title_of $PORTAL'
-	run 'title_of $STATIC'
+	stage 5 'Generate again'
+	generate_and_show
+
+	while [ -z "${AUTO:-}" ]; do
+		links
+		printf '\033[2m%s\033[0m' '[Enter] generate again   [f] rebuild everything   [q] finish: '
+		local choice=q
+		read -r choice || choice=q
+		case "$choice" in
+			q*) break ;;
+			f*) generate_and_show --full ;;
+			*) generate_and_show ;;
+		esac
+	done
 
 	heading 'Check every internal link'
-	run 'node tools/check-links.mjs dist-fidelity'
+	step 'node tools/check-links.mjs dist-fidelity'
 
 	links
-	echo "When you've finished showing it: $0 restore"
+	echo "When you've finished showing it: $0 cleanup"
+	echo "That puts back this post's title only. Undo your own changes in Liferay yourself."
 	finish
 }
 

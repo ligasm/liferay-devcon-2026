@@ -29,7 +29,7 @@ const sinceFilter = (iso) => `filter=${encodeURIComponent(`dateModified gt ${iso
 
 async function fetchCollection(kind, endpoint, fields, { since, max }) {
   const q = [`sort=dateModified:desc`, fields ? `fields=${fields}` : '', since ? sinceFilter(since) : ''].filter(Boolean).join('&');
-  const { items, totalCount } = await listAll(`${endpoint}?${q}`, { max });
+  const { items, totalCount } = await listAll(`${endpoint}${endpoint.includes('?') ? '&' : '?'}${q}`, { max });
   items.forEach((i) => saveRaw(kind, i));
   log(`${kind}: fetched ${items.length} (site has ${totalCount})${since ? ' since ' + since : ''}`);
   return items;
@@ -41,7 +41,7 @@ async function relistIds(endpoint, knownIds) {
   const seen = new Set();
   const pending = new Set(knownIds);
   for (let page = 1; pending.size && page <= 200; page++) {
-    const j = await request(siteApi(`${endpoint}?fields=id&sort=dateModified:desc&pageSize=100&page=${page}`));
+    const j = await request(siteApi(`${endpoint}${endpoint.includes('?') ? '&' : '?'}fields=id&sort=dateModified:desc&pageSize=100&page=${page}`));
     for (const i of j.items ?? []) { seen.add(i.id); pending.delete(i.id); }
     if (page >= (j.lastPage ?? 1)) break;
   }
@@ -118,14 +118,16 @@ export async function fetchAll(flags = {}) {
   await fetchCollection('blog', '/blog-postings', BLOG_FIELDS, { since, max });
   await fetchCollection('document', '/documents', DOC_FIELDS, { since, max });
   // structured-contents: 0 on liferay.dev, but the speaker's DXP will have them.
-  await fetchCollection('structured', '/structured-contents', '', { since, max }).catch((e) => log('structured: skipped:', e.message));
+  // flat: also list web content inside folders, which the same-look build renders.
+  const structured = flags.flat ? '/structured-contents?flatten=true' : '/structured-contents';
+  await fetchCollection('structured', structured, '', { since, max }).catch((e) => log('structured: skipped:', e.message));
   await fetchSitePages({ full });
   await fetchNavMenus();
 
   // Deletion sweep for the large collections.
   const relist = full || flags.relist || (state.runCount + 1) % config.fullRelistEvery === 0;
   if (relist) {
-    for (const [kind, endpoint] of [['blog', '/blog-postings'], ['document', '/documents'], ['structured', '/structured-contents']]) {
+    for (const [kind, endpoint] of [['blog', '/blog-postings'], ['document', '/documents'], ['structured', structured]]) {
       const knownIds = loadRaw(kind).map((i) => i.id);
       if (!knownIds.length) continue;
       const { missing } = await relistIds(endpoint, knownIds).catch(() => ({ missing: [] }));

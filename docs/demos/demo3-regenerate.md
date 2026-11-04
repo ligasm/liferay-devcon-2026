@@ -2,8 +2,18 @@
 
 Slides 22 and 23, 5 minutes in total. Video to play: `deck/recordings/demo3-regenerate.mp4`.
 
-To run these commands from a script, one Enter at a time: `docs/demos/demo3-regenerate.sh prepare`, then
-`docs/demos/demo3-regenerate.sh`. Each rehearsal needs a new `prepare`, because the demo starts from a clean build.
+To run the demo live, in stages: `docs/demos/demo3-regenerate.sh`. Press Enter to start each stage:
+
+1. **Prepare:** start Liferay and the static site, and clear the last build. If Liferay is stopped this can take
+   minutes, so run `docs/demos/demo3-regenerate.sh prepare` before the talk as well.
+2. **First generation:** all 76 pages.
+3. **Generate again:** nothing changed, so nothing is built. Then one post, both ways.
+4. **Change the post:** the script retitles it, then waits while you make your own changes in Liferay.
+5. **Generate again:** shows the pages to purge. You can then repeat: Enter generates again, `f` rebuilds everything,
+   `q` runs the link check and finishes.
+
+Generating picks up edits to published blog posts, web content, documents and pages. Use `f` for anything else:
+fragment templates, the theme, menus, or something you deleted.
 
 The demo uses the lab Liferay on `:8086` and the static site on `:8091`. It needs no network and makes no model calls.
 It really changes a post in the lab Liferay, so finish with `restore`.
@@ -84,3 +94,5 @@ Expect 76 pages, about 2,043 links checked and 0 broken.
 ```bash
 docs/demos/demo3-regenerate.sh cleanup
 ```
+
+This puts back the post's title only, so undo any other changes you made in Liferay yourself.

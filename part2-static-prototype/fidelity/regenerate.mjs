@@ -41,7 +41,7 @@ function pageHashes() {
 const flags = parseArgs();
 const t0 = Date.now();
 const startedAt = nowIso();
-await fetchAll(flags);
+await fetchAll({ ...flags, flat: true });
 const plan = buildPlan(flags);
 const state = readJson(config.files.state, { runCount: 0, items: {} });
 const nothingChanged = !flags.full && !plan.hasChanges;
