@@ -1,0 +1,134 @@
+{
+ "checks": [
+  {
+   "check": "origin, guest",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": null,
+   "age": null,
+   "set_cookie": true
+  },
+  {
+   "check": "edge, guest, 1st",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": "MISS",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "edge, guest, 2nd",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": "HIT",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "origin, guest",
+   "status": 404,
+   "type": "text/html;charset=UTF-8",
+   "bytes": 79528,
+   "cache_control": null,
+   "x_cache": null,
+   "age": null,
+   "set_cookie": true
+  },
+  {
+   "check": "origin, owner",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "private",
+   "x_cache": null,
+   "age": null,
+   "set_cookie": false
+  },
+  {
+   "check": "edge, owner",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "private",
+   "x_cache": "BYPASS",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "edge, guest, 1st",
+   "status": 404,
+   "type": "text/html;charset=UTF-8",
+   "bytes": 79527,
+   "cache_control": null,
+   "x_cache": "MISS",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "edge, guest, 2nd",
+   "status": 404,
+   "type": "text/html;charset=UTF-8",
+   "bytes": 79527,
+   "cache_control": null,
+   "x_cache": "HIT",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "before: origin, guest",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": null,
+   "age": null,
+   "set_cookie": true
+  },
+  {
+   "check": "before: edge, guest, 1st",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": "MISS",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "before: edge, guest, 2nd",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": "HIT",
+   "age": "0",
+   "set_cookie": false
+  },
+  {
+   "check": "after: origin, guest",
+   "status": 404,
+   "type": "text/html;charset=UTF-8",
+   "bytes": 79507,
+   "cache_control": null,
+   "x_cache": null,
+   "age": null,
+   "set_cookie": true
+  },
+  {
+   "check": "after: edge, guest",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 41353,
+   "cache_control": "public, max-age=86400",
+   "x_cache": "HIT",
+   "age": "0",
+   "set_cookie": false
+  }
+ ]
+}

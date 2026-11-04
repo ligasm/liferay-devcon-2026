@@ -1,0 +1,100 @@
+[
+ {
+  "page": "order-alice-first",
+  "visitor": "Alice",
+  "status": 200,
+  "cached": "Alice Probe|leak-alice-a965b1@example.com|true",
+  "uncached": "Alice Probe|leak-alice-a965b1@example.com|true"
+ },
+ {
+  "page": "order-alice-first",
+  "visitor": "Bob",
+  "status": 200,
+  "cached": "Alice Probe|leak-alice-a965b1@example.com|true",
+  "uncached": "Bob Probe|leak-bob-a965b1@example.com|true"
+ },
+ {
+  "page": "order-alice-first",
+  "visitor": "guest",
+  "status": 200,
+  "cached": "Alice Probe|leak-alice-a965b1@example.com|true",
+  "uncached": "|default@liferay.com|false"
+ },
+ {
+  "page": "order-alice-first",
+  "visitor": "Alice",
+  "status": 200,
+  "cached": "Alice Probe|leak-alice-a965b1@example.com|true",
+  "uncached": "Alice Probe|leak-alice-a965b1@example.com|true"
+ },
+ {
+  "page": "order-alice-first",
+  "visitor": "Bob",
+  "status": 200,
+  "cached": "Alice Probe|leak-alice-a965b1@example.com|true",
+  "uncached": "Bob Probe|leak-bob-a965b1@example.com|true"
+ },
+ {
+  "page": "order-bob-first",
+  "visitor": "Bob",
+  "status": 200,
+  "cached": "Bob Probe|leak-bob-a965b1@example.com|true",
+  "uncached": "Bob Probe|leak-bob-a965b1@example.com|true"
+ },
+ {
+  "page": "order-bob-first",
+  "visitor": "Alice",
+  "status": 200,
+  "cached": "Bob Probe|leak-bob-a965b1@example.com|true",
+  "uncached": "Alice Probe|leak-alice-a965b1@example.com|true"
+ },
+ {
+  "page": "order-bob-first",
+  "visitor": "guest",
+  "status": 200,
+  "cached": "Bob Probe|leak-bob-a965b1@example.com|true",
+  "uncached": "|default@liferay.com|false"
+ },
+ {
+  "page": "order-bob-first",
+  "visitor": "Bob",
+  "status": 200,
+  "cached": "Bob Probe|leak-bob-a965b1@example.com|true",
+  "uncached": "Bob Probe|leak-bob-a965b1@example.com|true"
+ },
+ {
+  "page": "order-bob-first",
+  "visitor": "Alice",
+  "status": 200,
+  "cached": "Bob Probe|leak-bob-a965b1@example.com|true",
+  "uncached": "Alice Probe|leak-alice-a965b1@example.com|true"
+ },
+ {
+  "page": "order-guest-first",
+  "visitor": "guest",
+  "status": 200,
+  "cached": "|default@liferay.com|false",
+  "uncached": "|default@liferay.com|false"
+ },
+ {
+  "page": "order-guest-first",
+  "visitor": "Alice",
+  "status": 200,
+  "cached": "|default@liferay.com|false",
+  "uncached": "Alice Probe|leak-alice-a965b1@example.com|true"
+ },
+ {
+  "page": "order-guest-first",
+  "visitor": "Bob",
+  "status": 200,
+  "cached": "|default@liferay.com|false",
+  "uncached": "Bob Probe|leak-bob-a965b1@example.com|true"
+ },
+ {
+  "page": "order-guest-first",
+  "visitor": "guest",
+  "status": 200,
+  "cached": "|default@liferay.com|false",
+  "uncached": "|default@liferay.com|false"
+ }
+]
